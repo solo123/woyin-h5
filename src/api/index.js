@@ -16,8 +16,8 @@ export default {
   post(path, data = {}, config = {}) {
     return axios.post(path, data, config);
   },
-  login(username, password) {
-    return this.post('login', {username, password});
+  login(username, password, type) {
+    return this.post('login', {username, password, type});
   },
   refreshToken(refresh_token) {
     return this.get('refresh_token', {

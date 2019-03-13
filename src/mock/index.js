@@ -120,12 +120,22 @@ Mock.mock(/transfer/, 'post', function(options){
 
 // 积分转赠
 Mock.mock(/login/, 'post', function(options){
-  return {
-    code: '1',
-    msg: '登录成功'
+  const data = JSON.parse(options.body)
+  switch(data.type) {
+    case 'password':
+      return {
+        code: '1',
+        msg: '登录成功'
+      }
+    case 'message':
+      return {
+        code: '0',
+        msg: '验证码错误'
+      }
+    default:
+      return {
+        code: '3',
+        msg: '参数错误'
+      }
   }
-  // return {
-  //   code: '0',
-  //   msg: '交易密码错误'
-  // }
 })

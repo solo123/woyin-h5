@@ -1,3 +1,7 @@
+import config from '../config'
+
+const STORAGE_NAMESPACE = config.storage_namespace
+
 /**
  * Retreiving Token from Localstrogae
  *
@@ -5,7 +9,7 @@
  * @returns {object}  token
  */
 export function getItem(key) {
-  return localStorage.getItem(key);
+  return localStorage.getItem(`${STORAGE_NAMESPACE}_${key}`);
 }
 
 /**
@@ -15,7 +19,7 @@ export function getItem(key) {
  * @returns {void}
  */
 export function setItem(key, item) {
-  localStorage.setItem(key, item);
+  localStorage.setItem(`${STORAGE_NAMESPACE}_${key}`, item);
 }
 
 /**
@@ -24,5 +28,5 @@ export function setItem(key, item) {
  * @param {string} key
  */
 export function removeItem(key) {
-  localStorage.removeItem(key);
+  localStorage.removeItem(`${STORAGE_NAMESPACE}_${key}`);
 }
