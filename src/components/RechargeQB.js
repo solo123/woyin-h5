@@ -167,53 +167,43 @@ const Item = ({id, selectId, money, integral, clickHandle}) => {
       <StyledItem 
         className={classnames({'active': id === selectId})}
         onClick={() => clickHandle(id)}>
-        <div className="money">{money}元</div>
+        <div className="money">{money}个</div>
         <div className="integral">{integral}积分</div>
       </StyledItem>
     </LayoutItem>
   )
 }
 
-const OPERATOR_SINOPEC = '1'
-const OPERATOR_CNPC = '2'
-
-class RechargeOil extends Component {
+class RechargeQB extends Component {
   constructor(props) {
     super(props)
 
-    this.reset = this.reset.bind(this)
-    this.nextStep = this.nextStep.bind(this)
-    this.retryPaymentPswd = this.retryPaymentPswd.bind(this)
-    this.handleSwitch = this.handleSwitch.bind(this)
-    this.selectProduct = this.selectProduct.bind(this)
     this.handleChange = this.handleChange.bind(this)
-    this.loadProdcuts = this.loadProdcuts.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
-    this.updateButtonStatus = this.updateButtonStatus.bind(this)
+
+    this.loadProdcuts = this.loadProdcuts.bind(this)
+    this.selectProduct = this.selectProduct.bind(this)
+
+    this.nextStep = this.nextStep.bind(this)
+    this.submitRecharge = this.submitRecharge.bind(this)
+    this.retryPaymentPswd = this.retryPaymentPswd.bind(this)
 
     this.state = {
       loading: false,
-      type: OPERATOR_SINOPEC,
       items: [],
       pass: false,
-      cardNo: '',
+      qq: '',
       selectId: ''
     }
   }
 
   componentDidMount() {
-    this.loadProdcuts(this.state.type)
+    this.loadProdcuts()
   }
 
-  handleChange(e) {
-    this.setState({cardNo: e.target.value}, () => {
-      this.updateButtonStatus()
-    })
-  }
-
-  loadProdcuts(type) {
+  loadProdcuts() {
     this.setState({loading: true})
-    api.getRechargeOilProductsByType(type)
+    api.getRechargeQBProductsByType()
       .then(res => {
         const {data} = res
         this.setState({items: data, loading: false})
@@ -223,26 +213,39 @@ class RechargeOil extends Component {
       })
   }
 
+  handleChange(e) {
+    this.setState({qq: e.target.value}, () => {
+      this.updateButtonStatus()
+    })
+  }
+
+  selectProduct(selectId) {
+    this.setState({selectId}, () => {
+      this.updateButtonStatus()
+    })
+  }
+
   updateButtonStatus() {
-    if(this.state.cardNo && this.state.selectId) {
+    if(this.state.qq && this.state.selectId) {
       this.setState({pass: true})
     }else {
       this.setState({pass: false})
     }
   }
 
-  reset() {
-    this.setState({selectId: ''}, () => {
-      this.updateButtonStatus()
+  handleSubmit() {
+    util.paymentConfirm({
+      title: '充值',
+      subtitle: '壹企服',
+      amount: 3000,
+      useable: 5000000,
+      callback: (e, inputElem) => {
+        if(!inputElem.value) {
+          return false
+        }
+        this.nextStep()
+      }
     })
-  }
-  
-  handleSwitch(e) {
-    const type = e.currentTarget.getAttribute('data-type')
-    this.reset()
-    this.setState({type}, () => {
-      this.loadProdcuts(type)
-    })    
   }
 
   nextStep() {
@@ -267,9 +270,14 @@ class RechargeOil extends Component {
       })
   }
 
+  // 重试交易密码
+  retryPaymentPswd() {
+    this.handleSubmit()
+  }
+  
   submitRecharge() {
     const loading = weui.loading('处理中')
-    api.rechargeOil(this.state.selectId, this.state.phone)
+    api.rechargeQB(this.state.selectId, this.state.qq)
       .then(res => {
         const {data} = res
         if(data.code === '1') {
@@ -283,32 +291,6 @@ class RechargeOil extends Component {
       })
       .catch(err => {
       })
-  }
-
-  handleSubmit() {
-    util.paymentConfirm({
-      title: '充值',
-      subtitle: '壹企服',
-      amount: 3000,
-      useable: 5000000,
-      callback: (e, inputElem) => {
-        if(!inputElem.value) {
-          return false
-        }
-        this.nextStep()
-      }
-    })
-  }
-
-  // 重试交易密码
-  retryPaymentPswd() {
-    this.handleSubmit()
-  }
-  
-  selectProduct(selectId) {
-    this.setState({selectId}, () => {
-      this.updateButtonStatus()
-    })
   }
 
   render() {
@@ -327,46 +309,32 @@ class RechargeOil extends Component {
 
     return (
       <div>
-        <StyledNav>
-          <li 
-            className={classnames({'active': type === OPERATOR_SINOPEC })} 
-            onClick={this.handleSwitch} 
-            data-type={OPERATOR_SINOPEC}>
-            中国石化
-          </li>
-          <li 
-            className={classnames({'active': type === OPERATOR_CNPC })} 
-            onClick={this.handleSwitch} 
-            data-type={OPERATOR_CNPC}>
-            中国石油
-          </li>
-        </StyledNav>
         <StyledMain>
           <StyledInputBox>
             <StyledBox>
               <BigPrimaryInput 
                 type="text" 
-                value={this.state.cardNo}
+                value={this.state.qq}
                 onChange={this.handleChange} 
-                placeholder="请输入19位中石化加油卡卡号" 
+                placeholder="请输入QQ号码" 
                 autoComplete="off"
               />
             </StyledBox>
           </StyledInputBox>
-          <h2 className="u_m_xx">请选择面值</h2>
+          <h2 className="u_mx_xxx u_my_x">请选择面值</h2>
           {loading
-            ? <SkeletonPlaceholder /> 
-            : (list.length ? <LayoutItems>{list}</LayoutItems> : <EmptyPlaceholder />)}
-          <div className="u_p_xxx">
-            {pass
-              ? <PrimaryButton onClick={this.handleSubmit}>立即充值</PrimaryButton>
-              : <DisablePrimaryButton>立即充值</DisablePrimaryButton>
-            }
-          </div>
+              ? <SkeletonPlaceholder /> 
+              : (list.length ? <LayoutItems>{list}</LayoutItems> : <EmptyPlaceholder />)}
+            <div className="u_p_xxx">
+              {pass
+                ? <PrimaryButton onClick={this.handleSubmit}>立即充值</PrimaryButton>
+                : <DisablePrimaryButton>立即充值</DisablePrimaryButton>
+              }
+            </div>
         </StyledMain>
       </div>
     )
   }
 }
 
-export default RechargeOil
+export default RechargeQB

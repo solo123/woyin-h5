@@ -62,6 +62,10 @@ export default {
   getRechargeOilProductsByType(type) {
     return this.get('getRechargeOilProductsByType', {type})
   },  
+  // 获取QB产品列表
+  getRechargeQBProductsByType(type) {
+    return this.get('getRechargeQBProductsByType', {type})
+  },  
   confirmPaymentPswd(paymentPswd) {
     return this.post('confirmPaymentPswd', {paymentPswd})
   },
@@ -77,6 +81,11 @@ export default {
   rechargeOil(id, phone) {
     return this.get('rechargeOil', {id, phone})
   },  
+  // QB充值
+  rechargeQB(id, phone) {
+    return this.get('rechargeQB', {id, phone})
+  },  
+  
   // 获取银行列表
   getBankCardList() {
     return this.get('getBankCardList')

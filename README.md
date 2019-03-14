@@ -22,6 +22,8 @@
 - [ ] 引入rem
 - [ ] 以上对路由的淡出淡出可能会与rem冲突 需解决
 - [ ] 给订单页不同状态作为一个swiper使其能够左右滑动
+- [ ] 中石化和中石油切换类型是需要同时更新输入框的placeholder内容
+- [ ] 各充值页面需要显示用户可用积分
 
 
 # 处理token过期的情况
@@ -107,15 +109,15 @@ case SIGNIN_FAILURE:
 
 
 # NotAuthentication 和 Authentication的区别在哪里？
-        改组件的作用是将已登录的用户重定向到指定路由 也就是不用已登录用户访问 比如等页面 已登录的用户不应该让其再次进来
-        NotAuthentication
-        如果是登录用户 去users
-        if (this.props.authenticated) {
-            browserHistory.push('/reduxauth/users');
-        }
+          改组件的作用是将已登录的用户重定向到指定路由 也就是不用已登录用户访问 比如等页面 已登录的用户不应该让其再次进来
+          NotAuthentication
+          如果是登录用户 去users
+          if (this.props.authenticated) {
+              browserHistory.push('/reduxauth/users');
+          }
 
-        Authentication
-        如果未登录 去注册
-        if (!this.props.authenticated) {
-            browserHistory.push('/reduxauth/signup');
-        }
+          Authentication
+          如果未登录 去注册
+          if (!this.props.authenticated) {
+              browserHistory.push('/reduxauth/signup');
+          }
