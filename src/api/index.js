@@ -58,6 +58,10 @@ export default {
   getRechargeFlowProductsByType(type) {
     return this.get('getRechargeFlowProductsByType', {type})
   },
+  // 获取油卡产品列表
+  getRechargeOilProductsByType(type) {
+    return this.get('getRechargeOilProductsByType', {type})
+  },  
   confirmPaymentPswd(paymentPswd) {
     return this.post('confirmPaymentPswd', {paymentPswd})
   },

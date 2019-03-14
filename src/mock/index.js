@@ -1,5 +1,8 @@
 import util from '../util';
 import uuid from 'uuid'
+
+import './recharge'
+
 const Mock = require('mockjs');
 const Random = Mock.Random;
 

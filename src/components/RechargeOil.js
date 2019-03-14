@@ -167,18 +167,17 @@ const Item = ({id, selectId, money, integral, clickHandle}) => {
       <StyledItem 
         className={classnames({'active': id === selectId})}
         onClick={() => clickHandle(id)}>
-        <div className="money">{money}M</div>
+        <div className="money">{money}元</div>
         <div className="integral">{integral}积分</div>
       </StyledItem>
     </LayoutItem>
   )
 }
 
-const CMCC = '1'
-const CUCC = '2'
-const CTCC = '3'
+const OPERATOR_SINOPEC = '1'
+const OPERATOR_CNPC = '2'
 
-class RechargeFlow extends Component {
+class RechargeOil extends Component {
   constructor(props) {
     super(props)
 
@@ -193,12 +192,12 @@ class RechargeFlow extends Component {
     this.updateButtonStatus = this.updateButtonStatus.bind(this)
 
     this.state = {
-      type: CMCC,
-      phone: '',
-      selectId: '',
+      loading: false,
+      type: OPERATOR_SINOPEC,
       items: [],
       pass: false,
-      loading: false
+      cardNo: '',
+      selectId: ''
     }
   }
 
@@ -207,24 +206,43 @@ class RechargeFlow extends Component {
   }
 
   handleChange(e) {
-    this.setState({phone: e.target.value}, () => {
+    this.setState({cardNo: e.target.value}, () => {
       this.updateButtonStatus()
     })
   }
 
-  handleSubmit(e) {
-    util.paymentConfirm({
-      title: '充值',
-      subtitle: '壹企服',
-      amount: 3000,
-      useable: 5000000,
-      callback: (e, inputElem) => {
-        if(!inputElem.value) {
-          return false
-        }
-        this.nextStep()
-      }
+  loadProdcuts(type) {
+    this.setState({loading: true})
+    api.getRechargeOilProductsByType(type)
+      .then(res => {
+        const {data} = res
+        this.setState({items: data, loading: false})
+      })
+      .then(() => {
+        this.setState({loading: false})
+      })
+  }
+
+  updateButtonStatus() {
+    if(this.state.cardNo && this.state.selectId) {
+      this.setState({pass: true})
+    }else {
+      this.setState({pass: false})
+    }
+  }
+
+  reset() {
+    this.setState({selectId: ''}, () => {
+      this.updateButtonStatus()
     })
+  }
+  
+  handleSwitch(e) {
+    const type = e.currentTarget.getAttribute('data-type')
+    this.reset()
+    this.setState({type}, () => {
+      this.loadProdcuts(type)
+    })    
   }
 
   nextStep() {
@@ -267,45 +285,26 @@ class RechargeFlow extends Component {
       })
   }
 
+  handleSubmit(e) {
+    util.paymentConfirm({
+      title: '充值',
+      subtitle: '壹企服',
+      amount: 3000,
+      useable: 5000000,
+      callback: (e, inputElem) => {
+        if(!inputElem.value) {
+          return false
+        }
+        this.nextStep()
+      }
+    })
+  }
+
   // 重试交易密码
   retryPaymentPswd() {
     this.handleSubmit()
   }
-
-  loadProdcuts(type) {
-    this.setState({loading: true})
-    api.getRechargeFlowProductsByType(type)
-      .then(res => {
-        const {data} = res
-        this.setState({items: data, loading: false})
-      })
-      .then(() => {
-        this.setState({loading: false})
-      })
-  }
-
-  updateButtonStatus() {
-    if(this.state.phone && this.state.selectId) {
-      this.setState({pass: true})
-    }else {
-      this.setState({pass: false})
-    }
-  }
-
-  reset() {
-    this.setState({selectId: ''}, () => {
-      this.updateButtonStatus()
-    })
-  }
-
-  handleSwitch(e) {
-    const type = e.currentTarget.getAttribute('data-type')
-    this.reset()
-    this.setState({type}, () => {
-      this.loadProdcuts(type)
-    })
-  }
-
+  
   selectProduct(selectId) {
     this.setState({selectId}, () => {
       this.updateButtonStatus()
@@ -329,18 +328,27 @@ class RechargeFlow extends Component {
     return (
       <div>
         <StyledNav>
-          <li className={classnames({'active': type === CMCC })} onClick={this.handleSwitch} data-type={CMCC}>中国移动</li>
-          <li className={classnames({'active': type === CUCC })} onClick={this.handleSwitch} data-type={CUCC}>中国联通</li>
-          <li className={classnames({'active': type === CTCC })} onClick={this.handleSwitch} data-type={CTCC}>中国电信</li>
+          <li 
+            className={classnames({'active': type === OPERATOR_SINOPEC })} 
+            onClick={this.handleSwitch} 
+            data-type={OPERATOR_SINOPEC}>
+            中国石化
+          </li>
+          <li 
+            className={classnames({'active': type === OPERATOR_CNPC })} 
+            onClick={this.handleSwitch} 
+            data-type={OPERATOR_CNPC}>
+            中国石油
+          </li>
         </StyledNav>
         <StyledMain>
           <StyledInputBox>
             <StyledBox>
               <BigPrimaryInput 
                 type="text" 
-                value={this.state.phone}
+                value={this.state.cardNo}
                 onChange={this.handleChange} 
-                placeholder="请输入手机号码" 
+                placeholder="请输入19位中石化加油卡卡号" 
                 autoComplete="off"
               />
             </StyledBox>
@@ -361,4 +369,4 @@ class RechargeFlow extends Component {
   }
 }
 
-export default RechargeFlow
+export default RechargeOil
