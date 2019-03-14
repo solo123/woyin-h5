@@ -72,6 +72,10 @@ export default {
   // 流量充值
   rechargeFlow(id, phone) {
     return this.get('rechargeFlow', {id, phone})
+  },
+  // 加油卡充值
+  rechargeOil(id, phone) {
+    return this.get('rechargeOil', {id, phone})
   },  
   // 获取银行列表
   getBankCardList() {

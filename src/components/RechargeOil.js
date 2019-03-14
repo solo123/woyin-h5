@@ -269,7 +269,7 @@ class RechargeOil extends Component {
 
   submitRecharge() {
     const loading = weui.loading('处理中')
-    api.rechargeFlow(this.state.selectId, this.state.phone)
+    api.rechargeOil(this.state.selectId, this.state.phone)
       .then(res => {
         const {data} = res
         if(data.code === '1') {
