@@ -47,7 +47,6 @@ Mock.mock(/hotsell/, 'get', function(options){
 
 Mock.mock(/getRechargePhoneProductsByType/, 'get', function(options){
   var result = util.parseUrl(options.url, 'type');
-  console.log()
   switch(result.type) {
     case '1':
       return [
@@ -75,6 +74,36 @@ Mock.mock(/getRechargePhoneProductsByType/, 'get', function(options){
   }
 });
 
+// 流量充值产品列表
+Mock.mock(/getRechargeFlowProductsByType/, 'get', function(options){
+  var result = util.parseUrl(options.url, 'type');
+  switch(result.type) {
+    case '1':
+      return [
+        { id: uuid(), integral: 318, money: 10 },
+        { id: uuid(), integral: 1060, money: 100 },
+        { id: uuid(), integral: 2120, money: 300 },
+        { id: uuid(), integral: 3180, money: 500 },
+        { id: uuid(), integral: 0, money: 1024 },
+        { id: uuid(), integral: 5300, money: 2048 },
+        { id: uuid(), integral: 7420, money: 3072 }
+      ]
+    case '2':
+      return [
+        { id: uuid(), integral: 318, money: 10 },
+        { id: uuid(), integral: 1060, money: 100 },
+        { id: uuid(), integral: 2120, money: 300 },
+        { id: uuid(), integral: 3180, money: 500 },
+        { id: uuid(), integral: 0, money: 1024 }
+      ]
+    case '3':
+      return []
+    default:
+      return []
+  }
+});
+
+// 校验交易密码
 Mock.mock(/confirmPaymentPswd/, 'post', function(options){
   return {
     code: '1',
@@ -84,6 +113,14 @@ Mock.mock(/confirmPaymentPswd/, 'post', function(options){
 
 // 话费充值
 Mock.mock(/rechargePhone/, 'get', function(options){
+  return {
+    code: '1',
+    msg: '充值成功'
+  }
+})
+
+// 话费充值
+Mock.mock(/rechargeFlow/, 'get', function(options){
   return {
     code: '1',
     msg: '充值成功'
@@ -123,9 +160,16 @@ Mock.mock(/login/, 'post', function(options){
   const data = JSON.parse(options.body)
   switch(data.type) {
     case 'password':
-      return {
-        code: '1',
-        msg: '登录成功'
+      if(data.username === '15014095291' && data.password === '000000') {
+        return {
+          code: '1',
+          msg: '登录成功'
+        }
+      }else {
+        return {
+          code: '0',
+          msg: '账号或密码错误'
+        }
       }
     case 'message':
       return {

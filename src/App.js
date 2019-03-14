@@ -15,7 +15,10 @@ import Cate from './components/Cate'
 import DoubleColorBall from './components/DoubleColorBall'
 import Product from './components/Product'
 import Buy from './components/Buy'
+
 import RechargePhone from './components/RechargePhone'
+import RechargeFlow from './components/RechargeFlow'
+
 import Test from './components/Test'
 
 import history from './history'
@@ -32,6 +35,7 @@ class App extends Component {
             <Route path="/login" component={Login} />
             <Auth path="/order" component={Order} />
             <Auth path="/recharge-phone" component={RechargePhone} />
+            <Auth path="/recharge-flow" component={RechargeFlow} />
             <Auth path="/redeem" component={Redeem} />
             <Auth path="/transfer" component={Transfer} />
             <Route path="/cate" component={Cate} />

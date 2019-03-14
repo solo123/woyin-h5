@@ -50,8 +50,13 @@ export default {
   getHotsell() {
     return this.get('hotsell')
   },
+  // 获取话费产品列表
   getRechargePhoneProductsByType(type) {
     return this.get('getRechargePhoneProductsByType', {type})
+  },
+  // 获取流量产品列表
+  getRechargeFlowProductsByType(type) {
+    return this.get('getRechargeFlowProductsByType', {type})
   },
   confirmPaymentPswd(paymentPswd) {
     return this.post('confirmPaymentPswd', {paymentPswd})
@@ -60,6 +65,10 @@ export default {
   rechargePhone(id, phone) {
     return this.get('rechargePhone', {id, phone})
   },
+  // 流量充值
+  rechargeFlow(id, phone) {
+    return this.get('rechargeFlow', {id, phone})
+  },  
   // 获取银行列表
   getBankCardList() {
     return this.get('getBankCardList')

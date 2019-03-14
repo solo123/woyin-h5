@@ -9,20 +9,18 @@ import util from '../util'
 
 import emptySrc from '../asset/images/empty.png'
 
-const StyledEmpty = styled.div`
-  color: #888;
-  text-align: center;
-  img{
-    width: 150px;
-    height: 150px;
-  }
-`
+/*
+ |--------------------------------------------------------------------------
+ | button
+ |--------------------------------------------------------------------------
+ */
 const Button = styled.button`
+  border: 0;
+  padding: 0;
+  width: 100%;
   outline: none;
   display: block;
-  border: 0;
-  width: 100%;
-  padding: 0;
+  background: transparent;
 `
 const PrimaryButton = styled(Button)`
   color: #fff;
@@ -41,6 +39,39 @@ const DisablePrimaryButton = styled(Button)`
   border-radius: 3px;
   background: #ccc;
 `
+const MiniPrimaryButton = styled(Button)`
+  color: #fff;
+  font-size: 12px;
+  padding: 5px 10px;
+  border-radius: 3px;
+  background: -webkit-linear-gradient(47deg, #c89850, #e1c38c);
+`
+/*
+ |--------------------------------------------------------------------------
+ | input
+ |--------------------------------------------------------------------------
+ */
+const Input = styled.input`
+  border: 0;
+  padding: 0;
+  width: 100%;
+  outline: none;
+  color: inherit;
+  font-size: inherit;
+  -webkit-appearance: none;
+  background: transparent;
+`
+const BigPrimaryInput = styled(Input)`
+  color: #444;
+  font-size: 16px;
+  font-weight: bold;
+  font-family: industry;
+`
+const PrimaryInput = styled(Input)`
+  color: #444;
+  font-size: 14px;
+`
+
 const StyledNav = styled.ul`
   display: flex;
   margin-bottom: 10px;
@@ -69,19 +100,9 @@ const StyledNav = styled.ul`
     }
   }
 `
+
 const StyledMain = styled.div`
   background: #fff;
-`
-const Input = styled.input`
-  border: 0;
-  width: 100%;
-  outline: none;
-  padding: 0;
-  background: transparent;
-`
-const StyledInput = styled(Input)`
-  font-family: industry;
-  font-size: 22px;
 `
 const StyledBox = styled.div`
   padding-bottom: 15px;
@@ -90,6 +111,7 @@ const StyledBox = styled.div`
 const StyledInputBox = styled.div`
   padding: 20px 15px;
 `
+
 const LayoutItem = styled.div`
   width: 33.33%;
   padding: 5px;
@@ -123,6 +145,18 @@ const LayoutItems = styled.div`
   flex-wrap: wrap;
   margin: 0 10px;
 `
+const StyledEmpty = styled.div`
+  color: #888;
+  text-align: center;
+  img{
+    width: 150px;
+    height: 150px;
+  }
+`
+
+const CMCC = '1'
+const CUCC = '2'
+const CTCC = '3'
 
 const EmptyPlaceholder = () => (
   <StyledEmpty>
@@ -137,18 +171,14 @@ const Item = ({id, selectId, money, integral, clickHandle}) => {
       <StyledItem 
         className={classnames({'active': id === selectId})}
         onClick={() => clickHandle(id)}>
-        <div className="money">{money}元</div>
+        <div className="money">{money}M</div>
         <div className="integral">{integral}积分</div>
       </StyledItem>
     </LayoutItem>
   )
 }
 
-const CMCC = '1'
-const CUCC = '2'
-const CTCC = '3'
-
-export default class extends Component {
+class RechargeFlow extends Component {
   constructor(props) {
     super(props)
 
@@ -163,49 +193,17 @@ export default class extends Component {
     this.updateButtonStatus = this.updateButtonStatus.bind(this)
 
     this.state = {
-      pass: false,
-      loading: false,
-      items: [],
-      phone: '15014095291',
+      type: CMCC,
+      phone: '',
       selectId: '',
-      type: CMCC
+      items: [],
+      pass: false,
+      loading: false
     }
   }
 
   componentDidMount() {
     this.loadProdcuts(this.state.type)
-  }
-
-  loadProdcuts(type) {
-    this.setState({loading: true})
-    api.getRechargePhoneProductsByType(type)
-      .then(res => {
-        const {data} = res
-        this.setState({items: data, loading: false})
-      })
-      .then(() => {
-        this.setState({loading: false})
-      })
-  }
-
-  reset() {
-    this.setState({selectId: ''}, () => {
-      this.updateButtonStatus()
-    })
-  }
-
-  toggleType(e) {
-    const type = e.currentTarget.getAttribute('data-type')
-    this.reset()
-    this.setState({type}, () => {
-      this.loadProdcuts(type)
-    })
-  }
-
-  selectProduct(selectId) {
-    this.setState({selectId}, () => {
-      this.updateButtonStatus()
-    })
   }
 
   handleChange(e) {
@@ -214,7 +212,7 @@ export default class extends Component {
     })
   }
 
-  handleSubmit() {
+  handleSubmit(e) {
     util.paymentConfirm({
       title: '充值',
       subtitle: '壹企服',
@@ -253,7 +251,7 @@ export default class extends Component {
 
   submitRecharge() {
     const loading = weui.loading('处理中')
-    api.rechargePhone(this.state.selectId, this.state.phone)
+    api.rechargeFlow(this.state.selectId, this.state.phone)
       .then(res => {
         const {data} = res
         if(data.code === '1') {
@@ -274,12 +272,44 @@ export default class extends Component {
     this.handleSubmit()
   }
 
+  loadProdcuts(type) {
+    this.setState({loading: true})
+    api.getRechargeFlowProductsByType(type)
+      .then(res => {
+        const {data} = res
+        this.setState({items: data, loading: false})
+      })
+      .then(() => {
+        this.setState({loading: false})
+      })
+  }
+
   updateButtonStatus() {
     if(this.state.phone && this.state.selectId) {
       this.setState({pass: true})
     }else {
       this.setState({pass: false})
     }
+  }
+
+  reset() {
+    this.setState({selectId: ''}, () => {
+      this.updateButtonStatus()
+    })
+  }
+
+  toggleType(e) {
+    const type = e.currentTarget.getAttribute('data-type')
+    this.reset()
+    this.setState({type}, () => {
+      this.loadProdcuts(type)
+    })
+  }
+
+  selectProduct(selectId) {
+    this.setState({selectId}, () => {
+      this.updateButtonStatus()
+    })
   }
 
   render() {
@@ -303,11 +333,10 @@ export default class extends Component {
           <li className={classnames({'active': type === CUCC })} onClick={this.toggleType} data-type={CUCC}>中国联通</li>
           <li className={classnames({'active': type === CTCC })} onClick={this.toggleType} data-type={CTCC}>中国电信</li>
         </StyledNav>
-
         <StyledMain>
           <StyledInputBox>
             <StyledBox>
-              <StyledInput 
+              <BigPrimaryInput 
                 type="text" 
                 value={this.state.phone}
                 onChange={this.handleChange} 
@@ -316,7 +345,6 @@ export default class extends Component {
               />
             </StyledBox>
           </StyledInputBox>
-
           <h2 className="u_m_xx">请选择面值</h2>
           {loading
             ? <SkeletonPlaceholder /> 
@@ -332,3 +360,5 @@ export default class extends Component {
     )
   }
 }
+
+export default RechargeFlow
