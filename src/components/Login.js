@@ -189,9 +189,9 @@ class Login extends Component {
 
     this.state = {
       pass: false,
-      username: '',
+      username: '15014095291',
       usernameCleanView: false,
-      password: '',
+      password: '000000',
       passwordCleanView: false,
       passwordType: 'password',
       passwordIcon: iconSchema['password'],
@@ -211,11 +211,15 @@ class Login extends Component {
         username,
         rememberStatus: 'checked', 
         rememberUsernameIcon: rememberUsernameIconSchema['checked']
+      }, () => {
+        this.updateButtonStatus()
       })
     }else {
       this.setState({
         rememberStatus: 'unchecked', 
         rememberUsernameIcon: rememberUsernameIconSchema['unchecked']
+      }, () => {
+        this.updateButtonStatus()
       })   
     }
   }

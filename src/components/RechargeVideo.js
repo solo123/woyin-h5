@@ -89,7 +89,6 @@ const StyledPickerContent = styled.div`
   flex-wrap: wrap;
 `
 
-
 const iconSchema = {
   '1': ykIcon,
   '2': iqyIcon,
@@ -102,7 +101,9 @@ const iconSchema = {
   '9': txspIcon
 }
 
-const Item = ({name, icon, handleSelectProvider}) => {
+
+
+const Item = ({id, name, icon, selectProvider}) => {
   const StyleItem = styled.div`
     display: flex;
     align-items: center;
@@ -126,10 +127,35 @@ const Item = ({name, icon, handleSelectProvider}) => {
     margin-left: 10px;
   `
   return (
-    <StyleItem onClick={handleSelectProvider}>
+    <StyleItem onClick={() => selectProvider(id)}>
       <StyledIcon src={icon} alt=""/>
       <StyledName>{name}</StyledName>
     </StyleItem>
+  )
+}
+
+const StyledProductList = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  margin: 0 5px;
+`
+const LayoutProductItem = styled.div`
+  width: 50%;
+`
+const StyledProductItem = styled.div`
+  margin: 5px;
+  padding: 10px;
+  background: #fff;
+`
+
+const ProductItem = function({id, name, buyPrice, handleClick}) {
+  return (
+    <LayoutProductItem onClick={handleClick(id)}>
+      <StyledProductItem>
+        <div>{name}</div>
+        <div>{buyPrice}积分</div>
+      </StyledProductItem>
+    </LayoutProductItem>
   )
 }
 
@@ -137,14 +163,19 @@ class RechargeVideo extends Component {
   constructor(props) {
     super(props)
 
+    this.loadVideoProducts = this.loadVideoProducts.bind(this)
     this.loadVideoProviders = this.loadVideoProviders.bind(this)
+    this.selectProvider = this.selectProvider.bind(this)
+    this.selectProduct = this.selectProduct.bind(this)
 
     this.handleChange = this.handleChange.bind(this)
     this.handleOpenPicker = this.handleOpenPicker.bind(this)
 
     this.state = {
+      products: [],
       providers: [],
-      loading: false,
+      loadProdcutLoading: false,
+      loadProvidersLoading: false,
       username: '',
       pickerViewFlag: true
     }
@@ -155,17 +186,36 @@ class RechargeVideo extends Component {
   }
 
   loadVideoProviders() {
-    this.setState({loading: true})
+    this.setState({loadProvidersLoading: true})
     api.getVideoProviders()
       .then(res => {
         const {data} = res
         if(data.code === '1') {
-          this.setState({providers: data.items, loading: false})
+          this.setState({providers: data.items, loadProvidersLoading: false})
         }
       })
       .then(() => {
-        this.setState({loading: false})
+        this.setState({loadProvidersLoading: false})
       })
+  }
+
+  loadVideoProducts(id) {
+    this.setState({loadProdcutLoading: true})
+    api.getVideoProducts(id)
+      .then(res => {
+        const {data} = res
+        if(data.code === '1') {
+          this.setState({products: data.items, loadProdcutLoading: false})
+        }
+      })
+      .then(() => {
+        this.setState({loadProdcutLoading: false})
+      })
+  }
+
+  selectProvider(id) {
+    this.loadVideoProducts(id)
+    this.handleOpenPicker()
   }
 
   handleOpenPicker() {
@@ -176,20 +226,35 @@ class RechargeVideo extends Component {
     this.setState({username: e.target.value})
   }
 
+  selectProduct() {
+  }
+
   render() {
-    const {providers} = this.state
+    const {providers, products} = this.state
 
     const items = providers.map(item => {
       return (
         <Item 
           key={item.id} 
+          id={item.id}
           name={item.name}
           icon={iconSchema[item.class]} 
-          handleSelectProvider={this.handleSelectProvider}
+          selectProvider={this.selectProvider}
         />
       )
     })
 
+    const productItems = products.map(item => {
+      return (
+        <ProductItem 
+          id={item.productId}
+          key={item.productId} 
+          buyPrice={item.buyPrice}
+          name={item.productTypeName}
+          handleClick={this.selectProduct}
+        />
+      )
+    })
 
     return (
       <div>
@@ -210,6 +275,9 @@ class RechargeVideo extends Component {
         <LayoutBox>
           <LayoutTitle>选择面值</LayoutTitle>
         </LayoutBox>
+        <StyledProductList>
+          {productItems}
+        </StyledProductList>
 
         {this.state.pickerViewFlag
           ? (<StyledPicker>
