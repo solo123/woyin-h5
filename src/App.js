@@ -20,6 +20,7 @@ import RechargePhone from './components/RechargePhone'
 import RechargeFlow from './components/RechargeFlow'
 import RechargeOil from './components/RechargeOil'
 import RechargeQB from './components/RechargeQB'
+import RechargeVideo from './components/RechargeVideo'
 
 import Test from './components/Test'
 
@@ -41,6 +42,7 @@ class App extends Component {
             <Auth path="/recharge-flow" component={RechargeFlow} />
             <Auth path="/recharge-oil" component={RechargeOil} />
             <Auth path="/recharge-qb" component={RechargeQB} />
+            <Auth path="/recharge-video" component={RechargeVideo} />
             
             <Auth path="/redeem" component={Redeem} />
             <Auth path="/transfer" component={Transfer} />

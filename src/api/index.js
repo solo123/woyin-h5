@@ -66,6 +66,11 @@ export default {
   getRechargeQBProductsByType(type) {
     return this.get('getRechargeQBProductsByType', {type})
   },  
+  // 获取视频产品列表
+  getVideoProviders() {
+    return this.get('getVideoProviders')
+  },  
+
   confirmPaymentPswd(paymentPswd) {
     return this.post('confirmPaymentPswd', {paymentPswd})
   },
