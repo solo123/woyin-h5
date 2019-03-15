@@ -108,9 +108,17 @@ Mock.mock(/getRechargeFlowProductsByType/, 'get', function(options){
 
 // 校验交易密码
 Mock.mock(/confirmPaymentPswd/, 'post', function(options){
-  return {
-    code: '1',
-    msg: ''
+  const data = JSON.parse(options.body)
+  if(data.pswd === '000000') {
+    return {
+      code: '1',
+      msg: ''
+    }
+  }else {
+    return {
+      code: '0',
+      msg: '交易密码错误'
+    }
   }
 })
 

@@ -232,10 +232,10 @@ export default class extends Component {
               <Item to="/recharge-qb" icon={kafei} text="腾讯Q币"/>
               <Item to="/recharge-video" icon={kafei} text="视频VIP"/>
               <Item to="/recharge-ecard" icon={kafei} text="电子卡券"/>
-              <Item to="/double_color_ball" icon={kafei} text="双色球"/>
-              <Item to="/double_color_ball" icon={kafei} text="七乐彩"/>
-              <Item to="/double_color_ball" icon={kafei} text="违章查询"/>
-              <Item to="/double_color_ball" icon={kafei} text="信用卡还款"/>
+              <Item to="/credit-card" icon={kafei} text="信用卡还款"/>
+              <Item to="/violation" icon={kafei} text="违章查询"/>
+              <Item to="/double-color-ball" icon={kafei} text="双色球"/>
+              <Item to="/double-color-ball" icon={kafei} text="七乐彩"/>
             </StyledNav>
           </div>
         </section>

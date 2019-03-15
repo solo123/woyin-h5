@@ -23,6 +23,7 @@ import RechargeQB from './components/RechargeQB'
 import RechargeVideo from './components/RechargeVideo'
 import RechargeECard from './components/RechargeECard'
 import RechargeECardDetail from './components/RechargeECardDetail'
+import CreditCard from './components/CreditCard'
 
 
 import Test from './components/Test'
@@ -47,12 +48,13 @@ class App extends Component {
             <Auth path="/recharge-qb" component={RechargeQB} />
             <Auth path="/recharge-video" component={RechargeVideo} />
             <Auth exact path="/recharge-ecard" component={RechargeECard} />
-            <Auth path="/recharge-ecard/:id" component={RechargeECardDetail} />
+            <Auth path="/credit-card" component={CreditCard} />
+            <Auth path="/violation" component={RechargeECardDetail} />
+            <Auth path="/double-color-ball" component={DoubleColorBall} />
             
             <Auth path="/redeem" component={Redeem} />
             <Auth path="/transfer" component={Transfer} />
             <Route path="/cate" component={Cate} />
-            <Route path="/double_color_ball" component={DoubleColorBall} />
             <Route path="/product" component={Product} />
             <Route path="/buy/:id" component={Buy} />
             <Route path="/test" component={Test} />

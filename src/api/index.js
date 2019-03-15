@@ -74,8 +74,8 @@ export default {
   getVideoProducts() {
     return this.get('getVideoProducts')
   },  
-  confirmPaymentPswd(paymentPswd) {
-    return this.post('confirmPaymentPswd', {paymentPswd})
+  confirmPaymentPswd(pswd) {
+    return this.post('confirmPaymentPswd', {pswd})
   },
   // 话费充值
   rechargePhone(id, phone) {

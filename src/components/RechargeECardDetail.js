@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 import classnames from 'classnames'
+import weui from 'weui.js'
 
 import config from '../config'
 import Opeator from '../common/Operator'
 import api from '../api'
+import util from '../util'
 
 import appleIcon from '../asset/images/ecard/apple.png'
 import bgyIcon from '../asset/images/ecard/bgy.png'
@@ -42,12 +44,10 @@ const iconSchema = {
 const StyledPageContainer = styled.div`
   padding-bottom: 50px;
 `
-
 const StyledPage = styled.div`
   background: #fff;
 
   dt{
-    color: #ccc;
     font-size: 14px;
     margin-bottom: 10px;
   }
@@ -55,17 +55,13 @@ const StyledPage = styled.div`
     color: #888;
     margin-bottom: 10px;
     ol{
-      margin-left: 2em;
+      margin-left: 1em;
       li {
         margin-bottom: 5px;
         list-style: decimal;
       }
     }
   }
-`
-const LayoutPdX = styled.div`
-  padding-left: 15px;
-  padding-right: 15px;
 `
 const LayoutBox = styled.div`
   padding: 15px;
@@ -74,7 +70,7 @@ const StyledBgBox = styled.div`
   display: flex;
   align-items: center;
   padding: 15px;
-  background: #f5f5f5;
+  background: #f6f6f6;
   margin-bottom: 15px;
 `
 const StyledIcon = styled.img`
@@ -91,17 +87,15 @@ const StyledOpeator = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-bottom: 10px;
-  margin-bottom: 15px;
-  border-bottom: 1px solid #eaeaea;
 `
 const StyledTitle = styled.h2`
   font-size: 14px;
-  padding: 15px 0;
-  margin-bottom: 15px;
-  border-bottom: 1px solid #e1e1e1;
+  padding: 15px;
+  border-bottom: 1px solid #f6f6f6;
 `
 const StyledTextRight = styled.div`
+  padding-right: 15px;
+  padding-bottom: 15px;
   font-size: 12px;
   color: #b5b5b5;
   text-align: right;
@@ -111,6 +105,9 @@ const StyledItems = styled.div`
   display: flex;
   flex-wrap: wrap;
   margin-bottom: 10px;
+  margin-left: 10px;
+  margin-top: 10px;
+  margin-right: 10px;
 `
 const StyledItem = styled.div`
   width: 90px;
@@ -144,7 +141,15 @@ const StyledSubmitBtn = styled.div`
   font-weight: bold;
   padding: 0 30px;
   line-height: 50px;
-  background: linear-gradient(269deg,#C8AA86 4%,#AD8B62 96%);
+  background: #e1c38c;
+`
+const StyledDisableSubmitBtn = styled.div`
+  color: #fff;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 0 30px;
+  line-height: 50px;
+  background: #ccc;
 `
 const StyledSumBox = styled.div`
   line-height: 50px;
@@ -175,11 +180,17 @@ class RechargeECardDetail extends Component {
     this.handleClick = this.handleClick.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.handleSelect = this.handleSelect.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
+    this.updateSubmitBtnStatus = this.updateSubmitBtnStatus.bind(this)
 
+    this.validationPswd = this.validationPswd.bind(this)
+    this.retryPswd = this.retryPswd.bind(this)
+    
     this.state = {
       count: config.ecard.MIN_COUNT,
-      integral: 0,
       class: props.match.params.id,
+      pass: false,
+      integral: 0,
       name: '',
       selectId: '',
       items: [],
@@ -206,20 +217,84 @@ class RechargeECardDetail extends Component {
   }
 
   handleSelect(id, integral) {
-    this.setState({selectId: id, integral: integral})
+    this.setState({selectId: id, integral: integral}, () => {
+      this.updateSubmitBtnStatus()
+    })
   }
 
   handleClick(count) {
     if(config.ecard.MAX_COUNT >= count && count >= config.ecard.MIN_COUNT) {
-      this.setState({count})
+      this.setState({count}, () => {
+        this.updateSubmitBtnStatus()
+      })
     }
   }
 
-  handleChange() {
+  updateSubmitBtnStatus() {
+    if(this.state.selectId) {
+      this.setState({pass: true})
+    }else {
+      this.setState({pass: false})
+    }
+  }
+
+  handleChange(e) {
+  }
+
+  handleSubmit() {
+    // 可用积分
+    // 当前积分
+    const useable = 50000
+    const sum = this.state.count * this.state.integral
+    util.paymentConfirm({
+      title: '兑换卡券',
+      useable: useable,
+      amount: sum,
+      callback: (e, input) => {
+        if(!input.value.trim()) {
+          alert('请输入交易密码')
+          return false
+        }
+        this.validationPswd(input.value)
+      }
+    })
+  }
+
+  // 校验交易密码
+  validationPswd(pswd) {
+    const loading = weui.loading('处理中')
+    api.confirmPaymentPswd(pswd)
+      .then(res => {
+        const {data} = res
+        if(data.code === '1') {
+          this.submitExchange()
+        }else if(data.code === '0') {
+          // 交易密码错误
+          weui.confirm(data.msg, () => {
+            this.retryPswd()
+          })          
+        }else {
+          weui.alert(data.msg)
+        }
+      })
+      .then(() => {
+        loading.hide()
+      })
+      .catch(err => {
+      })    
+  }
+
+  // 重试密码
+  retryPswd() {
+    this.handleSubmit()
+  }
+
+  submitExchange() {
+    console.log('发起兑换')
   }
 
   render() {
-    const {items, selectId} = this.state
+    const {pass, items, selectId} = this.state
 
     return (
       <div>
@@ -231,7 +306,6 @@ class RechargeECardDetail extends Component {
                     <StyledIcon src={iconSchema[this.state.class]} />
                     <StyledName>{this.state.name}</StyledName>
                   </StyledBgBox>
-
                   <StyledOpeator>
                     <span>兑换数量(最多可购10张)</span>
                     <Opeator 
@@ -240,31 +314,35 @@ class RechargeECardDetail extends Component {
                       onChange={this.handleChange}
                     />
                   </StyledOpeator>
-
-                  <h3>选择面值</h3>
-                  <StyledItems>
-                    {items.map(item => {
-                      return (
-                        <Item 
-                          key={item.id} 
-                          id={item.id}
-                          price={item.price} 
-                          selectId={selectId}
-                          integral={item.integral}
-                          handleSelect={this.handleSelect}
-                        />
-                      )
-                    })}
-                  </StyledItems>
-                  <StyledTextRight>*订单支付后立即生效，不可退回</StyledTextRight>
                 </LayoutBox>
             </StyledPage>
           </div>
-          
-          <StyledPage>
-            <LayoutBox>
-              <StyledTitle>产品详情</StyledTitle>
+          <div className="u_mb_xx">
+            <StyledPage>
+              <StyledTitle>选择面值</StyledTitle>
               <div>
+                <StyledItems>
+                  {items.map(item => {
+                    return (
+                      <Item 
+                        key={item.id} 
+                        id={item.id}
+                        price={item.price} 
+                        selectId={selectId}
+                        integral={item.integral}
+                        handleSelect={this.handleSelect}
+                      />
+                    )
+                  })}
+                </StyledItems>
+                <StyledTextRight>订单支付后立即生效，不可退回</StyledTextRight>
+              </div>
+            </StyledPage>
+          </div>
+          <div className="u_mb_xx">
+            <StyledPage>
+              <StyledTitle>产品详情</StyledTitle>
+              <LayoutBox>
                 <dl>
                   <dt>有效期：</dt>
                   <dd>京东E卡有效期为3个月</dd>
@@ -282,14 +360,16 @@ class RechargeECardDetail extends Component {
                     </ol>					
                   </dd>
                 </dl>
-              </div>
-            </LayoutBox>
-          </StyledPage>
-
+              </LayoutBox>
+            </StyledPage>
+          </div>
           <StyledFixedBottom>
             <LayoutFlex>
               <StyledSumBox>兑换积分：<StyledSum>{this.state.integral * this.state.count}</StyledSum></StyledSumBox>
-              <StyledSubmitBtn>立即兑换</StyledSubmitBtn>
+              {pass
+                ? <StyledSubmitBtn onClick={this.handleSubmit}>立即兑换</StyledSubmitBtn>
+                : <StyledDisableSubmitBtn>立即兑换</StyledDisableSubmitBtn>
+              }
             </LayoutFlex>
           </StyledFixedBottom>
         </StyledPageContainer>
