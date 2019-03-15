@@ -186,3 +186,117 @@ Mock.mock(/login/, 'post', function(options){
       }
   }
 })
+
+
+// 积分转赠
+Mock.mock(/getECardList/, 'get', function(options){
+  // return {
+  //   code: '1',
+  //   items: []
+  // }
+
+  return {
+    code: '1',
+    items: [
+      {
+        id: uuid(),
+        cateName: '电商平台电子卡',
+        children: [
+          {
+            id: uuid(),
+            name: '天猫',
+            class: '1'
+          },
+          {
+            id: uuid(),
+            name: '苏宁',
+            class: '2'
+          },
+          {
+            id: uuid(),
+            name: '亚马逊',
+            class: '3'
+          },
+          {
+            id: uuid(),
+            name: '京东',
+            class: '4'
+          }
+        ]
+      },
+      {
+        id: uuid(),
+        cateName: '旅游、交通出行卡',
+        children: [
+          {
+            id: uuid(),
+            name: '携程任我游',
+            class: '5'
+          },
+          {
+            id: uuid(),
+            name: '携程任我行',
+            class: '6'
+          }
+        ]
+      },
+      {
+        id: uuid(),
+        cateName: '饮食美味',
+        children: [
+          {
+            id: uuid(),
+            name: '哈根达斯',
+            class: '7'
+          },
+          {
+            id: uuid(),
+            name: '肯德基',
+            class: '8'
+          },
+          {
+            id: uuid(),
+            name: '必胜客',
+            class: '9'
+          },
+          {
+            id: uuid(),
+            name: '星巴克',
+            class: '10'
+          }
+        ]
+      },
+      {
+        id: uuid(),
+        cateName: '购物消费',
+        children: [
+          {
+            id: uuid(),
+            name: 'DQ电子卡',
+            class: '11'
+          },
+          {
+            id: uuid(),
+            name: '百果园',
+            class: '12'
+          },
+          {
+            id: uuid(),
+            name: '苹果AppStore',
+            class: '13'
+          },
+          {
+            id: uuid(),
+            name: '万宁代金券',
+            class: '14'
+          },
+          {
+            id: uuid(),
+            name: '屈臣氏代金券',
+            class: '15'
+          }
+        ]
+      }
+    ]
+  }
+})

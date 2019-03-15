@@ -100,5 +100,9 @@ export default {
   },
   transfer(data) {
     return this.post('transfer', data)
+  },
+  // 获取电子卡券列表
+  getECardList() {
+    return this.get('getECardList')
   }
 };
