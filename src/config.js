@@ -22,6 +22,11 @@ export default {
       Login: '/login'
     }
   },
+  // 电子卡券配置
+  ecard: {
+    MAX_COUNT: 10,
+    MIN_COUNT: 1
+  },
   // 业务配置
   card: {
     MAX_COUNT: 10,

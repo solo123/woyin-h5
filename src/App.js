@@ -22,6 +22,7 @@ import RechargeOil from './components/RechargeOil'
 import RechargeQB from './components/RechargeQB'
 import RechargeVideo from './components/RechargeVideo'
 import RechargeECard from './components/RechargeECard'
+import RechargeECardDetail from './components/RechargeECardDetail'
 
 
 import Test from './components/Test'
@@ -45,7 +46,8 @@ class App extends Component {
             <Auth path="/recharge-oil" component={RechargeOil} />
             <Auth path="/recharge-qb" component={RechargeQB} />
             <Auth path="/recharge-video" component={RechargeVideo} />
-            <Auth path="/recharge-ecard" component={RechargeECard} />
+            <Auth exact path="/recharge-ecard" component={RechargeECard} />
+            <Auth path="/recharge-ecard/:id" component={RechargeECardDetail} />
             
             <Auth path="/redeem" component={Redeem} />
             <Auth path="/transfer" component={Transfer} />

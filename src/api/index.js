@@ -104,5 +104,9 @@ export default {
   // 获取电子卡券列表
   getECardList() {
     return this.get('getECardList')
+  },
+  // 获取电子卡券详情
+  getECardDetailByType() {
+    return this.get('getECardDetailByType')
   }
 };
