@@ -23,7 +23,7 @@ import RechargeQB from './components/RechargeQB'
 import RechargeVideo from './components/RechargeVideo'
 import RechargeECard from './components/RechargeECard'
 import RechargeECardDetail from './components/RechargeECardDetail'
-
+2
 
 import Test from './components/Test'
 
