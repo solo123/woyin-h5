@@ -24,7 +24,8 @@ import RechargeVideo from './components/RechargeVideo'
 import RechargeECard from './components/RechargeECard'
 import RechargeECardDetail from './components/RechargeECardDetail'
 import CreditCard from './components/CreditCard'
-
+import Violation from './components/Violation'
+import AddVehicle from './components/AddVehicle.js'
 
 import Test from './components/Test'
 import history from './history'
@@ -49,7 +50,8 @@ class App extends Component {
             <Auth exact path="/recharge-ecard" component={RechargeECard} />
             <Auth path="/recharge-ecard/:id" component={RechargeECardDetail} />
             <Auth path="/credit-card" component={CreditCard} />
-            <Auth path="/violation" component={RechargeECardDetail} />
+            <Auth path="/violation" component={Violation} />
+            <Auth path="/add-vehicle" component={AddVehicle} />
             <Auth path="/double-color-ball" component={DoubleColorBall} />
             
             <Auth path="/redeem" component={Redeem} />

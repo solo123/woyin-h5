@@ -363,3 +363,11 @@ Mock.mock(/getECardDetailByType/, 'get', function(options){
     }
   }
 })
+
+// 添加车辆
+Mock.mock(/addVehicle/, 'post', function(options){
+  return {
+    code: '1',
+    msg: '添加成功'
+  }
+})

@@ -93,7 +93,6 @@ export default {
   rechargeQB(id, phone) {
     return this.get('rechargeQB', {id, phone})
   },  
-  
   // 获取银行卡列表
   getBankCardList() {
     return this.get('getBankCardList')
@@ -102,9 +101,11 @@ export default {
   getCreditCardList() {
     return this.get('getCreditCardList')
   },
+  // 信用卡还款
   creditCardRepayment(data) {
     return this.post('creditCardRepayment', data)
   },
+  // 积分转赠
   transfer(data) {
     return this.post('transfer', data)
   },
@@ -115,5 +116,9 @@ export default {
   // 获取电子卡券详情
   getECardDetailByType() {
     return this.get('getECardDetailByType')
+  },
+  // 添加车辆
+  addVehicle(data) {
+    return this.post('addVehicle', data)
   }
 };
