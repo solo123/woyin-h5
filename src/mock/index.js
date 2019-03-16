@@ -107,7 +107,7 @@ Mock.mock(/getRechargeFlowProductsByType/, 'get', function(options){
 });
 
 // 校验交易密码
-Mock.mock(/confirmPaymentPswd/, 'post', function(options){
+Mock.mock(/confirmTransPswd/, 'post', function(options){
   const data = JSON.parse(options.body)
   if(data.pswd === '000000') {
     return {
@@ -151,6 +151,34 @@ Mock.mock(/getBankCardList/, 'get', function(options){
   // return {
   //   code: '0',
   //   items: []
+  // }
+})
+
+// 获取信用卡
+Mock.mock(/getCreditCardList/, 'get', function(options){
+  // return {
+  //   code: '0',
+  //   items: []
+  // }  
+  return {
+    code: '1',
+    items: [
+      {id: uuid(), creditCardName: '建设银行', creditCardNo: '6227007200230197111'},
+      {id: uuid(), creditCardName: '招商银行', creditCardNo: '6227007200230197112'},
+      {id: uuid(), creditCardName: '工商银行', creditCardNo: '6227007200230197113'}
+    ]
+  }
+})
+
+//  信用卡还款
+Mock.mock(/creditCardRepayment/, 'post', function(options){
+  return {
+    code: '1',
+    msg: '信用卡还款成功'
+  }
+  // return {
+  //   code: '0',
+  //   msg: '交易密码错误'
   // }
 })
 

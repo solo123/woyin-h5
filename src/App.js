@@ -27,7 +27,6 @@ import CreditCard from './components/CreditCard'
 
 
 import Test from './components/Test'
-
 import history from './history'
 
 const NotFound = () => <h1>Not Found</h1>;
@@ -48,6 +47,7 @@ class App extends Component {
             <Auth path="/recharge-qb" component={RechargeQB} />
             <Auth path="/recharge-video" component={RechargeVideo} />
             <Auth exact path="/recharge-ecard" component={RechargeECard} />
+            <Auth path="/recharge-ecard/:id" component={RechargeECardDetail} />
             <Auth path="/credit-card" component={CreditCard} />
             <Auth path="/violation" component={RechargeECardDetail} />
             <Auth path="/double-color-ball" component={DoubleColorBall} />

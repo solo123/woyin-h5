@@ -74,8 +74,8 @@ export default {
   getVideoProducts() {
     return this.get('getVideoProducts')
   },  
-  confirmPaymentPswd(pswd) {
-    return this.post('confirmPaymentPswd', {pswd})
+  confirmTransPswd(pswd) {
+    return this.post('confirmTransPswd', {pswd})
   },
   // 话费充值
   rechargePhone(id, phone) {
@@ -94,9 +94,16 @@ export default {
     return this.get('rechargeQB', {id, phone})
   },  
   
-  // 获取银行列表
+  // 获取银行卡列表
   getBankCardList() {
     return this.get('getBankCardList')
+  },
+  // 获取信用卡列表
+  getCreditCardList() {
+    return this.get('getCreditCardList')
+  },
+  creditCardRepayment(data) {
+    return this.post('creditCardRepayment', data)
   },
   transfer(data) {
     return this.post('transfer', data)

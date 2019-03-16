@@ -393,7 +393,7 @@ class RechargeVideo extends Component {
 
   validationPswd(pswd) {
     const loading = weui.loading('处理中')
-    api.confirmPaymentPswd(pswd)
+    api.confirmTransPswd(pswd)
       .then(res => {
         const {data} = res
         if(data.code === '1') {

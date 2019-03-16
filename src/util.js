@@ -159,7 +159,7 @@ const paymentConfirm = function (options) {
   addClass($dialog, 'weui-animate-fade-slideDown')
 }
 
-const getBankCardLastNum = function(bankCardNo) {
+const getLastNum = function(bankCardNo) {
   return bankCardNo.substring(bankCardNo.length - 4, bankCardNo.length)
 }
 
@@ -168,10 +168,21 @@ const parseBankCardList = function(arr) {
     return {
       bankCardNo: item.bankCardNo,
       bankCardName: item.bankCardName,
-      label: item.bankCardName + '-' + getBankCardLastNum(item.bankCardNo)
+      label: item.bankCardName + '-' + getLastNum(item.bankCardNo)
     }
   })
 }
+
+const parseCreditCardList = function(arr) {
+  return arr.map(item => {
+    return {
+      creditCardNo: item.creditCardNo,
+      creditCardName: item.creditCardName,
+      label: item.creditCardName + '-' + getLastNum(item.creditCardNo)
+    }
+  })
+}
+
 
 export default {
   accessTokenIsValid,
@@ -182,5 +193,6 @@ export default {
   parseUrl,
   paymentConfirm,
   parseBankCardList,
-  getBankCardLastNum
+  parseCreditCardList,
+  getBankCardLastNum: getLastNum
 };
