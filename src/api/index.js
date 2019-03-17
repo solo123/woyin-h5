@@ -120,5 +120,13 @@ export default {
   // 添加车辆
   addVehicle(data) {
     return this.post('addVehicle', data)
+  },
+  // 获取车辆列表
+  getVehicleList() {
+    return this.get('getVehicleList')
+  },
+  // 获取违章记录
+  getViolationList() {
+    return this.get('getViolationList')
   }
 };

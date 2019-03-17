@@ -3,5 +3,9 @@
 import history from '../history';
 
 export function push(path = '/') {
-  history.push(path);
+  history.push(path)
+}
+
+export function replace(path = '/') {
+  history.replace(path)
 }

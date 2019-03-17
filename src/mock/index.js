@@ -32,19 +32,22 @@ Mock.mock(/getProductById/, 'get', function(optiosn){
 })
 
 Mock.mock(/hotsell/, 'get', function(options){
-  return [
-    { id: uuid(), title: Random.cparagraph(), price: Random.natural(160, 5000), status: Random.boolean() ? '有货' : '无货', url: Random.url() },
-    { id: uuid(), title: Random.cparagraph(), price: Random.natural(160, 5000), status: Random.boolean() ? '有货' : '无货', url: Random.url() },
-    { id: uuid(), title: Random.cparagraph(), price: Random.natural(160, 5000), status: Random.boolean() ? '有货' : '无货', url: Random.url() },
-    { id: uuid(), title: Random.cparagraph(), price: Random.natural(160, 5000), status: Random.boolean() ? '有货' : '无货', url: Random.url() },
-    { id: uuid(), title: Random.cparagraph(), price: Random.natural(160, 5000), status: Random.boolean() ? '有货' : '无货', url: Random.url() },
-    { id: uuid(), title: Random.cparagraph(), price: Random.natural(160, 5000), status: Random.boolean() ? '有货' : '无货', url: Random.url() },
-    { id: uuid(), title: Random.cparagraph(), price: Random.natural(160, 5000), status: Random.boolean() ? '有货' : '无货', url: Random.url() },
-    { id: uuid(), title: Random.cparagraph(), price: Random.natural(160, 5000), status: Random.boolean() ? '有货' : '无货', url: Random.url() },
-    { id: uuid(), title: Random.cparagraph(), price: Random.natural(160, 5000), status: Random.boolean() ? '有货' : '无货', url: Random.url() },
-    { id: uuid(), title: Random.cparagraph(), price: Random.natural(160, 5000), status: Random.boolean() ? '有货' : '无货', url: Random.url() },
-    { id: uuid(), title: Random.cparagraph(), price: Random.natural(160, 5000), status: Random.boolean() ? '有货' : '无货', url: Random.url() }
-  ]
+  return {
+    code: '1',
+    items: [
+      { id: uuid(), title: Random.cparagraph(), price: Random.natural(160, 5000), status: Random.boolean() ? '有货' : '无货', url: Random.url() },
+      { id: uuid(), title: Random.cparagraph(), price: Random.natural(160, 5000), status: Random.boolean() ? '有货' : '无货', url: Random.url() },
+      { id: uuid(), title: Random.cparagraph(), price: Random.natural(160, 5000), status: Random.boolean() ? '有货' : '无货', url: Random.url() },
+      { id: uuid(), title: Random.cparagraph(), price: Random.natural(160, 5000), status: Random.boolean() ? '有货' : '无货', url: Random.url() },
+      { id: uuid(), title: Random.cparagraph(), price: Random.natural(160, 5000), status: Random.boolean() ? '有货' : '无货', url: Random.url() },
+      { id: uuid(), title: Random.cparagraph(), price: Random.natural(160, 5000), status: Random.boolean() ? '有货' : '无货', url: Random.url() },
+      { id: uuid(), title: Random.cparagraph(), price: Random.natural(160, 5000), status: Random.boolean() ? '有货' : '无货', url: Random.url() },
+      { id: uuid(), title: Random.cparagraph(), price: Random.natural(160, 5000), status: Random.boolean() ? '有货' : '无货', url: Random.url() },
+      { id: uuid(), title: Random.cparagraph(), price: Random.natural(160, 5000), status: Random.boolean() ? '有货' : '无货', url: Random.url() },
+      { id: uuid(), title: Random.cparagraph(), price: Random.natural(160, 5000), status: Random.boolean() ? '有货' : '无货', url: Random.url() },
+      { id: uuid(), title: Random.cparagraph(), price: Random.natural(160, 5000), status: Random.boolean() ? '有货' : '无货', url: Random.url() }
+    ]
+  }
 });
 
 
@@ -369,5 +372,35 @@ Mock.mock(/addVehicle/, 'post', function(options){
   return {
     code: '1',
     msg: '添加成功'
+  }
+})
+
+// 获取车辆列表
+Mock.mock(/getVehicleList/, 'get', function(options){
+  return {
+    code: '1',
+    items: [
+      {id: uuid(), vehicleNo: '粤111111', type: '使馆汽车', vin: '111111', enginNo: '111111'},
+      {id: uuid(), vehicleNo: '粤222222', type: '使馆汽车', vin: '222222', enginNo: '222222'},
+      {id: uuid(), vehicleNo: '粤333333', type: '使馆汽车', vin: '333333', enginNo: '333333'},
+      {id: uuid(), vehicleNo: '粤444444', type: '使馆汽车', vin: '444444', enginNo: '444444'},
+      {id: uuid(), vehicleNo: '粤555555', type: '使馆汽车', vin: '555555', enginNo: '555555'},
+      {id: uuid(), vehicleNo: '粤666666', type: '使馆汽车', vin: '666666', enginNo: '666666'}
+    ]
+  }
+})
+
+// 获取违章记录
+Mock.mock(/getViolationList/, 'get', function(options){
+  return {
+    code: '1',
+    items: [
+      {id: uuid(), title: Random.cparagraph(1), detail: Random.cparagraph(5)},
+      {id: uuid(), title: Random.cparagraph(1), detail: Random.cparagraph(5)},
+      {id: uuid(), title: Random.cparagraph(1), detail: Random.cparagraph(5)},
+      {id: uuid(), title: Random.cparagraph(1), detail: Random.cparagraph(5)},
+      {id: uuid(), title: Random.cparagraph(1), detail: Random.cparagraph(5)},
+      {id: uuid(), title: Random.cparagraph(1), detail: Random.cparagraph(5)}
+    ]
   }
 })

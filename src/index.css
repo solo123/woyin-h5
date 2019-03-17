@@ -103,6 +103,23 @@ img {
   src: url('./asset/fonts/Industry.otf');
 }
 
+.slide-enter{
+  opacity: 0.01;
+  transform: translateX(-20%);
+}
+.slide-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: all .3s;
+}
+.slide-exit{
+}
+.slide-exit-active {
+  opacity: 0.01;
+  transform: translateX(-20%);
+  transition: all .3s;
+}
+
 /* fade */
 .fade-enter {
   opacity: 0.01;
@@ -110,7 +127,7 @@ img {
 
 .fade-enter-active {
   opacity: 1;
-  transition: opacity 500ms ease-in;
+  transition: opacity .3s ease-in;
 }
 
 .fade-exit {
@@ -119,7 +136,7 @@ img {
 
 .fade-exit-active {
   opacity: 0.01;
-  transition: all 500ms ease-in;
+  transition: all .3s ease-in;
 }
 
 

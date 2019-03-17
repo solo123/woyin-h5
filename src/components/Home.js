@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import styled from 'styled-components'
 import { Link } from "react-router-dom"
+import {CSSTransition} from 'react-transition-group'
 import api from '../api'
 
 import kafei from '../asset/images/icon/kafei.png'
+import moreSrc from '../asset/images/more.svg'
 
 const StyledNav = styled.nav`
   display: flex;
@@ -119,10 +121,10 @@ const StyledUserinfo = styled.div`
     font-size: 12px;
   }
 `
-const StyledToggle = styled.div`
-  width: 30px;
-  height: 30px;
-  margin-right: 10px;
+const StyledToggle = styled.img`
+  width: 20px;
+  height: 20px;
+  margin-right: 15px;
 `
 const StyledBox = styled.div`
   color: #333;
@@ -153,6 +155,30 @@ const StyledIntegral = styled.div`
   color: #683f0c;
   margin-bottom: 10px;
 `
+const StyledFixedBg = styled.div`
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, .5);
+`
+const StyledFixedLayer = styled.div`
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 75%;
+  background: #fff;
+`
+const StyledNavLink = styled(Link)`
+  display: block;
+`
+const LayoutFlex = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
 
 const Item = ({to, icon, text}) => (
   <StyledLink to={to}>
@@ -181,21 +207,28 @@ const Product = ({id, title, price, url, status}) => {
   )
 }
 
-export default class extends Component {
+class Home extends Component {
   state = {
     mer: '',
     integral: '',
     username: '',
     mobilePhone: '',
-    items: []
+    items: [],
+    layerViewFlag: false
   }
 
   componentDidMount() {
     api.getHotsell()
       .then(res => {
         const {data} = res
-        this.setState({items: data})
+        if(data.code === '1') {
+          this.setState({items: data.items})
+        }
       })
+  }
+
+  handleToggleLayer = e => {
+    this.setState({layerViewFlag: !this.state.layerViewFlag})
   }
 
   render() {
@@ -203,9 +236,7 @@ export default class extends Component {
       <div>
         <StyledHeader>
           <StyledUserinfo>
-            <StyledToggle>
-              <img src={kafei} alt=""/>
-            </StyledToggle>
+            <StyledToggle onClick={this.handleToggleLayer} src={moreSrc} alt=""/>
             <div className="info">
               <div>高强 150****5291</div>
               <div className="mer">所属商户：BST演示商户</div>
@@ -269,13 +300,50 @@ export default class extends Component {
                   price={item.price}
                   status={item.status}
                 />
-              ))
-
-              }
+              ))}
             </LayoutList>
           </div>
         </section>
+
+        <CSSTransition
+          in={this.state.layerViewFlag}
+          classNames="fade"
+          timeout={300}
+          unmountOnExit
+        >          
+        <StyledFixedBg onClick={this.handleToggleLayer} />
+        </CSSTransition> 
+        <CSSTransition
+          in={this.state.layerViewFlag}
+          classNames="slide"
+          timeout={300}
+          unmountOnExit
+        >
+          <StyledFixedLayer>
+            <div style={{padding: 15}}>
+              <div>张某某</div>
+              <LayoutFlex>
+                <span>账号管理</span>
+                <span>></span>
+              </LayoutFlex>
+            </div>
+            <div style={{padding: 15}}>
+              <StyledNavLink to="/">我的银行卡</StyledNavLink>
+              <StyledNavLink to="/">我的积分</StyledNavLink>
+              <StyledNavLink to="/">我的卡券</StyledNavLink>
+              <StyledNavLink to="/">积分赎回记录</StyledNavLink>
+              <StyledNavLink to="/">转赠记录</StyledNavLink>
+              <StyledNavLink to="/">信用卡还款记录</StyledNavLink>
+              <StyledNavLink to="/">投注记录</StyledNavLink>
+              <StyledNavLink to="/">我的订单</StyledNavLink>
+              <StyledNavLink to="/">退货服务</StyledNavLink>
+              <StyledNavLink to="/">我的退款</StyledNavLink>                    
+            </div>
+          </StyledFixedLayer>
+        </CSSTransition> 
       </div>
     )
   }
 }
+
+export default Home

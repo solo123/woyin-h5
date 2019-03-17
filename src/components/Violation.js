@@ -1,7 +1,10 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 
+import SkeletonPlaceholder from '../common/SkeletonPlaceholder'
 import { push } from '../services/redirect'
+import api from '../api';
 
 const LayoutFixedBottom = styled.div`
   position: fixed;
@@ -33,22 +36,96 @@ const LayoutItems = styled.div`
 const LayoutPageContainer = styled.div`
   margin-bottom: 80px;
 `
-const StyledItem = styled.div`
-  padding: 50px 20px;
+const StyledItem = styled(Link)`
+  display: block;
   margin-bottom: 15px;
   background: #fff;
+  border-radius: 3px;
 `
-const Item = () => {
+const StyledHead = styled.div`
+  position: relative;
+  padding: 15px;
+  &:after{
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 15px;
+    right: 15px;
+    height: 1px;
+    background: #eaeaea;
+    transform: scaleY(.5);
+  }
+`
+const StyledBody = styled.div`
+  padding: 15px;
+`
+const LayoutFlex = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
+const StyledLabel = styled.div`
+  color: #888;
+`
+const Item = ({id, vehicleNo, type, vin, enginNo}) => {
   return (
-    <StyledItem>
-      item
+    <StyledItem to={`/violation/${id}`}>
+      <StyledHead>
+        {vehicleNo}
+      </StyledHead>
+      <StyledBody>
+        <LayoutFlex>
+          <StyledLabel>车辆类型</StyledLabel>
+          <div>{type}</div>
+        </LayoutFlex>
+        <LayoutFlex>
+          <StyledLabel>车架号</StyledLabel>
+          <div>{vin}</div>
+        </LayoutFlex>
+        <LayoutFlex>
+          <StyledLabel>发动机号</StyledLabel>
+          <div>{enginNo}</div>
+        </LayoutFlex>
+      </StyledBody> 
     </StyledItem>
+  )
+}
+
+const List = ({items}) => {
+  return (
+    <LayoutItems>
+      {items.map(item => {
+        return (
+          <Item 
+            key={item.id}
+            id={item.id}
+            vehicleNo={item.vehicleNo}
+            type={item.type}
+            vin={item.vin}
+            enginNo={item.enginNo}
+          />
+        )
+      })}
+    </LayoutItems>
   )
 }
 
 class Violation extends Component {
   state = {
-    items: []
+    items: [],
+    loading: true
+  }
+  
+  componentDidMount() {
+    api.getVehicleList()
+      .then(res => {
+        const {data} = res
+        this.setState({items: data.items})
+      })
+      .then(() => {
+        this.setState({loading: false})
+      })
+      .catch(err => {
+      })
   }
 
   handleClick = () => {
@@ -58,13 +135,10 @@ class Violation extends Component {
   render() {
     return (
       <LayoutPageContainer>
-        <LayoutItems>
-          <Item />
-          <Item />
-          <Item />
-          <Item />
-          <Item />
-        </LayoutItems>
+        {this.state.loading
+          ? <SkeletonPlaceholder />
+          : <List items={this.state.items}/>
+        }
         <LayoutFixedBottom>
           <LayoutBtnBox>
             <PrimaryButton onClick={this.handleClick}>添加车辆</PrimaryButton>
