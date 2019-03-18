@@ -6,6 +6,16 @@ import api from '../api'
 
 import kafei from '../asset/images/icon/kafei.png'
 import moreSrc from '../asset/images/more.svg'
+import emptySrc from '../asset/images/empty.png'
+
+const StyledEmpty = styled.div`
+  color: #888;
+  text-align: center;
+  img{
+    width: 150px;
+    height: 150px;
+  }
+`
 
 const StyledEllipsis = styled.div`
   overflow: hidden;
@@ -163,6 +173,33 @@ const ProductThumb = ({id, title, price, url, status}) => {
   )
 }
 
+const EmptyPlaceholder = () => (
+  <StyledEmpty>
+    <img src={emptySrc} alt=""/>
+    <div>暂无数据</div>
+  </StyledEmpty>
+)
+
+const ProductItems = ({items}) => {
+  if(!items.length) {
+    return <EmptyPlaceholder />
+  }
+
+  return (
+    <div style={{display: 'flex', flexWrap: 'wrap'}}>
+      {items.map(item => (
+        <ProductThumb 
+          key={item.id}
+          url={item.url}
+          title={item.title}
+          price={item.price}
+          status={item.status}
+        />
+      ))}
+    </div>
+  )
+}
+
 class Home extends Component {
   state = {
     items: [],
@@ -189,7 +226,7 @@ class Home extends Component {
   }
 
   render() {
-    const {show, loading} = this.state
+    const {show, loading, items} = this.state
 
     return (
       <div>
@@ -254,19 +291,7 @@ class Home extends Component {
           <LayoutMain>
             {loading
               ? <HotsellSkeleton />
-              : (
-                <div style={{display: 'flex', flexWrap: 'wrap'}}>
-                  {this.state.items.map(item => (
-                    <ProductThumb 
-                      key={item.id}
-                      url={item.url}
-                      title={item.title}
-                      price={item.price}
-                      status={item.status}
-                    />
-                  ))}
-                </div>
-              )
+              : <ProductItems items={items} />
             }
           </LayoutMain>
         </LayoutGroup>

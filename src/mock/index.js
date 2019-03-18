@@ -32,6 +32,10 @@ Mock.mock(/getProductById/, 'get', function(optiosn){
 })
 
 Mock.mock(/hotsell/, 'get', function(options){
+  // return {
+  //   code: '1',
+  //   items: []
+  // }
   return {
     code: '1',
     items: [
