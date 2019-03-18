@@ -7,6 +7,9 @@ import api from '../api'
 import util from '../util'
 import qia from '../asset/images/icon/qia.png'
 
+import Menu from '../common/Menu'
+
+
 /*
  |--------------------------------------------------------------------------
  | button
@@ -295,6 +298,8 @@ class Redeem extends Component {
             ? <PrimaryButton onClick={this.submitHandle}>确认赎回</PrimaryButton>
             : <DisablePrimaryButton>确认赎回</DisablePrimaryButton>}
         </LayoutMXXX>
+        
+        <Menu />
       </StyledBg>
     )
   }

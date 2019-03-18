@@ -7,6 +7,7 @@ import weui from 'weui.js'
 
 import api from '../api'
 import { replace } from '../services/redirect'
+import Menu from '../common/Menu'
 
 import kafei from '../asset/images/icon/kafei.png'
 import moreSrc from '../asset/images/more.svg'
@@ -34,27 +35,6 @@ const LayoutNav = styled.div`
 const LayoutNavInner = styled.div`
   margin: 5px;
   background: #eaeaea;
-`
-
-// 弹层
-const StyledFixedBg = styled.div`
-  position: fixed;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, .5);
-`
-const StyledFixedLayer = styled.div`
-  position: fixed;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  width: 70%;
-  background: #fff;
-  display: flex;
-  flex-direction: column;
 `
 
 // 区域
@@ -85,7 +65,7 @@ const LayoutMain = styled.div`
 `
 
 // 按钮
-const StyledBtn = styled(Link)`
+const StyledLable = styled(Link)`
   color: #fff;
   font-size: 12px;
   padding: 3px 8px;
@@ -94,6 +74,12 @@ const StyledBtn = styled(Link)`
   &:visited{
     color: #fff;
   }
+`
+const Button = styled.button`
+  display: inline-block;
+  outline: none;
+  border: 0;
+  padding: 0;
 `
 
 // skeleton
@@ -253,14 +239,11 @@ class Home extends Component {
     return (
       <div>
         <div style={{marginBottom: 10}}>
-          <div style={{padding: '10px'}}>
-            <div style={{width: 30, height: 30, background: '#ccc'}} onClick={this.handleToggle}></div>
-          </div>
-          <div style={{margin: '0 10px 10px 10px', background: '#ccc'}}>
+          <div style={{margin: '10px', background: '#ccc'}}>
             <div style={{display: 'flex', justifyContent: 'space-between', padding: 15}}>
               <div style={{width: 60, height: 20, background: '#eaeaea'}}></div>
               <div>
-                <StyledBtn to="/redeem">赎回</StyledBtn>
+                <StyledLable to="/redeem">赎回</StyledLable>
               </div>
             </div>
             <div style={{display: 'flex', justifyContent: 'space-around', paddingBottom: 15}}>
@@ -320,34 +303,7 @@ class Home extends Component {
           </LayoutMain>
         </LayoutGroup>
 
-        <CSSTransition
-          in={show}
-          classNames="fade"
-          timeout={300}
-          unmountOnExit
-        >          
-          <StyledFixedBg onClick={this.handleToggle} />
-        </CSSTransition> 
-        <CSSTransition
-          in={show}
-          classNames="slide"
-          timeout={300}
-          unmountOnExit
-        >
-          <StyledFixedLayer>
-            <div styled={{flexShrink: 0}}>
-              <div style={{height: 100, background: '#eaeaea'}}></div>
-            </div>
-            <div style={{overflow: 'auto'}}>
-              <div style={{margin: 15}}>
-                <div style={{height: 300, background: '#eaeaea'}}></div>
-              </div>
-              <div style={{margin: 15}}>
-                <button onClick={this.handleLogout}>退出</button>
-              </div>
-            </div>
-          </StyledFixedLayer>
-        </CSSTransition> 
+        <Menu />
       </div>
     )
   }
