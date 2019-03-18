@@ -13,6 +13,16 @@ import kafei from '../asset/images/icon/kafei.png'
 import moreSrc from '../asset/images/more.svg'
 import emptySrc from '../asset/images/empty.png'
 
+const LayoutPageContianer = styled.div`
+  padding-bottom: 50px;
+`
+const LayoutFixedBottom = styled.div`
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+`
+
 const StyledEmpty = styled.div`
   color: #888;
   text-align: center;
@@ -237,7 +247,7 @@ class Home extends Component {
   render() {
     const {show, loading, items} = this.state
     return (
-      <div>
+      <LayoutPageContianer>
         <div style={{marginBottom: 10}}>
           <div style={{margin: '10px', background: '#ccc'}}>
             <div style={{display: 'flex', justifyContent: 'space-between', padding: 15}}>
@@ -302,9 +312,11 @@ class Home extends Component {
             }
           </LayoutMain>
         </LayoutGroup>
-
-        <Menu />
-      </div>
+        
+        <LayoutFixedBottom>
+          <Menu />
+        </LayoutFixedBottom>
+      </LayoutPageContianer>
     )
   }
 }

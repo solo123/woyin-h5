@@ -44,3 +44,14 @@ const LayoutFixedBottom = styled.div`
   width: 100%;
   bottom: 0;
 `
+
+
+const LayoutFixedBottom = styled.div`
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+`
+const LayoutPageContianer = styled.div`
+  padding-bottom: 50px;
+`

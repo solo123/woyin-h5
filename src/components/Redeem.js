@@ -75,6 +75,12 @@ const MinPrimaryInput = styled(Input)`
 
 
 
+const LayoutFixedBottom = styled.div`
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+`
 const StyledBg = styled.div`
   padding: 1px 0;
   background: #fff;
@@ -298,8 +304,10 @@ class Redeem extends Component {
             ? <PrimaryButton onClick={this.submitHandle}>确认赎回</PrimaryButton>
             : <DisablePrimaryButton>确认赎回</DisablePrimaryButton>}
         </LayoutMXXX>
-        
-        <Menu />
+
+        <LayoutFixedBottom>
+          <Menu />
+        </LayoutFixedBottom>
       </StyledBg>
     )
   }
