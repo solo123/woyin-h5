@@ -5,7 +5,7 @@ const style = {margin: '15px 0 30px 0'}
 const itemStyle = {
   height: '25px',
   background: '#eee',
-  margin: '10px 15px 10px 15px'
+  margin: '10px 15px'
 }
 const item80Style = {
   ...itemStyle, 

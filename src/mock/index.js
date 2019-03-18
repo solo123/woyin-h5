@@ -37,14 +37,6 @@ Mock.mock(/hotsell/, 'get', function(options){
     items: [
       { id: uuid(), title: Random.cparagraph(), price: Random.natural(160, 5000), status: Random.boolean() ? '有货' : '无货', url: Random.url() },
       { id: uuid(), title: Random.cparagraph(), price: Random.natural(160, 5000), status: Random.boolean() ? '有货' : '无货', url: Random.url() },
-      { id: uuid(), title: Random.cparagraph(), price: Random.natural(160, 5000), status: Random.boolean() ? '有货' : '无货', url: Random.url() },
-      { id: uuid(), title: Random.cparagraph(), price: Random.natural(160, 5000), status: Random.boolean() ? '有货' : '无货', url: Random.url() },
-      { id: uuid(), title: Random.cparagraph(), price: Random.natural(160, 5000), status: Random.boolean() ? '有货' : '无货', url: Random.url() },
-      { id: uuid(), title: Random.cparagraph(), price: Random.natural(160, 5000), status: Random.boolean() ? '有货' : '无货', url: Random.url() },
-      { id: uuid(), title: Random.cparagraph(), price: Random.natural(160, 5000), status: Random.boolean() ? '有货' : '无货', url: Random.url() },
-      { id: uuid(), title: Random.cparagraph(), price: Random.natural(160, 5000), status: Random.boolean() ? '有货' : '无货', url: Random.url() },
-      { id: uuid(), title: Random.cparagraph(), price: Random.natural(160, 5000), status: Random.boolean() ? '有货' : '无货', url: Random.url() },
-      { id: uuid(), title: Random.cparagraph(), price: Random.natural(160, 5000), status: Random.boolean() ? '有货' : '无货', url: Random.url() },
       { id: uuid(), title: Random.cparagraph(), price: Random.natural(160, 5000), status: Random.boolean() ? '有货' : '无货', url: Random.url() }
     ]
   }
