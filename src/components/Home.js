@@ -1,8 +1,12 @@
 import React, { Component } from 'react';
 import styled from 'styled-components'
-import { Link } from "react-router-dom"
+import { Link, withRouter } from "react-router-dom"
+import { connect } from 'react-redux'
 import {CSSTransition} from 'react-transition-group'
+import weui from 'weui.js'
+
 import api from '../api'
+import { replace } from '../services/redirect'
 
 import kafei from '../asset/images/icon/kafei.png'
 import moreSrc from '../asset/images/more.svg'
@@ -78,6 +82,18 @@ const LayoutHead = styled.div`
 `
 const LayoutMain = styled.div`
   margin: 0 5px;
+`
+
+// 按钮
+const StyledBtn = styled(Link)`
+  color: #fff;
+  font-size: 12px;
+  padding: 3px 8px;
+  border-radius: 3px;
+  background: #ffb049;
+  &:visited{
+    color: #fff;
+  }
 `
 
 // skeleton
@@ -225,9 +241,15 @@ class Home extends Component {
     this.setState({show: !this.state.show})
   }
 
+  handleLogout = () => {
+    weui.confirm('是否退出当前账号？', () => {
+      this.props.logout()
+      replace('/login')
+    })
+  }
+
   render() {
     const {show, loading, items} = this.state
-
     return (
       <div>
         <div style={{marginBottom: 10}}>
@@ -237,7 +259,9 @@ class Home extends Component {
           <div style={{margin: '0 10px 10px 10px', background: '#ccc'}}>
             <div style={{display: 'flex', justifyContent: 'space-between', padding: 15}}>
               <div style={{width: 60, height: 20, background: '#eaeaea'}}></div>
-              <div style={{width: 60, height: 20, background: '#eaeaea'}}></div>
+              <div>
+                <StyledBtn to="/redeem">赎回</StyledBtn>
+              </div>
             </div>
             <div style={{display: 'flex', justifyContent: 'space-around', paddingBottom: 15}}>
               <div style={{width: 100, height: 50, background: '#eaeaea'}}></div>
@@ -319,7 +343,7 @@ class Home extends Component {
                 <div style={{height: 300, background: '#eaeaea'}}></div>
               </div>
               <div style={{margin: 15}}>
-                <div style={{height: 100, background: '#eaeaea'}}></div>
+                <button onClick={this.handleLogout}>退出</button>
               </div>
             </div>
           </StyledFixedLayer>
@@ -329,4 +353,10 @@ class Home extends Component {
   }
 }
 
-export default Home
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    logout: () => dispatch({type: 'UNAUTH_USER'})
+  }
+}
+
+export default withRouter(connect(null, mapDispatchToProps)(Home))
