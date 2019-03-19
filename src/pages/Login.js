@@ -2,17 +2,19 @@ import React, { Component } from 'react'
 import { Redirect, withRouter } from "react-router-dom"
 import { connect } from 'react-redux'
 import styled from 'styled-components'
-import weui from 'weui.js'
 import classNames from 'classnames'
+import weui from 'weui.js'
 
 import closeIcon from '../asset/images/icon/close.png'
 import showIcon from '../asset/images/icon/show.png'
 import hideIcon from '../asset/images/icon/hide.png'
+
 import checkedIcon from '../asset/images/icon/checked.png'
 import uncheckedIcon from '../asset/images/icon/unchecked.png'
-import nameIcon from '../asset/images/icon/user-icon.png'
-import passIcon from '../asset/images/icon/pass-icon.png'
-import headerLogo from '../asset/images/icon/login-logo.png'
+
+import logoIcon from '../asset/images/icon/logo.png'
+import userIcon from '../asset/images/icon/user.svg'
+import lockIcon from '../asset/images/icon/lock.svg'
 
 import api from '../api'
 import {setItem, removeItem, getItem} from '../services/storage'
@@ -36,7 +38,7 @@ const PrimaryButton = styled(Button)`
   font-weight: bold;
   line-height: 50px;
   border-radius: 3px;
-  box-shadow: 0 3px 5px rgba(4, 0, 0, .28);
+  box-shadow: 0 3px 5px rgba(4, 0, 0, .1);
   background: -webkit-linear-gradient(47deg, #4aabff, #41a6fd);
 `
 const DisablePrimaryButton = styled(Button)`
@@ -54,24 +56,7 @@ const MiniPrimaryButton = styled(Button)`
   border-radius: 3px;
   background: -webkit-linear-gradient(47deg, #4aabff, #41a6fd);
 `
-/*
- |--------------------------------------------------------------------------
- | logo
- |--------------------------------------------------------------------------
- */
-const LoginLogo = styled.div`
- 
-  color: #fff;
-  font-size: 12px;
-  padding: 5px 10px;
-  border-radius: 3px;
-  background: -webkit-linear-gradient(47deg, #4aabff, #41a6fd);
-  img{
-    width: 50%;
-    margin-left: 25%;
-  
-  }
-`
+
 
 /*
  |--------------------------------------------------------------------------
@@ -97,27 +82,13 @@ const Input = styled.input`
 const PrimaryInput = styled(Input)`
   color: #444;
   font-size: 14px;
-  padding-left :25px;
 `
 
 
-
-// const LayoutBoxXY = styled.div`
-//   margin: 15px;
-// `
 const LayoutBoxX = styled.div`
   margin-left: 15px;
   margin-right: 15px;
 `
-
-const NaneIcon = styled.div`
-  width: 15px;
-  height: 15px;
-  position: absolute;
-  top: 18px;
-  left: 15px;
-`
-
 const LayoutGroup = styled.div`
   position: relative;
   display: flex;
@@ -142,6 +113,9 @@ const LayoutGroup = styled.div`
     content: none;
   }
 `
+const LayoutHead = styled.div`
+  margin-right: 10px;
+`
 const LayoutBody = styled.div`
   flex: 1;
 `
@@ -150,16 +124,21 @@ const LayoutFoot = styled.div`
   margin-left: 10px;
 `
 
+const StyledIcon = styled.img`
+  width: 20px;
+  height: 20px;
+`
 const StyledHeader = styled.div`
-  margin: 25px 20px 10px 20px;
-  font-size: 22px;
+  margin: 30px 15px;
+  font-size: 16px;
   font-weight: bold;
   span{
     color: #aaa;
+    padding-bottom: 2px;
     margin-right: 20px;
     &.active{
       color: #4aabff;
-      border-bottom: 4px solid #46a4f5;
+      border-bottom: 2px solid #46a4f5;
     }
   }
 `
@@ -185,6 +164,10 @@ const StyledLabel = styled.label`
   img{
     margin-right: 3px;
   }
+`
+const StyledLogo = styled.img`
+  width: 100px;
+  height: 100px;
 `
 
 
@@ -361,26 +344,31 @@ class Login extends Component {
       <div>
        
         <StyledHeader>
-        <LoginLogo><img src={headerLogo} alt=""/></LoginLogo>
-          <span className={classNames({active: this.state.loginType === LOGINTYPE_PASSWORD})} onClick={this.passwordLogin}>密码登录</span>
-          <span className={classNames({active: this.state.loginType === LOGINTYPE_MESSAGE})} onClick={this.messageLogin}>短信登录</span>
+          <div style={{textAlign: 'center', marginBottom: 30}}>
+            <StyledLogo src={logoIcon}  alt="logo" />
+          </div>
+          <div style={{display: 'flex', justifyContent: 'center'}}>
+            <span className={classNames({active: this.state.loginType === LOGINTYPE_PASSWORD})} onClick={this.passwordLogin}>密码登录</span>
+            <span className={classNames({active: this.state.loginType === LOGINTYPE_MESSAGE})} onClick={this.messageLogin}>短信登录</span>
+          </div>
         </StyledHeader>
+
         <LayoutBoxX>
           <StyledBg>
             <LayoutGroup>
+              <LayoutHead>
+                <StyledIcon src={userIcon} alt=""/>
+              </LayoutHead>
               <LayoutBody>
-                <NaneIcon> <img src={nameIcon} alt=""/></NaneIcon>
-                  <PrimaryInput
-                    type="text" 
-                    name="username"
-                    value={this.state.username} 
-                    onChange={this.handleChange} 
-                    onFocus={this.handleFocus}
-                    onBlur={this.handleBlur}
-                    placeholder="手机号"
-                    
-                  />
-               
+                <PrimaryInput
+                  type="text" 
+                  name="username"
+                  value={this.state.username} 
+                  onChange={this.handleChange} 
+                  onFocus={this.handleFocus}
+                  onBlur={this.handleBlur}
+                  placeholder="手机号"
+                />
               </LayoutBody>
               <LayoutFoot>
                 <StyledCleanIcon 
@@ -393,8 +381,10 @@ class Login extends Component {
             </LayoutGroup>    
             {this.state.loginType === LOGINTYPE_PASSWORD
               ? (<LayoutGroup>
+                  <LayoutHead>
+                    <StyledIcon src={lockIcon} alt=""/>
+                  </LayoutHead>
                   <LayoutBody>
-                  <NaneIcon> <img src={passIcon} alt=""/></NaneIcon>
                     <PrimaryInput 
                       type={this.state.passwordType} 
                       name="password" 
@@ -416,8 +406,10 @@ class Login extends Component {
                   </LayoutFoot>
                 </LayoutGroup>)
               : (<LayoutGroup>
+                  <LayoutHead>
+                    <StyledIcon src={lockIcon} alt=""/>
+                  </LayoutHead>
                   <LayoutBody>
-                  <NaneIcon> <img src={passIcon} alt=""/></NaneIcon>
                     <PrimaryInput 
                       type='text'
                       name="message" 
@@ -440,7 +432,7 @@ class Login extends Component {
               }
           </StyledBg>
         </LayoutBoxX>
-        <div style={{marginLeft: 3, marginRight: 3, marginBottom: 30}}>
+        <div>
           <LayoutGroup>
             <LayoutBody>
               <StyledLabel onClick={this.handleRememberUsername}>
@@ -452,15 +444,7 @@ class Login extends Component {
         <LayoutBoxX>
           {pass
             ? <PrimaryButton onClick={this.handleSubmit}>登录</PrimaryButton>
-            : <DisablePrimaryButton>转赠</DisablePrimaryButton>}
-        </LayoutBoxX>
-        <LayoutBoxX>
-          <LayoutGroup>
-              <LayoutBody></LayoutBody>
-              <LayoutFoot>
-                <MiniPrimaryButton>忘记密码</MiniPrimaryButton>
-              </LayoutFoot>
-          </LayoutGroup>
+            : <DisablePrimaryButton>登录</DisablePrimaryButton>}
         </LayoutBoxX>
       </div>
     )

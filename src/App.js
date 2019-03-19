@@ -5,7 +5,6 @@ import './App.css'
 
 import Loading from './common/Loading'
 import Auth from './common/Auth'
-import Login from './components/Login'
 import Order from './components/Order'
 import Home from './components/Home'
 import Redeem from './components/Redeem'
@@ -30,6 +29,7 @@ import ViolationDetail from './components/ViolationDetail'
 import AddVehicle from './components/AddVehicle.js'
 
 import Me from './pages/Me'
+import Login from './pages/Login'
 
 import Test from './components/Test'
 import history from './history'
