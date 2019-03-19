@@ -94,8 +94,14 @@ export default {
     return this.get('rechargeQB', {id, phone})
   },  
   // 获取银行卡列表
-  getBankCardList() {
-    return this.get('getBankCardList')
+  getBankcardList() {
+    return this.get('getBankcardList')
+  },
+  getRedeemFee(integral) {
+    return this.get('getRedeemFee', {integral})
+  },
+  sendMsgCode(phone) {
+    return this.get('sendMsgCode', {phone})
   },
   // 获取信用卡列表
   getCreditCardList() {

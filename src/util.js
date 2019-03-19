@@ -159,21 +159,22 @@ const paymentConfirm = function (options) {
   addClass($dialog, 'weui-animate-fade-slideDown')
 }
 
-const getLastNum = function(bankCardNo) {
-  return bankCardNo.substring(bankCardNo.length - 4, bankCardNo.length)
+const getLastNum = function(bankcardNo) {
+  return bankcardNo.substring(bankcardNo.length - 4, bankcardNo.length)
 }
 
-const parseBankCardList = function(arr) {
+const parseBankcardList = function(arr) {
   return arr.map(item => {
     return {
-      bankCardNo: item.bankCardNo,
-      bankCardName: item.bankCardName,
-      label: item.bankCardName + '-' + getLastNum(item.bankCardNo)
+      bankcardNo: item.bankcardNo,
+      bankcardName: item.bankcardName,
+      bankcardClass: item.bankcardClass,
+      label: item.bankcardName + '-' + getLastNum(item.bankcardNo)
     }
   })
 }
 
-const parseCreditCardList = function(arr) {
+const parseCreditcardList = function(arr) {
   return arr.map(item => {
     return {
       creditCardNo: item.creditCardNo,
@@ -192,7 +193,7 @@ export default {
   closest,
   parseUrl,
   paymentConfirm,
-  parseBankCardList,
-  parseCreditCardList,
-  getBankCardLastNum: getLastNum
+  parseBankcardList,
+  parseCreditcardList,
+  getBankcardLastNum: getLastNum
 };

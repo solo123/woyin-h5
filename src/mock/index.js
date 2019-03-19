@@ -138,13 +138,13 @@ Mock.mock(/rechargeFlow/, 'get', function(options){
 })
 
 // 获取银行卡
-Mock.mock(/getBankCardList/, 'get', function(options){
+Mock.mock(/getBankcardList/, 'get', function(options){
   return {
     code: '1',
     items: [
-      {id: uuid(), bankCardName: '建设银行', bankCardNo: '6227007200230197111'},
-      {id: uuid(), bankCardName: '招商银行', bankCardNo: '6227007200230197112'},
-      {id: uuid(), bankCardName: '工商银行', bankCardNo: '6227007200230197113'}
+      {id: uuid(), bankcardClass: '001', bankcardName: '建设银行', bankcardNo: '6227007200230197111'},
+      {id: uuid(), bankcardClass: '002', bankcardName: '招商银行', bankcardNo: '6227007200230197112'},
+      {id: uuid(), bankcardClass: '003', bankcardName: '工商银行', bankcardNo: '6227007200230197113'}
     ]
   }
   // return {
@@ -398,5 +398,24 @@ Mock.mock(/getViolationList/, 'get', function(options){
       {id: uuid(), title: Random.cparagraph(1), detail: Random.cparagraph(5)},
       {id: uuid(), title: Random.cparagraph(1), detail: Random.cparagraph(5)}
     ]
+  }
+})
+
+// 获取赎回手续费
+Mock.mock(/getRedeemFee/, 'get', function(options){
+  const result = util.parseUrl(options.url, 'integral');
+  return {
+    code: '1',
+    redeemFee: 0,
+    deductIntegral: result.integral,
+    actualReceived: result.integral / 100
+  }
+})
+
+// 发送短信验证码
+Mock.mock(/sendMsgCode/, 'get', function(options){
+  return {
+    code: '1',
+    msg: '短信已发送'
   }
 })

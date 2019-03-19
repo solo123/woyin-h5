@@ -7,7 +7,6 @@ import Loading from './common/Loading'
 import Auth from './common/Auth'
 import Order from './components/Order'
 import Home from './components/Home'
-import Redeem from './components/Redeem'
 import Transfer from './components/Transfer'
 
 import Cate from './components/Cate'
@@ -30,6 +29,8 @@ import AddVehicle from './components/AddVehicle.js'
 
 import Me from './pages/Me'
 import Login from './pages/Login'
+import Redeem from './pages/Redeem'
+
 
 import Test from './components/Test'
 import history from './history'

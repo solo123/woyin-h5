@@ -1,9 +1,15 @@
+/*
+ |--------------------------------------------------------------------------
+ | button
+ |--------------------------------------------------------------------------
+ */
 const Button = styled.button`
+  border: 0;
+  padding: 0;
+  width: 100%;
   outline: none;
   display: block;
-  border: 0;
-  width: 100%;
-  padding: 0;
+  background: transparent;
 `
 const PrimaryButton = styled(Button)`
   color: #fff;
@@ -11,13 +17,29 @@ const PrimaryButton = styled(Button)`
   font-weight: bold;
   line-height: 50px;
   border-radius: 3px;
-  box-shadow: 0 3px 5px rgba(207, 162, 95, .58);
-  background: -webkit-linear-gradient(47deg, #c89850, #e1c38c);
+  box-shadow: 0 3px 5px #4cadff8a;
+  background: -webkit-linear-gradient(47deg,#4cadff,#8ce0ff);
 `
-const LayoutBtnBox = styled.div`
-  margin: 15px;
+const DisablePrimaryButton = styled(Button)`
+  color: #fff;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 50px;
+  border-radius: 3px;
+  background: #ccc;
 `
-
+const MiniPrimaryBtn = styled(Button)`
+  color: #fff;
+  font-size: 12px;
+  padding: 5px 10px;
+  border-radius: 3px;
+  background: -webkit-linear-gradient(47deg,#4cadff,#8ce0ff);
+`
+/*
+ |--------------------------------------------------------------------------
+ | input
+ |--------------------------------------------------------------------------
+ */
 const Input = styled.input`
   border: 0;
   padding: 0;
@@ -31,12 +53,22 @@ const Input = styled.input`
 const PrimaryInput = styled(Input)`
   color: #444;
   font-size: 16px;
-  font-weight: bold;
   font-family: industry;
 `
 const MinPrimaryInput = styled(Input)`
   font-family: industry;
   font-size: 14px;
+`
+
+const LayoutGroup = styled.div`
+  display: flex;
+  align-items: center;
+`
+const LayoutBody = styled.div`
+  flex: 1;
+`
+const LayoutFoot = styled.div`
+  margin-left: 10px;
 `
 
 const LayoutFixedBottom = styled.div`

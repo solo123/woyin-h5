@@ -53,7 +53,7 @@ const Menu = function({match}) {
         <MenuItem to="/" path={match.path} icon={fenlei} iconActive={fenleiActive} text="服务"/>
       </LayoutItem>
       <LayoutItem>
-        <MenuItem to="/redeem" path={match.path} icon={liwu} iconActive={liwuActive} text="精选"/>
+        <MenuItem to="/" path={match.path} icon={liwu} iconActive={liwuActive} text="精选"/>
       </LayoutItem>
       <LayoutItem>
         <MenuItem to="/me" path={match.path} icon={wode} iconActive={wodeActive} text="我的"/>
