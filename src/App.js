@@ -29,6 +29,8 @@ import ViolationList from './components/ViolationList'
 import ViolationDetail from './components/ViolationDetail'
 import AddVehicle from './components/AddVehicle.js'
 
+import Me from './pages/Me'
+
 import Test from './components/Test'
 import history from './history'
 
@@ -43,6 +45,8 @@ class App extends Component {
             <Route path="/" exact component={Home} />
             <Route path="/login" component={Login} />
             <Auth path="/order" component={Order} />
+
+            <Auth path="/me" component={Me} />
 
             <Auth path="/recharge-phone" component={RechargePhone} />
             <Auth path="/recharge-flow" component={RechargeFlow} />

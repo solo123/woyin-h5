@@ -3,12 +3,12 @@ import styled from 'styled-components'
 import { Link, withRouter } from "react-router-dom"
 import { connect } from 'react-redux'
 
-import fenleiActive from '../asset/images/icon/fenlei.svg'
-import fenlei from '../asset/images/icon/fenlei_gray.svg'
-import liwuActive from '../asset/images/icon/liwu.svg'
-import liwu from '../asset/images/icon/liwu_gray.svg'
-import wodeActive from '../asset/images/icon/wode.svg'
-import wode from '../asset/images/icon/wode_gray.svg'
+import fenleiActive from '../asset/images/icon/fenlei_active.svg'
+import fenlei from '../asset/images/icon/fenlei.svg'
+import liwuActive from '../asset/images/icon/liwu_active.svg'
+import liwu from '../asset/images/icon/liwu.svg'
+import wodeActive from '../asset/images/icon/wode_active.svg'
+import wode from '../asset/images/icon/wode.svg'
 
 const LayoutItems = styled.ul`
   display: flex;
@@ -33,7 +33,7 @@ const StyledText = styled.p`
   color: #bfbfbf;
 `
 const StyledActiveText = styled(StyledText)`
-  color: rgba(0, 216, 160);
+  color: #3b8afc;
 `
 
 const MenuItem = ({to, path, icon, iconActive, text}) => {
@@ -56,7 +56,7 @@ const Menu = function({match}) {
         <MenuItem to="/redeem" path={match.path} icon={liwu} iconActive={liwuActive} text="精选"/>
       </LayoutItem>
       <LayoutItem>
-        <MenuItem to="/" path={match.path} icon={wode} iconActive={wodeActive} text="我的"/>
+        <MenuItem to="/me" path={match.path} icon={wode} iconActive={wodeActive} text="我的"/>
       </LayoutItem>
     </LayoutItems>
   ) 

@@ -55,3 +55,35 @@ const LayoutFixedBottom = styled.div`
 const LayoutPageContianer = styled.div`
   padding-bottom: 50px;
 `
+
+const LayoutGroup = styled.div`
+  position: relative;
+  display: flex;
+  padding: 15px;
+  align-items: center;
+  &:after{
+    content: " ";
+    position: absolute;
+    left: 15px;
+    bottom: 0;
+    right: 0;
+    height: 1px;
+    border-bottom: 1px solid #e5e5e5;
+    color: #e5e5e5;
+    -webkit-transform-origin: 0 100%;
+    transform-origin: 0 100%;
+    -webkit-transform: scaleY(0.5);
+    transform: scaleY(0.5);
+    z-index: 2;
+  }
+  &:last-child:after{
+    content: none;
+  }
+`
+const LayoutBody = styled.div`
+  flex: 1;
+`
+const LayoutFoot = styled.div`
+  display: flex;
+  margin-left: 10px;
+`
