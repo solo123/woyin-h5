@@ -10,6 +10,10 @@ import showIcon from '../asset/images/icon/show.png'
 import hideIcon from '../asset/images/icon/hide.png'
 import checkedIcon from '../asset/images/icon/checked.png'
 import uncheckedIcon from '../asset/images/icon/unchecked.png'
+import nameIcon from '../asset/images/icon/user-icon.png'
+import passIcon from '../asset/images/icon/pass-icon.png'
+import headerLogo from '../asset/images/icon/login-logo.png'
+
 import api from '../api'
 import {setItem, removeItem, getItem} from '../services/storage'
 
@@ -32,8 +36,8 @@ const PrimaryButton = styled(Button)`
   font-weight: bold;
   line-height: 50px;
   border-radius: 3px;
-  box-shadow: 0 3px 5px rgba(207, 162, 95, .58);
-  background: -webkit-linear-gradient(47deg, #c89850, #e1c38c);
+  box-shadow: 0 3px 5px rgba(4, 0, 0, .28);
+  background: -webkit-linear-gradient(47deg, #4aabff, #41a6fd);
 `
 const DisablePrimaryButton = styled(Button)`
   color: #fff;
@@ -48,8 +52,27 @@ const MiniPrimaryButton = styled(Button)`
   font-size: 12px;
   padding: 5px 10px;
   border-radius: 3px;
-  background: -webkit-linear-gradient(47deg, #c89850, #e1c38c);
+  background: -webkit-linear-gradient(47deg, #4aabff, #41a6fd);
 `
+/*
+ |--------------------------------------------------------------------------
+ | logo
+ |--------------------------------------------------------------------------
+ */
+const LoginLogo = styled.div`
+ 
+  color: #fff;
+  font-size: 12px;
+  padding: 5px 10px;
+  border-radius: 3px;
+  background: -webkit-linear-gradient(47deg, #4aabff, #41a6fd);
+  img{
+    width: 50%;
+    margin-left: 25%;
+  
+  }
+`
+
 /*
  |--------------------------------------------------------------------------
  | input
@@ -74,6 +97,7 @@ const Input = styled.input`
 const PrimaryInput = styled(Input)`
   color: #444;
   font-size: 14px;
+  padding-left :25px;
 `
 
 
@@ -85,6 +109,15 @@ const LayoutBoxX = styled.div`
   margin-left: 15px;
   margin-right: 15px;
 `
+
+const NaneIcon = styled.div`
+  width: 15px;
+  height: 15px;
+  position: absolute;
+  top: 18px;
+  left: 15px;
+`
+
 const LayoutGroup = styled.div`
   position: relative;
   display: flex;
@@ -125,8 +158,8 @@ const StyledHeader = styled.div`
     color: #aaa;
     margin-right: 20px;
     &.active{
-      color: #a87d48;
-      border-bottom: 4px solid #a87d48;
+      color: #4aabff;
+      border-bottom: 4px solid #46a4f5;
     }
   }
 `
@@ -148,7 +181,7 @@ const StyledCheckedIcon = styled.img`
   height: 18px;
 `
 const StyledLabel = styled.label`
-  color: #a87d48;
+  color: #4aabff;
   img{
     margin-right: 3px;
   }
@@ -326,7 +359,9 @@ class Login extends Component {
 
     return (
       <div>
+       
         <StyledHeader>
+        <LoginLogo><img src={headerLogo} alt=""/></LoginLogo>
           <span className={classNames({active: this.state.loginType === LOGINTYPE_PASSWORD})} onClick={this.passwordLogin}>密码登录</span>
           <span className={classNames({active: this.state.loginType === LOGINTYPE_MESSAGE})} onClick={this.messageLogin}>短信登录</span>
         </StyledHeader>
@@ -334,15 +369,18 @@ class Login extends Component {
           <StyledBg>
             <LayoutGroup>
               <LayoutBody>
-                <PrimaryInput
-                  type="text" 
-                  name="username"
-                  value={this.state.username} 
-                  onChange={this.handleChange} 
-                  onFocus={this.handleFocus}
-                  onBlur={this.handleBlur}
-                  placeholder="手机号" 
-                />
+                <NaneIcon> <img src={nameIcon} alt=""/></NaneIcon>
+                  <PrimaryInput
+                    type="text" 
+                    name="username"
+                    value={this.state.username} 
+                    onChange={this.handleChange} 
+                    onFocus={this.handleFocus}
+                    onBlur={this.handleBlur}
+                    placeholder="手机号"
+                    
+                  />
+               
               </LayoutBody>
               <LayoutFoot>
                 <StyledCleanIcon 
@@ -356,6 +394,7 @@ class Login extends Component {
             {this.state.loginType === LOGINTYPE_PASSWORD
               ? (<LayoutGroup>
                   <LayoutBody>
+                  <NaneIcon> <img src={passIcon} alt=""/></NaneIcon>
                     <PrimaryInput 
                       type={this.state.passwordType} 
                       name="password" 
@@ -378,6 +417,7 @@ class Login extends Component {
                 </LayoutGroup>)
               : (<LayoutGroup>
                   <LayoutBody>
+                  <NaneIcon> <img src={passIcon} alt=""/></NaneIcon>
                     <PrimaryInput 
                       type='text'
                       name="message" 
