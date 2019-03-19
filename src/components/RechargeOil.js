@@ -247,7 +247,7 @@ class RechargeOil extends Component {
 
   nextStep() {
     const loading = weui.loading('处理中')
-    api.confirmPaymentPswd()
+    api.confirmTransPswd()
       .then(res => {
         const {data} = res
         if(data.code === '1') {

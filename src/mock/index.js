@@ -32,19 +32,18 @@ Mock.mock(/getProductById/, 'get', function(optiosn){
 })
 
 Mock.mock(/hotsell/, 'get', function(options){
-  return [
-    { id: uuid(), title: Random.cparagraph(), price: Random.natural(160, 5000), status: Random.boolean() ? '有货' : '无货', url: Random.url() },
-    { id: uuid(), title: Random.cparagraph(), price: Random.natural(160, 5000), status: Random.boolean() ? '有货' : '无货', url: Random.url() },
-    { id: uuid(), title: Random.cparagraph(), price: Random.natural(160, 5000), status: Random.boolean() ? '有货' : '无货', url: Random.url() },
-    { id: uuid(), title: Random.cparagraph(), price: Random.natural(160, 5000), status: Random.boolean() ? '有货' : '无货', url: Random.url() },
-    { id: uuid(), title: Random.cparagraph(), price: Random.natural(160, 5000), status: Random.boolean() ? '有货' : '无货', url: Random.url() },
-    { id: uuid(), title: Random.cparagraph(), price: Random.natural(160, 5000), status: Random.boolean() ? '有货' : '无货', url: Random.url() },
-    { id: uuid(), title: Random.cparagraph(), price: Random.natural(160, 5000), status: Random.boolean() ? '有货' : '无货', url: Random.url() },
-    { id: uuid(), title: Random.cparagraph(), price: Random.natural(160, 5000), status: Random.boolean() ? '有货' : '无货', url: Random.url() },
-    { id: uuid(), title: Random.cparagraph(), price: Random.natural(160, 5000), status: Random.boolean() ? '有货' : '无货', url: Random.url() },
-    { id: uuid(), title: Random.cparagraph(), price: Random.natural(160, 5000), status: Random.boolean() ? '有货' : '无货', url: Random.url() },
-    { id: uuid(), title: Random.cparagraph(), price: Random.natural(160, 5000), status: Random.boolean() ? '有货' : '无货', url: Random.url() }
-  ]
+  // return {
+  //   code: '1',
+  //   items: []
+  // }
+  return {
+    code: '1',
+    items: [
+      { id: uuid(), title: Random.cparagraph(), price: Random.natural(160, 5000), status: Random.boolean() ? '有货' : '无货', url: Random.url() },
+      { id: uuid(), title: Random.cparagraph(), price: Random.natural(160, 5000), status: Random.boolean() ? '有货' : '无货', url: Random.url() },
+      { id: uuid(), title: Random.cparagraph(), price: Random.natural(160, 5000), status: Random.boolean() ? '有货' : '无货', url: Random.url() }
+    ]
+  }
 });
 
 
@@ -107,10 +106,18 @@ Mock.mock(/getRechargeFlowProductsByType/, 'get', function(options){
 });
 
 // 校验交易密码
-Mock.mock(/confirmPaymentPswd/, 'post', function(options){
-  return {
-    code: '1',
-    msg: ''
+Mock.mock(/confirmTransPswd/, 'post', function(options){
+  const data = JSON.parse(options.body)
+  if(data.pswd === '000000') {
+    return {
+      code: '1',
+      msg: ''
+    }
+  }else {
+    return {
+      code: '0',
+      msg: '交易密码错误'
+    }
   }
 })
 
@@ -143,6 +150,34 @@ Mock.mock(/getBankCardList/, 'get', function(options){
   // return {
   //   code: '0',
   //   items: []
+  // }
+})
+
+// 获取信用卡
+Mock.mock(/getCreditCardList/, 'get', function(options){
+  // return {
+  //   code: '0',
+  //   items: []
+  // }  
+  return {
+    code: '1',
+    items: [
+      {id: uuid(), creditCardName: '建设银行', creditCardNo: '6227007200230197111'},
+      {id: uuid(), creditCardName: '招商银行', creditCardNo: '6227007200230197112'},
+      {id: uuid(), creditCardName: '工商银行', creditCardNo: '6227007200230197113'}
+    ]
+  }
+})
+
+//  信用卡还款
+Mock.mock(/creditCardRepayment/, 'post', function(options){
+  return {
+    code: '1',
+    msg: '信用卡还款成功'
+  }
+  // return {
+  //   code: '0',
+  //   msg: '交易密码错误'
   // }
 })
 
@@ -184,5 +219,184 @@ Mock.mock(/login/, 'post', function(options){
         code: '3',
         msg: '参数错误'
       }
+  }
+})
+
+
+// 积分转赠
+Mock.mock(/getECardList/, 'get', function(options){
+  // return {
+  //   code: '1',
+  //   items: []
+  // }
+
+  return {
+    code: '1',
+    items: [
+      {
+        id: uuid(),
+        cateName: '电商平台电子卡',
+        children: [
+          {
+            id: uuid(),
+            name: '天猫',
+            class: '1'
+          },
+          {
+            id: uuid(),
+            name: '苏宁',
+            class: '2'
+          },
+          {
+            id: uuid(),
+            name: '亚马逊',
+            class: '3'
+          },
+          {
+            id: uuid(),
+            name: '京东',
+            class: '4'
+          }
+        ]
+      },
+      {
+        id: uuid(),
+        cateName: '旅游、交通出行卡',
+        children: [
+          {
+            id: uuid(),
+            name: '携程任我游',
+            class: '5'
+          },
+          {
+            id: uuid(),
+            name: '携程任我行',
+            class: '6'
+          }
+        ]
+      },
+      {
+        id: uuid(),
+        cateName: '饮食美味',
+        children: [
+          {
+            id: uuid(),
+            name: '哈根达斯',
+            class: '7'
+          },
+          {
+            id: uuid(),
+            name: '肯德基',
+            class: '8'
+          },
+          {
+            id: uuid(),
+            name: '必胜客',
+            class: '9'
+          },
+          {
+            id: uuid(),
+            name: '星巴克',
+            class: '10'
+          }
+        ]
+      },
+      {
+        id: uuid(),
+        cateName: '购物消费',
+        children: [
+          {
+            id: uuid(),
+            name: 'DQ电子卡',
+            class: '11'
+          },
+          {
+            id: uuid(),
+            name: '百果园',
+            class: '12'
+          },
+          {
+            id: uuid(),
+            name: '苹果AppStore',
+            class: '13'
+          },
+          {
+            id: uuid(),
+            name: '万宁代金券',
+            class: '14'
+          },
+          {
+            id: uuid(),
+            name: '屈臣氏代金券',
+            class: '15'
+          }
+        ]
+      }
+    ]
+  }
+})
+
+// 获取指定类型电子卡券数据
+Mock.mock(/getECardDetailByType/, 'get', function(options){
+  return {
+    code: '1',
+    data: {
+      name: '京东E卡',
+      class: '1',
+      items: [
+        {id: uuid(), price: '50', integral: '5300'},
+        {id: uuid(), price: '100', integral: '10600'},
+        {id: uuid(), price: '200', integral: '21200'},
+        {id: uuid(), price: '500', integral: '61200'},
+        {id: uuid(), price: '1000', integral: '121200'}
+      ],
+      expire: '京东E卡有效期为3个月',
+      explain: [
+        '购买成功后您将收到对应产品的京东E卡信息；',
+        '京东E卡不记名、不挂失、不兑现、不计息、不可修改密码。购买后需要妥善保管卡号及密码；',
+        '京东E卡仅能购买京东自营商品 （页面显示有“京东自营”或者商品编号为6位或者7位数，但出版物、全球购、虚拟产品、部分团购及抢购商品、投资金银类、夺宝岛和第三方卖家商品不在此内）；',
+        '使用京东E卡购买的商品发生退货时，所支付资金会自动退回到卡内；',
+        '登录京东首页，选择喜欢的商品加入购物车并根据页面上的提示进行购物操作。在提交订单页面，点击“使用优惠/抵用“，选择礼品卡，输入您的京东E卡的密码，点击绑定即可绑定到您的账户中，然后根据需要选择您使用的京东E卡，点击提交订单即可完成操作。注：如需一次使用多张E卡，可点击“添加礼品卡“继续绑定，然后点击勾选多张E卡即可使用；',
+        '京东将不会对E卡消费的金额开具发票。'
+      ]
+    }
+  }
+})
+
+// 添加车辆
+Mock.mock(/addVehicle/, 'post', function(options){
+  return {
+    code: '1',
+    msg: '添加成功'
+  }
+})
+
+// 获取车辆列表
+Mock.mock(/getVehicleList/, 'get', function(options){
+  return {
+    code: '1',
+    items: [
+      {id: uuid(), vehicleNo: '粤111111', type: '使馆汽车', vin: '111111', enginNo: '111111'},
+      {id: uuid(), vehicleNo: '粤222222', type: '使馆汽车', vin: '222222', enginNo: '222222'},
+      {id: uuid(), vehicleNo: '粤333333', type: '使馆汽车', vin: '333333', enginNo: '333333'},
+      {id: uuid(), vehicleNo: '粤444444', type: '使馆汽车', vin: '444444', enginNo: '444444'},
+      {id: uuid(), vehicleNo: '粤555555', type: '使馆汽车', vin: '555555', enginNo: '555555'},
+      {id: uuid(), vehicleNo: '粤666666', type: '使馆汽车', vin: '666666', enginNo: '666666'}
+    ]
+  }
+})
+
+// 获取违章记录
+Mock.mock(/getViolationList/, 'get', function(options){
+  return {
+    code: '1',
+    items: [
+      {id: uuid(), title: Random.cparagraph(1), detail: Random.cparagraph(5)},
+      {id: uuid(), title: Random.cparagraph(1), detail: Random.cparagraph(5)},
+      {id: uuid(), title: Random.cparagraph(1), detail: Random.cparagraph(5)},
+      {id: uuid(), title: Random.cparagraph(1), detail: Random.cparagraph(5)},
+      {id: uuid(), title: Random.cparagraph(1), detail: Random.cparagraph(5)},
+      {id: uuid(), title: Random.cparagraph(1), detail: Random.cparagraph(5)}
+    ]
   }
 })

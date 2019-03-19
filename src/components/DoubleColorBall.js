@@ -3,7 +3,7 @@ import { Route } from "react-router-dom"
 import styled from 'styled-components'
 import Util from '../util'
 import config from '../config'
-import { redirect } from '../services/redirect'
+import { push } from '../services/redirect'
 
 const StyledUl = styled.ul`
   list-style: none;
@@ -155,7 +155,7 @@ const Layer = function({ballPool, editHandle, removeHandle, createRandomBallsToP
 
         <LayoutFixedBottom>
           <div style={{display: 'flex'}} className="u_m_xxx">
-            <PrimaryButton onClick={() => redirect('/double_color_ball')}>手动添加</PrimaryButton>
+            <PrimaryButton onClick={() => push('/double_color_ball')}>手动添加</PrimaryButton>
             <PrimaryButton onClick={createRandomBallsToPoolHandleClick}>机选</PrimaryButton>
           </div>
         </LayoutFixedBottom>
@@ -289,7 +289,7 @@ class DoubleColorBall extends Component {
       ]
     }, () => {
       this.clearBalls()
-      redirect('/double_color_ball/layer')
+      push('/double_color_ball/layer')
     })
   }
 
@@ -313,14 +313,14 @@ class DoubleColorBall extends Component {
       redBallPool: ball.red,
       blueBallPool: ball.blue
     }, () => {
-      redirect('/double_color_ball')
+      push('/double_color_ball')
     })
   }
 
   editCancelHandleClick = () => {
     this.setState({editing: false, editIndex: -1}, () => {
       this.clearBalls()
-      redirect('/double_color_ball/layer')
+      push('/double_color_ball/layer')
     })
   }
 
@@ -346,7 +346,7 @@ class DoubleColorBall extends Component {
     // 更新ballPool
     this.setState({ballPool: newBallPool, editing: false}, () => {
       this.clearBalls()
-      redirect('/double_color_ball/layer')
+      push('/double_color_ball/layer')
     })
   }
 

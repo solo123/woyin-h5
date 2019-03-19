@@ -74,8 +74,8 @@ export default {
   getVideoProducts() {
     return this.get('getVideoProducts')
   },  
-  confirmPaymentPswd(paymentPswd) {
-    return this.post('confirmPaymentPswd', {paymentPswd})
+  confirmTransPswd(pswd) {
+    return this.post('confirmTransPswd', {pswd})
   },
   // 话费充值
   rechargePhone(id, phone) {
@@ -93,12 +93,40 @@ export default {
   rechargeQB(id, phone) {
     return this.get('rechargeQB', {id, phone})
   },  
-  
-  // 获取银行列表
+  // 获取银行卡列表
   getBankCardList() {
     return this.get('getBankCardList')
   },
+  // 获取信用卡列表
+  getCreditCardList() {
+    return this.get('getCreditCardList')
+  },
+  // 信用卡还款
+  creditCardRepayment(data) {
+    return this.post('creditCardRepayment', data)
+  },
+  // 积分转赠
   transfer(data) {
     return this.post('transfer', data)
+  },
+  // 获取电子卡券列表
+  getECardList() {
+    return this.get('getECardList')
+  },
+  // 获取电子卡券详情
+  getECardDetailByType() {
+    return this.get('getECardDetailByType')
+  },
+  // 添加车辆
+  addVehicle(data) {
+    return this.post('addVehicle', data)
+  },
+  // 获取车辆列表
+  getVehicleList() {
+    return this.get('getVehicleList')
+  },
+  // 获取违章记录
+  getViolationList() {
+    return this.get('getViolationList')
   }
 };

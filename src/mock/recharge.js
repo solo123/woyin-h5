@@ -4,10 +4,6 @@ import uuid from 'uuid'
 const Mock = require('mockjs')
 const Random = Mock.Random
 
-Mock.setup({
-  timeout: 500
-})
-
 // 加油卡充值产品列表
 Mock.mock(/getRechargeOilProductsByType/, 'get', function (options) {
   switch (util.parseUrl(options.url, 'type').type) {
@@ -94,6 +90,10 @@ Mock.mock(/rechargeQB/, 'get', function (options) {
 
 // 视频会员供应商列表
 Mock.mock(/getVideoProviders/, 'get', function (options) {
+  // return {
+  //   code: '1',
+  //   items: []
+  // }
   return {
     code: '1',
     items: [{
@@ -143,70 +143,22 @@ Mock.mock(/getVideoProviders/, 'get', function (options) {
       }
     ]
   }
-  // return {
-  //   code: '1',
-  //   items: []
-  // }
+
 })
 
 Mock.mock(/getVideoProducts/, 'get', function (options) {
+  const len = Random.natural(0, 10)
+  const items = []
+
+  for(let i = 0; i < len; i++) {
+    items.push({
+      productId: uuid(),
+      buyPrice: Random.natural(1000, 100000),
+      productName: "(季卡)直充"
+    })
+  }
   return {
     code: '1',
-    items: [{
-        orgPrice: "20",
-        salesPrice: "1356",
-        createTime: "2018-12-28 17:02:20",
-        status: "1",
-        updateTime: "2019-03-01 17:11:51",
-        buyingPrice: "2000",
-        valueList: "20,67.8",
-        canRefund: "1",
-        classifyType: "2",
-        discount: "67.8",
-        productId: "2018122817022042601",
-        productType: "8",
-        productTypeName: "腾讯视频",
-        buyPrice: "1356",
-        productName: "腾讯视频VIP (月卡)直充"
-      },
-      {
-        orgPrice: "58",
-        salesPrice: "3935",
-        createTime: "2018-12-28 17:02:40",
-        status: "1",
-        updateTime: "2019-03-01 18:22:51",
-        buyingPrice: "5800",
-        valueList: "58,67.84",
-        canRefund: "1",
-        classifyType: "2",
-        discount: "67.84",
-        productId: "2018122817024038703",
-        productType: "8",
-        productTypeName: "腾讯视频",
-        buyPrice: "3935",
-        productName: "腾讯视频VIP (季卡)直充"
-      },
-      {
-        orgPrice: "198",
-        salesPrice: "13433",
-        createTime: "2018-12-28 17:02:59",
-        status: "1",
-        updateTime: "2019-03-01 18:22:56",
-        buyingPrice: "19800",
-        valueList: "198,67.84",
-        canRefund: "1",
-        classifyType: "2",
-        discount: "67.84",
-        productId: "2018122817025995405",
-        productType: "8",
-        productTypeName: "腾讯视频",
-        buyPrice: "13433",
-        productName: "腾讯视频VIP (年卡)直充"
-      }
-    ]
+    items: items
   }
-  // return {
-  //   code: '1',
-  //   items: []
-  // }
 })

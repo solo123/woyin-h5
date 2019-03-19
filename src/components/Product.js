@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 
 import Util from '../util'
-import { redirect } from '../services/redirect'
+import { push } from '../services/redirect'
 import Operator from '../common/Operator'
 
 const profileSrc = 'http://yanxuan.nosdn.127.net/63f5305881562d7dbf117d606381a8fe.png'
@@ -143,7 +143,7 @@ class Product extends Component {
   }
 
   submitHandleClick = () => {
-    redirect('/buy/15236')
+    push('/buy/15236')
   }
 
   render() {

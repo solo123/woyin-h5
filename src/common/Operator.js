@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components'
 
-const StyledOperator = styled.div`
+const StyledContainer = styled.div`
   width: 105px;
   display: inline-block;
   vertical-align: middle;
@@ -12,7 +12,7 @@ const StyledOperator = styled.div`
     width: 30px;
     height: 30px;
     line-height: 30px;
-    background: #f7f7f7;
+    background: #f6f6f6;
     text-align: center;
   }
   .num{
@@ -24,36 +24,19 @@ const StyledOperator = styled.div`
     border: 0;
     border-left: 1px solid #fff;
     border-right: 1px solid #fff;
-    background: #f7f7f7;
+    background: #f6f6f6;
     font-size: 12px;
     text-align: center;
-  }
-  .minus:after,
-  .plus:after,
-  .plus:before{
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    content: "";
-    width: 12px;
-    height: 2px;
-    margin: -1px 0 0 -6px;
-    background: #999;
-  }
-  .plus:before {
-    width: 2px;
-    height: 12px;
-    margin: -6px 0 0 -1px;
+    font-family: industry;
   }
 `
-const Operator = function({onChange, count}) {
+export default ({count, onClick, onChange}) => {
   return (
-    <StyledOperator>
-      <span className="minus"></span>
+    <StyledContainer>
+      <span className="minus" onClick={() => onClick(count - 1)}>-</span>
       <input className="num" type="text" onChange={onChange} value={count}/>
-      <span className="plus"></span>
-    </StyledOperator>
+      <span className="plus" onClick={() => onClick(count + 1)}>+</span>
+    </StyledContainer>
   )
 }
 
-export default Operator
