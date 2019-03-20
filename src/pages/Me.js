@@ -9,7 +9,6 @@ import { replace } from '../services/redirect'
 
 import arrowIcon from '../asset/images/icon/arrow_right.svg'
 
-
 const Button = styled.button`
   outline: none;
   display: block;
