@@ -30,6 +30,7 @@ import Me from './pages/Me'
 import Login from './pages/Login'
 import Redeem from './pages/Redeem'
 import BankcardList from './pages/BankcardList'
+import AddBankcard from './pages/AddBankcard'
 import RechargePhone from './pages/RechargePhone'
 
 import Test from './components/Test'
@@ -49,6 +50,7 @@ class App extends Component {
 
             <Auth path="/me" component={Me} />
             <Auth path="/bankcard-list" component={BankcardList} />
+            <Auth path="/bankcard-add" component={AddBankcard} />
 
             <Auth path="/recharge-phone" component={RechargePhone} />
             <Auth path="/recharge-flow" component={RechargeFlow} />
