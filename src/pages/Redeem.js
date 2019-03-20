@@ -33,7 +33,7 @@ const PrimaryButton = styled(Button)`
   font-weight: bold;
   line-height: 50px;
   border-radius: 3px;
-  box-shadow: 0 3px 5px #4cadff8a;
+  box-shadow: 0 3px 5px rgba(76, 173, 255, .54);
   background: -webkit-linear-gradient(47deg,#4cadff,#8ce0ff);
 `
 const DisablePrimaryButton = styled(Button)`

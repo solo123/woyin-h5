@@ -23,13 +23,12 @@ const PrimaryButton = styled(Button)`
   font-weight: bold;
   line-height: 50px;
   border-radius: 3px;
-  box-shadow: 0 3px 5px rgba(207, 162, 95, .58);
-  background: -webkit-linear-gradient(47deg, #c89850, #e1c38c);
+  box-shadow: 0 3px 5px rgba(76, 173, 255, .54);
+  background: -webkit-linear-gradient(47deg,#4cadff,#8ce0ff);
 `
 const LayoutBtnBox = styled.div`
   margin: 15px;
 `
-
 const LayoutPageContianer = styled.div`
   padding-bottom: 50px;
 `

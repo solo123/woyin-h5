@@ -428,8 +428,16 @@ Mock.mock(/getRedeemFee/, 'get', function(options){
   }
 })
 
-// 发送短信验证码
+// 发送短信验证码（积分赎回流程）
 Mock.mock(/sendMsgCode/, 'get', function(options){
+  return {
+    code: '1',
+    msg: '短信已发送'
+  }
+})
+
+// 发送短信验证码（登录流程）
+Mock.mock(/sendMessageCode/, 'get', function(options){
   return {
     code: '1',
     msg: '短信已发送'

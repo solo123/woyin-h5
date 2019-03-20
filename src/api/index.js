@@ -105,8 +105,13 @@ export default {
   getRedeemFee(integral) {
     return this.get('getRedeemFee', {integral})
   },
+  // 积分赎回流程短信验证码
   sendMsgCode(phone) {
     return this.get('sendMsgCode', {phone})
+  },
+  // 登录流程短信验证码
+  sendMessageCode() {
+    return this.get('sendMessageCode')
   },
   // 获取信用卡列表
   getCreditCardList() {
