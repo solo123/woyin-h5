@@ -2,15 +2,12 @@ import React, { Component } from 'react';
 import styled from 'styled-components'
 import { Link, withRouter } from "react-router-dom"
 import { connect } from 'react-redux'
-import {CSSTransition} from 'react-transition-group'
 import weui from 'weui.js'
 
 import api from '../api'
 import { replace } from '../services/redirect'
 import Menu from '../common/Menu'
-
-import moreSrc from '../asset/images/more.svg'
-import emptySrc from '../asset/images/empty.png'
+import EmptyArrayPlaceholder from '../common/EmptyArrayPlaceholder'
 
 const LayoutPageContianer = styled.div`
   padding-bottom: 50px;
@@ -84,12 +81,7 @@ const StyledLable = styled(Link)`
     color: #fff;
   }
 `
-const Button = styled.button`
-  display: inline-block;
-  outline: none;
-  border: 0;
-  padding: 0;
-`
+
 
 // skeleton
 const HotsellSkeleton = () => {
@@ -184,16 +176,9 @@ const ProductThumb = ({id, title, price, url, status}) => {
   )
 }
 
-const EmptyPlaceholder = () => (
-  <StyledEmpty>
-    <img src={emptySrc} alt=""/>
-    <div>暂无数据</div>
-  </StyledEmpty>
-)
-
 const ProductItems = ({items}) => {
   if(!items.length) {
-    return <EmptyPlaceholder />
+    return <EmptyArrayPlaceholder />
   }
 
   return (

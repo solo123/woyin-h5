@@ -4,19 +4,10 @@ import classnames from 'classnames'
 import weui from 'weui.js'
 
 import SkeletonPlaceholder from '../common/SkeletonPlaceholder'
+import EmptyArrayPlaceholder from '../common/EmptyArrayPlaceholder'
 import api from '../api'
 import util from '../util'
 
-import emptySrc from '../asset/images/empty.png'
-
-const StyledEmpty = styled.div`
-  color: #888;
-  text-align: center;
-  img{
-    width: 150px;
-    height: 150px;
-  }
-`
 const Button = styled.button`
   outline: none;
   display: block;
@@ -124,13 +115,6 @@ const LayoutItems = styled.div`
   margin: 0 10px;
 `
 
-const EmptyPlaceholder = () => (
-  <StyledEmpty>
-    <img src={emptySrc} alt=""/>
-    <div>暂无数据</div>
-  </StyledEmpty>
-)
-
 const Item = ({id, selectId, money, integral, clickHandle}) => {
   return (
     <LayoutItem>
@@ -181,7 +165,9 @@ export default class extends Component {
     api.getRechargePhoneProductsByType(type)
       .then(res => {
         const {data} = res
-        this.setState({items: data, loading: false})
+        if(data.code === '1') {
+          this.setState({items: data.items})
+        }
       })
       .then(() => {
         this.setState({loading: false})
@@ -320,7 +306,7 @@ export default class extends Component {
           <h2 className="u_m_xx">请选择面值</h2>
           {loading
             ? <SkeletonPlaceholder /> 
-            : (list.length ? <LayoutItems>{list}</LayoutItems> : <EmptyPlaceholder />)}
+            : (list.length ? <LayoutItems>{list}</LayoutItems> : <EmptyArrayPlaceholder />)}
           <div className="u_p_xxx">
             {pass
               ? <PrimaryButton onClick={this.handleSubmit}>立即充值</PrimaryButton>

@@ -7,7 +7,7 @@ const Mock = require('mockjs');
 const Random = Mock.Random;
 
 Mock.setup({
-  timeout: 500
+  timeout: 1500
 });
 
 // 返回商品分类
@@ -46,33 +46,49 @@ Mock.mock(/hotsell/, 'get', function(options){
   }
 });
 
-
+// 话费充值产品列表
 Mock.mock(/getRechargePhoneProductsByType/, 'get', function(options){
+  // return {
+  //   code: '1',
+  //   items: []
+  // }
   var result = util.parseUrl(options.url, 'type');
   switch(result.type) {
     case '1':
-      return [
-        { id: uuid(), integral: 1060, money: 10 },
-        { id: uuid(), integral: 2120, money: 20 },
-        { id: uuid(), integral: 3180, money: 30 },
-        { id: uuid(), integral: 5300, money: 50 },
-        { id: uuid(), integral: 10600, money: 100 },
-        { id: uuid(), integral: 21200, money: 200 },
-        { id: uuid(), integral: 31800, money: 300 },
-        { id: uuid(), integral: 53000, money: 500 }
-      ]
+      return {
+        code: '1',
+        items: [
+          { id: uuid(), integral: 1060, money: 10 },
+          { id: uuid(), integral: 2120, money: 20 },
+          { id: uuid(), integral: 3180, money: 30 },
+          { id: uuid(), integral: 5300, money: 50 },
+          { id: uuid(), integral: 10600, money: 100 },
+          { id: uuid(), integral: 21200, money: 200 },
+          { id: uuid(), integral: 31800, money: 300 },
+          { id: uuid(), integral: 53000, money: 500 }
+        ]
+      }
     case '2':
-      return [
-        { id: uuid(), integral: 1060, money: 10 },
-        { id: uuid(), integral: 2120, money: 20 },
-        { id: uuid(), integral: 3180, money: 30 },
-        { id: uuid(), integral: 5300, money: 50 },
-        { id: uuid(), integral: 10600, money: 100 }
-      ]
+      return {
+        code: '1',
+        items: [
+          { id: uuid(), integral: 1060, money: 10 },
+          { id: uuid(), integral: 2120, money: 20 },
+          { id: uuid(), integral: 3180, money: 30 },
+          { id: uuid(), integral: 5300, money: 50 },
+          { id: uuid(), integral: 10600, money: 100 }
+        ]
+      }
     case '3':
-      return []
+      return {
+        code: '1',
+        items: []
+      }
     default:
-      return []
+      return {
+        code: '1',
+        items: []
+      }
   }
 });
 
@@ -139,6 +155,10 @@ Mock.mock(/rechargeFlow/, 'get', function(options){
 
 // 获取银行卡
 Mock.mock(/getBankcardList/, 'get', function(options){
+  // return {
+  //   code: '0',
+  //   items: []
+  // }  
   return {
     code: '1',
     items: [
@@ -147,10 +167,6 @@ Mock.mock(/getBankcardList/, 'get', function(options){
       {id: uuid(), bankcardClass: '003', bankcardName: '工商银行', bankcardNo: '6227007200230197113'}
     ]
   }
-  // return {
-  //   code: '0',
-  //   items: []
-  // }
 })
 
 // 获取信用卡

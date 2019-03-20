@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
-import { withRouter } from "react-router-dom"
+import { Link, withRouter } from "react-router-dom"
 import { connect } from 'react-redux'
 import weui from 'weui.js'
 
@@ -88,10 +88,10 @@ class Me extends Component {
   render() {
     return (
       <LayoutPageContianer>
-        <div style={{margin: 15}}>
+        <LayoutBtnBox>
           <StyledTitle>个人信息</StyledTitle>
-        </div>
-        <div style={{margin: 15}}>
+        </LayoutBtnBox>
+        <LayoutBtnBox>
           <StyledBg>
             <LayoutItem>
               <LayoutCell>
@@ -117,13 +117,23 @@ class Me extends Component {
                 15014095291
               </LayoutCell>
             </LayoutItem>
+            <LayoutItem>
+              <LayoutCell>
+                <StyledLabel>银行卡</StyledLabel>
+              </LayoutCell>
+              <LayoutCell>
+                <Link to="/bankcard-list">
+                  <StyledArrow src={arrowIcon} />
+                </Link>
+              </LayoutCell>
+            </LayoutItem>
           </StyledBg>
-        </div>
+        </LayoutBtnBox>
 
-        <div style={{margin: 15}}>
+        <LayoutBtnBox>
           <StyledTitle>密码操作</StyledTitle>
-        </div>
-        <div style={{margin: 15}}>
+        </LayoutBtnBox>
+        <LayoutBtnBox>
           <StyledBg>
             <LayoutItem>
               <LayoutCell>
@@ -150,7 +160,7 @@ class Me extends Component {
               </LayoutCell>
             </LayoutItem>
           </StyledBg>
-        </div>
+        </LayoutBtnBox>
 
         <LayoutBtnBox>
           <PrimaryButton onClick={this.handleClick}>退出</PrimaryButton>

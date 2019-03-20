@@ -97,6 +97,11 @@ export default {
   getBankcardList() {
     return this.get('getBankcardList')
   },
+  // 添加银卡
+  addBankcard(data) {
+    return this.post('addBankcard', data)
+  },
+  // 获取提现手续费
   getRedeemFee(integral) {
     return this.get('getRedeemFee', {integral})
   },

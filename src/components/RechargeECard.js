@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import {Link} from 'react-router-dom'
 
 import SkeletonPlaceholder from '../common/SkeletonPlaceholder'
+import EmptyArrayPlaceholder from '../common/EmptyArrayPlaceholder'
 import api from '../api'
 
 import appleIcon from '../asset/images/ecard/apple.png'
@@ -94,12 +95,6 @@ const iconSchema = {
   '15': qcsIcon
 }
 
-const EmptyPlaceholder = () => (
-  <StyledEmpty>
-    <img src={emptySrc} alt=""/>
-    <div>暂无数据</div>
-  </StyledEmpty>
-)
 
 const Item = ({data, index}) => {
   return (
@@ -172,7 +167,7 @@ class RechargeECard extends Component {
           : (
             list.length
               ? list
-              : <EmptyPlaceholder>暂无数据</EmptyPlaceholder>
+              : <EmptyArrayPlaceholder />
           )
         }
       </div>

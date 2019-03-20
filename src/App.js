@@ -30,7 +30,7 @@ import AddVehicle from './components/AddVehicle.js'
 import Me from './pages/Me'
 import Login from './pages/Login'
 import Redeem from './pages/Redeem'
-
+import BankcardList from './pages/BankcardList'
 
 import Test from './components/Test'
 import history from './history'
@@ -48,6 +48,8 @@ class App extends Component {
             <Auth path="/order" component={Order} />
 
             <Auth path="/me" component={Me} />
+
+            <Auth path="/bankcard-list" component={BankcardList} />
 
             <Auth path="/recharge-phone" component={RechargePhone} />
             <Auth path="/recharge-flow" component={RechargeFlow} />

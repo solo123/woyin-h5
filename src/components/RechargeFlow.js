@@ -4,6 +4,7 @@ import classnames from 'classnames'
 import weui from 'weui.js'
 
 import SkeletonPlaceholder from '../common/SkeletonPlaceholder'
+import EmptyArrayPlaceholder from '../common/EmptyArrayPlaceholder'
 import api from '../api'
 import util from '../util'
 
@@ -39,13 +40,6 @@ const DisablePrimaryButton = styled(Button)`
   border-radius: 3px;
   background: #ccc;
 `
-const MiniPrimaryButton = styled(Button)`
-  color: #fff;
-  font-size: 12px;
-  padding: 5px 10px;
-  border-radius: 3px;
-  background: -webkit-linear-gradient(47deg, #c89850, #e1c38c);
-`
 /*
  |--------------------------------------------------------------------------
  | input
@@ -66,10 +60,6 @@ const BigPrimaryInput = styled(Input)`
   font-size: 16px;
   font-weight: bold;
   font-family: industry;
-`
-const PrimaryInput = styled(Input)`
-  color: #444;
-  font-size: 14px;
 `
 
 const StyledNav = styled.ul`
@@ -153,13 +143,6 @@ const StyledEmpty = styled.div`
     height: 150px;
   }
 `
-
-const EmptyPlaceholder = () => (
-  <StyledEmpty>
-    <img src={emptySrc} alt=""/>
-    <div>暂无数据</div>
-  </StyledEmpty>
-)
 
 const Item = ({id, selectId, money, integral, clickHandle}) => {
   return (
@@ -348,7 +331,7 @@ class RechargeFlow extends Component {
           <h2 className="u_m_xx">请选择面值</h2>
           {loading
             ? <SkeletonPlaceholder /> 
-            : (list.length ? <LayoutItems>{list}</LayoutItems> : <EmptyPlaceholder />)}
+            : (list.length ? <LayoutItems>{list}</LayoutItems> : <EmptyArrayPlaceholder />)}
           <div className="u_p_xxx">
             {pass
               ? <PrimaryButton onClick={this.handleSubmit}>立即充值</PrimaryButton>

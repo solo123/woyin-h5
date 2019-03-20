@@ -4,10 +4,9 @@ import classnames from 'classnames'
 import weui from 'weui.js'
 
 import SkeletonPlaceholder from '../common/SkeletonPlaceholder'
+import EmptyArrayPlaceholder from '../common/EmptyArrayPlaceholder'
 import api from '../api'
 import util from '../util'
-
-import emptySrc from '../asset/images/empty.png'
 
 /*
  |--------------------------------------------------------------------------
@@ -39,13 +38,7 @@ const DisablePrimaryButton = styled(Button)`
   border-radius: 3px;
   background: #ccc;
 `
-const MiniPrimaryButton = styled(Button)`
-  color: #fff;
-  font-size: 12px;
-  padding: 5px 10px;
-  border-radius: 3px;
-  background: -webkit-linear-gradient(47deg, #c89850, #e1c38c);
-`
+
 /*
  |--------------------------------------------------------------------------
  | input
@@ -67,39 +60,7 @@ const BigPrimaryInput = styled(Input)`
   font-weight: bold;
   font-family: industry;
 `
-const PrimaryInput = styled(Input)`
-  color: #444;
-  font-size: 14px;
-`
 
-const StyledNav = styled.ul`
-  display: flex;
-  margin-bottom: 10px;
-  background: #fff;
-  li{
-    position: relative;
-    height: 60px;
-    line-height: 60px;
-    flex: 1;
-    text-align: center;
-    &.active{
-      font-size: 16px;
-      font-weight: bold;
-      &:after{
-        position: absolute;
-        left: 50%;
-        bottom: 10px;
-        transform: translate(-50%);
-        content: '';
-        display: block;
-        height: 5px;
-        border-radius: 5px;
-        width: 20px;
-        background: #e1c38c;
-      }
-    }
-  }
-`
 
 const StyledMain = styled.div`
   background: #fff;
@@ -145,21 +106,6 @@ const LayoutItems = styled.div`
   flex-wrap: wrap;
   margin: 0 10px;
 `
-const StyledEmpty = styled.div`
-  color: #888;
-  text-align: center;
-  img{
-    width: 150px;
-    height: 150px;
-  }
-`
-
-const EmptyPlaceholder = () => (
-  <StyledEmpty>
-    <img src={emptySrc} alt=""/>
-    <div>暂无数据</div>
-  </StyledEmpty>
-)
 
 const Item = ({id, selectId, money, integral, clickHandle}) => {
   return (
@@ -324,7 +270,7 @@ class RechargeQB extends Component {
           <h2 className="u_mx_xxx u_my_x">请选择面值</h2>
           {loading
               ? <SkeletonPlaceholder /> 
-              : (list.length ? <LayoutItems>{list}</LayoutItems> : <EmptyPlaceholder />)}
+              : (list.length ? <LayoutItems>{list}</LayoutItems> : <EmptyArrayPlaceholder />)}
             <div className="u_p_xxx">
               {pass
                 ? <PrimaryButton onClick={this.handleSubmit}>立即充值</PrimaryButton>
