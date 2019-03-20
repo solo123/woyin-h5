@@ -21,8 +21,8 @@ const PrimaryButton = styled(Button)`
   font-weight: bold;
   line-height: 50px;
   border-radius: 3px;
-  box-shadow: 0 3px 5px rgba(207, 162, 95, .58);
-  background: -webkit-linear-gradient(47deg, #c89850, #e1c38c);
+  box-shadow: 0 3px 5px rgba(76, 173, 255, .54);
+  background: -webkit-linear-gradient(47deg,#4cadff,#8ce0ff);
 `
 const DisablePrimaryButton = styled(Button)`
   color: #fff;
@@ -55,7 +55,7 @@ const StyledNav = styled.ul`
         height: 5px;
         border-radius: 5px;
         width: 20px;
-        background: #e1c38c;
+        background: -webkit-linear-gradient(47deg,#4cadff,#8ce0ff);
       }
     }
   }
@@ -93,8 +93,8 @@ const StyledItem = styled.div`
   border: 1px solid #eaeaea;
   &.active{
     color: #fff;
-    background: #e1c38c;
-    border-color: #c89850;
+    background: #8ce0ff;
+    border-color: #8ce0ff;
     .integral{
       color: #fff;
     }
@@ -133,34 +133,20 @@ const CUCC = '2'
 const CTCC = '3'
 
 export default class extends Component {
-  constructor(props) {
-    super(props)
-
-    this.reset = this.reset.bind(this)
-    this.nextStep = this.nextStep.bind(this)
-    this.retryPaymentPswd = this.retryPaymentPswd.bind(this)
-    this.toggleType = this.toggleType.bind(this)
-    this.selectProduct = this.selectProduct.bind(this)
-    this.handleChange = this.handleChange.bind(this)
-    this.loadProdcuts = this.loadProdcuts.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
-    this.updateButtonStatus = this.updateButtonStatus.bind(this)
-
-    this.state = {
-      pass: false,
-      loading: false,
-      items: [],
-      phone: '15014095291',
-      selectId: '',
-      type: CMCC
-    }
+  state = {
+    pass: false,
+    loading: false,
+    items: [],
+    phone: '',
+    selectId: '',
+    type: CMCC
   }
 
   componentDidMount() {
     this.loadProdcuts(this.state.type)
   }
 
-  loadProdcuts(type) {
+  loadProdcuts = (type) => {
     this.setState({loading: true})
     api.getRechargePhoneProductsByType(type)
       .then(res => {
@@ -174,13 +160,13 @@ export default class extends Component {
       })
   }
 
-  reset() {
+  reset = () => {
     this.setState({selectId: ''}, () => {
       this.updateButtonStatus()
     })
   }
 
-  toggleType(e) {
+  toggleType = e => {
     const type = e.currentTarget.getAttribute('data-type')
     this.reset()
     this.setState({type}, () => {
@@ -188,19 +174,19 @@ export default class extends Component {
     })
   }
 
-  selectProduct(selectId) {
+  selectProduct = (selectId) => {
     this.setState({selectId}, () => {
       this.updateButtonStatus()
     })
   }
 
-  handleChange(e) {
+  handleChange = e => {
     this.setState({phone: e.target.value}, () => {
       this.updateButtonStatus()
     })
   }
 
-  handleSubmit() {
+  handleSubmit = () => {
     util.paymentConfirm({
       title: '充值',
       subtitle: '壹企服',
@@ -215,7 +201,7 @@ export default class extends Component {
     })
   }
 
-  nextStep() {
+  nextStep = e => {
     const loading = weui.loading('处理中')
     api.confirmTransPswd()
       .then(res => {
@@ -237,7 +223,7 @@ export default class extends Component {
       })
   }
 
-  submitRecharge() {
+  submitRecharge = () => {
     const loading = weui.loading('处理中')
     api.rechargePhone(this.state.selectId, this.state.phone)
       .then(res => {
@@ -256,11 +242,11 @@ export default class extends Component {
   }
 
   // 重试交易密码
-  retryPaymentPswd() {
+  retryPaymentPswd = () => {
     this.handleSubmit()
   }
 
-  updateButtonStatus() {
+  updateButtonStatus = () => {
     if(this.state.phone && this.state.selectId) {
       this.setState({pass: true})
     }else {

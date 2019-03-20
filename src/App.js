@@ -6,7 +6,6 @@ import './App.css'
 import Loading from './common/Loading'
 import Auth from './common/Auth'
 import Order from './components/Order'
-import Home from './components/Home'
 import Transfer from './components/Transfer'
 
 import Cate from './components/Cate'
@@ -14,7 +13,6 @@ import DoubleColorBall from './components/DoubleColorBall'
 import Product from './components/Product'
 import Buy from './components/Buy'
 
-import RechargePhone from './components/RechargePhone'
 import RechargeFlow from './components/RechargeFlow'
 import RechargeOil from './components/RechargeOil'
 import RechargeQB from './components/RechargeQB'
@@ -27,10 +25,12 @@ import ViolationList from './components/ViolationList'
 import ViolationDetail from './components/ViolationDetail'
 import AddVehicle from './components/AddVehicle.js'
 
+import Home from './pages/Home'
 import Me from './pages/Me'
 import Login from './pages/Login'
 import Redeem from './pages/Redeem'
 import BankcardList from './pages/BankcardList'
+import RechargePhone from './pages/RechargePhone'
 
 import Test from './components/Test'
 import history from './history'
@@ -48,7 +48,6 @@ class App extends Component {
             <Auth path="/order" component={Order} />
 
             <Auth path="/me" component={Me} />
-
             <Auth path="/bankcard-list" component={BankcardList} />
 
             <Auth path="/recharge-phone" component={RechargePhone} />

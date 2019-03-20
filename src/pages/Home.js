@@ -8,6 +8,7 @@ import api from '../api'
 import { replace } from '../services/redirect'
 import Menu from '../common/Menu'
 import EmptyArrayPlaceholder from '../common/EmptyArrayPlaceholder'
+import fenleiActive from '../asset/images/icon/fenlei_active.svg'
 
 const LayoutPageContianer = styled.div`
   padding-bottom: 50px;
@@ -18,32 +19,18 @@ const LayoutFixedBottom = styled.div`
   right: 0;
   bottom: 0;
 `
-
-const StyledEmpty = styled.div`
-  color: #888;
-  text-align: center;
-  img{
-    width: 150px;
-    height: 150px;
-  }
-`
-
 const StyledEllipsis = styled.div`
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
 `
-
-// 入口
 const LayoutNav = styled.div`
   width: 25%;
 `
 const LayoutNavInner = styled.div`
   margin: 5px;
-  background: #eaeaea;
+  text-align: center;
 `
-
-// 区域
 const StyledTitle = styled.h2`
   position: relative;
   font-size: 16px;
@@ -69,8 +56,6 @@ const LayoutHead = styled.div`
 const LayoutMain = styled.div`
   margin: 0 5px;
 `
-
-// 按钮
 const StyledLable = styled(Link)`
   color: #fff;
   font-size: 12px;
@@ -81,7 +66,6 @@ const StyledLable = styled(Link)`
     color: #fff;
   }
 `
-
 
 // skeleton
 const HotsellSkeleton = () => {
@@ -112,7 +96,8 @@ const BusinessEntry = ({to, icon, text}) => (
   <LayoutNav>
     <LayoutNavInner>
       <Link to={to}>
-        <div style={{height: 50}}></div>
+        <img style={{width: 30, height: 30, marginBottom: 5}} src={icon} alt=""/>
+        <div style={{fontSize: 12}}>{text}</div>
       </Link>
     </LayoutNavInner>
   </LayoutNav>
@@ -162,7 +147,7 @@ const ProductThumb = ({id, title, price, url, status}) => {
       <LayoutItemInner>
         <StyledProduct>
           <StyledPhoto>
-            <img src="http://img13.360buyimg.com/n0/jfs/t1/19531/26/3823/118504/5c2c35beE66ec977c/8133abedfda92680.jpg" alt="" />
+            <img src="https://img13.360buyimg.com/n0/jfs/t1/19531/26/3823/118504/5c2c35beE66ec977c/8133abedfda92680.jpg" alt="" />
           </StyledPhoto>
           <StyledTitle>{title}</StyledTitle>
           <StyledPrice>￥{price}</StyledPrice>
@@ -180,7 +165,6 @@ const ProductItems = ({items}) => {
   if(!items.length) {
     return <EmptyArrayPlaceholder />
   }
-
   return (
     <div style={{display: 'flex', flexWrap: 'wrap'}}>
       {items.map(item => (
@@ -256,16 +240,16 @@ class Home extends Component {
           </LayoutHead>
           <LayoutMain>
             <div style={{display: 'flex', flexWrap: 'wrap'}}>
-              <BusinessEntry to="" icon={''} text="充话费" />
-              <BusinessEntry to="" icon={''} text="充流量" />
-              <BusinessEntry to="" icon={''} text="充油卡" />
-              <BusinessEntry to="" icon={''} text="腾讯Q币" />
-              <BusinessEntry to="" icon={''} text="视频VIP" />
-              <BusinessEntry to="" icon={''} text="电子卡券" />
-              <BusinessEntry to="" icon={''} text="信用卡还款" />
-              <BusinessEntry to="" icon={''} text="违章查询" />
-              <BusinessEntry to="" icon={''} text="双色球" />
-              <BusinessEntry to="" icon={''} text="七乐彩" />
+              <BusinessEntry to="/recharge-phone" icon={fenleiActive} text="充话费" />
+              <BusinessEntry to="" icon={fenleiActive} text="充流量" />
+              <BusinessEntry to="" icon={fenleiActive} text="充油卡" />
+              <BusinessEntry to="" icon={fenleiActive} text="腾讯Q币" />
+              <BusinessEntry to="" icon={fenleiActive} text="视频VIP" />
+              <BusinessEntry to="" icon={fenleiActive} text="电子卡券" />
+              <BusinessEntry to="" icon={fenleiActive} text="信用卡还款" />
+              <BusinessEntry to="" icon={fenleiActive} text="违章查询" />
+              <BusinessEntry to="" icon={fenleiActive} text="双色球" />
+              <BusinessEntry to="" icon={fenleiActive} text="七乐彩" />
             </div>
           </LayoutMain>
         </LayoutGroup>
