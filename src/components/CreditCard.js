@@ -7,7 +7,7 @@ import util from '../util'
 
 import moreIcon from '../asset/images/icon/more.png'
 import spinner from '../asset/images/spinner.svg'
-import qia from '../asset/images/icon/qia.png'
+import jsIcon from '../asset/images/bank/js.svg'
 
 const Input = styled.input`
   border: 0;
@@ -158,7 +158,7 @@ const BankCard = ({creditCardNo, creditCardName}) => {
   return (
     <StyledCard>
       <div className="aside">
-        <img className="icon" src={qia} alt=""/>
+        <img className="icon" src={jsIcon} alt=""/>
       </div>
       <div className="main">
         <p className="title">{creditCardName}(尾号<span className="card">{util.getBankCardLastNum(creditCardNo)}</span>)</p>

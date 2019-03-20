@@ -6,14 +6,18 @@ import {Link} from 'react-router-dom'
 import api from '../api'
 import util from '../util'
 
+import Backhome from '../common/Backhome'
+
 import jsIcon from '../asset/images/bank/js.svg'
 import zsIcon from '../asset/images/bank/zs.svg'
 import gsIcon from '../asset/images/bank/gs.svg'
 
-
 import arrowRightIcon from '../asset/images/icon/arrow_right.svg'
 import checkedIcon from '../asset/images/icon/checked.png'
 import uncheckedIcon from '../asset/images/icon/unchecked.svg'
+
+
+
 
 const Button = styled.button`
   border: 0;
@@ -48,6 +52,15 @@ const MiniPrimaryBtn = styled(Button)`
   border-radius: 3px;
   background: -webkit-linear-gradient(47deg,#4cadff,#8ce0ff);
 `
+const DisableMiniPrimaryBtn = styled(Button)`
+  color: #fff;
+  font-size: 12px;
+  padding: 5px 10px;
+  line-height: 1.5;
+  border-radius: 3px;
+  background: #ccc;
+`
+
 const Input = styled.input`
   border: 0;
   padding: 0;
@@ -68,6 +81,13 @@ const MinPrimaryInput = styled(Input)`
   font-size: 14px;
 `
 
+
+const LayoutPrimaryBox = styled.div`
+  margin-bottom: 15px;
+`
+const LayoutSecondaryBox = styled.div`
+  margin-bottom: 5px;
+`
 const LayoutGroup = styled.div`
   display: flex;
   align-items: center;
@@ -179,6 +199,12 @@ const LoadingBankcard = () => {
 
 let sendMsgFlag = false
 
+const SendMessageBtn = ({flag, timer, handleClick}) => {
+  if(flag) {
+    return <MiniPrimaryBtn onClick={handleClick}>获取验证码</MiniPrimaryBtn>
+  }
+  return <DisableMiniPrimaryBtn>{timer}秒后重发</DisableMiniPrimaryBtn>
+}
 
 class Redeem extends Component {
   state = {
@@ -196,6 +222,8 @@ class Redeem extends Component {
     bankcardName: '',
     bankcardLogo: '',
 
+    timer: 10,
+    sendMsgCodeFlag: true,
     phone: '15014095291',
     redeemFee: 0,
     actualReceived: 0,
@@ -295,6 +323,22 @@ class Redeem extends Component {
   handleSubmit = e => {
   }
 
+  countDown = () => {
+    if(this.state.timer > 0) {
+      setTimeout(() => {
+        this.setState({timer: this.state.timer - 1}, () => {
+          this.countDown()
+        })
+      }, 1000)
+    }else {
+      this.resetMessageState()
+    }
+  }
+
+  resetMessageState = () => {
+    this.setState({timer: 10, sendMsgCodeFlag: true})
+  }
+
   getMsgCode = () => {
     const loading = weui.loading('发送中')
     sendMsgFlag = true
@@ -302,6 +346,9 @@ class Redeem extends Component {
       .then(res => {
         const {data} = res
         if(data.code === '1') {
+          this.setState({sendMsgCodeFlag: false}, () => {
+            this.countDown()
+          })
           weui.alert(data.msg)
         }
       })
@@ -312,12 +359,21 @@ class Redeem extends Component {
   }
 
   render() {
-    const {pass, loading, agreementBool, hasBankcard, bankcardNo, bankcardName, bankcardLogo} = this.state
+    const {
+      pass, 
+      loading, 
+      agreementBool, 
+      hasBankcard, 
+      bankcardNo, 
+      bankcardName, 
+      bankcardLogo,
+      sendMsgCodeFlag
+    } = this.state
 
     return (
       <StyledBg>
 
-        <div style={{marginBottom: 15}}>
+        <LayoutPrimaryBox>
           <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
             <div>
               <label>转入银行卡</label>
@@ -326,13 +382,13 @@ class Redeem extends Component {
               <StyledIcon onClick={this.handleClick} src={arrowRightIcon} alt="" />
             </div>
           </div>
-        </div>
+        </LayoutPrimaryBox>
 
-        <div style={{marginBottom: 15}}>
+        <LayoutPrimaryBox>
           {loading ? <LoadingBankcard /> : <CurrBankcard hasBankcard={hasBankcard} bankcardLogo={bankcardLogo} bankcardNo={bankcardNo} bankcardName={bankcardName}/>}
-        </div>
+        </LayoutPrimaryBox>
 
-        <div style={{marginBottom: 5}}>
+        <LayoutSecondaryBox>
           <StyledInputBox>
             <PrimaryInput 
               type="text"
@@ -343,16 +399,16 @@ class Redeem extends Component {
               placeholder="最多可赎回892积分"
             />
           </StyledInputBox>
-        </div>
+        </LayoutSecondaryBox>
 
-        <div style={{marginBottom: 15}}>
+        <LayoutPrimaryBox>
           <StyledSmallText>
             <p>实际扣除{this.state.deductIntegral}积分</p>
             <p>实际到账{this.state.actualReceived}元(手续费{this.state.redeemFee}积分，100积分等于1元)</p>
           </StyledSmallText>
-        </div>
+        </LayoutPrimaryBox>
 
-        <div style={{marginBottom: 15}}>
+        <LayoutPrimaryBox>
           <LayoutGroup>
             <LayoutBody>
               <div style={{lineHeight: 1}}>
@@ -366,12 +422,12 @@ class Redeem extends Component {
               </div>
             </LayoutBody>
             <LayoutFoot>
-              <MiniPrimaryBtn onClick={this.getMsgCode}>获取短信验证码</MiniPrimaryBtn>
+              <SendMessageBtn flag={sendMsgCodeFlag} timer={this.state.timer} handleClick={this.getMsgCode} />
             </LayoutFoot>  
           </LayoutGroup>
-        </div>  
+        </LayoutPrimaryBox> 
 
-        <div style={{marginBottom: 15}}>
+        <LayoutPrimaryBox>
           <StyledSmallText 
             onClick={this.handleToggle}
             style={{display: 'flex', alignItems: 'center'}}>
@@ -381,13 +437,13 @@ class Redeem extends Component {
             }
             同意用户<Link to="/redeen-agreement" style={{color: '#007AFF'}}>《赎回规则协议》</Link>
           </StyledSmallText>
-        </div>
+        </LayoutPrimaryBox>
 
-        <div>
-          {pass
-            ? <PrimaryButton onClick={this.handleSubmit}>确认赎回</PrimaryButton>
-            : <DisablePrimaryButton>确认赎回</DisablePrimaryButton>}
-        </div>
+        {pass
+          ? <PrimaryButton onClick={this.handleSubmit}>确认赎回</PrimaryButton>
+          : <DisablePrimaryButton>确认赎回</DisablePrimaryButton>}
+        
+        <Backhome />
       </StyledBg>
     )
   }

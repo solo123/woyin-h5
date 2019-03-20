@@ -9,7 +9,6 @@ import api from '../api'
 import { replace } from '../services/redirect'
 import Menu from '../common/Menu'
 
-import kafei from '../asset/images/icon/kafei.png'
 import moreSrc from '../asset/images/more.svg'
 import emptySrc from '../asset/images/empty.png'
 
@@ -272,16 +271,16 @@ class Home extends Component {
           </LayoutHead>
           <LayoutMain>
             <div style={{display: 'flex', flexWrap: 'wrap'}}>
-              <BusinessEntry to="" icon={kafei} text="充话费" />
-              <BusinessEntry to="" icon={kafei} text="充流量" />
-              <BusinessEntry to="" icon={kafei} text="充油卡" />
-              <BusinessEntry to="" icon={kafei} text="腾讯Q币" />
-              <BusinessEntry to="" icon={kafei} text="视频VIP" />
-              <BusinessEntry to="" icon={kafei} text="电子卡券" />
-              <BusinessEntry to="" icon={kafei} text="信用卡还款" />
-              <BusinessEntry to="" icon={kafei} text="违章查询" />
-              <BusinessEntry to="" icon={kafei} text="双色球" />
-              <BusinessEntry to="" icon={kafei} text="七乐彩" />
+              <BusinessEntry to="" icon={''} text="充话费" />
+              <BusinessEntry to="" icon={''} text="充流量" />
+              <BusinessEntry to="" icon={''} text="充油卡" />
+              <BusinessEntry to="" icon={''} text="腾讯Q币" />
+              <BusinessEntry to="" icon={''} text="视频VIP" />
+              <BusinessEntry to="" icon={''} text="电子卡券" />
+              <BusinessEntry to="" icon={''} text="信用卡还款" />
+              <BusinessEntry to="" icon={''} text="违章查询" />
+              <BusinessEntry to="" icon={''} text="双色球" />
+              <BusinessEntry to="" icon={''} text="七乐彩" />
             </div>
           </LayoutMain>
         </LayoutGroup>

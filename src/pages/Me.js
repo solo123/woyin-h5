@@ -111,7 +111,7 @@ class Me extends Component {
             </LayoutItem>
             <LayoutItem>
               <LayoutCell>
-                <StyledLabel>姓名</StyledLabel>
+                <StyledLabel>手机号</StyledLabel>
               </LayoutCell>
               <LayoutCell>
                 15014095291
