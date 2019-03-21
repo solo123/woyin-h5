@@ -29,6 +29,8 @@ import Home from './pages/Home'
 import Me from './pages/Me'
 import Login from './pages/Login'
 import Redeem from './pages/Redeem'
+import RedeemRecord from './pages/RedeemRecord'
+
 import BankcardList from './pages/BankcardList'
 import AddBankcard from './pages/AddBankcard'
 import RechargePhone from './pages/RechargePhone'
@@ -52,6 +54,9 @@ class App extends Component {
             <Auth path="/bankcard-list" component={BankcardList} />
             <Auth path="/bankcard-add" component={AddBankcard} />
 
+            <Auth path="/redeem" component={Redeem} />
+            <Auth path="/redeem-record" component={RedeemRecord} />
+
             <Auth path="/recharge-phone" component={RechargePhone} />
             <Auth path="/recharge-flow" component={RechargeFlow} />
             <Auth path="/recharge-oil" component={RechargeOil} />
@@ -66,7 +71,6 @@ class App extends Component {
             <Auth path="/add-vehicle" component={AddVehicle} />
             <Auth path="/double-color-ball" component={DoubleColorBall} />
             
-            <Auth path="/redeem" component={Redeem} />
             <Auth path="/transfer" component={Transfer} />
             <Route path="/cate" component={Cate} />
             <Route path="/product" component={Product} />

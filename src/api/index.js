@@ -109,6 +109,9 @@ export default {
   sendMsgCode(phone) {
     return this.get('sendMsgCode', {phone})
   },
+  getRedeemRecordByStatus(status) {
+  return this.get('getRedeemRecordByStatus', {status})
+  },
   // 登录流程短信验证码
   sendMessageCode() {
     return this.get('sendMessageCode')

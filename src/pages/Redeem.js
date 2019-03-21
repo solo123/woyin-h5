@@ -16,9 +16,6 @@ import arrowRightIcon from '../asset/images/icon/arrow_right.svg'
 import checkedIcon from '../asset/images/icon/checked.png'
 import uncheckedIcon from '../asset/images/icon/unchecked.svg'
 
-
-
-
 const Button = styled.button`
   border: 0;
   padding: 0;

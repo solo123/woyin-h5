@@ -437,6 +437,20 @@ Mock.mock(/getRedeemFee/, 'get', function(options){
   }
 })
 
+// 获取积分赎回记录
+Mock.mock(/getRedeemRecordByStatus/, 'get', function(options){
+  const status = util.parseUrl(options.url, 'status').status;
+  console.log('getRedeemRecordByStatus', status)
+  return {
+    code: '1',
+    items: [
+      {id: uuid(), integral: '10000', serviceCharge: '100', timestamp: new Date().getTime()},
+      {id: uuid(), integral: '10000', serviceCharge: '100', timestamp: new Date().getTime()},
+      {id: uuid(), integral: '10000', serviceCharge: '100', timestamp: new Date().getTime()}
+    ]
+  }
+})
+
 // 发送短信验证码（积分赎回流程）
 Mock.mock(/sendMsgCode/, 'get', function(options){
   return {
