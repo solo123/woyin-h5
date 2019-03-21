@@ -17,14 +17,11 @@
 - [x] 严选购买流程
 - [x] 将双色球弹层改成当前组件的路由弹层 https://reacttraining.com/react-router/web/example/modal-gallery
 - [x] 封装一个Operator组件
-- [ ] 弹层组件
 - [ ] shouldComponentUpdate的应用
-- [ ] 引入rem
-- [ ] 以上对路由的淡出淡出可能会与rem冲突 需解决
-- [ ] 给订单页不同状态作为一个swiper使其能够左右滑动
 - [ ] 中石化和中石油切换类型是需要同时更新输入框的placeholder内容
 - [ ] 各充值页面需要显示用户可用积分
 - [ ] 重试交易密码的确认框按钮文字要修改
+- [ ] 组件卸载时清除异步请求和定时器
 
 
 ### 初始登录需拉取的数据
