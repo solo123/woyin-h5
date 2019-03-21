@@ -130,7 +130,7 @@ class RechargeQB extends Component {
     this.loadProdcuts = this.loadProdcuts.bind(this)
     this.selectProduct = this.selectProduct.bind(this)
 
-    this.nextStep = this.nextStep.bind(this)
+    this.checkTransPswd = this.checkTransPswd.bind(this)
     this.submitRecharge = this.submitRecharge.bind(this)
     this.retryPaymentPswd = this.retryPaymentPswd.bind(this)
 
@@ -189,12 +189,12 @@ class RechargeQB extends Component {
         if(!inputElem.value) {
           return false
         }
-        this.nextStep()
+        this.checkTransPswd()
       }
     })
   }
 
-  nextStep() {
+  checkTransPswd() {
     const loading = weui.loading('处理中')
     api.confirmTransPswd()
       .then(res => {

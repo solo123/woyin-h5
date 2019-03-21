@@ -125,12 +125,30 @@ class Me extends Component {
                 </Link>
               </LayoutCell>
             </LayoutItem>
+          </StyledBg>
+        </LayoutBtnBox>
+
+        <LayoutBtnBox>
+          <StyledTitle>记录相关</StyledTitle>
+        </LayoutBtnBox>
+        <LayoutBtnBox>
+          <StyledBg>
             <LayoutItem>
               <LayoutCell>
                 <StyledLabel>积分赎回记录</StyledLabel>
               </LayoutCell>
               <LayoutCell>
                 <Link to="/redeem-record">
+                  <StyledArrow src={arrowIcon} />
+                </Link>
+              </LayoutCell>
+            </LayoutItem>            
+            <LayoutItem>
+              <LayoutCell>
+                <StyledLabel>我的订单</StyledLabel>
+              </LayoutCell>
+              <LayoutCell>
+                <Link to="/order">
                   <StyledArrow src={arrowIcon} />
                 </Link>
               </LayoutCell>

@@ -1,3 +1,5 @@
+import weui from 'weui.js'
+
 const refreshTokenIsValid = (refreshToken) => {
   return true;
 }
@@ -185,6 +187,22 @@ const parseCreditcardList = function(arr) {
 }
 
 
+const confirmRetry = function(content, cb) {
+  weui.confirm(content, {
+      buttons: [{
+        label: '取消',
+        type: 'default'
+      }, {
+        label: '重试',
+        type: 'primary',
+        onClick: function(){
+          cb && cb()
+        }
+      }]
+  })
+}
+
+
 export default {
   accessTokenIsValid,
   refreshTokenIsValid,
@@ -195,5 +213,6 @@ export default {
   paymentConfirm,
   parseBankcardList,
   parseCreditcardList,
-  getBankcardLastNum: getLastNum
+  getBankcardLastNum: getLastNum,
+  confirmRetry: confirmRetry
 };

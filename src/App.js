@@ -5,7 +5,6 @@ import './App.css'
 
 import Loading from './common/Loading'
 import Auth from './common/Auth'
-import Order from './components/Order'
 import Transfer from './components/Transfer'
 
 import Cate from './components/Cate'
@@ -31,6 +30,9 @@ import Login from './pages/Login'
 import Redeem from './pages/Redeem'
 import RedeemRecord from './pages/RedeemRecord'
 
+import Order from './pages/Order'
+
+
 import BankcardList from './pages/BankcardList'
 import AddBankcard from './pages/AddBankcard'
 import RechargePhone from './pages/RechargePhone'
@@ -48,7 +50,6 @@ class App extends Component {
           <Switch>
             <Route path="/" exact component={Home} />
             <Route path="/login" component={Login} />
-            <Auth path="/order" component={Order} />
 
             <Auth path="/me" component={Me} />
             <Auth path="/bankcard-list" component={BankcardList} />
@@ -56,6 +57,8 @@ class App extends Component {
 
             <Auth path="/redeem" component={Redeem} />
             <Auth path="/redeem-record" component={RedeemRecord} />
+
+            <Auth path="/order" component={Order} />
 
             <Auth path="/recharge-phone" component={RechargePhone} />
             <Auth path="/recharge-flow" component={RechargeFlow} />

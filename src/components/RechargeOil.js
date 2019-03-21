@@ -160,7 +160,7 @@ class RechargeOil extends Component {
     super(props)
 
     this.reset = this.reset.bind(this)
-    this.nextStep = this.nextStep.bind(this)
+    this.checkTransPswd = this.checkTransPswd.bind(this)
     this.retryPaymentPswd = this.retryPaymentPswd.bind(this)
     this.handleSwitch = this.handleSwitch.bind(this)
     this.selectProduct = this.selectProduct.bind(this)
@@ -223,7 +223,7 @@ class RechargeOil extends Component {
     })    
   }
 
-  nextStep() {
+  checkTransPswd() {
     const loading = weui.loading('处理中')
     api.confirmTransPswd()
       .then(res => {
@@ -273,7 +273,7 @@ class RechargeOil extends Component {
         if(!inputElem.value) {
           return false
         }
-        this.nextStep()
+        this.checkTransPswd()
       }
     })
   }

@@ -129,9 +129,9 @@ Mock.mock(/confirmTransPswd/, 'post', function(options){
       code: '1',
       msg: ''
     }
-  }else {
+  }else{
     return {
-      code: '0',
+      code: '2',
       msg: '交易密码错误'
     }
   }
@@ -145,7 +145,7 @@ Mock.mock(/rechargePhone/, 'get', function(options){
   }
 })
 
-// 话费充值
+// 流量充值
 Mock.mock(/rechargeFlow/, 'get', function(options){
   return {
     code: '1',
@@ -218,7 +218,7 @@ Mock.mock(/transfer/, 'post', function(options){
   // }
 })
 
-// 积分转赠
+// 登录
 Mock.mock(/login/, 'post', function(options){
   const data = JSON.parse(options.body)
   switch(data.type) {
@@ -226,6 +226,7 @@ Mock.mock(/login/, 'post', function(options){
       if(data.username === '15014095291' && data.password === '000000') {
         return {
           code: '1',
+          token: 'sdgsgdggadsgfsfasfasfasfasfd',
           msg: '登录成功'
         }
       }else {
@@ -247,8 +248,16 @@ Mock.mock(/login/, 'post', function(options){
   }
 })
 
+// 获取用户总积分
+Mock.mock(/getUserIntegral/, 'get', function(options){
+  return {
+    code: '1',
+    integral: 50000
+  }
+})
 
-// 积分转赠
+
+// 获取电子卡券列表
 Mock.mock(/getECardList/, 'get', function(options){
   // return {
   //   code: '1',
@@ -464,5 +473,30 @@ Mock.mock(/sendMessageCode/, 'get', function(options){
   return {
     code: '1',
     msg: '短信已发送'
+  }
+})
+
+// 获取订单列表
+// 标题
+// 状态
+// 时间
+// 积分
+// 类型（判断图标）
+Mock.mock(/getOrderList/, 'get', function(options){
+  const status = util.parseUrl(options.url, 'status').status
+  const page = util.parseUrl(options.url, 'page').page
+  console.log(`getOrderList status:${status} page:${page}`)
+  return {
+    code: '1',
+    items: [
+      {id: uuid()},
+      {id: uuid()},
+      {id: uuid()},
+      {id: uuid()},
+      {id: uuid()},
+      {id: uuid()},
+      {id: uuid()},
+      {id: uuid()}
+    ]
   }
 })

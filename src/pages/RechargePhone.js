@@ -5,7 +5,7 @@ import weui from 'weui.js'
 
 import api from '../api'
 import util from '../util'
-import SkeletonPlaceholder from '../common/SkeletonPlaceholder'
+import ProductSkeleton from '../common/ProductSkeleton'
 import EmptyArrayPlaceholder from '../common/EmptyArrayPlaceholder'
 import Backhome from '../common/Backhome'
 
@@ -39,24 +39,24 @@ const StyledNav = styled.ul`
   background: #fff;
   li{
     position: relative;
+    flex: 1;
     height: 60px;
     line-height: 60px;
-    flex: 1;
     text-align: center;
     &.active{
+      color: #3b8afc;
       font-size: 16px;
       font-weight: bold;
       &:after{
         position: absolute;
         left: 50%;
-        bottom: 10px;
+        bottom: 15px;
         transform: translate(-50%);
         content: '';
         display: block;
-        height: 5px;
-        border-radius: 5px;
-        width: 20px;
-        background: -webkit-linear-gradient(47deg,#4cadff,#8ce0ff);
+        height: 2px;
+        width: 60px;
+        background: #3b8afc;
       }
     }
   }
@@ -163,12 +163,11 @@ export default class extends Component {
 
   reset = () => {
     this.setState({selectId: ''}, () => {
-      this.updateButtonStatus()
+      this.updateBtnStatus()
     })
   }
 
-  toggleType = e => {
-    const type = e.currentTarget.getAttribute('data-type')
+  handleToggleType = type => {
     this.reset()
     this.setState({type}, () => {
       this.loadProdcuts(type)
@@ -177,13 +176,13 @@ export default class extends Component {
 
   selectProduct = (selectId) => {
     this.setState({selectId}, () => {
-      this.updateButtonStatus()
+      this.updateBtnStatus()
     })
   }
 
   handleChange = e => {
     this.setState({phone: e.target.value}, () => {
-      this.updateButtonStatus()
+      this.updateBtnStatus()
     })
   }
 
@@ -197,12 +196,12 @@ export default class extends Component {
         if(!inputElem.value) {
           return false
         }
-        this.nextStep()
+        this.checkTransPswd()
       }
     })
   }
 
-  nextStep = e => {
+  checkTransPswd = e => {
     const loading = weui.loading('处理中')
     api.confirmTransPswd()
       .then(res => {
@@ -210,7 +209,7 @@ export default class extends Component {
         if(data.code === '1') {
           this.submitRecharge()
         }else if(data.code === '2'){
-          weui.confirm(data.msg, () => {
+          util.confirmRetry(data.msg, () => {
             this.retryPaymentPswd()
           })
         }else {
@@ -247,7 +246,7 @@ export default class extends Component {
     this.handleSubmit()
   }
 
-  updateButtonStatus = () => {
+  updateBtnStatus = () => {
     if(this.state.phone && this.state.selectId) {
       this.setState({pass: true})
     }else {
@@ -272,9 +271,9 @@ export default class extends Component {
     return (
       <div>
         <StyledNav>
-          <li className={classnames({'active': type === CMCC })} onClick={this.toggleType} data-type={CMCC}>中国移动</li>
-          <li className={classnames({'active': type === CUCC })} onClick={this.toggleType} data-type={CUCC}>中国联通</li>
-          <li className={classnames({'active': type === CTCC })} onClick={this.toggleType} data-type={CTCC}>中国电信</li>
+          <li className={classnames({'active': type === CMCC })} onClick={() => this.handleToggleType(CMCC)}>中国移动</li>
+          <li className={classnames({'active': type === CUCC })} onClick={() => this.handleToggleType(CUCC)}>中国联通</li>
+          <li className={classnames({'active': type === CTCC })} onClick={() => this.handleToggleType(CTCC)}>中国电信</li>
         </StyledNav>
 
         <StyledMain>
@@ -292,7 +291,7 @@ export default class extends Component {
 
           <h2 className="u_m_xx">请选择面值</h2>
           {loading
-            ? <SkeletonPlaceholder /> 
+            ? <ProductSkeleton /> 
             : (list.length ? <LayoutItems>{list}</LayoutItems> : <EmptyArrayPlaceholder />)}
           <div className="u_p_xxx">
             {pass
