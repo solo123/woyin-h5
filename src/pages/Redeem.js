@@ -5,6 +5,7 @@ import {Link} from 'react-router-dom'
 
 import api from '../api'
 import util from '../util'
+import {replace} from '../services/redirect'
 
 import Backhome from '../common/Backhome'
 
@@ -206,7 +207,7 @@ const SendMessageBtn = ({flag, timer, handleClick}) => {
 class Redeem extends Component {
   state = {
     integral: '',
-
+    availableIntegral: 0,
 
     smsCode: '',
 
@@ -242,6 +243,13 @@ class Redeem extends Component {
       })
       .then(() => {
         this.setState({loading: false})
+      })
+    api.getUserIntegral()
+      .then(res => {
+        const {data} = res
+        if(data.code === '1') {
+          this.setState({availableIntegral: data.integral})
+        }
       })
   }
 
@@ -318,6 +326,61 @@ class Redeem extends Component {
   }
 
   handleSubmit = e => {
+    util.paymentConfirm({
+      title: '充值',
+      subtitle: '壹企服',
+      amount: this.state.integral,
+      useable: this.state.availableIntegral,
+      callback: (e, inputElem) => {
+        if(!inputElem.value) {
+          return false
+        }
+        this.checkTransPswd(inputElem.value)
+      }
+    })
+  }
+
+  submitRedeem = () => {
+    const loading = weui.loading('处理中')
+    api.redeemIntegral(this.state.integral)
+      .then(res => {
+        const {data} = res
+        if(data.code === '1') {
+          weui.alert(data.msg, () => {
+            replace('/redeem-record')
+          })
+        }else {
+          weui.alert(data.msg)
+        }
+      })
+      .then(() => {
+        loading.hide()
+      })    
+  }
+
+  checkTransPswd = pswd => {
+    const loading = weui.loading('处理中')
+    api.confirmTransPswd(pswd)
+      .then(res => {
+        const {data} = res
+        if(data.code === '1') {
+          this.submitRedeem()
+        }else if(data.code === '2'){
+          util.confirmRetry(data.msg, () => {
+            this.retryTransPswd()
+          })
+        }else {
+          weui.alert(data.msg)
+        }
+      })
+      .then(() => {
+        loading.hide()
+      })
+  }
+
+  // 重试交易密码
+  retryTransPswd = () => {
+    this.handleSubmit()
   }
 
   countDown = () => {

@@ -124,6 +124,7 @@ Mock.mock(/getRechargeFlowProductsByType/, 'get', function(options){
 // 校验交易密码
 Mock.mock(/confirmTransPswd/, 'post', function(options){
   const data = JSON.parse(options.body)
+  console.log('confirmTransPswd', data)
   if(data.pswd === '000000') {
     return {
       code: '1',
@@ -252,7 +253,7 @@ Mock.mock(/login/, 'post', function(options){
 Mock.mock(/getUserIntegral/, 'get', function(options){
   return {
     code: '1',
-    integral: 50000
+    integral: 57000
   }
 })
 
@@ -443,6 +444,16 @@ Mock.mock(/getRedeemFee/, 'get', function(options){
     redeemFee: 0,
     deductIntegral: result.integral,
     actualReceived: result.integral / 100
+  }
+})
+
+// 发起积分赎回
+Mock.mock(/redeemIntegral/, 'post', function(options){
+  const data = JSON.parse(options.body)
+  console.log('redeemIntegral', data)
+  return {
+    code: '1',
+    msg: '积分赎回申请成功'
   }
 })
 

@@ -5,6 +5,7 @@ import weui from 'weui.js'
 
 import api from '../api'
 import util from '../util'
+import {replace} from '../services/redirect'
 import ProductSkeleton from '../common/ProductSkeleton'
 import EmptyArrayPlaceholder from '../common/EmptyArrayPlaceholder'
 import Backhome from '../common/Backhome'
@@ -116,12 +117,12 @@ const LayoutItems = styled.div`
   margin: 0 10px;
 `
 
-const Item = ({id, selectId, money, integral, clickHandle}) => {
+const Item = ({id, selectId, money, integral, handleClick}) => {
   return (
     <LayoutItem>
       <StyledItem 
         className={classnames({'active': id === selectId})}
-        onClick={() => clickHandle(id)}>
+        onClick={() => handleClick(id, integral)}>
         <div className="money">{money}元</div>
         <div className="integral">{integral}积分</div>
       </StyledItem>
@@ -140,10 +141,20 @@ export default class extends Component {
     items: [],
     phone: '',
     selectId: '',
-    type: CMCC
+    
+    type: CMCC,
+    integral: 0,
+    availableIntegral: 0
   }
 
   componentDidMount() {
+    api.getUserIntegral()
+      .then(res => {
+        const {data} = res
+        if(data.code === '1') {
+          this.setState({availableIntegral: data.integral})
+        }
+      })
     this.loadProdcuts(this.state.type)
   }
 
@@ -174,8 +185,8 @@ export default class extends Component {
     })
   }
 
-  selectProduct = (selectId) => {
-    this.setState({selectId}, () => {
+  selectProduct = (selectId, integral) => {
+    this.setState({selectId,integral}, () => {
       this.updateBtnStatus()
     })
   }
@@ -190,27 +201,27 @@ export default class extends Component {
     util.paymentConfirm({
       title: '充值',
       subtitle: '壹企服',
-      amount: 3000,
-      useable: 5000000,
+      amount: this.state.integral,
+      useable: this.state.availableIntegral,
       callback: (e, inputElem) => {
         if(!inputElem.value) {
           return false
         }
-        this.checkTransPswd()
+        this.checkTransPswd(inputElem.value)
       }
     })
   }
 
-  checkTransPswd = e => {
+  checkTransPswd = pswd => {
     const loading = weui.loading('处理中')
-    api.confirmTransPswd()
+    api.confirmTransPswd(pswd)
       .then(res => {
         const {data} = res
         if(data.code === '1') {
           this.submitRecharge()
         }else if(data.code === '2'){
           util.confirmRetry(data.msg, () => {
-            this.retryPaymentPswd()
+            this.retryTransPswd()
           })
         }else {
           weui.alert(data.msg)
@@ -229,7 +240,9 @@ export default class extends Component {
       .then(res => {
         const {data} = res
         if(data.code === '1') {
-          weui.alert(data.msg)
+          weui.alert(data.msg, () => {
+            replace('/order')
+          })
         }else {
           weui.alert(data.msg)
         }
@@ -237,12 +250,10 @@ export default class extends Component {
       .then(() => {
         loading.hide()
       })
-      .catch(err => {
-      })
   }
 
   // 重试交易密码
-  retryPaymentPswd = () => {
+  retryTransPswd = () => {
     this.handleSubmit()
   }
 
@@ -264,7 +275,7 @@ export default class extends Component {
         selectId={selectId}
         money={item.money}
         integral={item.integral}
-        clickHandle={this.selectProduct}
+        handleClick={this.selectProduct}
       />
     ))
 

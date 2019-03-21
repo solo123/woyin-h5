@@ -109,6 +109,9 @@ export default {
   sendMsgCode(phone) {
     return this.get('sendMsgCode', {phone})
   },
+  redeemIntegral(integral) {
+    return this.post('redeemIntegral', {integral})
+  },
   getRedeemRecordByStatus(status) {
   return this.get('getRedeemRecordByStatus', {status})
   },
@@ -147,5 +150,9 @@ export default {
   // 获取违章记录
   getViolationList() {
     return this.get('getViolationList')
+  },
+  // 获取用户可用积分
+  getUserIntegral() {
+    return this.get('getUserIntegral')
   }
 };

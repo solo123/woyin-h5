@@ -4,15 +4,16 @@ import classNames from 'classnames'
 
 import api from '../api'
 import SkeletonPlaceholder from '../common/SkeletonPlaceholder'
+import Backhome from '../common/Backhome'
 
-const LayoutFixedTop = styled.div`
-  position: fixed;
+const LayoutPageContianer = styled.div`
+  position: absolute;
+  top: 0;
   left: 0;
   right: 0;
-  top: 0;
-`
-const LayoutPageContianer = styled.div`
-  padding-top: 60px;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
 `
 const LayoutMain = styled.div`
   flex-shrink: 1;
@@ -24,6 +25,7 @@ const LayoutItems = styled.div`
 `
 const StyledNav = styled.ul`
   display: flex;
+  flex-shrink: 0;
   line-height: 60px;
   background: #fff;
   li{
@@ -81,7 +83,7 @@ class Order extends Component {
     const docHeight = this.itemsElem.offsetHeight
 
     if((scrollTop + winHeight) >= docHeight){
-      this.setState({ isLoad: true })
+      this.setState({isLoad: true})
       this.loadNextPage(this.state.status, ++currentPage)
     }
   }
@@ -101,6 +103,7 @@ class Order extends Component {
           const {data} = res
           if(data.code === '1'){
             this.setState({
+              isLoad: false,
               items: [...this.state.items, ...data.items]
             })
           }
@@ -132,13 +135,11 @@ class Order extends Component {
 
     return (
       <LayoutPageContianer>
-        <LayoutFixedTop>
-          <StyledNav>
-            <li className={classNames({active: status === '1'})} onClick={() => this.handleClick('1')}>处理中</li>
-            <li className={classNames({active: status === '2'})} onClick={() => this.handleClick('2')}>成功</li>
-            <li className={classNames({active: status === '3'})} onClick={() => this.handleClick('3')}>失败</li>
-          </StyledNav>
-        </LayoutFixedTop>
+        <StyledNav>
+          <li className={classNames({active: status === '1'})} onClick={() => this.handleClick('1')}>处理中</li>
+          <li className={classNames({active: status === '2'})} onClick={() => this.handleClick('2')}>成功</li>
+          <li className={classNames({active: status === '3'})} onClick={() => this.handleClick('3')}>失败</li>
+        </StyledNav>
 
         <LayoutMain ref={node => this.scrollContainer = node}>
           <main ref={node => this.itemsElem = node}>
@@ -146,6 +147,8 @@ class Order extends Component {
             {loading ? <SkeletonPlaceholder /> : null}            
           </main>
         </LayoutMain>
+
+        <Backhome />
       </LayoutPageContianer>
     )
   }
