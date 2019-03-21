@@ -10,6 +10,17 @@ import Menu from '../common/Menu'
 import EmptyArrayPlaceholder from '../common/EmptyArrayPlaceholder'
 import fenleiActive from '../asset/images/icon/fenlei_active.svg'
 
+import phoneIcon from '../asset/images/icon/phone.png'
+import flowIcon from '../asset/images/icon/flow.png'
+import oilIcon from '../asset/images/icon/oil.png'
+import videoIcon from '../asset/images/icon/video.png'
+import qqIcon from '../asset/images/icon/qq.png'
+import lotteryIcon from '../asset/images/icon/lottery.png'
+import sevenLotteryIcon from '../asset/images/icon/seven_lottery.png'
+import ecardIcon from '../asset/images/icon/ecard.png'
+import creditCardIcon from '../asset/images/icon/credit_card.png'
+import carIcon from '../asset/images/icon/car.png'
+
 const LayoutPageContianer = styled.div`
   padding-bottom: 50px;
 `
@@ -28,7 +39,7 @@ const LayoutNav = styled.div`
   width: 25%;
 `
 const LayoutNavInner = styled.div`
-  margin: 5px;
+  margin: 5px 0;
   text-align: center;
 `
 const StyledTitle = styled.h2`
@@ -96,8 +107,8 @@ const BusinessEntry = ({to, icon, text}) => (
   <LayoutNav>
     <LayoutNavInner>
       <Link to={to}>
-        <img style={{width: 30, height: 30, marginBottom: 5}} src={icon} alt=""/>
-        <div style={{fontSize: 12}}>{text}</div>
+        <img style={{width: 40, height: 40, marginBottom: 5}} src={icon} alt=""/>
+        <div style={{fontSize: 12, color: '#444'}}>{text}</div>
       </Link>
     </LayoutNavInner>
   </LayoutNav>
@@ -240,16 +251,16 @@ class Home extends Component {
           </LayoutHead>
           <LayoutMain>
             <div style={{display: 'flex', flexWrap: 'wrap'}}>
-              <BusinessEntry to="/recharge-phone" icon={fenleiActive} text="充话费" />
-              <BusinessEntry to="" icon={fenleiActive} text="充流量" />
-              <BusinessEntry to="" icon={fenleiActive} text="充油卡" />
-              <BusinessEntry to="" icon={fenleiActive} text="腾讯Q币" />
-              <BusinessEntry to="" icon={fenleiActive} text="视频VIP" />
-              <BusinessEntry to="" icon={fenleiActive} text="电子卡券" />
-              <BusinessEntry to="" icon={fenleiActive} text="信用卡还款" />
-              <BusinessEntry to="" icon={fenleiActive} text="违章查询" />
-              <BusinessEntry to="" icon={fenleiActive} text="双色球" />
-              <BusinessEntry to="" icon={fenleiActive} text="七乐彩" />
+              <BusinessEntry to="/recharge-phone" icon={phoneIcon} text="充话费" />
+              <BusinessEntry to="" icon={flowIcon} text="充流量" />
+              <BusinessEntry to="" icon={oilIcon} text="充油卡" />
+              <BusinessEntry to="" icon={qqIcon} text="腾讯Q币" />
+              <BusinessEntry to="" icon={videoIcon} text="视频VIP" />
+              <BusinessEntry to="" icon={ecardIcon} text="电子卡券" />
+              <BusinessEntry to="" icon={creditCardIcon} text="信用卡还款" />
+              <BusinessEntry to="" icon={carIcon} text="违章查询" />
+              <BusinessEntry to="" icon={lotteryIcon} text="双色球" />
+              <BusinessEntry to="" icon={sevenLotteryIcon} text="七乐彩" />
             </div>
           </LayoutMain>
         </LayoutGroup>

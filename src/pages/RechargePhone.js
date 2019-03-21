@@ -3,10 +3,11 @@ import styled from 'styled-components'
 import classnames from 'classnames'
 import weui from 'weui.js'
 
-import SkeletonPlaceholder from '../common/SkeletonPlaceholder'
-import EmptyArrayPlaceholder from '../common/EmptyArrayPlaceholder'
 import api from '../api'
 import util from '../util'
+import SkeletonPlaceholder from '../common/SkeletonPlaceholder'
+import EmptyArrayPlaceholder from '../common/EmptyArrayPlaceholder'
+import Backhome from '../common/Backhome'
 
 const Button = styled.button`
   outline: none;
@@ -300,6 +301,8 @@ export default class extends Component {
             }
           </div>
         </StyledMain>
+
+        <Backhome />
       </div>
     )
   }

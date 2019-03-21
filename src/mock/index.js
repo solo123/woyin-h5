@@ -153,6 +153,15 @@ Mock.mock(/rechargeFlow/, 'get', function(options){
   }
 })
 
+// 添加银行卡/信用卡
+Mock.mock(/addBankcard/, 'post', function(options){
+  console.log('addBankcard', options.body)
+  return {
+    code: '1',
+    msg: '添加成功'
+  }
+})
+
 // 获取银行卡
 Mock.mock(/getBankcardList/, 'get', function(options){
   // return {

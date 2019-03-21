@@ -80,6 +80,7 @@ body {
   margin: 0 auto;
   line-height: 1.5;
   background: #f7f7f8;
+  color: #444;
   font-size: 14px;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen",
     "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
@@ -324,9 +325,12 @@ img {
   animation: modal-fadeOut ease .3s forwards
 }
 
-/* 优化weui样式 */
+/* 重写weui样式 */
 
 .weui-picker__hd{
   padding: 12px 15px;
   font-size: 14px;
+}
+.weui-dialog__btn_primary{
+  color: #3b8afc;
 }

@@ -21,8 +21,8 @@ const PrimaryBtn = styled(Button)`
   font-weight: bold;
   line-height: 50px;
   border-radius: 3px;
-  box-shadow: 0 3px 5px rgba(207, 162, 95, .58);
-  background: -webkit-linear-gradient(47deg, #c89850, #e1c38c);
+  box-shadow: 0 3px 5px rgba(76, 173, 255, .54);
+  background: -webkit-linear-gradient(47deg,#4cadff,#8ce0ff);
 `
 const Input = styled.input`
   border: 0;
@@ -102,48 +102,37 @@ const SubmitBtn = ({pass, onSubmit}) => {
 class AddBankcard extends Component {
   state = {
     pass: false,
-    province: '粤',
-    provinceViewFlag: false,
-    vehicleNo: '',
-    vehicleNoCleanView: false,
-    vehicleType: '',
-    vehicleVin: '',
-    vehicleVinCleanView: false,
-    engineNo: '',
-    engineNoCleanView: false,
-    ownerName: '',
-    ownerNameCleanView: false
+
+    username: '',
+    usernameCleanViewFlag: false,
+    id: '',
+    idCleanViewFlag: false,
+    cardNo: '',
+    cardNoCleanViewFlag: false,
+    phone: '',
+    phoneCleanViewFlag: false
   }
 
   check = () => {
-    const {
-      vehicleNo, 
-      vehicleType, 
-      vehicleVin, 
-      engineNo, 
-      ownerName
-    } = this.state
+    const {username, id, cardNo, phone} = this.state
     let flag = true
 
-    if(!vehicleNo) {
+    if(!username) {
       flag = false
     }
-    if(!vehicleType) {
+    if(!id) {
       flag = false
     }
-    if(!vehicleVin) {
+    if(!cardNo) {
       flag = false
     }
-    if(!engineNo) {
-      flag = false
-    }
-    if(!ownerName) {
+    if(!phone) {
       flag = false
     }
     return flag
   }
 
-  updateSumbitBtnStatus = () => {
+  updateBtnStatus = () => {
     if(this.check()) {
       this.setState({pass: true})
     }else {
@@ -157,19 +146,19 @@ class AddBankcard extends Component {
 
   handleChange = (e) => {
     this.setState({[e.target.name]: e.target.value}, () => {
-      this.updateSumbitBtnStatus()
+      this.updateBtnStatus()
     })
   }
 
   handleFocus = (e) => {
-    this.setState({[`${e.target.name}CleanView`]: true})
+    this.setState({[`${e.target.name}CleanViewFlag`]: true})
   }
 
   handleBlur = (e) => {
-    const key =`${e.target.name}CleanView`
+    const key =`${e.target.name}CleanViewFlag`
     setTimeout(() => {
       this.setState({[key]: false}, () => {
-        this.updateSumbitBtnStatus()
+        this.updateBtnStatus()
       })
     }, 100)
   }
@@ -177,17 +166,16 @@ class AddBankcard extends Component {
   handleSubmit = () => {
     const loading = weui.loading('处理中')
     api.addBankcard({
-        vehicleNo: this.state.province + this.state.vehicleNo,
-        vehicleType: this.state.vehicleType,
-        vehicleVin: this.state.vehicleVin,
-        engineNo: this.state.engineNo,
-        ownerName: this.state.ownerName
+        username: this.state.username,
+        id: this.state.id,
+        cardNo: this.state.cardNo,
+        phone: this.state.phone
       })
       .then(res => {
         const {data} = res
         if(data.code === '1') {
           weui.alert(data.msg, () => {
-            push('/violation')
+            push('/bankcard-list')
           })
         }else {
           weui.alert(data.msg)
@@ -200,34 +188,35 @@ class AddBankcard extends Component {
 
   render() {
     const {
-      vehicleNoCleanView,
-      vehicleVinCleanView,
-      engineNoCleanView,
-      ownerNameCleanView
+      usernameCleanViewFlag,
+      idCleanViewFlag,
+      cardNoCleanViewFlag,
+      phoneCleanViewFlag
     } = this.state
 
     return (
       <div>
         <LayoutBox>
+          <h2 className="u_my_xxx u_fs_xxx">请填写本人信息</h2>
           <StyledBg>
             <LayoutGroup>
               <LayoutBody>
                 <PrimaryInput 
                   type="text" 
-                  name="vehicleNo" 
-                  value={this.state.vehicleNo} 
+                  name="username" 
+                  value={this.state.username} 
                   onChange={this.handleChange} 
                   onFocus={this.handleFocus}
                   onBlur={this.handleBlur}
-                  placeholder="请输入车牌号"
+                  placeholder="请输入姓名"
                 />
               </LayoutBody>
               <LayoutFoot>
                 <StyledCleanIcon 
-                  style={{visibility: vehicleNoCleanView ? 'visible' : 'hidden'}} 
-                  onClick={() => this.handleClick('vehicleNo')}
+                  style={{visibility: usernameCleanViewFlag ? 'visible' : 'hidden'}} 
+                  onClick={() => this.handleClick('username')}
                   src={closeIcon} 
-                  alt=""
+                  alt="清空输入"
                 />
               </LayoutFoot>
             </LayoutGroup>
@@ -235,20 +224,20 @@ class AddBankcard extends Component {
               <LayoutBody>
                 <PrimaryInput 
                   type="text" 
-                  name="vehicleVin" 
-                  value={this.state.vehicleVin} 
+                  name="id" 
+                  value={this.state.id} 
                   onChange={this.handleChange} 
                   onFocus={this.handleFocus}
                   onBlur={this.handleBlur}
-                  placeholder="请确认发动机号后6位"
+                  placeholder="请输入身份证号"
                 />
               </LayoutBody>
               <LayoutFoot>
                 <StyledCleanIcon 
-                  style={{visibility: vehicleVinCleanView ? 'visible' : 'hidden'}}
-                  onClick={() => this.handleClick('vehicleVin')}
+                  style={{visibility: idCleanViewFlag ? 'visible' : 'hidden'}}
+                  onClick={() => this.handleClick('id')}
                   src={closeIcon} 
-                  alt="" 
+                  alt="清空输入" 
                 />
               </LayoutFoot>
             </LayoutGroup>
@@ -256,20 +245,20 @@ class AddBankcard extends Component {
               <LayoutBody>
                 <PrimaryInput 
                   type="text" 
-                  name="ownerName" 
-                  value={this.state.ownerName} 
+                  name="cardNo" 
+                  value={this.state.cardNo} 
                   onChange={this.handleChange} 
                   onFocus={this.handleFocus}
                   onBlur={this.handleBlur}
-                  placeholder="请输入车架号后6位"
+                  placeholder="请输入银行卡/信用卡号"
                 />
               </LayoutBody>
               <LayoutFoot>
                 <StyledCleanIcon 
-                  style={{visibility: ownerNameCleanView ? 'visible' : 'hidden'}} 
-                  onClick={() => this.handleClick('ownerName')}
+                  style={{visibility: cardNoCleanViewFlag ? 'visible' : 'hidden'}} 
+                  onClick={() => this.handleClick('cardNo')}
                   src={closeIcon} 
-                  alt="" 
+                  alt="清空输入" 
                 />
               </LayoutFoot>
             </LayoutGroup>            
@@ -277,20 +266,20 @@ class AddBankcard extends Component {
               <LayoutBody>
                 <PrimaryInput 
                   type="text" 
-                  name="engineNo" 
-                  value={this.state.engineNo} 
+                  name="phone" 
+                  value={this.state.phone} 
                   onChange={this.handleChange} 
                   onFocus={this.handleFocus}
                   onBlur={this.handleBlur}
-                  placeholder="请确认车主姓名"
+                  placeholder="请输入银行预留手机号"
                 />
               </LayoutBody>
               <LayoutFoot>
                 <StyledCleanIcon 
-                  style={{visibility: engineNoCleanView ? 'visible' : 'hidden'}} 
-                  onClick={() => this.handleClick('engineNo')}
+                  style={{visibility: phoneCleanViewFlag ? 'visible' : 'hidden'}} 
+                  onClick={() => this.handleClick('phone')}
                   src={closeIcon} 
-                  alt="" 
+                  alt="清空输入" 
                 />
               </LayoutFoot>
             </LayoutGroup>
