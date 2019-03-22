@@ -1,14 +1,31 @@
-import React, { Component } from 'react'
+import React from 'react'
 import styled from 'styled-components'
+
+const LayoutPage = styled.div`
+  display: flex;
+  margin: 0 5px;
+  .aside{
+    flex: 1;
+    background: #eaeaea;
+  }
+  .main{
+    flex: 1;
+    margin-left: 10px;
+  }
+  .cell{
+    height: 80px;
+    background: #eaeaea;
+  }
+`
 
 export default function() {
   return (
-    <div style={{display: 'flex', margin: '0 5px'}}>
-      <div style={{flex: '1', background: '#eaeaea'}}></div>
-      <div style={{flex: '1', marginLeft: 10}}>
-        <div style={{height: 80, background: '#eaeaea', marginBottom: 10}}></div>
-        <div style={{height: 80, background: '#eaeaea'}}></div>
+    <LayoutPage>
+      <div className="aside"></div>
+      <div className="main">
+        <div className="cell" style={{marginBottom: 10}}></div>
+        <div className="cell"></div>
       </div>
-    </div>
+    </LayoutPage>
   )
 }

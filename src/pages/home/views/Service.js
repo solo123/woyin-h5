@@ -13,38 +13,47 @@ import ecardIcon from '../../../asset/images/icon/ecard.png'
 import creditCardIcon from '../../../asset/images/icon/credit_card.png'
 import carIcon from '../../../asset/images/icon/car.png'
 
-const LayoutNav = styled.div`
-  width: 25%;
-`
-const LayoutNavInner = styled.div`
-  margin: 5px 0;
-  text-align: center;
+const LayoutPage = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  .item{
+    width: 25%;
+    margin: 5px 0;
+    text-align: center;
+  }
+  .icon{
+    width: 40px;
+    height: 40px;
+    margin-bottom: 5px;
+  }
+  .title{
+    color: #444;
+    font-size: 12px;
+  }
 `
 
-const BusinessEntry = ({to, icon, text}) => (
-  <LayoutNav>
-    <LayoutNavInner>
-      <Link to={to}>
-        <img style={{width: 40, height: 40, marginBottom: 5}} src={icon} alt=""/>
-        <div style={{fontSize: 12, color: '#444'}}>{text}</div>
-      </Link>
-    </LayoutNavInner>
-  </LayoutNav>
+const Item = ({to, icon, text}) => (
+  <div className="item">
+    <Link to={to}>
+      <img className="icon" src={icon} alt=""/>
+      <div className="title">{text}</div>
+    </Link>
+  </div>
 )
 
 export default function() {
   return (
-    <div style={{display: 'flex', flexWrap: 'wrap'}}>
-      <BusinessEntry to="/recharge-phone" icon={phoneIcon} text="充话费" />
-      <BusinessEntry to="" icon={flowIcon} text="充流量" />
-      <BusinessEntry to="" icon={oilIcon} text="充油卡" />
-      <BusinessEntry to="" icon={qqIcon} text="腾讯Q币" />
-      <BusinessEntry to="" icon={videoIcon} text="视频VIP" />
-      <BusinessEntry to="" icon={ecardIcon} text="电子卡券" />
-      <BusinessEntry to="" icon={creditCardIcon} text="信用卡还款" />
-      <BusinessEntry to="" icon={carIcon} text="违章查询" />
-      <BusinessEntry to="" icon={lotteryIcon} text="双色球" />
-      <BusinessEntry to="" icon={sevenLotteryIcon} text="七乐彩" />
-    </div>
+    <LayoutPage>
+      <Item to="/recharge-phone" icon={phoneIcon} text="充话费"/>
+      <Item to="" icon={flowIcon} text="充流量"/>
+      <Item to="" icon={oilIcon} text="充油卡"/>
+      <Item to="" icon={qqIcon} text="腾讯Q币"/>
+      <Item to="" icon={videoIcon} text="视频VIP"/>
+      <Item to="" icon={ecardIcon} text="电子卡券"/>
+      <Item to="" icon={creditCardIcon} text="信用卡还款"/>
+      <Item to="" icon={carIcon} text="违章查询"/>
+      <Item to="" icon={lotteryIcon} text="双色球"/>
+      <Item to="" icon={sevenLotteryIcon} text="七乐彩"/>
+    </LayoutPage>
   )
 }

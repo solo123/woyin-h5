@@ -25,34 +25,110 @@ const LayoutFixedBottom = styled.div`
   right: 0;
   bottom: 0;
 `
-const Button = styled.button`
-  border: 0;
-  padding: 0;
-  outline: none;
-  background: transparent;
-`
 const LayoutPage = styled.div`
   padding-bottom: 50px;
   .header{
     position: relative;
-    margin-bottom: 30px;
-
-    .cell{
-      width: 100px;
-      height: 40px;
-      text-align: center;
-      .icon{
-        width: 25px;
-        height: 25px;
-        margin-bottom: 5px;
+    background: #4ba3f8;
+    .wrap{
+      overflow: hidden;
+      padding: 20px 20px 0 20px;
+    }
+    .fixed{
+      position: absolute;
+      bottom: 0;
+    }
+    .fixed-btn-box{
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -15px;
+      z-index: 10;
+      display: flex;
+      justify-content: center;
+      .button{
+        border: 0;
+        padding: 0;
+        outline: none;
+        background: transparent;
+        display: flex;
+        align-items: center;
+        font-size: 16px;
+        padding: 0 30px;
+        line-height: 40px;
+        border-radius: 20px;
+        background: #fff;
+        box-shadow: 0 3px 5px rgba(76,173,255,.2);
+        .icon{
+          width: 16px;
+          height: 16px;
+          margin-right: 5px;
+        }
+      }  
+    }
+    .card{
+      color: #fff;
+      position: relative;
+      background: #5db4fb;
+      border-radius: 3px;
+      box-shadow: 0 24px 24px rgba(0, 0, 0, 0.3);
+      .head{
+        display: flex;
+        justify-content: space-between;
+        position: relative;
+        padding: 15px;
+        &:after{
+          content: "";
+          position: absolute;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          height: 1px;
+          background: #4ba2f7;
+        }
       }
-      .text{
-        font-size: 12px;
+      .body{
+        display: flex;
+        justify-content: space-around;
+        padding-top: 30px;
+        padding-bottom: 40px;
+        .cell{
+          width: 100px;
+          text-align: center;
+          .icon{
+            width: 25px;
+            height: 25px;
+            margin-bottom: 5px;
+          }
+          .text{
+            font-size: 12px;
+          }
+        }
+      }
+    }
+    .label{
+      color: #fff;
+      font-size: 12px;
+      padding: 3px 8px;
+      border-radius: 3px;
+      background: #ffb049;
+      margin-left: 5px;
+    }
+    .link{
+      display: flex;
+      align-items: center;
+      font-weight: bold;
+      font-size: 16px;
+      color: #fff;
+      img{
+        width: 20px;
+        height: 20px;
       }
     }
   }
+
   .section{
-    margin-bottom: 10px;
+    background: #f7f7f7;
     .head{
         padding: 10px;
         margin-bottom: 5px;
@@ -75,79 +151,6 @@ const LayoutPage = styled.div`
     .body{
       margin: 0 5px;
     }
-  }
-`
-
-const StyledHeader = styled.div`
-  color: #fff;
-  padding: 30px 30px 0 30px;
-  background: #4ba3f8;
-  .head{
-    position: relative;
-    display: flex;
-    justify-content: space-between;
-    padding: 15px;
-    &:after{
-      content: "";
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      height: 1px;
-      background: #4ba2f7;
-    }
-  }
-  .body{
-    display: flex;
-    justify-content: space-around;
-    padding: 15px 0 40px 0;
-  }
-  .btn-icon{
-    width: 16px;
-    height: 16px;
-    margin-right: 5px;
-  }
-  .label{
-    color: #fff;
-    font-size: 12px;
-    padding: 3px 8px;
-    border-radius: 3px;
-    background: #ffb049;
-    margin-left: 5px;
-    &:visited{
-      color: #fff;
-    }
-  }
-  .link{
-    display: flex;
-    align-items: center;
-    font-weight: bold;
-    font-size: 16px;
-    color: #fff;
-    img{
-      width: 20px;
-      height: 20px;
-    }
-  }
-  .card{
-    background: #5db4fb;
-    border-radius: 3px;
-    box-shadow: 0 24px 24px rgba(0, 0, 0, 0.1);
-  }
-  .button{
-    position: absolute;
-    bottom: -20px;
-    left: 50%;
-    z-index: 10;
-    transform: translateX(-50%);
-    display: flex;
-    align-items: center;
-    font-size: 16px;
-    padding: 0 30px;
-    line-height: 40px;
-    border-radius: 20px;
-    background: #fff;
-    box-shadow: 0 3px 5px rgba(76,173,255,.2);
   }
 `
 
@@ -189,13 +192,6 @@ class Home extends Component {
       })      
   }
 
-  handleLogout = () => {
-    weui.confirm('是否退出当前账号？', () => {
-      this.props.logout()
-      replace('/login')
-    })
-  }
-
   render() {
     const {loading, items, availableIntegral} = this.state
     const {isAuthenticated} = this.props
@@ -204,16 +200,16 @@ class Home extends Component {
       <LayoutPage>
 
         <div className="header">
-          <StyledHeader>
+          <div className="wrap">
             <div className="card">
               <div className="head">
-                <Auth 
+                <Auth
                   isAuthenticated={isAuthenticated} 
                   availableIntegral={availableIntegral}
                 />
                 <div>
                   <Link className="label" to="/redeem">赎回</Link>
-                  <Link className="label" to="/redeem">转赠</Link>
+                  <Link className="label" to="/">转赠</Link>
                 </div>
               </div>
               <div className="body">
@@ -226,10 +222,16 @@ class Home extends Component {
                   <p className="text">电子积分券</p>
                 </div>
               </div>
-              <Button className="button"><img className="btn-icon" src={listIcon} alt=""/>随心换购</Button>
             </div>
-          </StyledHeader>
-          <img style={{position: 'absolute', bottom: -35}} src={pedestalBg} alt=""/>
+            <div className="fixed-btn-box">
+              <button className="button">
+                <img className="icon" src={listIcon} alt=""/>随心换购
+              </button>              
+            </div>
+          </div>
+          <div className="fixed">
+            <img src={pedestalBg} alt=""/>
+          </div>
         </div>
 
         <div className="section">
@@ -269,10 +271,4 @@ const mapStateToProps = state => {
   return {isAuthenticated: state.auth.isAuthenticated}
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    logout: () => dispatch({type: 'UNAUTH_USER'})
-  }
-}
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Home))
+export default withRouter(connect(mapStateToProps, null)(Home))
