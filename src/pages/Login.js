@@ -283,8 +283,7 @@ class Login extends Component {
         const {data} = res
         if(data.code === '1') {
           this.props.login({
-            access_token: 'payload.access_token',
-            refresh_token: 'payload.refresh_token'
+            token: data.token
           })
         }else {
           weui.alert(data.msg)
@@ -484,13 +483,12 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    login: (access_token, refresh_token) => dispatch({
-      type: 'AUTH_USER',
-      payload: {
-        access_token,
-        refresh_token
-      }
-    })
+    login: payload => {
+      dispatch({
+        type: 'AUTH_USER',
+        payload: {token: payload.token}
+      })
+    }
   }
 }
 

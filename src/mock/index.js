@@ -222,6 +222,7 @@ Mock.mock(/transfer/, 'post', function(options){
 // 登录
 Mock.mock(/login/, 'post', function(options){
   const data = JSON.parse(options.body)
+  console.log(`login ${data.username} ${data.password}`)
   switch(data.type) {
     case 'password':
       if(data.username === '15014095291' && data.password === '000000') {

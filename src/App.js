@@ -3,7 +3,7 @@ import { Router, Route, Switch } from "react-router-dom"
 
 import './App.css'
 
-import Loading from './common/Loading'
+import ScrollToTop from './common/ScrollToTop'
 import Auth from './common/Auth'
 import Transfer from './components/Transfer'
 
@@ -32,21 +32,22 @@ import RedeemRecord from './pages/RedeemRecord'
 
 import Order from './pages/Order'
 
-
 import BankcardList from './pages/BankcardList'
 import AddBankcard from './pages/AddBankcard'
 import RechargePhone from './pages/RechargePhone'
 
+import NotFound from './pages/NotFound'
+
 import Test from './components/Test'
 import history from './history'
 
-const NotFound = () => <h1>Not Found</h1>;
+
 
 class App extends Component {
   render() {
     return (
       <Router history={history}>
-        <div>
+        <ScrollToTop>
           <Switch>
             <Route path="/" exact component={Home} />
             <Route path="/login" component={Login} />
@@ -81,8 +82,7 @@ class App extends Component {
             <Route path="/test" component={Test} />
             <Route render={ ()=> <NotFound /> } />
           </Switch>
-          <Loading />
-        </div>
+        </ScrollToTop>
       </Router>
     );
   }

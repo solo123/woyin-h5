@@ -1,18 +1,17 @@
+import {setItem, removeItem} from '../services/storage'
+
 const initialState = {
-  access_token: '',
-  refresh_token: '',
+  token: '',
   isAuthenticated: false
-};
+}
 
 const saveToken = (payload) => {
-  localStorage.setItem('access_token', payload.access_token);
-  localStorage.setItem('refresh_token', payload.refresh_token);
-};
+  setItem('token', payload.token)
+}
 
 const removeToken = () => {
-  localStorage.removeItem('access_token');
-  localStorage.removeItem('refresh_token');
-};
+  removeItem('token')
+}
 
 export default (state = initialState, action) => {
   switch (action.type) {
@@ -20,24 +19,22 @@ export default (state = initialState, action) => {
       saveToken(action.payload);
       return {
         ...state,
-        access_token: action.payload.access_token,
-        refresh_token: action.payload.refresh_token,
+        token: action.payload.token,
         isAuthenticated: true
       }
     case 'UNAUTH_USER':
-      // 清理localStorage中的access_token和refresh_token
+      // 清理localStorage中的token
       removeToken();
       return {
         ...state,
-        access_token: '',
-        refresh_token: '',
+        token: '',
         isAuthenticated: false
       }
     case 'REFRESH_TOKEN':
       saveToken(action.payload);
       return {
         ...state,
-        access_token: action.payload.access_token
+        token: action.payload.token
       }
     default:
       return state;

@@ -10,6 +10,8 @@ import Menu from '../common/Menu'
 import EmptyArrayPlaceholder from '../common/EmptyArrayPlaceholder'
 import fenleiActive from '../asset/images/icon/fenlei_active.svg'
 
+
+
 import phoneIcon from '../asset/images/icon/phone.png'
 import flowIcon from '../asset/images/icon/flow.png'
 import oilIcon from '../asset/images/icon/oil.png'
@@ -20,6 +22,20 @@ import sevenLotteryIcon from '../asset/images/icon/seven_lottery.png'
 import ecardIcon from '../asset/images/icon/ecard.png'
 import creditCardIcon from '../asset/images/icon/credit_card.png'
 import carIcon from '../asset/images/icon/car.png'
+
+import pedestalBg from '../asset/images/pedestal.png'
+import integralIcon from '../asset/images/icon/integral.svg'
+import couponIcon from '../asset/images/icon/coupon.svg'
+import listIcon from '../asset/images/icon/list.svg'
+
+import arrowRightWhiteIcon from '../asset/images/icon/arrow_right_white.svg'
+
+const Button = styled.button`
+  border: 0;
+  padding: 0;
+  outline: none;
+  background: transparent;
+`
 
 const LayoutPageContianer = styled.div`
   padding-bottom: 50px;
@@ -191,12 +207,83 @@ const ProductItems = ({items}) => {
   )
 }
 
+const StyledHeader = styled.div`
+  color: #fff;
+  padding: 30px 30px 0 30px;
+  background: #4ba3f8;
+  .hd{
+    position: relative;
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    &:after{
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 1px;
+      background: #4ba2f7;
+    }
+  }
+  .bd{
+    display: flex;
+    justify-content: space-around;
+    padding: 15px 0 40px 0;
+  }
+  .icon{
+    width: 25px;
+    height: 25px;
+    margin-bottom: 5px;
+
+  }
+  .btn-icon{
+    width: 16px;
+    height: 16px;
+    margin-right: 5px;
+  }
+  .link{
+    display: flex;
+    align-items: center;
+    font-weight: bold;
+    font-size: 16px;
+    color: #fff;
+    img{
+      width: 20px;
+      height: 20px;
+    }
+  }
+  .title{
+    font-size: 12px;
+  }
+  .card{
+    background: #5db4fb;
+    border-radius: 3px;
+    box-shadow: 0 24px 24px rgba(0, 0, 0, 0.1);
+  }
+  .button{
+    position: absolute;
+    bottom: -20px;
+    left: 50%;
+    z-index: 10;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    padding: 0 30px;
+    line-height: 40px;
+    border-radius: 20px;
+    background: #fff;
+        box-shadow: 0 3px 5px rgba(76,173,255,.2);
+  }
+`
+
 class Home extends Component {
   state = {
     items: [],
     loading: true,
-    show: false,
     integral: '',
+    availableIntegral: 0
   }
 
   componentDidMount() {
@@ -210,10 +297,13 @@ class Home extends Component {
       .then(() => {
         this.setState({loading: false})
       })
-  }
-
-  handleToggle = e => {
-    this.setState({show: !this.state.show})
+    api.getUserIntegral()
+      .then(res => {
+        const {data} = res
+        if(data.code === '1') {
+          this.setState({availableIntegral: data.integral})
+        }
+      })      
   }
 
   handleLogout = () => {
@@ -224,25 +314,42 @@ class Home extends Component {
   }
 
   render() {
-    const {show, loading, items} = this.state
+    const {loading, items, availableIntegral} = this.state
+    const {isAuthenticated} = this.props
+
     return (
       <LayoutPageContianer>
-        <div style={{marginBottom: 10}}>
-          <div style={{margin: '10px', background: '#ccc'}}>
-            <div style={{display: 'flex', justifyContent: 'space-between', padding: 15}}>
-              <div style={{width: 60, height: 20, background: '#eaeaea'}}></div>
+        
+        <div style={{marginBottom: 30, position: 'relative'}}>
+          <StyledHeader>
+            <div className="card">
+              <div className="hd">
+                <div>
+                  {isAuthenticated 
+                    ? <div>可用积分：{availableIntegral}</div>
+                    : <Link className="link" to="/login"><span>登录查看</span><img src={arrowRightWhiteIcon} alt=""/></Link>
+                  }
+                </div>
+                <div>
+                  <StyledLable to="/redeem">赎回</StyledLable>
+                </div>
+              </div>
+              <div className="bd">
+                <div style={{width: 100, height: 40, textAlign: 'center'}}>
+                  <img className="icon" src={integralIcon} alt=""/>
+                  <p className="title">可赎回积分</p>
+                </div>
+                <div style={{width: 100, height: 40, textAlign: 'center'}}>
+                  <img className="icon" src={couponIcon} alt=""/>
+                  <p className="title">电子积分券</p>
+                </div>
+              </div>
               <div>
-                <StyledLable to="/redeem">赎回</StyledLable>
+                <Button className="button"><img className="btn-icon" src={listIcon} alt=""/>随心换购</Button>
               </div>
             </div>
-            <div style={{display: 'flex', justifyContent: 'space-around', paddingBottom: 15}}>
-              <div style={{width: 100, height: 50, background: '#eaeaea'}}></div>
-              <div style={{width: 100, height: 50, background: '#eaeaea'}}></div>
-            </div>
-            <div style={{display: 'flex', justifyContent: 'center', paddingBottom: 15}}>
-              <div style={{width: 120, height: 40, background: '#eaeaea'}}></div>
-            </div>
-          </div>
+          </StyledHeader>
+          <img style={{position: 'absolute', bottom: -35}} src={pedestalBg} alt=""/>
         </div>
         
         <LayoutGroup>
@@ -300,10 +407,14 @@ class Home extends Component {
   }
 }
 
+const mapStateToProps = state => {
+  return {isAuthenticated: state.auth.isAuthenticated}
+}
+
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     logout: () => dispatch({type: 'UNAUTH_USER'})
   }
 }
 
-export default withRouter(connect(null, mapDispatchToProps)(Home))
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Home))
