@@ -24,7 +24,7 @@ import ViolationList from './components/ViolationList'
 import ViolationDetail from './components/ViolationDetail'
 import AddVehicle from './components/AddVehicle.js'
 
-import Home from './pages/Home'
+import {view as Home} from './pages/home/'
 import Me from './pages/Me'
 import Login from './pages/Login'
 import Redeem from './pages/Redeem'
