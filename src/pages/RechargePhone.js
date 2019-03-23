@@ -34,37 +34,6 @@ const DisablePrimaryButton = styled(Button)`
   border-radius: 3px;
   background: #ccc;
 `
-const StyledNav = styled.ul`
-  display: flex;
-  margin-bottom: 10px;
-  background: #fff;
-  li{
-    position: relative;
-    flex: 1;
-    height: 60px;
-    line-height: 60px;
-    text-align: center;
-    &.active{
-      color: #3b8afc;
-      font-size: 16px;
-      font-weight: bold;
-      &:after{
-        position: absolute;
-        left: 50%;
-        bottom: 15px;
-        transform: translate(-50%);
-        content: '';
-        display: block;
-        height: 2px;
-        width: 60px;
-        background: #3b8afc;
-      }
-    }
-  }
-`
-const StyledMain = styled.div`
-  background: #fff;
-`
 const Input = styled.input`
   border: 0;
   width: 100%;
@@ -73,61 +42,103 @@ const Input = styled.input`
   background: transparent;
 `
 const StyledInput = styled(Input)`
-  font-family: industry;
   font-size: 22px;
 `
-const StyledBox = styled.div`
-  padding-bottom: 15px;
-  border-bottom: 1px solid #eaeaea;
-`
-const StyledInputBox = styled.div`
-  padding: 20px 15px;
-`
-const LayoutItem = styled.div`
-  width: 33.33%;
-  padding: 5px;
-`
-const StyledItem = styled.div`
-  font-family: industry;
-  padding: 10px;
-  text-align: center;
-  border-radius: 3px;
-  border: 1px solid #eaeaea;
-  &.active{
-    color: #fff;
-    background: #8ce0ff;
-    border-color: #8ce0ff;
-    .integral{
-      color: #fff;
+
+const LayoutPage = styled.div`
+  .nav{
+    display: flex;
+    margin-bottom: 10px;
+    background: #fff;
+    li{
+      position: relative;
+      flex: 1;
+      height: 60px;
+      line-height: 60px;
+      text-align: center;
+      &.active{
+        color: #3b8afc;
+        font-size: 16px;
+        font-weight: bold;
+        &:after{
+          content: '';
+          position: absolute;
+          left: 50%;
+          bottom: 15px;
+          transform: translate(-50%);
+          height: 2px;
+          width: 60px;
+          background: #3b8afc;
+        }
+      }
     }
   }
-  .money{
-    font-size: 16px;
-    font-weight: bold;
-    margin-bottom: 5px;
+  .main{
+    background: #fff;
+    .input-box{
+      padding: 15px;
+    }
+    .input-inner-box{
+      padding: 15px;
+      background: #eaeaea;
+    }
+    .items{
+      display: flex;
+      flex-wrap: wrap;
+      margin: 0 10px;
+      .item-box{
+        width: 33.33%;
+        padding: 5px;
+      }
+      .item{
+        font-family: industry;
+        padding: 10px;
+        text-align: center;
+        border-radius: 2px;
+        border: 2px solid #eaeaea;
+        &.active{
+          color: #3b8afc;
+          border-color: #3b8afc;
+        }
+        &__money{
+          font-size: 16px;
+          font-weight: bold;
+          margin-bottom: 5px;
+        }
+        &__integral{
+          font-size: 12px;
+        }
+      }
+    }
   }
-  .integral{
-    color: #555;
-    font-size: 12px;
-  }
-`
-const LayoutItems = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  margin: 0 10px;
 `
 
 const Item = ({id, selectId, money, integral, handleClick}) => {
   return (
-    <LayoutItem>
-      <StyledItem 
-        className={classnames({'active': id === selectId})}
-        onClick={() => handleClick(id, integral)}>
-        <div className="money">{money}元</div>
-        <div className="integral">{integral}积分</div>
-      </StyledItem>
-    </LayoutItem>
+    <div className="item-box">
+      <div className={classnames('item', {'active': id === selectId})} onClick={() => handleClick(id, integral)}>
+        <div className="item__money">{money}元</div>
+        <div className="item__integral">{integral}积分</div>
+      </div>
+    </div>
   )
+}
+
+const Product = ({loading, list}) => {
+  if(loading) {
+    return <ProductSkeleton />
+  }
+  if(list.length) {
+    return <div className="items">{list}</div>
+  }
+  return <EmptyArrayPlaceholder />
+}
+
+const SubmitBtn = ({pass, handleSubmit}) => {
+  if(pass) {
+    return <PrimaryButton onClick={handleSubmit}>立即充值</PrimaryButton>
+  }
+  return <DisablePrimaryButton>立即充值</DisablePrimaryButton>
 }
 
 const CMCC = '1'
@@ -280,16 +291,16 @@ export default class extends Component {
     ))
 
     return (
-      <div>
-        <StyledNav>
+      <LayoutPage>
+        <ul className="nav">
           <li className={classnames({'active': type === CMCC })} onClick={() => this.handleToggleType(CMCC)}>中国移动</li>
           <li className={classnames({'active': type === CUCC })} onClick={() => this.handleToggleType(CUCC)}>中国联通</li>
           <li className={classnames({'active': type === CTCC })} onClick={() => this.handleToggleType(CTCC)}>中国电信</li>
-        </StyledNav>
+        </ul>
 
-        <StyledMain>
-          <StyledInputBox>
-            <StyledBox>
+        <main className="main">
+          <div className="input-box">
+            <div className="input-inner-box">
               <StyledInput 
                 type="text" 
                 value={this.state.phone}
@@ -297,23 +308,19 @@ export default class extends Component {
                 placeholder="请输入手机号码" 
                 autoComplete="off"
               />
-            </StyledBox>
-          </StyledInputBox>
-
-          <h2 className="u_m_xx">请选择面值</h2>
-          {loading
-            ? <ProductSkeleton /> 
-            : (list.length ? <LayoutItems>{list}</LayoutItems> : <EmptyArrayPlaceholder />)}
-          <div className="u_p_xxx">
-            {pass
-              ? <PrimaryButton onClick={this.handleSubmit}>立即充值</PrimaryButton>
-              : <DisablePrimaryButton>立即充值</DisablePrimaryButton>
-            }
+            </div>
           </div>
-        </StyledMain>
+
+          <h2 className="u_mx_xxx u_mb_x">请选择面值</h2>
+          <Product loading={loading} list={list} />
+
+          <div className="u_p_xxx">
+            <SubmitBtn pass={pass} handleSubmit={this.handleSubmit}/>
+          </div>
+        </main>
 
         <Backhome />
-      </div>
+      </LayoutPage>
     )
   }
 }
