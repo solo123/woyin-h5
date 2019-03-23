@@ -11,14 +11,6 @@ import jsIcon from '../asset/images/bank/js.svg'
 import zsIcon from '../asset/images/bank/zs.svg'
 import gsIcon from '../asset/images/bank/gs.svg'
 
-const LayoutPageContainer = styled.div`
-  margin-bottom: 80px;
-`
-const LayoutFixedBottom = styled.div`
-  position: fixed;
-  width: 100%;
-  bottom: 0;
-`
 const Button = styled.button`
   outline: none;
   display: block;
@@ -35,43 +27,56 @@ const PrimaryButton = styled(Button)`
   box-shadow: 0 3px 5px rgba(76, 173, 255, .54);
   background: -webkit-linear-gradient(47deg,#4cadff,#8ce0ff);
 `
-const LayoutBtnBox = styled.div`
-  margin: 15px;
-`
-const LayoutItems = styled.div`
-  padding: 15px 15px 0 15px;
-`
-
-const StyledBankcard = styled.div`
-  background: #fff;
-  border-radius: 3px;
-  box-shadow: 0 1px 3px rgba(26, 26, 26, 0.1);
-`
-const StyledBankcardIcon = styled.img`
-  width: 50px;
-  height: 50px;
-`
-const StyledTitle = styled.h2`
-  font-size: 16px;
-  font-weight: bold;
-`
-const StyledLabel = styled.label`
-  border-radius: 3px;
-  padding: 3px 5px;
-  color: #ccc;
-  font-size: 12px;
-  background: #f2f2f2;
-`
-const StyledBankcardNo = styled.div`
-  color: #666;
-  font-size: 20px;
-  font-weight: bold;
-  margin-top: 5px;
-  word-break: break-all;
-  font-family: industry;
-`
-const StyledLabelBtn = styled(Button)`
-  background: transparent;
+const LayoutPage = styled.div`
+  margin-bottom: 80px;
+  .main{
+    padding: 15px 15px 0 15px;
+  }
+  .card{
+    display: flex;
+    padding: 15px;
+    background: #fff;
+    border-radius: 3px;
+    margin-bottom: 15px;
+    box-shadow: 0 1px 3px rgba(26, 26, 26, 0.1);
+    &__main{
+      flex: 1;
+      margin-left: 15px;
+    }
+    &__logo{
+      width: 50px;
+      height: 50px;
+    }
+    &__title{
+      font-size: 16px;
+      font-weight: bold;
+    }
+    &__group{
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 5px;
+    }
+    &__label{
+      color: #ccc;
+      font-size: 12px;
+      padding: 3px 5px;
+      border-radius: 3px;
+      background: #f2f2f2;
+    }
+    &__no{
+      color: #666;
+      font-size: 20px;
+      font-weight: bold;
+      margin-top: 5px;
+      word-break: break-all;
+      font-family: industry;
+    }
+  }
+  .fixed-bottom{
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+  }
 `
 
 const BANKCARD_SCHEMA = {
@@ -82,56 +87,51 @@ const BANKCARD_SCHEMA = {
 
 const Bankcard = ({id, bankcardNo, bankcardName, bankcardIcon, handleClick}) => {
   return (
-    <StyledBankcard>
-      <div style={{marginBottom: 15}}>
-        <div style={{padding: 15}}>
-            <div style={{display: 'flex'}}>
-              <div>
-                <StyledBankcardIcon src={bankcardIcon} />
-              </div>
-              <div style={{flex: 1, marginLeft: 15}}>
-                <div style={{display: 'flex', justifyContent: 'space-between', marginBottom: 5}}>
-                  <div>
-                    <StyledTitle>{bankcardName}</StyledTitle>
-                  </div>
-                  <div>
-                    <StyledLabelBtn onClick={() => handleClick(id)}>删除</StyledLabelBtn>
-                  </div>
-                </div>
-                <StyledLabel>认证成功</StyledLabel>
-                <StyledBankcardNo>{bankcardNo}</StyledBankcardNo>
-              </div>
-            </div>
-        </div>
+    <div className="card">
+      <div className="card__aside">
+        <img className="card__logo" src={bankcardIcon} alt="" />
       </div>
-    </StyledBankcard>
+      <div className="card__main">
+        <div className="card__group">
+          <h2 className="card__title">{bankcardName}</h2>
+          <a onClick={() => handleClick(id)}>删除</a>
+        </div>
+        <label className="card__label">认证成功</label>
+        <div className="card__no">{bankcardNo}</div>
+      </div>
+    </div>
   )
 }
 
-const List = ({items, onDelect}) => {
+const List = ({items}) => {
   if(!items.length) {
-    return (
-      <EmptyArrayPlaceholder />
-    )
+    return <EmptyArrayPlaceholder />
   }
   return (
-    <LayoutItems>
-    {
-      items.map(item => {
-        return (
-          <Bankcard 
-            key={item.id}
-            id={item.id}
-            bankcardNo={item.bankcardNo}
-            bankcardName={item.bankcardName}
-            bankcardIcon={BANKCARD_SCHEMA[item.bankcardClass]}
-            handleClick={onDelect}
-          />
-        )
-      })
-    }
-    </LayoutItems>
+    <div>
+      {
+        items.map(item => {
+          return (
+            <Bankcard 
+              key={item.id}
+              id={item.id}
+              bankcardNo={item.bankcardNo}
+              bankcardName={item.bankcardName}
+              bankcardIcon={BANKCARD_SCHEMA[item.bankcardClass]}
+            />
+          )
+        })
+      }
+    </div>
   )
+}
+
+const Content = ({loading, items}) => {
+  if(loading) {
+    return <SkeletonPlaceholder count={3} />
+  }
+
+  return <List items={items} />
 }
 
 class BankcardList extends Component {
@@ -153,24 +153,24 @@ class BankcardList extends Component {
       })
   }
 
-  onDelect = id => {
-  }
-
   render() {
     const {loading, items} = this.state
     return (
-      <LayoutPageContainer>
-        {true ? <div className="u_mx_xxx"><SkeletonPlaceholder count={3} /></div> : <List items={items} onDelect={this.onDelect} />}
-        <LayoutFixedBottom>
-          <LayoutBtnBox>
+      <LayoutPage>
+        <div className="main">
+          <Content loading={loading} items={items} />
+        </div>
+
+        <div className="fixed-bottom">
+          <div className="u_m_xxx">
             <Link to="/bankcard-add">
               <PrimaryButton>添加银行卡</PrimaryButton>
             </Link>
-          </LayoutBtnBox>
-        </LayoutFixedBottom>
+          </div>
+        </div>
 
         <Backhome />
-      </LayoutPageContainer>
+      </LayoutPage>
     )
   }
 }

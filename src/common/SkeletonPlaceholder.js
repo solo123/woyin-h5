@@ -3,12 +3,12 @@ import styled from 'styled-components'
 
 const LayoutPage = styled.div`
   .item{
-    margin: 15px 0 30px 0;
+    margin-bottom: 30px;
   }
   .line{
     height: 25px;
     background: #eee;
-    margin: 10px 0;
+    margin-bottom: 10px;
   }
   .w80{
     width: 80%;
