@@ -140,17 +140,12 @@ class BankcardList extends Component {
     loading: true
   }
 
-  componentDidMount() {
-    api.getBankcardList()
-      .then(res => {
-        const {data} = res
-        if(data.code === '1') {
-          this.setState({items: data.items})
-        }
-      })
-      .then(() => {
-        this.setState({loading: false})
-      })
+  async componentDidMount() {
+    const {data} = await api.getBankcardList()
+    if(data.code === '1') {
+      this.setState({items: data.items})
+    }
+    this.setState({loading: false})
   }
 
   render() {

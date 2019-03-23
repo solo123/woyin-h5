@@ -25,11 +25,21 @@ const PrimaryButton = styled(Button)`
   box-shadow: 0 3px 5px rgba(76, 173, 255, .54);
   background: -webkit-linear-gradient(47deg,#4cadff,#8ce0ff);
 `
+
 const LayoutBtnBox = styled.div`
   margin: 15px;
 `
-const LayoutPageContianer = styled.div`
+
+
+
+const LayoutPage = styled.div`
   padding-bottom: 50px;
+  .title{
+    font-size: 16px;
+  }
+  section{
+    background: #fff;
+  }
 `
 const LayoutFixedBottom = styled.div`
   position: fixed;
@@ -61,9 +71,7 @@ const LayoutCell = styled.div`
   align-items: center;
 `
 
-const StyledTitle = styled.h2`
-  font-size: 16px;
-`
+
 const StyledBg = styled.div`
   background: #fff;
 `
@@ -85,12 +93,12 @@ class Me extends Component {
 
   render() {
     return (
-      <LayoutPageContianer>
-        <LayoutBtnBox>
-          <StyledTitle>个人信息</StyledTitle>
-        </LayoutBtnBox>
-        <LayoutBtnBox>
-          <StyledBg>
+      <LayoutPage>
+        <div className="u_m_xxx">
+          <h2 className="title">个人信息</h2>
+        </div>
+        <div className="u_m_xxx">
+          <section>
             <LayoutItem>
               <LayoutCell>
                 <StyledLabel>姓名</StyledLabel>
@@ -125,14 +133,14 @@ class Me extends Component {
                 </Link>
               </LayoutCell>
             </LayoutItem>
-          </StyledBg>
-        </LayoutBtnBox>
+          </section>
+        </div>
 
-        <LayoutBtnBox>
-          <StyledTitle>记录相关</StyledTitle>
-        </LayoutBtnBox>
-        <LayoutBtnBox>
-          <StyledBg>
+        <div className="u_m_xxx">
+          <h2 className="title">记录相关</h2>
+        </div>
+        <div className="u_m_xxx">
+          <section>
             <LayoutItem>
               <LayoutCell>
                 <StyledLabel>积分赎回记录</StyledLabel>
@@ -153,14 +161,14 @@ class Me extends Component {
                 </Link>
               </LayoutCell>
             </LayoutItem>
-          </StyledBg>
-        </LayoutBtnBox>
+          </section>
+        </div>
 
-        <LayoutBtnBox>
-          <StyledTitle>密码操作</StyledTitle>
-        </LayoutBtnBox>
-        <LayoutBtnBox>
-          <StyledBg>
+        <div className="u_m_xxx">
+          <h2 className="title">密码操作</h2>
+        </div>
+        <div className="u_m_xxx">
+          <section>
             <LayoutItem>
               <LayoutCell>
                 <StyledLabel>修改登录密码</StyledLabel>
@@ -185,17 +193,17 @@ class Me extends Component {
                 <StyledArrow src={arrowIcon} />
               </LayoutCell>
             </LayoutItem>
-          </StyledBg>
-        </LayoutBtnBox>
+          </section>
+        </div>
 
-        <LayoutBtnBox>
+        <div className="u_m_xxx">
           <PrimaryButton onClick={this.handleClick}>退出</PrimaryButton>
-        </LayoutBtnBox>
+        </div>
 
         <LayoutFixedBottom>
           <Menu />
         </LayoutFixedBottom>
-      </LayoutPageContianer>
+      </LayoutPage>
     )
   }
 }

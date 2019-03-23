@@ -46,49 +46,44 @@ const DisablePrimaryBtn = styled(Button)`
   border-radius: 3px;
   background: #ccc;
 `
-const StyledBg = styled.div`
-  background: #fff;
-  border-radius: 3px;
-  box-shadow: 1px 1px 3px rgba(26, 26, 26, 0.1);
-`
-const LayoutBox = styled.div`
+
+const LayoutPage = styled.div`
   margin: 15px;
-`
-const LayoutBtnBox = styled.div`
-  margin: 15px;
-`
-const StyledCleanIcon = styled.img`
-  width: 25px;
-  height: 25px;
-`
-const LayoutGroup = styled.div`
-  position: relative;
-  padding: 15px;
-  display: flex;
-  align-items: center;
-  &:after{
-    content: " ";
-    position: absolute;
-    left: 15px;
-    bottom: 0;
-    right: 0;
-    height: 1px;
-    border-bottom: 1px solid #e5e5e5;
-    color: #e5e5e5;
-    transform-origin: 0 100%;
-    transform: scaleY(0.5);
-    z-index: 2;
+  .form{
+    background: #fff;
+    border-radius: 3px;
+    box-shadow: 1px 1px 3px rgba(26, 26, 26, 0.1);
+    .close-btn{
+      width: 25px;
+      height: 25px;
+    }
   }
-  &:last-child:after{
-    content: none;
+  .group{
+    position: relative;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    &:after{
+      content: " ";
+      position: absolute;
+      left: 15px;
+      bottom: 0;
+      right: 0;
+      height: 1px;
+      background: #eaeaea;
+      transform: scaleY(0.5);
+    }
+    &:last-child:after{
+      content: none;
+    }
+    &__body{
+      flex: 1;
+    }
+    &__foot{
+      display: flex;
+      margin-left: 10px;
+    }
   }
-`
-const LayoutBody = styled.div`
-  flex: 1;
-`
-const LayoutFoot = styled.div`
-  display: flex;
-  margin-left: 10px;
 `
 
 const SubmitBtn = ({pass, onSubmit}) => {
@@ -163,27 +158,24 @@ class AddBankcard extends Component {
     }, 100)
   }
 
-  handleSubmit = () => {
+  handleSubmit = async () => {
     const loading = weui.loading('处理中')
-    api.addBankcard({
+    const {data} = await api.addBankcard({
         username: this.state.username,
         id: this.state.id,
         cardNo: this.state.cardNo,
         phone: this.state.phone
       })
-      .then(res => {
-        const {data} = res
-        if(data.code === '1') {
-          weui.alert(data.msg, () => {
-            push('/bankcard-list')
-          })
-        }else {
-          weui.alert(data.msg)
-        }
+
+    if(data.code === '1') {
+      weui.alert(data.msg, () => {
+        push('/bankcard-list')
       })
-      .then(() => {
-        loading.hide()
-      })
+    }else {
+      weui.alert(data.msg)
+    }
+    
+    loading.hide()
   }
 
   render() {
@@ -195,12 +187,12 @@ class AddBankcard extends Component {
     } = this.state
 
     return (
-      <div>
-        <LayoutBox>
+      <LayoutPage>
+        <main>
           <h2 className="u_my_xxx u_fs_xxx">请填写本人信息</h2>
-          <StyledBg>
-            <LayoutGroup>
-              <LayoutBody>
+          <div className="form">
+            <div className="group">
+              <div className="group__body">
                 <PrimaryInput 
                   type="text" 
                   name="username" 
@@ -210,18 +202,19 @@ class AddBankcard extends Component {
                   onBlur={this.handleBlur}
                   placeholder="请输入姓名"
                 />
-              </LayoutBody>
-              <LayoutFoot>
-                <StyledCleanIcon 
+              </div>
+              <div className="group__foot">
+                <img
+                  className="close-btn" 
                   style={{visibility: usernameCleanViewFlag ? 'visible' : 'hidden'}} 
                   onClick={() => this.handleClick('username')}
                   src={closeIcon} 
                   alt="清空输入"
                 />
-              </LayoutFoot>
-            </LayoutGroup>
-            <LayoutGroup>
-              <LayoutBody>
+              </div>
+            </div>
+            <div className="group">
+              <div className="group__body">
                 <PrimaryInput 
                   type="text" 
                   name="id" 
@@ -231,18 +224,19 @@ class AddBankcard extends Component {
                   onBlur={this.handleBlur}
                   placeholder="请输入身份证号"
                 />
-              </LayoutBody>
-              <LayoutFoot>
-                <StyledCleanIcon 
+              </div>
+              <div className="group__foot">
+                <img
+                  className="close-btn" 
                   style={{visibility: idCleanViewFlag ? 'visible' : 'hidden'}}
                   onClick={() => this.handleClick('id')}
                   src={closeIcon} 
                   alt="清空输入" 
                 />
-              </LayoutFoot>
-            </LayoutGroup>
-            <LayoutGroup>
-              <LayoutBody>
+              </div>
+            </div>
+            <div className="group">
+              <div className="group__body">
                 <PrimaryInput 
                   type="text" 
                   name="cardNo" 
@@ -252,46 +246,48 @@ class AddBankcard extends Component {
                   onBlur={this.handleBlur}
                   placeholder="请输入银行卡/信用卡号"
                 />
-              </LayoutBody>
-              <LayoutFoot>
-                <StyledCleanIcon 
+              </div>
+              <div className="group__foot">
+                <img
+                  className="close-btn" 
                   style={{visibility: cardNoCleanViewFlag ? 'visible' : 'hidden'}} 
                   onClick={() => this.handleClick('cardNo')}
                   src={closeIcon} 
                   alt="清空输入" 
                 />
-              </LayoutFoot>
-            </LayoutGroup>            
-            <LayoutGroup>
-              <LayoutBody>
-                <PrimaryInput 
-                  type="text" 
-                  name="phone" 
-                  value={this.state.phone} 
-                  onChange={this.handleChange} 
-                  onFocus={this.handleFocus}
-                  onBlur={this.handleBlur}
-                  placeholder="请输入银行预留手机号"
-                />
-              </LayoutBody>
-              <LayoutFoot>
-                <StyledCleanIcon 
-                  style={{visibility: phoneCleanViewFlag ? 'visible' : 'hidden'}} 
-                  onClick={() => this.handleClick('phone')}
-                  src={closeIcon} 
-                  alt="清空输入" 
-                />
-              </LayoutFoot>
-            </LayoutGroup>
-          </StyledBg>
-        </LayoutBox>
+              </div>
+            </div>            
+            <div className="group">
+            <div className="group__body">
+              <PrimaryInput 
+                type="text" 
+                name="phone" 
+                value={this.state.phone} 
+                onChange={this.handleChange} 
+                onFocus={this.handleFocus}
+                onBlur={this.handleBlur}
+                placeholder="请输入银行预留手机号"
+              />
+            </div>
+            <div className="group__foot">
+              <img
+                className="close-btn" 
+                style={{visibility: phoneCleanViewFlag ? 'visible' : 'hidden'}} 
+                onClick={() => this.handleClick('phone')}
+                src={closeIcon} 
+                alt="清空输入" 
+              />
+            </div>
+          </div>
+          </div>
+        </main>
 
-        <LayoutBtnBox>
+        <div className="u_mt_xxx">
           <SubmitBtn pass={this.state.pass} onSubmit={this.handleSubmit} />
-        </LayoutBtnBox> 
+        </div> 
 
         <Backhome />
-      </div>
+      </LayoutPage>
     )
   }
 }
