@@ -58,7 +58,6 @@ const DisableMiniPrimaryBtn = styled(Button)`
   border-radius: 3px;
   background: #ccc;
 `
-
 const Input = styled.input`
   border: 0;
   padding: 0;
@@ -79,78 +78,91 @@ const MinPrimaryInput = styled(Input)`
   font-size: 14px;
 `
 
-
-const LayoutPrimaryBox = styled.div`
-  margin-bottom: 15px;
-`
-const LayoutSecondaryBox = styled.div`
-  margin-bottom: 5px;
-`
-const LayoutGroup = styled.div`
-  display: flex;
-  align-items: center;
-`
-const LayoutBody = styled.div`
-  flex: 1;
-`
-const LayoutFoot = styled.div`
-  margin-left: 10px;
-`
-
-const StyledCheckedIcon = styled.img`
-  width: 16px;
-  height: 16px;
-  margin-right: 3px;
-`
-const StyledBg = styled.div`
+const LayoutPage = styled.div`
   padding: 15px;
   background: #fff;
-`
-const StyledIcon = styled.img`
-  width: 20px;
-  height: 20px;
-`
-const StyledCard = styled.div`
-  display: flex;
-  .icon{
-    width: 50px;
-    height: 50px;
-  }
-  .card{
-    font-family: industry;
-  }
-  .main{
-    flex: 1;
-    p{
-      margin: 0;
-    }
-    .title{
-      font-size: 16px;
-      font-weight: bold;
-      margin-bottom: 5px;
-    }
-    .text{
-      line-height: 1.5;
-      font-size: 12px;
-      color: #888;
+  .trigger-bar{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .icon{
+      width: 20px;
+      height: 20px;
     }
   }
-`
-const StyledSmallText = styled.div`
-  color: #888;
-  font-size: 12px;
-`
-const StyledNoBankcard = styled.div`
-  color: #888;
-  line-height: 50px;
-  font-size: 16px;
-  font-weight: bold;
-  text-align: center;
-`
-const StyledInputBox = styled.div`
-  padding: 15px;
-  line-height: 1;
-  background: #f4f4f4;
+  .empty{
+    color: #888;
+    line-height: 50px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+  }
+  .bankcard{
+    display: flex;
+    .icon{
+      width: 50px;
+      height: 50px;
+    }
+    .card{
+      font-family: industry;
+    }
+    .main{
+      flex: 1;
+      .name{
+        font-size: 16px;
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+      .text{
+        line-height: 1.5;
+        font-size: 12px;
+        color: #888;
+      }
+    }
+  }
+  .input-box{
+    padding: 15px;
+    background: #f4f4f4;
+  }
+  .small-text{
+    color: #888;
+    font-size: 12px;
+  }
+  .group{
+    display: flex;
+    align-items: center;
+    .body{
+      flex: 1;
+    }
+    .foot{
+      margin-left: 10px;
+    }
+  }
+  .checkbox{
+    width: 16px;
+    height: 16px;
+    margin-right: 3px;
+  }
+  .flex-y-center{
+    display: flex;
+    align-items: center;
+  }
+  .loading{
+    display: flex;
+    &__head{
+     width: 50px;
+     height: 50px;
+     background: #eaeaea;
+    }
+    &__main{
+      flex: 1;
+      margin-left: 15px;
+    }
+    &__line{
+      height: 20px;
+      background: #eaeaea;
+    }
+  }
 `
 
 const MIN_INTEGRAL = 100
@@ -162,46 +174,58 @@ const bankcardLogoSchema = {
   '003': gsIcon
 }
 
-const BankCard = ({logo, bankcardNo, bankcardName}) => {
+const BankcardLoading = () => {
   return (
-    <StyledCard>
-      <div className="aside">
-        <img className="icon" src={logo} alt=""/>
-      </div>
-      <div className="main" style={{marginLeft: 15}}>
-        <p className="title">{bankcardName}(尾号<span className="card">{util.getBankcardLastNum(bankcardNo)}</span>)</p>
-        <p className="text">预计下一工作日到账，实际以银行到账日为准</p>
-      </div>
-    </StyledCard>
-  )
-}
-
-const CurrBankcard = ({hasBankcard, bankcardLogo, bankcardNo, bankcardName}) => {
-  if(hasBankcard) {
-    return <BankCard logo={bankcardLogo} bankcardNo={bankcardNo} bankcardName={bankcardName} />
-  }
-  return <StyledNoBankcard>暂无可用银行卡</StyledNoBankcard>
-}
-
-const LoadingBankcard = () => {
-  return (
-    <div style={{display: 'flex'}}>
-      <div style={{width: 50, height: 50, background: '#eaeaea'}}></div>
-      <div style={{flex: 1, marginLeft: 15}}>
-        <div style={{width: '50%', height: 20, background: '#eaeaea', marginBottom: 10}}></div>
-        <div style={{height: 20, background: '#eaeaea'}}></div>
+    <div className="loading">
+      <div className="loading__head"></div>
+      <div className="loading__main">
+        <div className="loading__line" style={{width: '50%', marginBottom: 10}}></div>
+        <div className="loading__line"></div>
       </div>
     </div>
   )
 }
-
-let sendMsgFlag = false
 
 const SendMessageBtn = ({flag, timer, handleClick}) => {
   if(flag) {
     return <MiniPrimaryBtn onClick={handleClick}>获取验证码</MiniPrimaryBtn>
   }
   return <DisableMiniPrimaryBtn>{timer}秒后重发</DisableMiniPrimaryBtn>
+}
+
+const SubmitBtn = ({pass, handleSubmit}) => {
+  if(pass) {
+    return <PrimaryButton onClick={handleSubmit}>确认赎回</PrimaryButton>
+  }
+  return <DisablePrimaryButton>确认赎回</DisablePrimaryButton>
+}
+
+const Bankcard = ({logo, bankcardNo, bankcardName}) => {
+  return (
+    <div className="bankcard">
+      <div className="aside">
+        <img className="icon" src={logo} alt=""/>
+      </div>
+      <div className="main" style={{marginLeft: 15}}>
+        <p className="name">{bankcardName}(尾号<span className="card">{util.getBankcardLastNum(bankcardNo)}</span>)</p>
+        <p className="text">预计下一工作日到账，实际以银行到账日为准</p>
+      </div>
+    </div>
+  )
+}
+
+const BankcardBox = ({loading, hasBankcard, bankcardLogo, bankcardNo, bankcardName}) => {
+  if(loading) {
+    return <BankcardLoading />
+  }
+  if(hasBankcard) {
+    return <Bankcard logo={bankcardLogo} bankcardNo={bankcardNo} bankcardName={bankcardName} />
+  }
+  return <div className="empty">暂无可用银行卡</div>
+}
+
+const Agreement = ({agreementFlag}) => {
+  return <img className="checkbox" src={agreementFlag ? checkedIcon : uncheckedIcon} />
 }
 
 class Redeem extends Component {
@@ -214,7 +238,7 @@ class Redeem extends Component {
     pass: false,
     loading: true,
     hasBankcard: false,
-    agreementBool: true,
+    agreementFlag: true,
     bankcardList: [],
     bankcardNo: '',
     bankcardName: '',
@@ -274,7 +298,7 @@ class Redeem extends Component {
   }
 
   handleToggle = e => {
-    this.setState({agreementBool: !this.state.agreementBool}, () => {
+    this.setState({agreementFlag: !this.state.agreementFlag}, () => {
       this.updateSubmitBtnStatus()
     })
   }
@@ -318,7 +342,7 @@ class Redeem extends Component {
     if(!this.state.smsCode) {
       flag = false
     }
-    if(!this.state.agreementBool) {
+    if(!this.state.agreementFlag) {
       flag = false
     }
 
@@ -401,7 +425,6 @@ class Redeem extends Component {
 
   getMsgCode = () => {
     const loading = weui.loading('发送中')
-    sendMsgFlag = true
     api.sendMsgCode(this.state.phone)
       .then(res => {
         const {data} = res
@@ -414,7 +437,6 @@ class Redeem extends Component {
       })
       .then(() => {
         loading.hide()
-        sendMsgFlag = false
       })
   }
 
@@ -422,7 +444,7 @@ class Redeem extends Component {
     const {
       pass, 
       loading, 
-      agreementBool, 
+      agreementFlag, 
       hasBankcard, 
       bankcardNo, 
       bankcardName, 
@@ -431,25 +453,27 @@ class Redeem extends Component {
     } = this.state
 
     return (
-      <StyledBg>
+      <LayoutPage>
 
-        <LayoutPrimaryBox>
-          <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-            <div>
-              <label>转入银行卡</label>
-            </div>
-            <div>
-              <StyledIcon onClick={this.handleClick} src={arrowRightIcon} alt="" />
-            </div>
+        <div className="u_mb_xxx">
+          <div className="trigger-bar">
+            <label>转入银行卡</label>
+            <img className="icon" onClick={this.handleClick} src={arrowRightIcon} alt="箭头" />
           </div>
-        </LayoutPrimaryBox>
+        </div>
 
-        <LayoutPrimaryBox>
-          {loading ? <LoadingBankcard /> : <CurrBankcard hasBankcard={hasBankcard} bankcardLogo={bankcardLogo} bankcardNo={bankcardNo} bankcardName={bankcardName}/>}
-        </LayoutPrimaryBox>
+        <div className="u_mb_xxx">
+          <BankcardBox 
+            loading={loading} 
+            hasBankcard={hasBankcard} 
+            bankcardLogo={bankcardLogo} 
+            bankcardNo={bankcardNo} 
+            bankcardName={bankcardName}
+          />
+        </div>
 
-        <LayoutSecondaryBox>
-          <StyledInputBox>
+        <div className="u_mb_x">
+          <div className="input-box">
             <PrimaryInput 
               type="text"
               name="integral"
@@ -458,53 +482,44 @@ class Redeem extends Component {
               onBlur={this.handleBlur}
               placeholder="最多可赎回892积分"
             />
-          </StyledInputBox>
-        </LayoutSecondaryBox>
+          </div>
+        </div>
 
-        <LayoutPrimaryBox>
-          <StyledSmallText>
+        <div className="u_mb_xxx">
+          <div className="small-text">
             <p>实际扣除{this.state.deductIntegral}积分</p>
             <p>实际到账{this.state.actualReceived}元(手续费{this.state.redeemFee}积分，100积分等于1元)</p>
-          </StyledSmallText>
-        </LayoutPrimaryBox>
+          </div>
+        </div>
 
-        <LayoutPrimaryBox>
-          <LayoutGroup>
-            <LayoutBody>
-              <div style={{lineHeight: 1}}>
-                <MinPrimaryInput 
-                  type="text"
-                  name="smsCode"
-                  value={this.state.smsCode} 
-                  onChange={this.handleChange} 
-                  placeholder="请输入短信验证码"
-                />
-              </div>
-            </LayoutBody>
-            <LayoutFoot>
+        <div className="u_mb_xxx">
+          <div className="group">
+            <div className="body">
+              <MinPrimaryInput 
+                type="text"
+                name="smsCode"
+                value={this.state.smsCode} 
+                onChange={this.handleChange} 
+                placeholder="请输入短信验证码"
+              />
+            </div>
+            <div className="foot">
               <SendMessageBtn flag={sendMsgCodeFlag} timer={this.state.timer} handleClick={this.getMsgCode} />
-            </LayoutFoot>  
-          </LayoutGroup>
-        </LayoutPrimaryBox> 
+            </div>  
+          </div>
+        </div> 
 
-        <LayoutPrimaryBox>
-          <StyledSmallText 
-            onClick={this.handleToggle}
-            style={{display: 'flex', alignItems: 'center'}}>
-            {agreementBool
-              ? <StyledCheckedIcon src={checkedIcon} />
-              : <StyledCheckedIcon src={uncheckedIcon} />
-            }
+        <div className="u_mb_xxx">
+          <div className="small-text flex-y-center" onClick={this.handleToggle}>
+            <Agreement agreementFlag={agreementFlag} />
             同意用户<Link to="/redeen-agreement" style={{color: '#007AFF'}}>《赎回规则协议》</Link>
-          </StyledSmallText>
-        </LayoutPrimaryBox>
+          </div>
+        </div>
 
-        {pass
-          ? <PrimaryButton onClick={this.handleSubmit}>确认赎回</PrimaryButton>
-          : <DisablePrimaryButton>确认赎回</DisablePrimaryButton>}
+        <SubmitBtn pass={pass} handleSubmit={this.handleSubmit} />
         
         <Backhome />
-      </StyledBg>
+      </LayoutPage>
     )
   }
 }

@@ -1,8 +1,8 @@
-import React, { Component } from 'react'
+import React from 'react'
 import styled from 'styled-components'
-import { Link } from "react-router-dom"
 
 import EmptyArrayPlaceholder from '../../../common/EmptyArrayPlaceholder'
+import SkeletonPlaceholder from '../../../common/SkeletonPlaceholder'
 
 const LayoutPage = styled.div`
   .list{
@@ -50,13 +50,6 @@ const LayoutPage = styled.div`
   }
 `
 
-const StyledItem = styled.div`
-  height: 25px;
-  background: #eee;
-  margin: 10px 5px;
-`
-
-
 const ProductItems = ({items}) => {
   if(!items.length) {
     return <EmptyArrayPlaceholder />
@@ -92,28 +85,9 @@ const Item = ({id, title, price, url, status}) => {
   )
 }
 
-const HotsellSkeleton = () => {
-  return (
-    <div>
-      <div style={{margin: '15px 0'}}>
-        <StyledItem/>
-        <StyledItem style={{width: '80%'}} />
-        <StyledItem style={{width: '50%'}} />
-        <StyledItem style={{width: '30%'}} />
-      </div> 
-      <div style={{margin: '15px 0'}}>
-        <StyledItem/>
-        <StyledItem style={{width: '80%'}} />
-        <StyledItem style={{width: '50%'}} />
-        <StyledItem style={{width: '30%'}} />
-      </div>     
-    </div>
-  )
-}
-
 export default ({loading, items}) => {
   if(loading) {
-    return <HotsellSkeleton />
+    return <div className="u_mx_x"><SkeletonPlaceholder count={2} /></div>
   }
 
   return (

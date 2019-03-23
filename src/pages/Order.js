@@ -144,7 +144,7 @@ class Order extends Component {
         <LayoutMain ref={node => this.scrollContainer = node}>
           <main ref={node => this.itemsElem = node}>
             <LayoutItems>{List}</LayoutItems>
-            {loading ? <SkeletonPlaceholder /> : null}            
+            {loading ? <div className="u_mx_xxx"><SkeletonPlaceholder count={3} /></div> : null}            
           </main>
         </LayoutMain>
 

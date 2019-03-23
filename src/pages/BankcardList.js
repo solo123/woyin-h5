@@ -160,7 +160,7 @@ class BankcardList extends Component {
     const {loading, items} = this.state
     return (
       <LayoutPageContainer>
-        {loading ? <SkeletonPlaceholder /> : <List items={items} onDelect={this.onDelect} />}
+        {true ? <div className="u_mx_xxx"><SkeletonPlaceholder count={3} /></div> : <List items={items} onDelect={this.onDelect} />}
         <LayoutFixedBottom>
           <LayoutBtnBox>
             <Link to="/bankcard-add">

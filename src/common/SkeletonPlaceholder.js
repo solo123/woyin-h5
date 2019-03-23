@@ -1,50 +1,37 @@
 import React from 'react'
+import styled from 'styled-components'
 
-const style = {margin: '15px 0 30px 0'}
+const LayoutPage = styled.div`
+  .item{
+    margin: 15px 0 30px 0;
+  }
+  .line{
+    height: 25px;
+    background: #eee;
+    margin: 10px 0;
+  }
+  .w80{
+    width: 80%;
+  }
+  .w50{
+    width: 50%;
+  }
+  .w30{
+    width: 30%;
+  }
+`
 
-const itemStyle = {
-  height: '25px',
-  background: '#eee',
-  margin: '10px 15px'
-}
-const item80Style = {
-  ...itemStyle, 
-  width: '80%'
-}
-const item50Style = {
-  ...itemStyle, 
-  width: '50%'
-}
-const item30Style = {
-  ...itemStyle, 
-  width: '30%'
-}
-const Item = () => {
-  return (
-    <div style={style}>
-      <div style={itemStyle}></div>
-      <div style={item80Style}></div>
-      <div style={item50Style}></div>
-      <div style={item30Style}></div>
-    </div>    
-  )
-}
-
-export default () => {
-  return (
-    <div style={{width: '100%'}}>
-      <div style={style}>
-        <Item />
+export default ({count = 1}) => {
+  const items = []
+  for(let i = 0; i < count; i++) {
+    items.push((
+      <div key={i} className="item">
+        <div className="line"></div>
+        <div className="line w80"></div>
+        <div className="line w50"></div>
+        <div className="line w30"></div>
       </div>
-      <div style={style}>
-        <Item />
-      </div>
-      <div style={style}>
-        <Item />
-      </div>
-      <div style={style}>
-        <Item />
-      </div>
-    </div>
-  )
+    ))
+  }
+  return <LayoutPage>{items}</LayoutPage>
 }

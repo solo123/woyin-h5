@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 import empty from '../asset/images/empty.svg'
 
-const StyledContainer = styled.div`
+const LayoutPage = styled.div`
   padding: 40px 0;
   color: #aaa;
   text-align: center;
@@ -16,9 +16,9 @@ const StyledContainer = styled.div`
 
 export default function () {
   return (
-    <StyledContainer>
+    <LayoutPage>
       <img src={empty} alt="暂无数据"/>
       <div>暂无数据</div>
-    </StyledContainer>
+    </LayoutPage>
   )
 }
