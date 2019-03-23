@@ -1,80 +1,117 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
-import { Link, withRouter } from "react-router-dom"
-import { connect } from 'react-redux'
-import weui from 'weui.js'
 import classnames from 'classnames'
+import axios from 'axios'
 
 import api from '../api'
 import SkeletonPlaceholder from '../common/SkeletonPlaceholder'
 import EmptyArrayPlaceholder from '../common/EmptyArrayPlaceholder'
-import { replace } from '../services/redirect'
 import arrowDownIcon from '../asset/images/icon/arrow_down.svg'
 import Backhome from '../common/Backhome'
 
-const LayoutPageContianer = styled.div`
+const Page = styled.div`
   padding-top: 50px;
-`
-const LayoutFixedTitle = styled.div`
-  position: fixed;
-  left: 0;
-  right: 0;
-  top: 0;
-  z-index: 10;
-`
-const LayoutFixedTop = styled.div`
-  position: fixed;
-  left: 0;
-  right: 0;
-  top: 50px;
-  z-index: 10;
-`
-const StyledSelectTirgger = styled.div`
-  background: #fff;
-  line-height: 50px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 16px;
-  font-weight: bold;
-  img{
-    width: 15px;
-    height: 15px;
-    margin-left: 5px;
-    transition: transform .3s;
-    &.active{
-      transform: rotate(180deg);
+  .items{
+    padding: 15px 15px 0 15px;
+  }
+  .fixed-top{
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    .selecter{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
+      font-weight: bold;
+      line-height: 50px;
+      background: #fff;
+      img{
+        width: 15px;
+        height: 15px;
+        margin-left: 5px;
+        transition: transform .3s;
+        &.active{
+          transform: rotate(180deg);
+        }
+      }
     }
   }
-`
-const StyledSelect = styled.ul`
-  display: flex;
-  flex-wrap: wrap;
-  padding-left: 15px;
-  padding-bottom: 15px;
-  background: #fff;
-  border-bottom: 1px solid #eaeaea;
-  li{
-    padding: 8px 15px;
-    line-height: 1;
-    margin-top: 10px;
-    margin-right: 10px;
-    border: 1px solid #eaeaea;
-    &.active{
-      color: rgb(77, 123, 254);
-      border-color: rgb(77, 123, 254);
+  .fixed-top-selecter-content{
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 50px;
+    z-index: 1;
+    ul{
+      display: flex;
+      flex-wrap: wrap;
+      padding-left: 15px;
+      padding-bottom: 15px;
+      background: #fff;
+      border-bottom: 1px solid #eaeaea;
+      li{
+        font-size: 12px;
+        margin-top: 10px;
+        margin-right: 10px;
+        padding: 7px 15px;
+        border: 1px solid #eaeaea;
+        &.active{
+          color: rgb(77, 123, 254);
+          border-color: rgb(77, 123, 254);
+        }
+      }
     }
   }
-`
-const LayoutItems = styled.div`
-  padding: 15px 15px 0 15px;
+  .card{
+    background: #fff;
+    border-radius: 3px;
+    margin-bottom: 15px;
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .06);
+    &__head{
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+      padding: 15px;
+      &:after{
+        content: "";
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 1px;
+        transform: scaleY(.3);
+        background: #eaeaea;
+      }
+    }
+    &__body{
+      padding: 15px 15px 0 15px;
+    }
+    &__foot{
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      padding: 15px;
+    }
+    &__title{
+      font-size: 16px;
+      font-weight: bold;
+    }
+    &__status{
+      font-size: 12px;
+    }
+    .gray{
+      color: #7e7e7e;
+    }
+  }
 `
 
 const SelectStatus = ({status, flag, handleClick}) => {
   if(flag) {
     return (
-      <LayoutFixedTop>
-        <StyledSelect>
+      <div className="fixed-top-selecter-content">
+        <ul>
           <li onClick={() => handleClick('all', '全部')} className={classnames({'active': status === 'all'})}>
             全部
           </li>
@@ -96,93 +133,60 @@ const SelectStatus = ({status, flag, handleClick}) => {
           <li onClick={() => handleClick('16', '审核拒绝')} className={classnames({'active': status === '16'})}>
             审核拒绝
           </li>
-        </StyledSelect>
-      </LayoutFixedTop>
+        </ul>
+      </div>
     )
   }
   return null
 }
 
-const StyledCard = styled.div`
-  background: #fff;
-  border-radius: 3px;
-  margin-bottom: 15px;
-  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .06);
-  .hd{
-    display: flex;
-    justify-content: space-between;
-    position: relative;
-    padding: 15px;
-    &:after{
-      content: "";
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      height: 1px;
-      -webkit-transform: scaleY(.3);
-      transform: scaleY(.3);
-      background: #eaeaea;
-    }
-  }
-  .bd{
-    padding: 15px 15px 0 15px;
-  }
-  .ft{
-    display: flex;
-    justify-content: space-between;
-    font-size: 12px;
-    padding: 15px;
-  }
-  .title{
-    font-size: 16px;
-    font-weight: bold;
-  }
-  .status{
-    font-size: 12px;
-  }
-  .gray{
-    color: #7e7e7e;
-  }
-`
 const Item = () => {
   return (
-    <StyledCard>
-      <div className="hd">
-        <div className="title">积分赎回</div>
-        <div className="status">待审核</div>
+    <div className="card">
+      <div className="card__head">
+        <div className="card__title">积分赎回</div>
+        <div className="card__status">待审核</div>
       </div>
-      <div className="bd">
+      <div className="card__body">
         <div>赎回399积分 手续费99积分 实际到账3元</div>
       </div>
-      <div className="ft">
+      <div className="card__foot">
         <div className="gray">2019-02-11 11:18:05</div>
         <div>399 积分</div>
       </div>
-    </StyledCard>
+    </div>
   )
 }
 
-const List = ({items, onDelect}) => {
+const List = ({items}) => {
   if(!items.length) {
     return (
       <EmptyArrayPlaceholder />
     )
   }
   return (
-    <LayoutItems>
-    {
-      items.map(item => {
-        return (
-          <Item 
-            key={item.id}
-          />
-        )
-      })
-    }
-    </LayoutItems>
+    <div>
+      {
+        items.map(item => {
+          return (
+            <Item 
+              key={item.id}
+            />
+          )
+        })
+      }
+    </div>
   )
 }
+
+const Content = ({loading, items}) => {
+  if(loading) {
+    return <SkeletonPlaceholder />
+  }
+  return <List items={items} />
+}
+
+let source = null
 
 class RedeemRecord extends Component {
   state = {
@@ -202,36 +206,36 @@ class RedeemRecord extends Component {
   }
 
   handleClick = (status, title) => {
+    if(status == this.state.status) {
+      return false
+    }
+    source.cancel()
     this.setState({status, title}, () => {
       this.handleToggle()
       this.loadData()
     })
   }
 
-  loadData = () => {
+  loadData = async () => {
     this.setState({loading: true})
-    api.getRedeemRecordByStatus(this.state.status)
-      .then(res => {
-        const {data} = res
-        if(data.code === '1') {
-          this.setState({items: data.items})
-        }
-      })
-      .then(() => {
-        this.setState({loading: false})
-      })
+    source = axios.CancelToken.source()
+    const {data} = await api.getRedeemRecordByStatus(this.state.status, {cancelToken: source.token})
+    if(data.code === '1') {
+      this.setState({items: data.items})
+    }
+    this.setState({loading: false})
   }
 
   render() {
     const {loading, items, seletViewFlag} = this.state
     return (
-      <LayoutPageContianer>
-        <LayoutFixedTitle>
-          <StyledSelectTirgger onClick={this.handleToggle}>
+      <Page>
+        <div className="fixed-top">
+          <div className="selecter" onClick={this.handleToggle}>
             {this.state.title}
             <img src={arrowDownIcon} className={classnames({'active': seletViewFlag})} alt=""/>
-          </StyledSelectTirgger>
-        </LayoutFixedTitle>
+          </div>
+        </div>
 
         <SelectStatus 
           status={this.state.status}
@@ -239,11 +243,13 @@ class RedeemRecord extends Component {
           handleClick={this.handleClick}
         />
 
-        {loading ? <SkeletonPlaceholder /> : <List items={items} onDelect={this.onDelect} />}
+        <div className="items">
+          <Content loading={loading} items={items} />
+        </div>
 
         <Backhome />
 
-      </LayoutPageContianer>
+      </Page>
     )
   }
 }

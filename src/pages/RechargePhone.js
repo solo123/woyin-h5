@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 import classnames from 'classnames'
+import axios from 'axios'
 import weui from 'weui.js'
 
 import api from '../api'
@@ -45,7 +46,7 @@ const StyledInput = styled(Input)`
   font-size: 22px;
 `
 
-const LayoutPage = styled.div`
+const Page = styled.div`
   .nav{
     display: flex;
     margin-bottom: 10px;
@@ -145,6 +146,7 @@ const CMCC = '1'
 const CUCC = '2'
 const CTCC = '3'
 
+let source = null
 export default class extends Component {
   state = {
     pass: false,
@@ -169,18 +171,17 @@ export default class extends Component {
     this.loadProdcuts(this.state.type)
   }
 
-  loadProdcuts = (type) => {
+  loadProdcuts = async type => {
     this.setState({loading: true})
-    api.getRechargePhoneProductsByType(type)
-      .then(res => {
-        const {data} = res
-        if(data.code === '1') {
-          this.setState({items: data.items})
-        }
-      })
-      .then(() => {
-        this.setState({loading: false})
-      })
+    source = axios.CancelToken.source()
+    try {
+      const {data} = await api.getRechargePhoneProductsByType(type, {cancelToken: source.token})
+      if(data.code === '1') {
+        this.setState({items: data.items})
+      }
+      this.setState({loading: false})
+    }catch(err) {
+    }
   }
 
   reset = () => {
@@ -190,6 +191,10 @@ export default class extends Component {
   }
 
   handleToggleType = type => {
+    if(type === this.state.type) {
+      return false
+    }
+    source.cancel('forced interrupt request')
     this.reset()
     this.setState({type}, () => {
       this.loadProdcuts(type)
@@ -291,7 +296,7 @@ export default class extends Component {
     ))
 
     return (
-      <LayoutPage>
+      <Page>
         <ul className="nav">
           <li className={classnames({'active': type === CMCC })} onClick={() => this.handleToggleType(CMCC)}>中国移动</li>
           <li className={classnames({'active': type === CUCC })} onClick={() => this.handleToggleType(CUCC)}>中国联通</li>
@@ -320,7 +325,7 @@ export default class extends Component {
         </main>
 
         <Backhome />
-      </LayoutPage>
+      </Page>
     )
   }
 }

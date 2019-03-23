@@ -51,8 +51,8 @@ export default {
     return this.get('hotsell')
   },
   // 获取话费产品列表
-  getRechargePhoneProductsByType(type) {
-    return this.get('getRechargePhoneProductsByType', {type})
+  getRechargePhoneProductsByType(type, config = {}) {
+    return this.get('getRechargePhoneProductsByType', {type}, config)
   },
   // 获取流量产品列表
   getRechargeFlowProductsByType(type) {
@@ -112,8 +112,8 @@ export default {
   redeemIntegral(integral) {
     return this.post('redeemIntegral', {integral})
   },
-  getRedeemRecordByStatus(status) {
-  return this.get('getRedeemRecordByStatus', {status})
+  getRedeemRecordByStatus(status, config = {}) {
+    return this.get('getRedeemRecordByStatus', {status}, config)
   },
   // 登录流程短信验证码
   sendMessageCode() {
