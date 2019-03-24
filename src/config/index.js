@@ -1,27 +1,9 @@
 export default {
-  baseURL: 'http://localhost:8000/api',
-  defaultRoute: '/dashboard',
+  dev_baseURL: 'http://localhost:8000/api',
+  prod_baseURL: 'http://localhost:8000/api',
+  timeout: 10000,
   storage_namespace: 'woyin',
-  routes: {
-    HOME: '/',
-    DASHBOARD: '/dashboard',
-    CONTACT: '/contact',
-    LOGIN: '/login',
-    COLOR: '/color',
-    PROPS: '/props'
-  },
-  NavbarItems: {
-    private: {
-      Home: '/',
-      Dashboard: '/dashboard',
-      Contact: '/contact'
-    },
-    public: {
-      Props: '/props',
-      Color: '/color',
-      Login: '/login'
-    }
-  },
+
   // 电子卡券配置
   ecard: {
     MAX_COUNT: 10,

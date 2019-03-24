@@ -1,7 +1,15 @@
 import axios from 'axios';
 import config from '../config';
 
-axios.defaults.baseURL = config.baseURL;
+if(process.env.NODE_ENV == 'development') {
+  axios.defaults.baseURL = config.dev_baseURL
+}else if(process.env.NODE_ENV == 'production') {
+  axios.defaults.baseURL = config.prod_baseURL
+}
+
+axios.defaults.timeout = config.timeout
+
+// axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
 
 export default {
   get(path, data = {}, config = {}) {
