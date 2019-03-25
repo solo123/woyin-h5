@@ -1,5 +1,5 @@
 export default {
-  dev_baseURL: 'http://localhost:8000/api',
+  dev_baseURL: 'http://localhost:8000',
   prod_baseURL: 'http://localhost:8000/api',
   timeout: 10000,
   storage_namespace: 'woyin',
@@ -26,5 +26,3 @@ export default {
     }
   }
 };
-
-export const API_URL = process.env.NODE_ENV === 'production' ? 'http://dimitrimikadze.com:3333' : 'http://localhost:3333';

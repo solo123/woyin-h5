@@ -73,92 +73,84 @@ const PrimaryInput = styled(Input)`
   font-size: 14px;
 `
 
-
-const LayoutBoxX = styled.div`
-  margin-left: 15px;
-  margin-right: 15px;
-`
-const LayoutGroup = styled.div`
-  position: relative;
-  display: flex;
-  padding: 15px;
-  align-items: center;
-  &:after{
-    content: " ";
-    position: absolute;
-    left: 15px;
-    bottom: 0;
-    right: 0;
-    height: 1px;
-    border-bottom: 1px solid #e5e5e5;
-    color: #e5e5e5;
-    -webkit-transform-origin: 0 100%;
-    transform-origin: 0 100%;
-    -webkit-transform: scaleY(0.5);
-    transform: scaleY(0.5);
-    z-index: 2;
-  }
-  &:last-child:after{
-    content: none;
-  }
-`
-const LayoutHead = styled.div`
-  margin-right: 10px;
-`
-const LayoutBody = styled.div`
-  flex: 1;
-`
-const LayoutFoot = styled.div`
-  display: flex;
-  margin-left: 10px;
-`
-const StyledIcon = styled.img`
-  width: 20px;
-  height: 20px;
-`
-const StyledHeader = styled.div`
-  padding: 30px 15px;
-  font-size: 16px;
-  font-weight: bold;
-  span{
-    color: #aaa;
-    margin-right: 20px;
-    &.active{
-      color: #4aabff;
-      border-bottom: 2px solid #46a4f5;
+const Page = styled.div`
+  header{
+    padding: 30px 15px;
+    font-size: 16px;
+    font-weight: bold;
+    .logo-box{
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .logo{
+      width: 100px;
+      height: 100px;
+    }
+    ul{
+      display: flex;
+      justify-content: center;
+      li{
+        color: #aaa;
+        margin-right: 20px;
+        &.active{
+          color: #4aabff;
+          border-bottom: 2px solid #46a4f5;
+        }
+      }
     }
   }
-`
-const StyledBg = styled.div`
-  border-radius: 3px;
-  background: #fff;
-  box-shadow: 1px 1px 3px rgba(26, 26, 26, 0.1);
-`
-const StyledCleanIcon = styled.img`
-  width: 25px;
-  height: 25px;
-`
-const StyledToggleIcon = styled.img`
-  width: 25px;
-  height: 25px;
-`
-const StyledCheckedIcon = styled.img`
-  width: 16px;
-  height: 16px;
-`
-const StyledLabel = styled.label`
-  display: flex;
-  align-items: center;
-  margin: 0 5px;
-  color: #4aabff;
-  font-size: 12px;
-  img{
-    margin-right: 3px;
+  main{
+    margin: 0 25px;
   }
-`
-const StyledLogo = styled.img`
-  width: 100px;
-  height: 100px;
+  .group-list{
+    border-radius: 3px;
+    background: #fff;
+    margin-bottom: 15px;
+    box-shadow: 1px 1px 3px rgba(26, 26, 26, 0.1);
+  }
+  .group{
+    position: relative;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    &:after{
+      content: " ";
+      position: absolute;
+      left: 15px;
+      bottom: 0;
+      right: 0;
+      height: 1px;
+      background: #eaeaea;
+      transform: scaleY(0.5);
+    }
+    &:last-child:after{
+      content: none;
+    }
+    &__body{
+      flex: 1;
+    }
+    &__foot{
+      display: flex;
+      margin-left: 10px;
+    }
+    &__toggle-btn,
+    &__clean-btn{
+      width: 25px;
+      height: 25px;
+    }
+  }
+  .label{
+    display: flex;
+    align-items: center;
+    margin: 0 5px 30px 5px;
+    color: #4aabff;
+    font-size: 12px;
+    img{
+      width: 16px;
+      height: 16px;
+      margin-right: 3px;
+    }
+  }
 `
 
 const iconSchema = {
@@ -178,6 +170,13 @@ const SendMessageBtn = ({flag, timer, handleClick}) => {
     return <MiniPrimaryBtn onClick={handleClick}>获取验证码</MiniPrimaryBtn>
   }
   return <DisableMiniPrimaryBtn>{timer}秒后重发</DisableMiniPrimaryBtn>
+}
+
+const SubmitButton = ({pass, handleSubmit}) => {
+  if(pass) {
+    return <PrimaryButton onClick={handleSubmit}>登录</PrimaryButton>
+  }
+  return <DisablePrimaryButton>登录</DisablePrimaryButton>
 }
 
 class Login extends Component {
@@ -200,9 +199,9 @@ class Login extends Component {
     this.state = {
       pass: false,
 
-      username: '15014095291',
+      username: '13111111111',
       usernameCleanView: false,
-      password: '000000',
+      password: '111111',
       passwordCleanView: false,
       messageCode: '',
       messageCleanView: false,
@@ -210,7 +209,7 @@ class Login extends Component {
       passwordType: 'password',
       rememberStatus: 'unchecked',
 
-      timer: 10,
+      timer: 60,
       sendMessageCodeFlag: true,  //  发送短信验证码标志
 
       loginType: LOGINTYPE_PASSWORD
@@ -276,24 +275,21 @@ class Login extends Component {
     })
   }
 
-  handleSubmit() {
+  async handleSubmit() {
     const loading = weui.loading('处理中')
-    api.login(this.state.username, this.state.password, this.state.loginType)
-      .then(res => {
-        const {data} = res
-        if(data.code === '1') {
-          this.props.login({
-            token: data.token
-          })
-        }else {
-          weui.alert(data.msg)
-        }
-      })
-      .then(() => {
-        loading.hide()
-      })
-      .catch(err => {
-      })
+    const params = {
+      userPhoneNo: this.state.username,
+      password: this.state.password,
+      loginType: 1
+    }
+
+    const {data} = await api.login(params)
+    loading.hide()
+    if(data.status === 200) {
+      this.props.login({token: data.data.sessionId})
+    }else {
+      weui.alert(data.msg)
+    }
   }
 
   updateBtnStatus() {
@@ -350,21 +346,22 @@ class Login extends Component {
   }
 
   // 发送短信验证码
-  handleSendMessageCode = () => {
+  handleSendMessageCode = async () => {
     const loading = weui.loading('发送中')
-    api.sendMessageCode()
-      .then(res => {
-        const {data} = res
-        if(data.code === '1') {
-          this.setState({sendMessageCodeFlag: false}, () => {
-            this.countDown()
-          })          
-          weui.alert(data.msg)
-        }
+    const params = {
+      userPhoneNo: this.state.username,
+      codeType: 1
+    }
+    const {data} = await api.getCode(params)
+    loading.hide()
+    if(data.status === 200) {
+      this.setState({sendMessageCodeFlag: false}, () => {
+        this.countDown()
       })
-      .then(() => {
-        loading.hide()
-      })
+      weui.alert(data.msg)
+    }else {
+      weui.alert(data.msg)
+    }
   }
 
   render() {
@@ -375,22 +372,24 @@ class Login extends Component {
     if(isAuthenticated){ return <Redirect to={ from } /> }
 
     return (
-      <div style={{padding: 10}}>
-       
-        <StyledHeader>
-          <div style={{textAlign: 'center', marginBottom: 30}}>
-            <StyledLogo src={logoIcon}  alt="logo" />
+      <Page>
+        <header>
+          <div className="logo-box">
+            <img className="logo" src={logoIcon} alt="logo" />
           </div>
-          <div style={{display: 'flex', justifyContent: 'center'}}>
-            <span className={classNames({active: this.state.loginType === LOGINTYPE_PASSWORD})} onClick={this.handlePasswordLogin}>密码登录</span>
-            <span className={classNames({active: this.state.loginType === LOGINTYPE_MESSAGE})} onClick={this.handleMessageLogin}>短信登录</span>
-          </div>
-        </StyledHeader>
-
-        <LayoutBoxX>
-          <StyledBg>
-            <LayoutGroup>
-              <LayoutBody>
+          <ul>
+            <li 
+              className={classNames({active: this.state.loginType === LOGINTYPE_PASSWORD})}
+              onClick={this.handlePasswordLogin}>密码登录</li>
+            <li 
+              className={classNames({active: this.state.loginType === LOGINTYPE_MESSAGE})} 
+              onClick={this.handleMessageLogin}>短信登录</li>
+          </ul>
+        </header>
+        <main>
+          <div className="group-list">
+            <div className="group">
+              <div className="group__body">
                 <PrimaryInput
                   type="text" 
                   name="username"
@@ -400,19 +399,20 @@ class Login extends Component {
                   onBlur={this.handleBlur}
                   placeholder="请输入手机号"
                 />
-              </LayoutBody>
-              <LayoutFoot>
-                <StyledCleanIcon 
+              </div>
+              <div className="group__foot">
+                <img 
+                  className="group__clean-btn"
                   style={{visibility: usernameCleanView ? 'visible' : 'hidden'}} 
                   onClick={this.usernameClean} 
                   src={closeIcon} 
                   alt="" 
                 />
-              </LayoutFoot>
-            </LayoutGroup>    
+              </div>
+            </div>    
             {this.state.loginType === LOGINTYPE_PASSWORD
-              ? (<LayoutGroup>
-                  <LayoutBody>
+              ? (<div className="group">
+                  <div className="group__body">
                     <PrimaryInput 
                       type={this.state.passwordType} 
                       name="password" 
@@ -422,19 +422,24 @@ class Login extends Component {
                       onBlur={this.handleBlur}                  
                       placeholder="请输入密码" 
                     />
-                  </LayoutBody>
-                  <LayoutFoot>
-                    <StyledCleanIcon 
+                  </div>
+                  <div className="group__foot">
+                    <img 
+                      className="group__clean-btn"
                       style={{visibility: passwordCleanView ? 'visible' : 'hidden'}} 
                       onClick={this.passwordClean} 
                       src={closeIcon} 
                       alt="" 
                     />
-                    <StyledToggleIcon onClick={this.handleTogglePswdVisibleOrHidden} src={iconSchema[this.state.passwordType]} alt="" />
-                  </LayoutFoot>
-                </LayoutGroup>)
-              : (<LayoutGroup>
-                  <LayoutBody>
+                    <img 
+                      className="group__toggle-btn"
+                      onClick={this.handleTogglePswdVisibleOrHidden} 
+                      src={iconSchema[this.state.passwordType]} alt="切换" 
+                    />
+                  </div>
+                </div>)
+              : (<div className="group">
+                  <div className="group__body">
                     <PrimaryInput 
                       type='text'
                       name="messageCode" 
@@ -444,35 +449,26 @@ class Login extends Component {
                       onBlur={this.handleBlur}                  
                       placeholder="请输入验证码" 
                     />
-                  </LayoutBody>
-                  <LayoutFoot>
-                    <StyledCleanIcon 
+                  </div>
+                  <div className="group__foot">
+                    <img 
+                      className="group__clean-btn"
                       style={{visibility: messageCleanView ? 'visible' : 'hidden'}} 
                       onClick={this.messageClean} 
                       src={closeIcon} 
                       alt="" 
                     />
                     <SendMessageBtn flag={sendMessageCodeFlag} timer={this.state.timer} handleClick={this.handleSendMessageCode}>获取验证码</SendMessageBtn>
-                  </LayoutFoot>
-                </LayoutGroup>)
+                  </div>
+                </div>)
               }
-          </StyledBg>
-        </LayoutBoxX>
-        <div>
-          <LayoutGroup>
-            <LayoutBody>
-              <StyledLabel onClick={this.handleRememberUsername}>
-                <StyledCheckedIcon src={rememberUsernameIconSchema[this.state.rememberStatus]}></StyledCheckedIcon>记住账号
-              </StyledLabel>
-            </LayoutBody>
-          </LayoutGroup>
-        </div>
-        <LayoutBoxX style={{margin: 15}}>
-          {pass
-            ? <PrimaryButton onClick={this.handleSubmit}>登录</PrimaryButton>
-            : <DisablePrimaryButton>登录</DisablePrimaryButton>}
-        </LayoutBoxX>
-      </div>
+          </div>
+          <label className="label" onClick={this.handleRememberUsername}>
+            <img src={rememberUsernameIconSchema[this.state.rememberStatus]} />记住账号
+          </label>
+          <SubmitButton pass={pass} handleSubmit={this.handleSubmit} />
+        </main>
+      </Page>
     )
   }
 }

@@ -2,15 +2,13 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import weui from 'weui.js'
 
+import api from '../api'
+import Backhome from '../common/Backhome'
+
 import closeIcon from '../asset/images/icon/close.png'
 import showIcon from '../asset/images/icon/show.png'
 import hideIcon from '../asset/images/icon/hide.png'
-import api from '../api';
-/*
- |--------------------------------------------------------------------------
- | button
- |--------------------------------------------------------------------------
- */
+
 const Button = styled.button`
   border: 0;
   padding: 0;
@@ -25,8 +23,8 @@ const PrimaryButton = styled(Button)`
   font-weight: bold;
   line-height: 50px;
   border-radius: 3px;
-  box-shadow: 0 3px 5px rgba(207, 162, 95, .58);
-  background: -webkit-linear-gradient(47deg, #c89850, #e1c38c);
+  box-shadow: 0 3px 5px rgba(76, 173, 255, .54);
+  background: -webkit-linear-gradient(47deg,#4cadff,#8ce0ff);
 `
 const DisablePrimaryButton = styled(Button)`
   color: #fff;
@@ -36,18 +34,22 @@ const DisablePrimaryButton = styled(Button)`
   border-radius: 3px;
   background: #ccc;
 `
-// const MiniPrimaryButton = styled(Button)`
-//   color: #fff;
-//   font-size: 12px;
-//   padding: 5px 10px;
-//   border-radius: 3px;
-//   background: -webkit-linear-gradient(47deg, #c89850, #e1c38c);
-// `
-/*
- |--------------------------------------------------------------------------
- | input
- |--------------------------------------------------------------------------
- */
+const MiniPrimaryBtn = styled(Button)`
+  color: #fff;
+  font-size: 12px;
+  padding: 5px 10px;
+  line-height: 1.5;
+  border-radius: 3px;
+  background: -webkit-linear-gradient(47deg,#4cadff,#8ce0ff);
+`
+const DisableMiniPrimaryBtn = styled(Button)`
+  color: #fff;
+  font-size: 12px;
+  padding: 5px 10px;
+  line-height: 1.5;
+  border-radius: 3px;
+  background: #ccc;
+`
 const Input = styled.input`
   border: 0;
   padding: 0;
@@ -122,6 +124,10 @@ const iconSchema = {
   text: showIcon,
   password: hideIcon
 }
+
+const Page = styled.div`
+
+`
 
 class Transfer extends Component {
   constructor(props) {
@@ -225,7 +231,7 @@ class Transfer extends Component {
   render() {
     const {integralCleanView, usernameCleanView, accountCleanView, passwordCleanView} = this.state
     return (
-      <div>
+      <Page>
         <LayoutBox>
           <StyledBg>
             <LayoutGroup>
@@ -300,7 +306,9 @@ class Transfer extends Component {
             ? <PrimaryButton onClick={this.handleSubmit}>转赠</PrimaryButton>
             : <DisablePrimaryButton>转赠</DisablePrimaryButton>}
         </LayoutBox>
-      </div>
+
+        <Backhome />
+      </Page>
     )
   }
 }

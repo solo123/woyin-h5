@@ -2,7 +2,8 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import weui from 'weui.js'
 
-import { push } from '../services/redirect'
+import {push} from '../services/redirect'
+import {getItem} from '../services/storage'
 
 import Backhome from '../common/Backhome'
 import closeIcon from '../asset/images/icon/close.png'
@@ -47,7 +48,7 @@ const DisablePrimaryBtn = styled(Button)`
   background: #ccc;
 `
 
-const LayoutPage = styled.div`
+const Page = styled.div`
   margin: 15px;
   .form{
     background: #fff;
@@ -104,7 +105,7 @@ class AddBankcard extends Component {
     idCleanViewFlag: false,
     cardNo: '',
     cardNoCleanViewFlag: false,
-    phone: '',
+    phone: '13111111111',
     phoneCleanViewFlag: false
   }
 
@@ -160,22 +161,38 @@ class AddBankcard extends Component {
 
   handleSubmit = async () => {
     const loading = weui.loading('处理中')
-    const {data} = await api.addBankcard({
-        username: this.state.username,
-        id: this.state.id,
-        cardNo: this.state.cardNo,
-        phone: this.state.phone
-      })
 
-    if(data.code === '1') {
+
+    // userPhoneNo	是	string	用户登录手机号
+    // session	是	string	sessionId
+    // roleType	是	int	类型　1商户　２会员
+    // bankCard	是	string	银行卡号
+    // bankCode	是	string	银行代码
+    // bankName	是	string	银行名称
+    // bankCardType	是	string	银行卡类型　1 借记卡　2 信用卡
+    // cardHoldName	是	string	持卡人姓名
+    // idNo	是	string	身份证号
+
+    const params = {
+      userPhoneNo: this.state.phone,
+      session: getItem('token'),
+      roleType: '2',
+      bankCard: this.state.cardNo,
+      bankCode: '1',
+      bankName: '建设银行',
+      bankCardType: '1',
+      cardHoldName: this.state.username,
+      idNo: this.state.id
+    }
+    const {data} = await api.addBankcard(params)
+    loading.hide()
+    if(data.status === 200) {
       weui.alert(data.msg, () => {
         push('/bankcard-list')
       })
     }else {
       weui.alert(data.msg)
     }
-    
-    loading.hide()
   }
 
   render() {
@@ -187,7 +204,7 @@ class AddBankcard extends Component {
     } = this.state
 
     return (
-      <LayoutPage>
+      <Page>
         <main>
           <h2 className="u_my_xxx u_fs_xxx">请填写本人信息</h2>
           <div className="form">
@@ -287,7 +304,7 @@ class AddBankcard extends Component {
         </div> 
 
         <Backhome />
-      </LayoutPage>
+      </Page>
     )
   }
 }

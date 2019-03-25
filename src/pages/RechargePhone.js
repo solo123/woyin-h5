@@ -161,14 +161,15 @@ export default class extends Component {
   }
 
   componentDidMount() {
-    api.getUserIntegral()
-      .then(res => {
-        const {data} = res
-        if(data.code === '1') {
-          this.setState({availableIntegral: data.integral})
-        }
-      })
+    this.loadUserinfo()
     this.loadProdcuts(this.state.type)
+  }
+
+  loadUserinfo = async () => {
+    const {data} = await api.getUserInfo()
+    if(data.status === 200) {
+      this.setState({availableIntegral: data.data[0].balance})
+    }
   }
 
   loadProdcuts = async type => {

@@ -2,10 +2,9 @@ import React, { Component } from 'react';
 import styled from 'styled-components'
 import { Link, withRouter } from "react-router-dom"
 import { connect } from 'react-redux'
-import weui from 'weui.js'
 
 import api from '../../../api'
-import { replace } from '../../../services/redirect'
+import {getItem} from '../../../services/storage'
 import Menu from '../../../common/Menu'
 
 import pedestalBg from '../../../asset/images/pedestal.png'
@@ -19,13 +18,7 @@ import Store from './Store'
 import Service from './Service'
 import Product from './Product'
 
-const LayoutFixedBottom = styled.div`
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-`
-const LayoutPage = styled.div`
+const Page = styled.div`
   padding-bottom: 50px;
   .header{
     position: relative;
@@ -126,7 +119,6 @@ const LayoutPage = styled.div`
       }
     }
   }
-
   .section{
     background: #f7f7f7;
     .head{
@@ -152,6 +144,12 @@ const LayoutPage = styled.div`
       margin: 0 5px;
     }
   }
+  .fixed-bottom{
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
 `
 
 const Auth = ({isAuthenticated, availableIntegral}) => {
@@ -173,23 +171,31 @@ class Home extends Component {
   }
 
   componentDidMount() {
-    api.getHotsell()
-      .then(res => {
-        const {data} = res
-        if(data.code === '1') {
-          this.setState({items: data.items})
-        }
-      })
-      .then(() => {
-        this.setState({loading: false})
-      })
-    api.getUserIntegral()
-      .then(res => {
-        const {data} = res
-        if(data.code === '1') {
-          this.setState({availableIntegral: data.integral})
-        }
-      })      
+    this.loadHotsell()
+    
+    // 已登录用户需要获取可用积分
+    if(this.props.isAuthenticated) {
+      this.loadUserinfo()
+    }
+  }
+
+  loadHotsell = async () => {
+    const {data} = await api.getHotsell()
+    if(data.code === '1') {
+      this.setState({items: data.items})
+    }
+    this.setState({loading: false})
+  }
+
+  loadUserinfo = async () => {
+    const params = {
+      userPhoneNo: '13111111111',
+      session: getItem('token')
+    }
+    const {data} = await api.getUserInfo(params)
+    if(data.status === 200) {
+      this.setState({availableIntegral: data.data[0].balance})
+    }
   }
 
   render() {
@@ -197,7 +203,7 @@ class Home extends Component {
     const {isAuthenticated} = this.props
 
     return (
-      <LayoutPage>
+      <Page>
 
         <div className="header">
           <div className="wrap">
@@ -209,7 +215,7 @@ class Home extends Component {
                 />
                 <div>
                   <Link className="label" to="/redeem">赎回</Link>
-                  <Link className="label" to="/">转赠</Link>
+                  <Link className="label" to="/transfer">转赠</Link>
                 </div>
               </div>
               <div className="body">
@@ -258,11 +264,10 @@ class Home extends Component {
             <Product loading={loading} items={items} />
           </div>
         </div>
-        
-        <LayoutFixedBottom>
+        <div className="fixed-bottom">
           <Menu />
-        </LayoutFixedBottom>
-      </LayoutPage>
+        </div>
+      </Page>
     )
   }
 }

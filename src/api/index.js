@@ -1,11 +1,12 @@
+import qs from'qs'
 import axios from 'axios';
 import config from '../config';
 
-if(process.env.NODE_ENV == 'development') {
-  axios.defaults.baseURL = config.dev_baseURL
-}else if(process.env.NODE_ENV == 'production') {
-  axios.defaults.baseURL = config.prod_baseURL
-}
+// if(process.env.NODE_ENV == 'development') {
+//   axios.defaults.baseURL = config.dev_baseURL
+// }else if(process.env.NODE_ENV == 'production') {
+//   axios.defaults.baseURL = config.prod_baseURL
+// }
 
 axios.defaults.timeout = config.timeout
 
@@ -24,8 +25,8 @@ export default {
   post(path, data = {}, config = {}) {
     return axios.post(path, data, config);
   },
-  login(username, password, type) {
-    return this.post('login', {username, password, type});
+  login(data) {
+    return this.post('user/login', qs.stringify(data));
   },
   refreshToken(refresh_token) {
     return this.get('refresh_token', {
@@ -102,12 +103,12 @@ export default {
     return this.get('rechargeQB', {id, phone})
   },  
   // 获取银行卡列表
-  getBankcardList() {
-    return this.get('getBankcardList')
+  getBankcardList(params) {
+    return this.get('api/bank/getBankCardList', params)
   },
   // 添加银卡
   addBankcard(data) {
-    return this.post('addBankcard', data)
+    return this.post('api/bank/addBankCard', qs.stringify(data))
   },
   // 获取提现手续费
   getRedeemFee(integral) {
@@ -124,8 +125,8 @@ export default {
     return this.get('getRedeemRecordByStatus', {status}, config)
   },
   // 登录流程短信验证码
-  sendMessageCode() {
-    return this.get('sendMessageCode')
+  getCode(data) {
+    return this.post('user/getCode', qs.stringify(data))
   },
   // 获取信用卡列表
   getCreditCardList() {
@@ -160,7 +161,7 @@ export default {
     return this.get('getViolationList')
   },
   // 获取用户可用积分
-  getUserIntegral() {
-    return this.get('getUserIntegral')
+  getUserInfo(data) {
+    return this.get('api/user/getUserInfo', data)
   }
 };

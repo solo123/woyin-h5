@@ -5,7 +5,6 @@ import './App.css'
 
 import ScrollToTop from './common/ScrollToTop'
 import Auth from './common/Auth'
-import Transfer from './components/Transfer'
 
 import Cate from './components/Cate'
 import DoubleColorBall from './components/DoubleColorBall'
@@ -29,6 +28,7 @@ import Me from './pages/Me'
 import Login from './pages/Login'
 import Redeem from './pages/Redeem'
 import RedeemRecord from './pages/RedeemRecord'
+import Transfer from './pages/Transfer'
 
 import Order from './pages/Order'
 

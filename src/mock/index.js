@@ -220,35 +220,35 @@ Mock.mock(/transfer/, 'post', function(options){
 })
 
 // 登录
-Mock.mock(/login/, 'post', function(options){
-  const data = JSON.parse(options.body)
-  console.log(`login ${data.username} ${data.password}`)
-  switch(data.type) {
-    case 'password':
-      if(data.username === '15014095291' && data.password === '000000') {
-        return {
-          code: '1',
-          token: 'sdgsgdggadsgfsfasfasfasfasfd',
-          msg: '登录成功'
-        }
-      }else {
-        return {
-          code: '0',
-          msg: '账号或密码错误'
-        }
-      }
-    case 'message':
-      return {
-        code: '0',
-        msg: '验证码错误'
-      }
-    default:
-      return {
-        code: '3',
-        msg: '参数错误'
-      }
-  }
-})
+// Mock.mock(/login/, 'post', function(options){
+//   const data = JSON.parse(options.body)
+//   console.log(`login ${data.username} ${data.password}`)
+//   switch(data.type) {
+//     case 'password':
+//       if(data.username === '15014095291' && data.password === '000000') {
+//         return {
+//           code: '1',
+//           token: 'sdgsgdggadsgfsfasfasfasfasfd',
+//           msg: '登录成功'
+//         }
+//       }else {
+//         return {
+//           code: '0',
+//           msg: '账号或密码错误'
+//         }
+//       }
+//     case 'message':
+//       return {
+//         code: '0',
+//         msg: '验证码错误'
+//       }
+//     default:
+//       return {
+//         code: '3',
+//         msg: '参数错误'
+//       }
+//   }
+// })
 
 // 获取用户总积分
 Mock.mock(/getUserIntegral/, 'get', function(options){

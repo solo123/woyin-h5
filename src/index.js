@@ -12,7 +12,7 @@ import * as serviceWorker from './serviceWorker';
 import store from './Store';
 
 if(process.env.NODE_ENV == 'development') {
-  import './mock';
+  require ('./mock/index.js');
 }
 
 // import 'amfe-flexible'
