@@ -168,10 +168,10 @@ const getLastNum = function(bankcardNo) {
 const parseBankcardList = function(arr) {
   return arr.map(item => {
     return {
-      bankcardNo: item.bankcardNo,
-      bankcardName: item.bankcardName,
-      bankcardClass: item.bankcardClass,
-      label: item.bankcardName + '-' + getLastNum(item.bankcardNo)
+      bankcardNo: item.bankCard,
+      bankcardName: item.bankName,
+      bankcardClass: item.bankCode,
+      label: item.bankName + '-' + getLastNum(item.bankCard)
     }
   })
 }

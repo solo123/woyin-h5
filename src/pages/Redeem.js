@@ -6,16 +6,31 @@ import {Link} from 'react-router-dom'
 import api from '../api'
 import util from '../util'
 import {replace} from '../services/redirect'
+import {getItem} from '../services/storage'
 
 import Backhome from '../common/Backhome'
-
-import jsIcon from '../asset/images/bank/js.svg'
-import zsIcon from '../asset/images/bank/zs.svg'
-import gsIcon from '../asset/images/bank/gs.svg'
 
 import arrowRightIcon from '../asset/images/icon/arrow_right.svg'
 import checkedIcon from '../asset/images/icon/checked.png'
 import uncheckedIcon from '../asset/images/icon/unchecked.svg'
+
+import fzIcon from '../asset/images/bank/fz.svg'
+import gdIcon from '../asset/images/bank/gd.svg'
+import gsIcon from '../asset/images/bank/gs.svg'
+import hxIcon from '../asset/images/bank/hx.svg'
+import jsIcon from '../asset/images/bank/js.svg'
+import jtIcon from '../asset/images/bank/jt.svg'
+import msIcon from '../asset/images/bank/ms.svg'
+import nyIcon from '../asset/images/bank/ny.svg'
+import paIcon from '../asset/images/bank/pa.svg'
+import shIcon from '../asset/images/bank/sh.svg'
+import shfzIcon from '../asset/images/bank/shfz.svg'
+import xyIcon from '../asset/images/bank/xy.svg'
+import yzIcon from '../asset/images/bank/yz.svg'
+import zgIcon from '../asset/images/bank/zg.svg'
+import zsIcon from '../asset/images/bank/zs.svg'
+import zxIcon from '../asset/images/bank/zx.svg'
+import defaultIcon from '../asset/images/bank/default.svg'
 
 const Button = styled.button`
   border: 0;
@@ -168,10 +183,10 @@ const LayoutPage = styled.div`
 const MIN_INTEGRAL = 100
 const MAX_INTEGRAL = 5000000
 
-const bankcardLogoSchema = {
-  '001': jsIcon,
-  '002': zsIcon,
-  '003': gsIcon
+const BANKCARD_SCHEMA = {
+  jsIcon,
+  zsIcon,
+  gsIcon
 }
 
 const BankcardLoading = () => {
@@ -253,32 +268,44 @@ class Redeem extends Component {
   }
 
   componentDidMount() {
-    api.getBankcardList()
-      .then(res => {
-        const {data} = res
-        if(data.code === '1') {
-          this.setState({bankcardList: data.items}, () => {
-            const firstBankcard = data.items[0]
-            if(firstBankcard) {
-              this.setCurrBankcard(firstBankcard.bankcardNo, firstBankcard.bankcardName, firstBankcard.bankcardClass)
-            }
-          })
+    this.loadUserInfo()
+    this.loadBankcardList()
+  }
+
+  loadBankcardList = async () => {
+    const params = {
+      userPhoneNo: '13111111111',
+      session: getItem('token')
+    }
+    const {data} = await api.getBankcardList(params)
+    this.setState({loading: false})
+    if(data.status === 200) {
+      this.setState({bankcardList: data.data}, () => {
+        const firstBankcard = data.data[0]
+        if(firstBankcard) {
+          this.setCurrBankcard(firstBankcard.bankCard, firstBankcard.bankName, firstBankcard.bankCode)
         }
       })
-      .then(() => {
-        this.setState({loading: false})
+    }
+  }
+
+  loadUserInfo = async () => {
+    const params = {
+      userPhoneNo: '13111111111',
+      session: getItem('token')
+    }
+    const {data} = await api.getUserInfo(params)
+
+    if(data.status === 200) {
+      this.setState({
+        availableIntegral: data.data[0].balance,
+        phone: data.data[0].userPhoneNo
       })
-    api.getUserIntegral()
-      .then(res => {
-        const {data} = res
-        if(data.code === '1') {
-          this.setState({availableIntegral: data.integral})
-        }
-      })
+    }
   }
 
   setCurrBankcard = (bankcardNo, bankcardName, bankcardClass) =>  {
-    this.setState({bankcardNo, bankcardName, bankcardLogo: bankcardLogoSchema[bankcardClass]}, () => {
+    this.setState({bankcardNo, bankcardName, bankcardLogo: BANKCARD_SCHEMA[bankcardClass] || defaultIcon}, () => {
       this.setState({hasBankcard: true})
     })
   }
