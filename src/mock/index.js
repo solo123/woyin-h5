@@ -164,20 +164,20 @@ Mock.mock(/addBankcard/, 'post', function(options){
 })
 
 // 获取银行卡
-Mock.mock(/getBankcardList/, 'get', function(options){
-  // return {
-  //   code: '0',
-  //   items: []
-  // }  
-  return {
-    code: '1',
-    items: [
-      {id: uuid(), bankcardClass: '001', bankcardName: '建设银行', bankcardNo: '6227007200230197111'},
-      {id: uuid(), bankcardClass: '002', bankcardName: '招商银行', bankcardNo: '6227007200230197112'},
-      {id: uuid(), bankcardClass: '003', bankcardName: '工商银行', bankcardNo: '6227007200230197113'}
-    ]
-  }
-})
+// Mock.mock(/getBankcardList/, 'get', function(options){
+//   // return {
+//   //   code: '0',
+//   //   items: []
+//   // }  
+//   return {
+//     code: '1',
+//     items: [
+//       {id: uuid(), bankcardClass: '001', bankcardName: '建设银行', bankcardNo: '6227007200230197111'},
+//       {id: uuid(), bankcardClass: '002', bankcardName: '招商银行', bankcardNo: '6227007200230197112'},
+//       {id: uuid(), bankcardClass: '003', bankcardName: '工商银行', bankcardNo: '6227007200230197113'}
+//     ]
+//   }
+// })
 
 // 获取信用卡
 Mock.mock(/getCreditCardList/, 'get', function(options){

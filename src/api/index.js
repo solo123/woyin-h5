@@ -103,8 +103,8 @@ export default {
     return this.get('rechargeQB', {id, phone})
   },  
   // 获取银行卡列表
-  getBankcardList(params) {
-    return this.get('api/bank/getBankCardList', params)
+  getBankcardList() {
+    return this.get('api/bank/getBankCardList')
   },
   // 添加银卡
   addBankcard(data) {
@@ -161,7 +161,7 @@ export default {
     return this.get('getViolationList')
   },
   // 获取用户可用积分
-  getUserInfo(data) {
-    return this.get('api/user/getUserInfo', data)
+  getUserInfo() {
+    return this.get('api/user/getUserInfo')
   }
 };

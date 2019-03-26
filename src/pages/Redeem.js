@@ -273,11 +273,7 @@ class Redeem extends Component {
   }
 
   loadBankcardList = async () => {
-    const params = {
-      userPhoneNo: '13111111111',
-      session: getItem('token')
-    }
-    const {data} = await api.getBankcardList(params)
+    const {data} = await api.getBankcardList()
     this.setState({loading: false})
     if(data.status === 200) {
       this.setState({bankcardList: data.data}, () => {
@@ -290,12 +286,7 @@ class Redeem extends Component {
   }
 
   loadUserInfo = async () => {
-    const params = {
-      userPhoneNo: '13111111111',
-      session: getItem('token')
-    }
-    const {data} = await api.getUserInfo(params)
-
+    const {data} = await api.getUserInfo()
     if(data.status === 200) {
       this.setState({
         availableIntegral: data.data[0].balance,

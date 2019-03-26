@@ -162,11 +162,7 @@ class BankcardList extends Component {
   }
 
   loadBankcardList = async () => {
-    const params = {
-      userPhoneNo: '13111111111',
-      session: getItem('token')
-    }
-    const {data} = await api.getBankcardList(params)
+    const {data} = await api.getBankcardList()
     if(data.status === 200) {
       this.setState({items: data.data})
     }

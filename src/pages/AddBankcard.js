@@ -98,14 +98,13 @@ const SubmitBtn = ({pass, onSubmit}) => {
 class AddBankcard extends Component {
   state = {
     pass: false,
-
     username: '',
     usernameCleanViewFlag: false,
     id: '',
     idCleanViewFlag: false,
     cardNo: '',
     cardNoCleanViewFlag: false,
-    phone: '13111111111',
+    phone: '',
     phoneCleanViewFlag: false
   }
 
@@ -161,26 +160,9 @@ class AddBankcard extends Component {
 
   handleSubmit = async () => {
     const loading = weui.loading('处理中')
-
-
-    // userPhoneNo	是	string	用户登录手机号
-    // session	是	string	sessionId
-    // roleType	是	int	类型　1商户　２会员
-    // bankCard	是	string	银行卡号
-    // bankCode	是	string	银行代码
-    // bankName	是	string	银行名称
-    // bankCardType	是	string	银行卡类型　1 借记卡　2 信用卡
-    // cardHoldName	是	string	持卡人姓名
-    // idNo	是	string	身份证号
-
     const params = {
-      userPhoneNo: this.state.phone,
-      session: getItem('token'),
-      roleType: '2',
+      cardPhoneNo: this.state.phone,
       bankCard: this.state.cardNo,
-      bankCode: '1',
-      bankName: '建设银行',
-      bankCardType: '1',
       cardHoldName: this.state.username,
       idNo: this.state.id
     }

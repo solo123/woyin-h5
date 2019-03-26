@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "homepage": ".",
-  "proxy": "http://192.168.0.70:9000",
+  "proxy": "http://192.168.0.70:9001",
   "dependencies": {
     "amfe-flexible": "^2.2.1",
     "axios": "^0.18.0",

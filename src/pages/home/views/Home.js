@@ -188,13 +188,11 @@ class Home extends Component {
   }
 
   loadUserinfo = async () => {
-    const params = {
-      userPhoneNo: '13111111111',
-      session: getItem('token')
-    }
-    const {data} = await api.getUserInfo(params)
+    const {data} = await api.getUserInfo()
     if(data.status === 200) {
-      this.setState({availableIntegral: data.data[0].balance})
+      if(data.data.length) {
+        this.setState({availableIntegral: data.data[0].balance})
+      }
     }
   }
 
