@@ -45,7 +45,7 @@ const DisablePrimaryButton = styled(Button)`
 const MiniPrimaryBtn = styled(Button)`
   color: #fff;
   font-size: 12px;
-  padding: 0 10px;
+  padding: 3px 10px;
   line-height: 1.5;
   border-radius: 3px;
   background: -webkit-linear-gradient(47deg,#4cadff,#8ce0ff);
@@ -53,7 +53,7 @@ const MiniPrimaryBtn = styled(Button)`
 const DisableMiniPrimaryBtn = styled(Button)`
   color: #fff;
   font-size: 12px;
-  padding: 0 10px;
+  padding: 3px 10px;
   line-height: 1.5;
   border-radius: 3px;
   background: #ccc;
@@ -131,6 +131,7 @@ const Page = styled.div`
     }
     &__foot{
       display: flex;
+      align-items: center;
       margin-left: 10px;
     }
     &__toggle-btn,
@@ -164,6 +165,10 @@ const rememberUsernameIconSchema = {
 
 const LOGINTYPE_PASSWORD = 'password'
 const LOGINTYPE_MESSAGE = 'message'
+const LOGINTYPE_SCHEMA = {
+  'password': 1,
+  'message': 2
+}
 
 const SendMessageBtn = ({flag, timer, handleClick}) => {
   if(flag) {
@@ -192,7 +197,7 @@ class Login extends Component {
     this.handleRememberUsername = this.handleRememberUsername.bind(this)
     this.usernameClean = this.handleClean.bind(this, 'username')
     this.passwordClean = this.handleClean.bind(this, 'password')
-    this.messageClean = this.handleClean.bind(this, 'message')
+    this.messageClean = this.handleClean.bind(this, 'messageCode')
     this.handlePasswordLogin = this.handleToggleLoginType.bind(this, LOGINTYPE_PASSWORD)
     this.handleMessageLogin = this.handleToggleLoginType.bind(this, LOGINTYPE_MESSAGE)
 
@@ -204,7 +209,7 @@ class Login extends Component {
       password: '111111',
       passwordCleanView: false,
       messageCode: '',
-      messageCleanView: false,
+      messageCodeCleanView: false,
 
       passwordType: 'password',
       rememberStatus: 'unchecked',
@@ -280,15 +285,17 @@ class Login extends Component {
     const params = {
       userPhoneNo: this.state.username,
       password: this.state.password,
-      loginType: 1
+      loginType: LOGINTYPE_SCHEMA[this.state.loginType]
     }
-
-    const {data} = await api.login(params)
-    loading.hide()
-    if(data.status === 200) {
-      this.props.login({token: data.data.sessionId})
-    }else {
-      weui.alert(data.msg)
+    try {
+      const {data} = await api.login(params)
+      if(data.status === 200) {
+        this.props.login({token: data.data.sessionId})
+      }else {
+        weui.alert(data.msg)
+      }
+    }finally {
+      loading.hide()
     }
   }
 
@@ -352,27 +359,22 @@ class Login extends Component {
       userPhoneNo: this.state.username,
       codeType: 1
     }
-    try {
-      const {data} = await api.getCode(params)
-      if(data.status === 200) {
-        this.setState({sendMessageCodeFlag: false}, () => {
-          this.countDown()
-        })
-        weui.alert(data.msg)
-      }else {
-        weui.alert(data.msg)
-      }
-    }catch(err) {
-      weui.alert(err.message)
+    const {data} = await api.getCode(params)
+    if(data.status === 200) {
+      this.setState({sendMessageCodeFlag: false}, () => {
+        this.countDown()
+      })
+      weui.alert(data.msg)
+    }else {
+      weui.alert(data.msg)
     }
-
     loading.hide()
   }
 
   render() {
     const {isAuthenticated} = this.props;
     const {from} = this.props.location.state || {from: {pathname: "/"}}
-    const {pass, usernameCleanView, passwordCleanView, messageCleanView, sendMessageCodeFlag} = this.state
+    const {pass, usernameCleanView, passwordCleanView, messageCodeCleanView, sendMessageCodeFlag} = this.state
 
     if(isAuthenticated){ return <Redirect to={ from } /> }
 
@@ -458,7 +460,7 @@ class Login extends Component {
                   <div className="group__foot">
                     <img 
                       className="group__clean-btn"
-                      style={{visibility: messageCleanView ? 'visible' : 'hidden'}} 
+                      style={{visibility: messageCodeCleanView ? 'visible' : 'hidden'}} 
                       onClick={this.messageClean} 
                       src={closeIcon} 
                       alt="" 
