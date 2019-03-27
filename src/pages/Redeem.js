@@ -93,7 +93,7 @@ const MinPrimaryInput = styled(Input)`
   font-size: 14px;
 `
 
-const LayoutPage = styled.div`
+const Page = styled.div`
   padding: 15px;
   background: #fff;
   .trigger-bar{
@@ -143,16 +143,7 @@ const LayoutPage = styled.div`
     color: #888;
     font-size: 12px;
   }
-  .group{
-    display: flex;
-    align-items: center;
-    .body{
-      flex: 1;
-    }
-    .foot{
-      margin-left: 10px;
-    }
-  }
+
   .checkbox{
     width: 16px;
     height: 16px;
@@ -162,6 +153,16 @@ const LayoutPage = styled.div`
     display: flex;
     align-items: center;
   }
+  .group{
+    display: flex;
+    align-items: center;
+    &__body{
+      flex: 1;
+    }
+    &__foot{
+      margin-left: 10px;
+    }
+  }  
   .loading{
     display: flex;
     &__head{
@@ -259,7 +260,7 @@ class Redeem extends Component {
     bankcardName: '',
     bankcardLogo: '',
 
-    timer: 10,
+    timer: 60,
     sendMsgCodeFlag: true,
     phone: '15014095291',
     redeemFee: 0,
@@ -377,47 +378,36 @@ class Redeem extends Component {
         if(!inputElem.value) {
           return false
         }
-        this.checkTransPswd(inputElem.value)
+        this.submitRedeem(inputElem.value)
       }
     })
   }
 
-  submitRedeem = () => {
+  submitRedeem = async(pswd) => {
     const loading = weui.loading('处理中')
-    api.redeemIntegral(this.state.integral)
-      .then(res => {
-        const {data} = res
-        if(data.code === '1') {
-          weui.alert(data.msg, () => {
-            replace('/redeem-record')
-          })
-        }else {
-          weui.alert(data.msg)
-        }
+    const params = {
+      amount: this.state.integral,
+      bankCard: '6227007200230197008',
+      bankCode: 0,
+      bankName: '建设银行',
+      cardHoldName: '高强',
+      cardPhoneNo: '15014095291',
+      tradPwd: pswd,
+      code: this.state.smsCode
+    }
+    const {data} = await api.redeemIntegral(params)
+    loading.hide()
+    if(data.status === 200) {
+      weui.alert(data.msg, () => {
+        replace('/redeem-record')
       })
-      .then(() => {
-        loading.hide()
-      })    
-  }
-
-  checkTransPswd = pswd => {
-    const loading = weui.loading('处理中')
-    api.confirmTransPswd(pswd)
-      .then(res => {
-        const {data} = res
-        if(data.code === '1') {
-          this.submitRedeem()
-        }else if(data.code === '2'){
-          util.confirmRetry(data.msg, () => {
-            this.retryTransPswd()
-          })
-        }else {
-          weui.alert(data.msg)
-        }
+    }else if(data.status === 201){
+      util.confirmRetry(data.msg, () => {
+        this.retryTransPswd()
       })
-      .then(() => {
-        loading.hide()
-      })
+    }else {
+      weui.alert(data.msg)
+    }  
   }
 
   // 重试交易密码
@@ -441,21 +431,17 @@ class Redeem extends Component {
     this.setState({timer: 10, sendMsgCodeFlag: true})
   }
 
-  getMsgCode = () => {
+  getMsgCode = async() => {
     const loading = weui.loading('发送中')
-    api.sendMsgCode(this.state.phone)
-      .then(res => {
-        const {data} = res
-        if(data.code === '1') {
-          this.setState({sendMsgCodeFlag: false}, () => {
-            this.countDown()
-          })
-          weui.alert(data.msg)
-        }
+    const params = {userPhoneNo: '15014095291', codeType: 3}    
+    const {data} = await api.getCode(params)
+    if(data.status === 200) {
+      this.setState({sendMsgCodeFlag: false}, () => {
+        this.countDown()
       })
-      .then(() => {
-        loading.hide()
-      })
+      weui.alert(data.msg)
+    }
+    loading.hide()
   }
 
   render() {
@@ -471,7 +457,7 @@ class Redeem extends Component {
     } = this.state
 
     return (
-      <LayoutPage>
+      <Page>
 
         <div className="u_mb_xxx">
           <div className="trigger-bar">
@@ -512,7 +498,7 @@ class Redeem extends Component {
 
         <div className="u_mb_xxx">
           <div className="group">
-            <div className="body">
+            <div className="group__body">
               <MinPrimaryInput 
                 type="text"
                 name="smsCode"
@@ -521,7 +507,7 @@ class Redeem extends Component {
                 placeholder="请输入短信验证码"
               />
             </div>
-            <div className="foot">
+            <div className="group__foot">
               <SendMessageBtn flag={sendMsgCodeFlag} timer={this.state.timer} handleClick={this.getMsgCode} />
             </div>  
           </div>
@@ -537,7 +523,7 @@ class Redeem extends Component {
         <SubmitBtn pass={pass} handleSubmit={this.handleSubmit} />
         
         <Backhome />
-      </LayoutPage>
+      </Page>
     )
   }
 }

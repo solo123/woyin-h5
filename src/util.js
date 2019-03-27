@@ -202,8 +202,29 @@ const confirmRetry = function(content, cb) {
   })
 }
 
+const fixIos12WeixinInputBug = function () {
+  let currentScrollTop = 0
+
+  const scrollTop = function (y) {
+    y = y ? y : 0;
+    window.scrollTo(0, y)
+  }
+
+  document.querySelector('body').addEventListener('focus', e => {
+    if(e.type === 'focus' && e.target.tagName === 'INPUT') {
+      currentScrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop
+    }
+  }, true)  
+
+  document.querySelector('body').addEventListener('blur', e => {
+    if(e.type === 'blur' && e.target.tagName === 'INPUT') {
+      scrollTop(currentScrollTop)
+    }
+  }, true)
+}
 
 export default {
+  fixIos12WeixinInputBug,
   accessTokenIsValid,
   refreshTokenIsValid,
   creteNumSeriesString,

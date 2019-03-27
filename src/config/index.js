@@ -14,6 +14,11 @@ export default {
     MAX_COUNT: 10,
     MIN_COUNT: 1
   },
+  // 积分赎回
+  redeem: {
+    // 每页条数
+    PAGE_LIMIT: 20
+  },
   // 双色球
   double_color_ball: {
     red: {

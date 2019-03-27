@@ -11,14 +11,12 @@ import config from '../config';
 axios.defaults.timeout = config.timeout
 
 // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
+// axios.defaults.headers.get['Content-Type'] = 'application/x-www-form-urlencoded';
 
 export default {
   get(path, data = {}, config = {}) {
     return axios.get(path, {
       ...config,
-      // validateStatus: function (status) {
-      //     return status < 500; // 状态码在大于或等于500时才会 reject
-      // },
       params: data
     });
   },
@@ -84,7 +82,7 @@ export default {
     return this.get('getVideoProducts')
   },  
   confirmTransPswd(pswd) {
-    return this.post('confirmTransPswd', {pswd})
+    return this.post('api/trad/checkCode', {pswd})
   },
   // 话费充值
   rechargePhone(id, phone) {
@@ -118,11 +116,11 @@ export default {
   sendMsgCode(phone) {
     return this.get('sendMsgCode', {phone})
   },
-  redeemIntegral(integral) {
-    return this.post('redeemIntegral', {integral})
+  redeemIntegral(data) {
+    return this.post('api/trad/withdrawal', qs.stringify(data))
   },
-  getRedeemRecordByStatus(status, config = {}) {
-    return this.get('getRedeemRecordByStatus', {status}, config)
+  getRedeemRecordByStatus(data, config = {}) {
+    return this.get('api/trad/getWithList', data, config)
   },
   // 登录流程短信验证码
   getCode(data) {

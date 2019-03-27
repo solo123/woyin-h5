@@ -1,5 +1,5 @@
 import axios from 'axios';
-
+import weui from 'weui.js'
 import store from '../Store';
 import api from './index';
 import {getItem} from '../services/storage'
@@ -47,11 +47,14 @@ export default () => {
           case 403:
             store.dispatch({type: 'UNAUTH_USER'});
             break;
+          case 500:
+            weui.alert('服务器遇到问题')
+            break;
           case 502:
-            error.message = '网络错误'
+            weui.alert('网络错误')
             break;
           case 503:
-            error.message = '服务不可用'
+            weui.alert('服务不可用')
             break;
           default:
             // console.log(error.response);

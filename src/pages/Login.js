@@ -199,7 +199,7 @@ class Login extends Component {
     this.state = {
       pass: false,
 
-      username: '13111111111',
+      username: '15014095291',
       usernameCleanView: false,
       password: '111111',
       passwordCleanView: false,
@@ -352,16 +352,21 @@ class Login extends Component {
       userPhoneNo: this.state.username,
       codeType: 1
     }
-    const {data} = await api.getCode(params)
-    loading.hide()
-    if(data.status === 200) {
-      this.setState({sendMessageCodeFlag: false}, () => {
-        this.countDown()
-      })
-      weui.alert(data.msg)
-    }else {
-      weui.alert(data.msg)
+    try {
+      const {data} = await api.getCode(params)
+      if(data.status === 200) {
+        this.setState({sendMessageCodeFlag: false}, () => {
+          this.countDown()
+        })
+        weui.alert(data.msg)
+      }else {
+        weui.alert(data.msg)
+      }
+    }catch(err) {
+      weui.alert(err.message)
     }
+
+    loading.hide()
   }
 
   render() {
