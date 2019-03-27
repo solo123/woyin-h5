@@ -225,6 +225,10 @@ class Login extends Component {
     this.readUsernameFromStore()
   }
 
+  componentWillUnmount() {
+    this._isMounted = false
+  }
+
   // 从缓存充读取用户名
   readUsernameFromStore = () => {
     const username = getItem('username')
@@ -343,6 +347,7 @@ class Login extends Component {
   countDown = () => {
     if(this.state.timer > 0) {
       setTimeout(() => {
+        if(!this._isMounted){return}
         this.setState({timer: this.state.timer - 1}, () => {
           this.countDown()
         })
@@ -359,16 +364,17 @@ class Login extends Component {
       userPhoneNo: this.state.username,
       codeType: 1
     }
-    const {data} = await api.getCode(params)
-    if(data.status === 200) {
-      this.setState({sendMessageCodeFlag: false}, () => {
-        this.countDown()
-      })
+    try {
+      this._isMounted = true
+      const {data} = await api.getCode(params)
+      if(data.status === 200) {
+        if(!this._isMounted){return}
+        this.setState({sendMessageCodeFlag: false}, this.countDown)
+      }
       weui.alert(data.msg)
-    }else {
-      weui.alert(data.msg)
+    }finally {
+      loading.hide()
     }
-    loading.hide()
   }
 
   render() {

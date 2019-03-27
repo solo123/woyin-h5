@@ -179,18 +179,27 @@ class Home extends Component {
     }
   }
 
+  componentWillUnmount() {
+    this._isMounted = false
+  }
+
   loadHotsell = async () => {
+    this._isMounted = true
     const {data} = await api.getHotsell()
     if(data.code === '1') {
+      if(!this._isMounted){return}
       this.setState({items: data.items})
     }
+    if(!this._isMounted){return}
     this.setState({loading: false})
   }
 
   loadUserinfo = async () => {
+    this._isMounted = true
     const {data} = await api.getUserInfo()
     if(data.status === 200) {
       if(data.data.length) {
+        if(!this._isMounted){return}
         this.setState({availableIntegral: data.data[0].balance})
       }
     }

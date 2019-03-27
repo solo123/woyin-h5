@@ -72,6 +72,7 @@ class Order extends Component {
   }
 
   componentWillUnmount() {
+    this._isMounted = false
     this.scrollContainer.removeEventListener('scroll', this.scrollListener)
   }
 
@@ -88,30 +89,21 @@ class Order extends Component {
     }
   }
 
-  loadNextPage = (status, page) => {
-    const reqId = ++nextRequestId
-
-    const ifNextRequestValid = (cb) => {
-      if(nextRequestId === reqId){
-        cb && cb()
-      }
-    }
-
-    api.getOrderList(status, page)
-      .then((res) => {
-        ifNextRequestValid(() => {
-          const {data} = res
-          if(data.code === '1'){
-            this.setState({
-              isLoad: false,
-              items: [...this.state.items, ...data.items]
-            })
-          }
+  loadNextPage = async(status, page) => {
+    this._isMounted = true
+    try {
+      const {data} = await api.getOrderList(status, page)
+      if(data.code === '1'){
+        if(!this._isMounted){return}
+        this.setState({
+          isLoad: false,
+          items: [...this.state.items, ...data.items]
         })
-      })
-      .then(() => {
-        this.setState({loading: false})
-      })
+      }
+    }finally {
+      if(!this._isMounted){return}
+      this.setState({loading: false})
+    }
   }
 
   reset = () => {

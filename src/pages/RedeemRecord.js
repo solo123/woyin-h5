@@ -186,7 +186,7 @@ const List = ({items}) => {
         items.map(item => {
           return (
             <Item 
-              key={item.id}
+              key={item.orderId}
               amount={item.amount}
               poundage={item.poundage}
               createTime={moment(item.createTime).format('YYYY-MM-DD HH:mm:ss')}

@@ -182,27 +182,24 @@ class Transfer extends Component {
     }, 100)
   }
 
-  handleSubmit(e) {
+  async handleSubmit(e) {
     const loading = weui.loading('处理中')
-    api.transfer({
-        integral: this.state.integral,
-        username: this.state.username,
-        account: this.state.account,
-        password: this.state.password
-      })
-      .then(res => {
-        const {data} = res
-        if(data.code === '1') {
-          weui.alert('转赠成功')
-        }else {
-          weui.alert(data.msg)
-        }
-      })
-      .then(() => {
-        loading.hide()
-      })
-      .catch(err => {
-      })
+    const params = {
+      integral: this.state.integral,
+      username: this.state.username,
+      account: this.state.account,
+      password: this.state.password
+    }
+    try {
+      const {data} = await api.transfer(params)
+      if(data.code === '1') {
+        weui.alert('转赠成功')
+      }else {
+        weui.alert(data.msg)
+      }
+    }finally {
+      loading.hide()
+    }
   }
 
   passwordToggle() {

@@ -165,6 +165,10 @@ export default class extends Component {
     this.loadProdcuts(this.state.type)
   }
 
+  componentWillUnmount() {
+    this._isMounted = false
+  }
+
   loadUserinfo = async () => {
     const {data} = await api.getUserInfo()
     if(data.status === 200) {
@@ -176,10 +180,13 @@ export default class extends Component {
     this.setState({loading: true})
     source = axios.CancelToken.source()
     try {
+      this._isMounted = true
       const {data} = await api.getRechargePhoneProductsByType(type, {cancelToken: source.token})
       if(data.code === '1') {
+        if(!this._isMounted){return}
         this.setState({items: data.items})
       }
+      if(!this._isMounted){return}
       this.setState({loading: false})
     }catch(err) {
     }
@@ -229,44 +236,38 @@ export default class extends Component {
     })
   }
 
-  checkTransPswd = pswd => {
+  checkTransPswd = async pswd => {
     const loading = weui.loading('处理中')
-    api.confirmTransPswd(pswd)
-      .then(res => {
-        const {data} = res
-        if(data.code === '1') {
-          this.submitRecharge()
-        }else if(data.code === '2'){
-          util.confirmRetry(data.msg, () => {
-            this.retryTransPswd()
-          })
-        }else {
-          weui.alert(data.msg)
-        }
-      })
-      .then(() => {
-        loading.hide()
-      })
-      .catch(err => {
-      })
+    try {
+      const {data} = await api.confirmTransPswd(pswd)
+      if(data.code === '1') {
+        this.submitRecharge()
+      }else if(data.code === '2'){
+        util.confirmRetry(data.msg, () => {
+          this.retryTransPswd()
+        })
+      }else {
+        weui.alert(data.msg)
+      }
+    }finally {
+      loading.hide()
+    }
   }
 
-  submitRecharge = () => {
+  submitRecharge = async() => {
     const loading = weui.loading('处理中')
-    api.rechargePhone(this.state.selectId, this.state.phone)
-      .then(res => {
-        const {data} = res
-        if(data.code === '1') {
-          weui.alert(data.msg, () => {
-            replace('/order')
-          })
-        }else {
-          weui.alert(data.msg)
-        }
-      })
-      .then(() => {
-        loading.hide()
-      })
+    try {
+      const {data} = await api.rechargePhone(this.state.selectId, this.state.phone)
+      if(data.code === '1') {
+        weui.alert(data.msg, () => {
+          replace('/order')
+        })
+      }else {
+        weui.alert(data.msg)
+      }      
+    }finally {
+      loading.hide()
+    }
   }
 
   // 重试交易密码

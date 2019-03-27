@@ -273,6 +273,10 @@ class Redeem extends Component {
     this.loadBankcardList()
   }
 
+  componentWillUnmount() {
+    this._isMounted = false
+  }
+
   loadBankcardList = async () => {
     const {data} = await api.getBankcardList()
     this.setState({loading: false})
@@ -328,14 +332,11 @@ class Redeem extends Component {
     })
   }
 
-  handleBlur = e => {
-    api.getRedeemFee(this.state.integral)
-      .then(res => {
-        const {data} = res
-        if(data.code === '1') {
-          this.updateFee(data)
-        }
-      })
+  handleBlur = async e => {
+    const {data} = await api.getRedeemFee(this.state.integral)
+    if(data.code === '1') {
+      this.updateFee(data)
+    }
   }
 
   updateFee = ({redeemFee, actualReceived, deductIntegral}) => {
@@ -395,19 +396,22 @@ class Redeem extends Component {
       tradPwd: pswd,
       code: this.state.smsCode
     }
-    const {data} = await api.redeemIntegral(params)
-    loading.hide()
-    if(data.status === 200) {
-      weui.alert(data.msg, () => {
-        replace('/redeem-record')
-      })
-    }else if(data.status === 201){
-      util.confirmRetry(data.msg, () => {
-        this.retryTransPswd()
-      })
-    }else {
-      weui.alert(data.msg)
-    }  
+    try {
+      const {data} = await api.redeemIntegral(params)
+      if(data.status === 200) {
+        weui.alert(data.msg, () => {
+          replace('/redeem-record')
+        })
+      }else if(data.status === 201){
+        util.confirmRetry(data.msg, () => {
+          this.retryTransPswd()
+        })
+      }else {
+        weui.alert(data.msg)
+      } 
+    }finally {
+      loading.hide()
+    }
   }
 
   // 重试交易密码
@@ -418,6 +422,7 @@ class Redeem extends Component {
   countDown = () => {
     if(this.state.timer > 0) {
       setTimeout(() => {
+        if(!this._isMounted){return}
         this.setState({timer: this.state.timer - 1}, () => {
           this.countDown()
         })
@@ -433,9 +438,11 @@ class Redeem extends Component {
 
   getMsgCode = async() => {
     const loading = weui.loading('发送中')
-    const params = {userPhoneNo: '15014095291', codeType: 3}    
+    const params = {userPhoneNo: '15014095291', codeType: 3}   
+    this._isMounted = true
     const {data} = await api.getCode(params)
     if(data.status === 200) {
+      if(!this._isMounted){return}
       this.setState({sendMsgCodeFlag: false}, () => {
         this.countDown()
       })
