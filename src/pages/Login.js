@@ -286,10 +286,19 @@ class Login extends Component {
 
   async handleSubmit() {
     const loading = weui.loading('处理中')
-    const params = {
-      userPhoneNo: this.state.username,
-      password: this.state.password,
-      loginType: LOGINTYPE_SCHEMA[this.state.loginType]
+    let params = {}
+    if(LOGINTYPE_SCHEMA[this.state.loginType] === 1) {
+      params = {
+        userPhoneNo: this.state.username,
+        password: this.state.password,
+        loginType: LOGINTYPE_SCHEMA[this.state.loginType]
+      }
+    }else if(LOGINTYPE_SCHEMA[this.state.loginType] === 2) {
+      params = {
+        userPhoneNo: this.state.username,
+        code: this.state.messageCode,
+        loginType: LOGINTYPE_SCHEMA[this.state.loginType]
+      }
     }
     try {
       const {data} = await api.login(params)
