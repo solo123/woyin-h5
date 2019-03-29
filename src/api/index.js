@@ -126,7 +126,7 @@ export default {
   },
   // 登录流程短信验证码
   getCode(data) {
-    return this.post('user/getCode', qs.stringify(data))
+    return this.post(`${BASE}user/getCode`, qs.stringify(data))
   },
   // 获取信用卡列表
   getCreditCardList() {
