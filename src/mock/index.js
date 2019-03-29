@@ -494,21 +494,21 @@ Mock.mock(/sendMessageCode/, 'get', function(options){
 // 时间
 // 积分
 // 类型（判断图标）
-Mock.mock(/getOrderList/, 'get', function(options){
-  const status = util.parseUrl(options.url, 'status').status
-  const page = util.parseUrl(options.url, 'page').page
-  console.log(`getOrderList status:${status} page:${page}`)
-  return {
-    code: '1',
-    items: [
-      {id: uuid()},
-      {id: uuid()},
-      {id: uuid()},
-      {id: uuid()},
-      {id: uuid()},
-      {id: uuid()},
-      {id: uuid()},
-      {id: uuid()}
-    ]
-  }
-})
+// Mock.mock(/getOrderList/, 'get', function(options){
+//   const status = util.parseUrl(options.url, 'status').status
+//   const page = util.parseUrl(options.url, 'page').page
+//   console.log(`getOrderList status:${status} page:${page}`)
+//   return {
+//     code: '1',
+//     items: [
+//       {id: uuid()},
+//       {id: uuid()},
+//       {id: uuid()},
+//       {id: uuid()},
+//       {id: uuid()},
+//       {id: uuid()},
+//       {id: uuid()},
+//       {id: uuid()}
+//     ]
+//   }
+// })

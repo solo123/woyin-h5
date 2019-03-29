@@ -28,7 +28,7 @@ import history from './history'
 const LoadingComponent = ({ isLoading, error }) => {
   // Handle the loading state
   if (isLoading) {
-    return <div>Loading...</div>
+    return <div style={{textAlign: 'center', paddingTop: 30}}>loading...</div>
   }
   // Handle the error state
   else if (error) {

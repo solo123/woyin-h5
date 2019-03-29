@@ -2,11 +2,13 @@ import qs from'qs'
 import axios from 'axios';
 import config from '../config';
 
-// if(process.env.NODE_ENV == 'development') {
-//   axios.defaults.baseURL = config.dev_baseURL
-// }else if(process.env.NODE_ENV == 'production') {
-//   axios.defaults.baseURL = config.prod_baseURL
-// }
+let BASE = ''
+if(process.env.NODE_ENV == 'development') {
+  // axios.defaults.baseURL = config.dev_baseURL
+}else if(process.env.NODE_ENV == 'production') {
+  BASE = 'client/'
+  // axios.defaults.baseURL = config.prod_baseURL
+}
 
 axios.defaults.timeout = config.timeout
 
@@ -35,8 +37,8 @@ export default {
     return this.get('protected');
   },
   // 获取指定状态的订单列表
-  getOrderList(status, page) {
-    return this.get('getOrderList', { status: status, page: page })
+  getOrderList(data, config = {}) {
+    return this.get(`${BASE}api/order/getOrderList`, data, config)
   },
   hotProducts() {
     return this.get('hotProducts')
@@ -59,7 +61,7 @@ export default {
   },
   // 获取话费产品列表
   getRechargePhoneProductsByType(type, config = {}) {
-    return this.get('api/charge/getChargeProductList', {productId: type}, config)
+    return this.get(`${BASE}api/charge/getChargeProductList`, {productId: type}, config)
   },
   // 获取流量产品列表
   getRechargeFlowProductsByType(type) {
@@ -82,11 +84,11 @@ export default {
     return this.get('getVideoProducts')
   },  
   confirmTransPswd(pswd) {
-    return this.post('api/trad/checkCode', {pswd})
+    return this.post(`${BASE}api/trad/checkCode`, {pswd})
   },
   // 话费充值
   rechargePhone(data) {
-    return this.post('api/charge/moreCredit', qs.stringify(data))
+    return this.post(`${BASE}api/charge/moreCredit`, qs.stringify(data))
   },
   // 流量充值
   rechargeFlow(id, phone) {
@@ -102,25 +104,25 @@ export default {
   },  
   // 获取银行卡列表
   getBankcardList() {
-    return this.get('api/bank/getBankCardList')
+    return this.get(`${BASE}api/bank/getBankCardList`)
   },
   // 添加银卡
   addBankcard(data) {
-    return this.post('api/bank/addBankCard', qs.stringify(data))
+    return this.post(`${BASE}api/bank/addBankCard`, qs.stringify(data))
   },
   // 获取提现手续费
-  getRedeemFee(integral) {
-    return this.get('api/trad/poundageList', {integral})
+  getRedeemFee(amount) {
+    return this.get(`${BASE}api/trad/poundageList`, {amount})
   },
   // 积分赎回流程短信验证码
   sendMsgCode(phone) {
     return this.get('sendMsgCode', {phone})
   },
   redeemIntegral(data) {
-    return this.post('api/trad/withdrawal', qs.stringify(data))
+    return this.post(`${BASE}api/trad/withdrawal`, qs.stringify(data))
   },
   getRedeemRecordByStatus(data, config = {}) {
-    return this.get('api/trad/getWithList', data, config)
+    return this.get(`${BASE}api/trad/getWithList`, data, config)
   },
   // 登录流程短信验证码
   getCode(data) {
@@ -160,6 +162,6 @@ export default {
   },
   // 获取用户可用积分
   getUserInfo() {
-    return this.get('api/user/getUserInfo')
+    return this.get(`${BASE}api/user/getUserInfo`)
   }
 };

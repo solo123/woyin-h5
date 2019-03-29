@@ -218,6 +218,10 @@ class RedeemRecord extends Component {
   }
 
   componentDidMount() {
+    const timestamp = Number('1553830691605')
+    const str = moment(timestamp).format('YYYY-MM-DD HH:mm:ss')
+    console.log(str)
+
     const params = {
       status: '10',
       limit: config.redeem.PAGE_LIMIT,
@@ -231,9 +235,7 @@ class RedeemRecord extends Component {
   }
 
   handleClick = (status, title) => {
-    if(status == this.state.status) {
-      return false
-    }
+    if(status == this.state.status) {return}
     source.cancel()
     this.setState({status, title}, () => {
       this.handleToggle()
@@ -278,7 +280,6 @@ class RedeemRecord extends Component {
         </div>
 
         <Backhome />
-
       </Page>
     )
   }

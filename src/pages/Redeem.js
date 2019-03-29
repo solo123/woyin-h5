@@ -262,7 +262,7 @@ class Redeem extends Component {
 
     timer: 60,
     sendMsgCodeFlag: true,
-    phone: '15014095291',
+    phone: '',
     redeemFee: 0,
     actualReceived: 0,
     deductIntegral: 0
@@ -333,17 +333,17 @@ class Redeem extends Component {
   }
 
   handleBlur = async e => {
-    const {data} = await api.getRedeemFee(this.state.integral)
+    const {data} = await api.getRedeemFee(this.state.integral || 0)
     if(data.status === 200) {
-      this.updateFee(data)
+      this.updateFee(data.data)
     }
   }
 
-  updateFee = ({redeemFee, actualReceived, deductIntegral}) => {
+  updateFee = ({poundage, money, totalAmount}) => {
     this.setState({
-      redeemFee,
-      actualReceived,
-      deductIntegral
+      redeemFee: poundage,
+      actualReceived: money,
+      deductIntegral: totalAmount
     })
   }
 
@@ -376,9 +376,7 @@ class Redeem extends Component {
       amount: this.state.integral,
       useable: this.state.availableIntegral,
       callback: (e, inputElem) => {
-        if(!inputElem.value) {
-          return false
-        }
+        if(!inputElem.value) {return false}
         this.submitRedeem(inputElem.value)
       }
     })
@@ -488,7 +486,7 @@ class Redeem extends Component {
         <div className="u_mb_x">
           <div className="input-box">
             <PrimaryInput 
-              type="text"
+              type="number"
               name="integral"
               value={this.state.integral} 
               onChange={this.handleChange}
@@ -500,7 +498,7 @@ class Redeem extends Component {
 
         <div className="u_mb_xxx">
           <div className="small-text">
-            <p>实际扣除{this.state.deductIntegral}积分</p>
+            <p>扣除{this.state.deductIntegral}积分</p>
             <p>实际到账{this.state.actualReceived}元(手续费{this.state.redeemFee}积分，100积分等于1元)</p>
           </div>
         </div>

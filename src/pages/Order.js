@@ -5,6 +5,8 @@ import weui from 'weui.js'
 
 import api from '../api'
 import SkeletonPlaceholder from '../common/SkeletonPlaceholder'
+
+import EmptyArrayPlaceholder from '../common/EmptyArrayPlaceholder'
 import Backhome from '../common/Backhome'
 
 const Page = styled.div`
@@ -67,20 +69,25 @@ const Page = styled.div`
 `
 
 let currentPage = 1
+const STATUS_SCHEMA = {
+  '11': '处理中',
+  '12': '成功',
+  '13': '失败'
+}
 
-const Item = ({id}) => {
+const Item = ({date, name, totalAmt, status}) => {
   return (
     <div className="item">
       <div className="item__head">
-        <h2 className="item__title">Q币</h2>
-        <div className="item__status">处理中</div>
+        <h2 className="item__title">{name}</h2>
+        <div className="item__status">{status}</div>
       </div>
       <div className="item__body">
-        Q币
+        {name}
       </div>
       <div className="item__foot">
-        <div>2019-01-20 17:27:36</div>
-        <div>合计积分 106</div>
+        <div>{date}</div>
+        <div>合计积分 {totalAmt}</div>
       </div>
     </div>
   )
@@ -88,7 +95,16 @@ const Item = ({id}) => {
 
 const List = ({items}) => {
   return items.map(item => {
-    return <Item key={item.id} id={item.id} />
+    return (
+      <Item 
+        key={item.byOrderDetail} 
+        name={item.productName}
+        byOrderDetail={item.byOrderDetail}
+        status={STATUS_SCHEMA[item.status]}
+        date={item.createTime} 
+        totalAmt={item.totalAmt}
+      />
+    )
   })
 }
     
@@ -99,13 +115,13 @@ const Content = ({loading, items}) => {
   if(items.length) {
     return <div className="list"><List items={items} /></div>
   }
-  return null
+  return <EmptyArrayPlaceholder />
 }
 
 let isLoading = false
 class Order extends Component {
   state = {
-    status: '1',
+    status: '11',
     loading: true,
     items: []
   }
@@ -136,12 +152,18 @@ class Order extends Component {
 
   loadNextPage = async(status, page) => {
     this._isMounted = true
+    const params = {
+      status: this.state.status,
+      limit: 10,
+      page: 0
+    }
     try {
-      const {data} = await api.getOrderList(status, page)
-      if(data.code === '1'){
+      const {data} = await api.getOrderList(params)
+      if(data.status === 200){
         if(!this._isMounted){return}
+        if(!data.data.count){return}
         this.setState({
-          items: [...this.state.items, ...data.items]
+          items: [...this.state.items, ...data.data.data]
         }, () => {
           isLoading = false
         })
@@ -174,9 +196,9 @@ class Order extends Component {
     return (
       <Page>
         <nav>
-          <a className={classNames({active: status === '1'})} onClick={() => this.handleClick('1')}>处理中</a>
-          <a className={classNames({active: status === '2'})} onClick={() => this.handleClick('2')}>成功</a>
-          <a className={classNames({active: status === '3'})} onClick={() => this.handleClick('3')}>失败</a>
+          <a className={classNames({active: status === '11'})} onClick={() => this.handleClick('11')}>处理中</a>
+          <a className={classNames({active: status === '12'})} onClick={() => this.handleClick('12')}>成功</a>
+          <a className={classNames({active: status === '13'})} onClick={() => this.handleClick('13')}>失败</a>
         </nav>
         <div className="container" ref={node => this.scrollContainer = node}>
           <main ref={node => this.itemsElem = node}>

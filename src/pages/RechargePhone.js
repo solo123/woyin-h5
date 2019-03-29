@@ -303,7 +303,7 @@ export default class extends Component {
           <div className="input-box">
             <div className="input-inner-box">
               <StyledInput 
-                type="text" 
+                type="number" 
                 value={this.state.phone}
                 onChange={this.handleChange} 
                 placeholder="请输入手机号码" 
