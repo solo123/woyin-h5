@@ -7,7 +7,7 @@ const Mock = require('mockjs');
 const Random = Mock.Random;
 
 Mock.setup({
-  timeout: 1500
+  timeout: 500
 });
 
 // 返回商品分类

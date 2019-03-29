@@ -142,9 +142,9 @@ const SubmitBtn = ({pass, handleSubmit}) => {
   return <DisablePrimaryButton>立即充值</DisablePrimaryButton>
 }
 
-const CMCC = '1'
-const CUCC = '2'
-const CTCC = '3'
+const CMCC = '2'
+const CUCC = '3'
+const CTCC = '4'
 
 let source = null
 export default class extends Component {
@@ -179,16 +179,17 @@ export default class extends Component {
   loadProdcuts = async type => {
     this.setState({loading: true})
     source = axios.CancelToken.source()
+    
+    this._isMounted = true
     try {
-      this._isMounted = true
       const {data} = await api.getRechargePhoneProductsByType(type, {cancelToken: source.token})
-      if(data.code === '1') {
+      if(data.status === 200) {
         if(!this._isMounted){return}
-        this.setState({items: data.items})
+        this.setState({items: data.data})
       }
+    }finally {
       if(!this._isMounted){return}
       this.setState({loading: false})
-    }catch(err) {
     }
   }
 
@@ -199,9 +200,8 @@ export default class extends Component {
   }
 
   handleToggleType = type => {
-    if(type === this.state.type) {
-      return false
-    }
+    if(type === this.state.type) {return}
+    // 中断上次未完成的请求
     source.cancel('forced interrupt request')
     this.reset()
     this.setState({type}, () => {
@@ -231,40 +231,34 @@ export default class extends Component {
         if(!inputElem.value) {
           return false
         }
-        this.checkTransPswd(inputElem.value)
+        this.submitRecharge(inputElem.value)
       }
     })
   }
 
-  checkTransPswd = async pswd => {
+  submitRecharge = async(pswd) => {
     const loading = weui.loading('处理中')
+    const params = {
+      chargeAddr: this.state.phone,
+      chargeType: '1',
+      chargeMoney: '1',
+      productId: this.state.selectId,
+      tranPwd: pswd
+    }
+
     try {
-      const {data} = await api.confirmTransPswd(pswd)
-      if(data.code === '1') {
-        this.submitRecharge()
-      }else if(data.code === '2'){
-        util.confirmRetry(data.msg, () => {
+      const {data} = await api.rechargePhone(params)
+      if(data.status === 200) {
+        weui.alert(data.msg, () => {
+          replace('/order')
+        })
+      }else if(data.status === 1017) {
+        util.confirmRetry('密码错误', () => {
           this.retryTransPswd()
         })
       }else {
         weui.alert(data.msg)
       }
-    }finally {
-      loading.hide()
-    }
-  }
-
-  submitRecharge = async() => {
-    const loading = weui.loading('处理中')
-    try {
-      const {data} = await api.rechargePhone(this.state.selectId, this.state.phone)
-      if(data.code === '1') {
-        weui.alert(data.msg, () => {
-          replace('/order')
-        })
-      }else {
-        weui.alert(data.msg)
-      }      
     }finally {
       loading.hide()
     }
@@ -288,11 +282,11 @@ export default class extends Component {
 
     const list = items.map(item => (
       <Item
-        key={item.id}
-        id={item.id}
+        key={item.productId}
+        id={item.productId}
         selectId={selectId}
-        money={item.money}
-        integral={item.integral}
+        money={item.salesPrice}
+        integral={item.salesPrice * 100}
         handleClick={this.selectProduct}
       />
     ))

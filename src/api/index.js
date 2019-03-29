@@ -59,7 +59,7 @@ export default {
   },
   // 获取话费产品列表
   getRechargePhoneProductsByType(type, config = {}) {
-    return this.get('getRechargePhoneProductsByType', {type}, config)
+    return this.get('api/charge/getChargeProductList', {productId: type}, config)
   },
   // 获取流量产品列表
   getRechargeFlowProductsByType(type) {
@@ -85,8 +85,8 @@ export default {
     return this.post('api/trad/checkCode', {pswd})
   },
   // 话费充值
-  rechargePhone(id, phone) {
-    return this.get('rechargePhone', {id, phone})
+  rechargePhone(data) {
+    return this.post('api/charge/moreCredit', qs.stringify(data))
   },
   // 流量充值
   rechargeFlow(id, phone) {
@@ -110,7 +110,7 @@ export default {
   },
   // 获取提现手续费
   getRedeemFee(integral) {
-    return this.get('getRedeemFee', {integral})
+    return this.get('api/trad/poundageList', {integral})
   },
   // 积分赎回流程短信验证码
   sendMsgCode(phone) {

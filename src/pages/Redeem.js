@@ -334,7 +334,7 @@ class Redeem extends Component {
 
   handleBlur = async e => {
     const {data} = await api.getRedeemFee(this.state.integral)
-    if(data.code === '1') {
+    if(data.status === 200) {
       this.updateFee(data)
     }
   }
@@ -402,13 +402,13 @@ class Redeem extends Component {
         weui.alert(data.msg, () => {
           replace('/redeem-record')
         })
-      }else if(data.status === 201){
-        util.confirmRetry(data.msg, () => {
+      }else if(data.status === 1017){
+        util.confirmRetry('密码错误', () => {
           this.retryTransPswd()
         })
       }else {
         weui.alert(data.msg)
-      } 
+      }
     }finally {
       loading.hide()
     }

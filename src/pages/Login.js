@@ -204,9 +204,9 @@ class Login extends Component {
     this.state = {
       pass: false,
 
-      username: '15014095291',
+      username: '',
       usernameCleanView: false,
-      password: '111111',
+      password: '',
       passwordCleanView: false,
       messageCode: '',
       messageCodeCleanView: false,
@@ -295,6 +295,8 @@ class Login extends Component {
       const {data} = await api.login(params)
       if(data.status === 200) {
         this.props.login({token: data.data.sessionId})
+      }else if(data.status === 1010){
+        weui.alert('账号或密码错误')
       }else {
         weui.alert(data.msg)
       }

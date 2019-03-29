@@ -1,12 +1,13 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 import classNames from 'classnames'
+import weui from 'weui.js'
 
 import api from '../api'
 import SkeletonPlaceholder from '../common/SkeletonPlaceholder'
 import Backhome from '../common/Backhome'
 
-const LayoutPageContianer = styled.div`
+const Page = styled.div`
   position: absolute;
   top: 0;
   left: 0;
@@ -14,55 +15,98 @@ const LayoutPageContianer = styled.div`
   bottom: 0;
   display: flex;
   flex-direction: column;
-`
-const LayoutMain = styled.div`
-  flex-shrink: 1;
-  flex-grow: 1;
-  overflow-y: auto;
-`
-const LayoutItems = styled.div`
-  margin: 15px 15px 0 15px;
-`
-const StyledNav = styled.ul`
-  display: flex;
-  flex-shrink: 0;
-  line-height: 60px;
-  background: #fff;
-  li{
-    flex: 1;
-    text-align: center;
-    transition: all .3s ease;
-    color: #888;
-    &.active{
-      color: #444;
-      font-size: 16px;
-      font-weight: bold;
+  nav{
+    display: flex;
+    flex-shrink: 0;
+    line-height: 60px;
+    background: #fff;
+    a{
+      flex: 1;
+      text-align: center;
+      transition: all .3s ease;
+      color: #888;
+      &.active{
+        color: #444;
+        font-size: 16px;
+        font-weight: bold;
+      }
+    }
+  }
+  .container{
+    flex-shrink: 1;
+    flex-grow: 1;
+    overflow-y: auto;
+  }
+  .list{
+    margin: 15px 15px 0 15px;
+    .item{
+      background: #fff;
+      margin-bottom: 15px;
+      &__head{
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid #eaeaea;
+        padding: 15px;
+      }
+      &__body{
+        padding: 15px 15px 0 15px;
+      }
+      &__foot{
+        display: flex;
+        justify-content: space-between;
+        font-size: 12px;        
+        padding: 15px;
+      }
+      &__title{
+      }
+      &__status{
+        font-size: 12px;
+      }
     }
   }
 `
-const StyledItem = styled.div`
-  padding: 50px 20px;
-  background: #fff;
-  margin-bottom: 15px;
-  font-size: 20px;
-`
 
 let currentPage = 1
-let nextRequestId = 0
 
 const Item = ({id}) => {
   return (
-    <StyledItem>
-      {id}
-    </StyledItem>
+    <div className="item">
+      <div className="item__head">
+        <h2 className="item__title">Q币</h2>
+        <div className="item__status">处理中</div>
+      </div>
+      <div className="item__body">
+        Q币
+      </div>
+      <div className="item__foot">
+        <div>2019-01-20 17:27:36</div>
+        <div>合计积分 106</div>
+      </div>
+    </div>
   )
 }
 
+const List = ({items}) => {
+  return items.map(item => {
+    return <Item key={item.id} id={item.id} />
+  })
+}
+    
+const Content = ({loading, items}) => {
+  if(loading) {
+    return <div className="u_mx_xxx u_pt_xxx"><SkeletonPlaceholder count={3} /></div>
+  }
+  if(items.length) {
+    return <div className="list"><List items={items} /></div>
+  }
+  return null
+}
+
+let isLoading = false
 class Order extends Component {
   state = {
     status: '1',
     loading: true,
-    isLoad: false,
     items: []
   }
 
@@ -77,14 +121,15 @@ class Order extends Component {
   }
 
   scrollListener = () => {
-    if(this.state.isLoad){ return }
+    if(isLoading){ return }
 
     const scrollTop = this.scrollContainer.scrollTop
     const winHeight = this.scrollContainer.offsetHeight
     const docHeight = this.itemsElem.offsetHeight
 
     if((scrollTop + winHeight) >= docHeight){
-      this.setState({isLoad: true})
+      isLoading = true
+      this.loading = weui.loading('加载中')
       this.loadNextPage(this.state.status, ++currentPage)
     }
   }
@@ -96,11 +141,15 @@ class Order extends Component {
       if(data.code === '1'){
         if(!this._isMounted){return}
         this.setState({
-          isLoad: false,
           items: [...this.state.items, ...data.items]
+        }, () => {
+          isLoading = false
         })
       }
     }finally {
+      if(this.loading) {
+        this.loading.hide()
+      }
       if(!this._isMounted){return}
       this.setState({loading: false})
     }
@@ -112,6 +161,7 @@ class Order extends Component {
   }
 
   handleClick = status => {
+    if(this.state.status === status) {return}
     this.reset()
     this.setState({status: status, loading: true}, () => {
       this.loadNextPage(status, currentPage)
@@ -120,28 +170,21 @@ class Order extends Component {
 
   render() {
     const {loading, items, status} = this.state
-    
-    const List = items.map(item => (
-        <Item key={item.id} id={item.id} />
-      ))
 
     return (
-      <LayoutPageContianer>
-        <StyledNav>
-          <li className={classNames({active: status === '1'})} onClick={() => this.handleClick('1')}>处理中</li>
-          <li className={classNames({active: status === '2'})} onClick={() => this.handleClick('2')}>成功</li>
-          <li className={classNames({active: status === '3'})} onClick={() => this.handleClick('3')}>失败</li>
-        </StyledNav>
-
-        <LayoutMain ref={node => this.scrollContainer = node}>
+      <Page>
+        <nav>
+          <a className={classNames({active: status === '1'})} onClick={() => this.handleClick('1')}>处理中</a>
+          <a className={classNames({active: status === '2'})} onClick={() => this.handleClick('2')}>成功</a>
+          <a className={classNames({active: status === '3'})} onClick={() => this.handleClick('3')}>失败</a>
+        </nav>
+        <div className="container" ref={node => this.scrollContainer = node}>
           <main ref={node => this.itemsElem = node}>
-            <LayoutItems>{List}</LayoutItems>
-            {loading ? <div className="u_mx_xxx"><SkeletonPlaceholder count={3} /></div> : null}            
+            <Content loading={loading} items={items} />
           </main>
-        </LayoutMain>
-
+        </div>
         <Backhome />
-      </LayoutPageContianer>
+      </Page>
     )
   }
 }
