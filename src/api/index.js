@@ -26,7 +26,7 @@ export default {
     return axios.post(path, data, config);
   },
   login(data) {
-    return this.post('${BASE}user/login', qs.stringify(data));
+    return this.post(`${BASE}user/login`, qs.stringify(data));
   },
   refreshToken(refresh_token) {
     return this.get('refresh_token', {
