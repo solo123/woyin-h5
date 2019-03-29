@@ -463,6 +463,8 @@ class Redeem extends Component {
       sendMsgCodeFlag
     } = this.state
 
+    const placeholder = `最多可赎回${this.state.availableIntegral}`
+
     return (
       <Page>
 
@@ -491,7 +493,7 @@ class Redeem extends Component {
               value={this.state.integral} 
               onChange={this.handleChange}
               onBlur={this.handleBlur}
-              placeholder="最多可赎回892积分"
+              placeholder={placeholder}
             />
           </div>
         </div>

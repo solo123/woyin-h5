@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Router, Route, Switch } from "react-router-dom"
 
 import './App.css'
-
+import util from './util'
 import ScrollToTop from './common/ScrollToTop'
 import Auth from './common/Auth'
 
@@ -44,6 +44,9 @@ import history from './history'
 
 
 class App extends Component {
+  componentDidMount() {
+    util.fixIos12WeixinInputBug()
+  }
   render() {
     return (
       <Router history={history}>
