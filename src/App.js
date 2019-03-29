@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Router, Route, Switch } from "react-router-dom"
+import Loadable from 'react-loadable'
 
 import './App.css'
 import util from './util'
@@ -23,24 +24,66 @@ import ViolationList from './components/ViolationList'
 import ViolationDetail from './components/ViolationDetail'
 import AddVehicle from './components/AddVehicle.js'
 
-import {view as Home} from './pages/home/'
-import Me from './pages/Me'
-import Login from './pages/Login'
-import Redeem from './pages/Redeem'
-import RedeemRecord from './pages/RedeemRecord'
-import Transfer from './pages/Transfer'
-
-import Order from './pages/Order'
-
-import BankcardList from './pages/BankcardList'
-import AddBankcard from './pages/AddBankcard'
-import RechargePhone from './pages/RechargePhone'
-
-import NotFound from './pages/NotFound'
-
-import Test from './components/Test'
 import history from './history'
 
+const LoadingComponent = ({ isLoading, error }) => {
+  // Handle the loading state
+  if (isLoading) {
+    return <div>Loading...</div>
+  }
+  // Handle the error state
+  else if (error) {
+    return <div>Sorry, there was a problem loading the page.</div>
+  }
+  else {
+    return null
+  }
+}
+
+const AsyncLogin = Loadable({
+  loader: () => import('./pages/Login'),
+  loading: LoadingComponent
+})
+const AsyncMe = Loadable({
+  loader: () => import('./pages/Me'),
+  loading: LoadingComponent
+})
+const AsyncBankcardList = Loadable({
+  loader: () => import('./pages/BankcardList'),
+  loading: LoadingComponent
+})
+const AsyncAddBankcard = Loadable({
+  loader: () => import('./pages/AddBankcard'),
+  loading: LoadingComponent
+})
+const AsyncRechargePhone = Loadable({
+  loader: () => import('./pages/RechargePhone'),
+  loading: LoadingComponent
+})
+const AsyncOrder = Loadable({
+  loader: () => import('./pages/Order'),
+  loading: LoadingComponent
+})
+const AsyncNotFound = Loadable({
+  loader: () => import('./pages/NotFound'),
+  loading: LoadingComponent
+})
+const AsyncRedeem = Loadable({
+  loader: () => import('./pages/Redeem'),
+  loading: LoadingComponent
+})
+const AsyncRedeemRecord = Loadable({
+  loader: () => import('./pages/RedeemRecord'),
+  loading: LoadingComponent
+})
+const AsyncTransfer = Loadable({
+  loader: () => import('./pages/Transfer'),
+  loading: LoadingComponent
+})
+const AsyncHome = Loadable({ 
+  loader: () => import('./pages/home').then(({ view }) => view), 
+  loading: LoadingComponent
+});
 
 
 class App extends Component {
@@ -52,19 +95,16 @@ class App extends Component {
       <Router history={history}>
         <ScrollToTop>
           <Switch>
-            <Route path="/" exact component={Home} />
-            <Route path="/login" component={Login} />
-
-            <Auth path="/me" component={Me} />
-            <Auth path="/bankcard-list" component={BankcardList} />
-            <Auth path="/bankcard-add" component={AddBankcard} />
-
-            <Auth path="/redeem" component={Redeem} />
-            <Auth path="/redeem-record" component={RedeemRecord} />
-
-            <Auth path="/order" component={Order} />
-
-            <Auth path="/recharge-phone" component={RechargePhone} />
+            <Route path="/" exact component={AsyncHome} />
+            <Route path="/login" component={AsyncLogin} />
+            <Auth path="/me" component={AsyncMe} />
+            <Auth path="/bankcard-list" component={AsyncBankcardList} />
+            <Auth path="/bankcard-add" component={AsyncAddBankcard} />
+            <Auth path="/redeem" component={AsyncRedeem} />
+            <Auth path="/redeem-record" component={AsyncRedeemRecord} />
+            <Auth path="/order" component={AsyncOrder} />
+            <Auth path="/recharge-phone" component={AsyncRechargePhone} />
+            
             <Auth path="/recharge-flow" component={RechargeFlow} />
             <Auth path="/recharge-oil" component={RechargeOil} />
             <Auth path="/recharge-qb" component={RechargeQB} />
@@ -78,12 +118,11 @@ class App extends Component {
             <Auth path="/add-vehicle" component={AddVehicle} />
             <Auth path="/double-color-ball" component={DoubleColorBall} />
             
-            <Auth path="/transfer" component={Transfer} />
+            <Auth path="/transfer" component={AsyncTransfer} />
             <Route path="/cate" component={Cate} />
             <Route path="/product" component={Product} />
             <Route path="/buy/:id" component={Buy} />
-            <Route path="/test" component={Test} />
-            <Route render={ ()=> <NotFound /> } />
+            <Route render={ ()=> <AsyncNotFound /> } />
           </Switch>
         </ScrollToTop>
       </Router>
