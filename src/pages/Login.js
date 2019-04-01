@@ -12,7 +12,7 @@ import hideIcon from '../asset/images/icon/hide.png'
 import checkedIcon from '../asset/images/icon/checked.png'
 import uncheckedIcon from '../asset/images/icon/unchecked.png'
 
-import logoIcon from '../asset/images/icon/logo.png'
+import logoIcon from '../asset/images/login-logo.png'
 
 import api from '../api'
 import {setItem, removeItem, getItem} from '../services/storage'
@@ -83,8 +83,8 @@ const Page = styled.div`
       margin-bottom: 30px;
     }
     .logo{
-      width: 100px;
-      height: 100px;
+      width: 150px;
+      height: 150px;
     }
     ul{
       display: flex;
