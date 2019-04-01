@@ -445,6 +445,8 @@ class Redeem extends Component {
         this.countDown()
       })
       weui.alert(data.msg)
+    }else {
+      weui.alert(data.msg)
     }
     loading.hide()
   }
