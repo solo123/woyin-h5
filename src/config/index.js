@@ -1,5 +1,5 @@
 export default {
-  dev_baseURL: 'http://localhost:8000',
+  dev_baseURL: 'http://localhost:8000/api',
   prod_baseURL: 'http://localhost:8000/api',
   timeout: 10000,
   storage_namespace: 'woyin',
