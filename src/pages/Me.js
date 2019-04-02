@@ -142,7 +142,7 @@ class Me extends Component {
               </div>
               <div className="cell">
                 <Link to="/bankcard-list">
-                  <img className="arrow" src={arrowIcon} />
+                  <img className="arrow" src={arrowIcon} alt="" />
                 </Link>
               </div>
             </div>
@@ -160,7 +160,7 @@ class Me extends Component {
               </div>
               <div className="cell">
                 <Link to="/redeem-record">
-                  <img className="arrow" src={arrowIcon} />
+                  <img className="arrow" src={arrowIcon} alt="" />
                 </Link>
               </div>
             </div>            
@@ -170,7 +170,7 @@ class Me extends Component {
               </div>
               <div className="cell">
                 <Link to="/order">
-                  <img className="arrow" src={arrowIcon} />
+                  <img className="arrow" src={arrowIcon} alt="" />
                 </Link>
               </div>
             </div>
@@ -187,7 +187,7 @@ class Me extends Component {
                 <label className="label">修改登录密码</label>
               </div>
               <div className="cell">
-                <img className="arrow" src={arrowIcon} />
+                <img className="arrow" src={arrowIcon} alt="" />
               </div>
             </div>
             <div className="item">
@@ -195,7 +195,7 @@ class Me extends Component {
                 <label className="label">修改交易密码</label>
               </div>
               <div className="cell">
-                <img className="arrow" src={arrowIcon} />
+                <img className="arrow" src={arrowIcon} alt="" />
               </div>
             </div>
             <div className="item">
@@ -203,7 +203,7 @@ class Me extends Component {
                 <label className="label">找回交易密码</label>
               </div>
               <div className="cell">
-                <img className="arrow" src={arrowIcon} />
+                <img className="arrow" src={arrowIcon} alt="" />
               </div>
             </div>
           </section>

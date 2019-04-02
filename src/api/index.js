@@ -1,29 +1,26 @@
 import qs from'qs'
-import axios from 'axios';
-import config from '../config';
+import instance from './axios';
 
 let BASE = ''
-if(process.env.NODE_ENV == 'development') {
+if(process.env.NODE_ENV === 'development') {
   // axios.defaults.baseURL = config.dev_baseURL
-}else if(process.env.NODE_ENV == 'production') {
+}else if(process.env.NODE_ENV === 'production') {
   BASE = 'client/'
   // axios.defaults.baseURL = config.prod_baseURL
 }
-
-axios.defaults.timeout = config.timeout
 
 // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
 // axios.defaults.headers.get['Content-Type'] = 'application/x-www-form-urlencoded';
 
 export default {
   get(path, data = {}, config = {}) {
-    return axios.get(path, {
+    return instance.get(path, {
       ...config,
       params: data
     });
   },
   post(path, data = {}, config = {}) {
-    return axios.post(path, data, config);
+    return instance.post(path, data, config);
   },
   login(data) {
     return this.post(`${BASE}user/login`, qs.stringify(data));
@@ -165,3 +162,7 @@ export default {
     return this.get(`${BASE}api/user/getUserInfo`)
   }
 };
+
+export const changePswd = (data) => {
+  return this.post(`${BASE}user/changePwd`, qs.stringify(data))
+}

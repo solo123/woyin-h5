@@ -83,7 +83,10 @@ const AsyncHome = Loadable({
   loader: () => import('./pages/home').then(({ view }) => view), 
   loading: LoadingComponent
 });
-
+const AsyncChangePswd = Loadable({ 
+  loader: () => import('./pages/ChangePswd').then(({ view }) => view), 
+  loading: LoadingComponent
+})
 
 class App extends Component {
   componentDidMount() {
@@ -104,6 +107,7 @@ class App extends Component {
             <Auth path="/order" component={AsyncOrder} />
             <Auth path="/recharge-phone" component={AsyncRechargePhone} />
             <Auth path="/transfer" component={AsyncTransfer} />
+            <Auth path="/change-pswd" component={AsyncChangePswd} />
 
             {/* <Auth path="/recharge-flow" component={RechargeFlow} /> */}
             {/* <Auth path="/recharge-oil" component={RechargeOil} /> */}
