@@ -12,6 +12,17 @@ if(process.env.NODE_ENV === 'development') {
 // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
 // axios.defaults.headers.get['Content-Type'] = 'application/x-www-form-urlencoded';
 
+function get(path, data = {}, config = {}) {
+  return instance.get(path, {
+    ...config,
+    params: data
+  })
+}
+
+function post(path, data = {}, config = {}) {
+  return instance.post(path, data, config)
+}
+
 export default {
   get(path, data = {}, config = {}) {
     return instance.get(path, {
@@ -57,8 +68,8 @@ export default {
     return this.get('hotsell')
   },
   // 获取话费产品列表
-  getRechargePhoneProductsByType(type, config = {}) {
-    return this.get(`${BASE}api/charge/getChargeProductList`, {productId: type}, config)
+  getRechargePhoneProductsByType(id = '', config = {}) {
+    return this.get(`${BASE}api/product/subList`, {productClassifyId: id}, config)
   },
   // 获取流量产品列表
   getRechargeFlowProductsByType(type) {
@@ -164,5 +175,9 @@ export default {
 };
 
 export const changePswd = (data) => {
-  return this.post(`${BASE}user/changePwd`, qs.stringify(data))
+  return post(`${BASE}user/changePwd`, qs.stringify(data))
+}
+
+export const getProductList = (productClassifyId = '') => {
+  return get(`${BASE}api/product/list`, {productClassifyId})
 }

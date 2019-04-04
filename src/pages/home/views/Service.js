@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 import { Link } from "react-router-dom"
 
@@ -12,6 +12,7 @@ import sevenLotteryIcon from '../../../asset/images/icon/seven_lottery.png'
 import ecardIcon from '../../../asset/images/icon/ecard.png'
 import creditCardIcon from '../../../asset/images/icon/credit_card.png'
 import carIcon from '../../../asset/images/icon/car.png'
+import listIcon from '../../../asset/images/icon/list.svg'
 
 const LayoutPage = styled.div`
   display: flex;
@@ -32,28 +33,61 @@ const LayoutPage = styled.div`
   }
 `
 
-const Item = ({to, icon, text}) => (
+function getIconByIdContainer() {
+  const PRODUCT_ICON_SCHEMA = {
+    '1': phoneIcon,
+    '5': flowIcon,
+    '9': oilIcon,
+    '12': qqIcon,
+    '15': videoIcon,
+    '18': ecardIcon
+  }
+  return function(id) {
+    return PRODUCT_ICON_SCHEMA[id] || listIcon
+  }
+}
+
+function getRouteByIdContainer() {
+  const PRODUCT_ICON_SCHEMA = {
+    '1': 'recharge-phone',
+    '5': 'recharge-flow',
+    '9': 'recharge-oil',
+    '12': 'recharge-qq',
+    '15': 'recharge-video',
+    '18': 'recharge-ecard'
+  }
+  return function(id) {
+    return PRODUCT_ICON_SCHEMA[id] || listIcon
+  }
+}
+
+const getIconById = getIconByIdContainer()
+const getRouteById = getRouteByIdContainer()
+
+const Item = ({to, id, icon, text}) => (
   <div className="item">
-    <Link to={to}>
+    <Link to={{
+      pathname: to,
+      state: {id: id}
+    }}>
       <img className="icon" src={icon} alt=""/>
       <div className="title">{text}</div>
     </Link>
   </div>
 )
 
-export default function() {
+export default function({items}) {
   return (
     <LayoutPage>
-      <Item to="/recharge-phone" icon={phoneIcon} text="充话费"/>
-      <Item to="" icon={flowIcon} text="充流量"/>
-      <Item to="" icon={oilIcon} text="充油卡"/>
-      <Item to="" icon={qqIcon} text="腾讯Q币"/>
-      <Item to="" icon={videoIcon} text="视频VIP"/>
-      <Item to="" icon={ecardIcon} text="电子卡券"/>
-      <Item to="" icon={creditCardIcon} text="信用卡还款"/>
-      <Item to="" icon={carIcon} text="违章查询"/>
-      <Item to="" icon={lotteryIcon} text="双色球"/>
-      <Item to="" icon={sevenLotteryIcon} text="七乐彩"/>
+      {items.map(product => (
+        <Item
+          key={product.productClassifyId}
+          id={product.productClassifyId}
+          to={getRouteById(product.productClassifyId)}
+          icon={getIconById(product.productClassifyId)}
+          text={product.productClassifyName}
+        />
+      ))}
     </LayoutPage>
   )
 }

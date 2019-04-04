@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { Link, withRouter } from "react-router-dom"
 import { connect } from 'react-redux'
 
-import api from '../../../api'
+import api, {getProductList} from '../../../api'
 import {getItem} from '../../../services/storage'
 import Menu from '../../../common/Menu'
 
@@ -163,16 +163,23 @@ const Auth = ({isAuthenticated, availableIntegral}) => {
   )
 }
 class Home extends Component {
-  state = {
-    items: [],
-    loading: true,
-    integral: '',
-    availableIntegral: 0
+  constructor(props) {
+    super(props)
+
+    this.loadProductList = this.loadProductList.bind(this)
+
+    this.state = {
+      menus: [],
+      items: [],
+      loading: true,
+      integral: '',
+      availableIntegral: 0
+    }
   }
 
   componentDidMount() {
     this.loadHotsell()
-    
+    this.loadProductList()
     // 已登录用户需要获取可用积分
     if(this.props.isAuthenticated) {
       this.loadUserinfo()
@@ -181,6 +188,16 @@ class Home extends Component {
 
   componentWillUnmount() {
     this._isMounted = false
+  }
+
+  async loadProductList() {
+    try {
+      const {data} = await getProductList()
+      if(data.status === 200) {
+        this.setState({menus: data.data})
+      }
+    }finally {
+    }
   }
 
   loadHotsell = async () => {
@@ -208,7 +225,6 @@ class Home extends Component {
   render() {
     const {loading, items, availableIntegral} = this.state
     const {isAuthenticated} = this.props
-
     return (
       <Page>
 
@@ -252,7 +268,7 @@ class Home extends Component {
             <h2 className="title">常用服务</h2>
           </div>          
           <div className="body">
-            <Service />
+            <Service items={this.state.menus}/>
           </div>
         </div>
         <div className="section">

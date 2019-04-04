@@ -4,7 +4,7 @@ import classnames from 'classnames'
 import axios from 'axios'
 import weui from 'weui.js'
 
-import api from '../api'
+import api, {getProductList} from '../api'
 import util from '../util'
 import {replace} from '../services/redirect'
 import ProductSkeleton from '../common/ProductSkeleton'
@@ -148,25 +148,43 @@ const CTCC = '4'
 
 let source = null
 export default class extends Component {
-  state = {
-    pass: false,
-    loading: false,
-    items: [],
-    phone: '',
-    selectId: '',
-    
-    type: CMCC,
-    integral: 0,
-    availableIntegral: 0
+  constructor(props) {
+    super(props)
+
+    this.state = {
+      pass: false,
+      loading: false,
+      items: [],
+      phone: '',
+      selectId: '',
+
+      operators: [],
+      
+      type: CMCC,
+      integral: 0,
+      availableIntegral: 0
+    }
   }
 
   componentDidMount() {
+    const {id} = this.props.history.location.state
     this.loadUserinfo()
-    this.loadProdcuts(this.state.type)
+    this.loadOperatorById(id)
+    this.loadProdcutsByType(this.state.type)
   }
 
   componentWillUnmount() {
     this._isMounted = false
+  }
+
+  async loadOperatorById(id) {
+    try {
+      const {data} = await getProductList(id)
+      if(data.status === 200) {
+        this.setState({operators: data.data})
+      }
+    }finally {
+    }
   }
 
   loadUserinfo = async () => {
@@ -176,19 +194,15 @@ export default class extends Component {
     }
   }
 
-  loadProdcuts = async type => {
+  loadProdcutsByType = async type => {
     this.setState({loading: true})
     source = axios.CancelToken.source()
-    
-    this._isMounted = true
     try {
       const {data} = await api.getRechargePhoneProductsByType(type, {cancelToken: source.token})
       if(data.status === 200) {
-        if(!this._isMounted){return}
         this.setState({items: data.data})
       }
     }finally {
-      if(!this._isMounted){return}
       this.setState({loading: false})
     }
   }
@@ -205,7 +219,7 @@ export default class extends Component {
     source.cancel('forced interrupt request')
     this.reset()
     this.setState({type}, () => {
-      this.loadProdcuts(type)
+      this.loadProdcutsByType(type)
     })
   }
 
@@ -278,7 +292,7 @@ export default class extends Component {
   }
 
   render() {
-    const {selectId, type, items, loading, pass} = this.state
+    const {selectId, type, items, operators, loading, pass} = this.state
 
     const list = items.map(item => (
       <Item
@@ -293,10 +307,15 @@ export default class extends Component {
 
     return (
       <Page>
+        
         <ul className="nav">
-          <li className={classnames({'active': type === CMCC })} onClick={() => this.handleToggleType(CMCC)}>中国移动</li>
-          <li className={classnames({'active': type === CUCC })} onClick={() => this.handleToggleType(CUCC)}>中国联通</li>
-          <li className={classnames({'active': type === CTCC })} onClick={() => this.handleToggleType(CTCC)}>中国电信</li>
+          {operators.map(item => (
+            <li 
+              key={item.productClassifyId} 
+              className={classnames({'active': item.productClassifyId === type })} 
+              onClick={() => this.handleToggleType(item.productClassifyId)}
+            >{item.productClassifyName}</li>
+          ))}
         </ul>
 
         <main className="main">
