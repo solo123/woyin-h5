@@ -175,13 +175,13 @@ export default class extends Component {
     const {id} = this.props.history.location.state
     this.loadUserInfo()
     this.loadOperatorById(id)
-    this.loadProdcutsByType(this.state.type)
+    this.loadProductsByType(this.state.type)
   }
 
   componentWillUnmount() {
     this.loadUserInfoSource.cancel('Operation canceled by the user.')
     this.loadOperatorSource.cancel('Operation canceled by the user.')
-    this.loadProdcutsSource.cancel('Operation canceled by the user.')
+    this.loadProductsSource.cancel('Operation canceled by the user.')
   }
 
   async loadUserInfo() {
@@ -206,11 +206,11 @@ export default class extends Component {
     }
   }
 
-  async loadProdcutsByType(type) {
+  async loadProductsByType(type) {
     this.setState({skeletonLoading: true})
-    this.loadProdcutsSource = CancelToken.source()
+    this.loadProductsSource = CancelToken.source()
     try {
-      const {data} = await api.getRechargePhoneProductsByType(type, {cancelToken: this.loadProdcutsSource.token})
+      const {data} = await api.getRechargePhoneProductsByType(type, {cancelToken: this.loadProductsSource.token})
       if(data.status === 200) {
         this.setState({items: data.data})
       }
@@ -267,7 +267,7 @@ export default class extends Component {
     if(type === this.state.type) {return}
     this.reset()
     this.setState({type}, () => {
-      this.loadProdcutsByType(type)
+      this.loadProductsByType(type)
     })
   }
 

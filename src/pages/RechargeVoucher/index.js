@@ -1,3 +1,3 @@
-import view from './views/Traffic'
+import view from './views/RechargeECard'
 
 export {view}
