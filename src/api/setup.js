@@ -7,7 +7,6 @@ import config from '../config';
 const instance = axios.create()
 instance.defaults.timeout = config.timeout
 
-// Add a request interceptor
 instance.interceptors.request.use(
   function (config) {
     const token = getItem('token');
@@ -17,19 +16,15 @@ instance.interceptors.request.use(
     return config;
   },
   function (error) {
-    // Do something with request error
     return Promise.reject(error);
   }
 );
 
-// Add a response interceptor
 instance.interceptors.response.use(
   function (response) {
-    // Do something with response data
     return response;
   },
   function (error) {
-    // responses error before they are handled by then onRejected or catch
     if (error.response) {
       switch (parseInt(error.response.status, 10)) {
         case 400:
@@ -69,10 +64,19 @@ instance.interceptors.response.use(
     } else {
       weui.alert('服务器忙，请稍后再试')
     }
-
-    // Do something with response error
-    return Promise.reject(error);
+    return Promise.reject(error)
   }
-);
+)
 
-export default instance
+const get = (path, params = {}, config = {}) => {
+  return instance.get(path, {...config, params: params})
+}
+
+const post = (path, data = {}, config = {}) => {
+  return instance.post(path, data, config)
+}
+
+export {
+  get,
+  post
+}

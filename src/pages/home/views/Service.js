@@ -50,11 +50,11 @@ function getIconByIdContainer() {
 function getRouteByIdContainer() {
   const PRODUCT_ICON_SCHEMA = {
     '1': 'recharge-phone',
-    '5': 'recharge-flow',
+    '5': 'recharge-traffic',
     '9': 'recharge-oil',
-    '12': 'recharge-qq',
+    '12': 'recharge-QB',
     '15': 'recharge-video',
-    '18': 'recharge-ecard'
+    '18': 'recharge-voucher'
   }
   return function(id) {
     return PRODUCT_ICON_SCHEMA[id] || listIcon

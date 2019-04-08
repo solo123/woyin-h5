@@ -26,20 +26,5 @@ export default () => (
     <li>
       <div className="cell"></div>
     </li>
-    <li>
-      <div className="cell"></div>
-    </li>
-    <li>
-      <div className="cell"></div>
-    </li>
-    <li>
-      <div className="cell"></div>
-    </li>
-    <li>
-      <div className="cell"></div>
-    </li>
-    <li>
-      <div className="cell"></div>
-    </li>
   </LayoutPage>
 )

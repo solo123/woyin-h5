@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import { Link, withRouter } from "react-router-dom"
 import { connect } from 'react-redux'
 
-import api, {getProductList} from '../../../api'
+import api, {getProducts} from '../../../api'
 import {getItem} from '../../../services/storage'
 import Menu from '../../../common/Menu'
 
@@ -192,7 +192,7 @@ class Home extends Component {
 
   async loadProductList() {
     try {
-      const {data} = await getProductList()
+      const {data} = await getProducts()
       if(data.status === 200) {
         this.setState({menus: data.data})
       }

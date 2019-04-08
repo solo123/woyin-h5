@@ -4,12 +4,12 @@ import classnames from 'classnames'
 import axios from 'axios'
 import weui from 'weui.js'
 
-import api, {getProducts} from '../api'
-import util from '../util'
-import {replace} from '../services/redirect'
-import ProductSkeleton from '../common/ProductSkeleton'
-import EmptyArrayPlaceholder from '../common/EmptyArrayPlaceholder'
-import Backhome from '../common/Backhome'
+import api, {getProducts} from '../../../api'
+import util from '../../../util'
+import {replace} from '../../../services/redirect'
+import ProductSkeleton from '../../../common/ProductSkeleton'
+import EmptyArrayPlaceholder from '../../../common/EmptyArrayPlaceholder'
+import Backhome from '../../../common/Backhome'
 
 const CancelToken = axios.CancelToken
 
@@ -145,9 +145,9 @@ const SubmitBtn = ({pass, handleSubmit}) => {
   return <DisablePrimaryButton onClick={handleSubmit}>立即充值</DisablePrimaryButton>
 }
 
-const CMCC = '2'
-const CUCC = '3'
-const CTCC = '4'
+const CMCC = '6'
+const CUCC = '7'
+const CTCC = '8'
 
 export default class extends Component {
   constructor(props) {
@@ -222,13 +222,13 @@ export default class extends Component {
   async submitRecharge(pswd) {
     const loading = weui.loading('处理中')
     const params = {
-      chargeAddr: this.state.phone,
-      chargeType: '1',
+      phone: this.state.phone,
       productId: this.state.selectId,
-      tranPwd: pswd
+      tranPwd: pswd,
+      range: '0'
     }
     try {
-      const {data} = await api.rechargePhone(params)
+      const {data} = await api.rechargeTraffic(params)
       if(data.status === 200) {
         weui.alert(data.msg, () => {
           replace('/order')

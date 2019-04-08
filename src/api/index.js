@@ -1,176 +1,151 @@
 import qs from'qs'
-import instance from './axios';
+import {get, post} from './setup'
 
 let BASE = ''
 if(process.env.NODE_ENV === 'development') {
-  // axios.defaults.baseURL = config.dev_baseURL
 }else if(process.env.NODE_ENV === 'production') {
   BASE = 'client/'
-  // axios.defaults.baseURL = config.prod_baseURL
-}
-
-// axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
-// axios.defaults.headers.get['Content-Type'] = 'application/x-www-form-urlencoded';
-
-function get(path, data = {}, config = {}) {
-  return instance.get(path, {
-    ...config,
-    params: data
-  })
-}
-
-function post(path, data = {}, config = {}) {
-  return instance.post(path, data, config)
 }
 
 export default {
-  get(path, data = {}, config = {}) {
-    return instance.get(path, {
-      ...config,
-      params: data
-    });
-  },
-  post(path, data = {}, config = {}) {
-    return instance.post(path, data, config);
-  },
   login(data) {
-    return this.post(`${BASE}user/login`, qs.stringify(data));
-  },
-  refreshToken(refresh_token) {
-    return this.get('refresh_token', {
-      refresh_token: refresh_token
-    });
-  },
-  getUser() {
-    return this.get('protected');
+    return post(`${BASE}user/login`, qs.stringify(data));
   },
   // 获取指定状态的订单列表
   getOrderList(data, config = {}) {
-    return this.get(`${BASE}api/order/getOrderList`, data, config)
+    return get(`${BASE}api/order/getOrderList`, data, config)
   },
   hotProducts() {
-    return this.get('hotProducts')
+    return get('hotProducts')
   },
   // 获取指定商城的分类列表
   getProductCateList(type) {
     // 1 京东  2 严选  3 自营
-    return this.get('getProductCateList', { type: type })
+    return get('getProductCateList', { type: type })
   },
   // 根据分类获取产品列表
   getProductByCate(type, cate) {
-    return this.get('getProductByCate', { type: type, cate: cate })
+    return get('getProductByCate', { type: type, cate: cate })
   },
   getProductById(id) {
-    return this.get('getProductById', { id })
+    return get('getProductById', { id })
   },
   // 热卖商品
   getHotsell() {
-    return this.get('hotsell')
+    return get('hotsell')
   },
   // 获取话费产品列表
   getRechargePhoneProductsByType(id = '', config = {}) {
-    return this.get(`${BASE}api/product/subList`, {productClassifyId: id}, config)
+    return get(`${BASE}api/product/subList`, {productClassifyId: id}, config)
   },
   // 获取流量产品列表
   getRechargeFlowProductsByType(type) {
-    return this.get('getRechargeFlowProductsByType', {type})
+    return get('getRechargeFlowProductsByType', {type})
   },
   // 获取油卡产品列表
   getRechargeOilProductsByType(type) {
-    return this.get('getRechargeOilProductsByType', {type})
+    return get('getRechargeOilProductsByType', {type})
   },  
   // 获取QB产品列表
   getRechargeQBProductsByType(type) {
-    return this.get('getRechargeQBProductsByType', {type})
+    return get('getRechargeQBProductsByType', {type})
   },  
   // 获取视频提供商列表
   getVideoProviders() {
-    return this.get('getVideoProviders')
+    return get('getVideoProviders')
   },  
   // 获取视频产品列表
   getVideoProducts() {
-    return this.get('getVideoProducts')
+    return get('getVideoProducts')
   },  
   confirmTransPswd(pswd) {
-    return this.post(`${BASE}api/trad/checkCode`, {pswd})
+    return post(`${BASE}api/trad/checkCode`, {pswd})
   },
   // 话费充值
   rechargePhone(data) {
-    return this.post(`${BASE}api/charge/moreCredit`, qs.stringify(data))
+    return post(`${BASE}api/charge/moreCredit`, qs.stringify(data))
   },
   // 流量充值
-  rechargeFlow(id, phone) {
-    return this.get('rechargeFlow', {id, phone})
+  rechargeTraffic(data) {
+    return post(`${BASE}api/traffic/charge`, qs.stringify(data))
   },
   // 加油卡充值
-  rechargeOil(id, phone) {
-    return this.get('rechargeOil', {id, phone})
+  rechargeOil(data) {
+    return post(`${BASE}api/oilCard/charge`, qs.stringify(data))
   },  
+  // 视频会员充值
+  rechargeVideo(data) {
+    return post(`${BASE}api/video/charge`, qs.stringify(data))
+  },
+  // 电子卡券充值
+  rechargeVoucher(data) {
+    return post(`${BASE}api/voucher/charge`, qs.stringify(data))
+  },
   // QB充值
   rechargeQB(id, phone) {
-    return this.get('rechargeQB', {id, phone})
+    return get('rechargeQB', {id, phone})
   },  
   // 获取银行卡列表
   getBankcardList() {
-    return this.get(`${BASE}api/bank/getBankCardList`)
+    return get(`${BASE}api/bank/getBankCardList`)
   },
   // 添加银卡
   addBankcard(data) {
-    return this.post(`${BASE}api/bank/addBankCard`, qs.stringify(data))
+    return post(`${BASE}api/bank/addBankCard`, qs.stringify(data))
   },
   // 获取提现手续费
   getRedeemFee(amount) {
-    return this.get(`${BASE}api/trad/poundageList`, {amount})
+    return get(`${BASE}api/trad/poundageList`, {amount})
   },
   // 积分赎回流程短信验证码
   sendMsgCode(phone) {
-    return this.get('sendMsgCode', {phone})
+    return get('sendMsgCode', {phone})
   },
   redeemIntegral(data) {
-    return this.post(`${BASE}api/trad/withdrawal`, qs.stringify(data))
+    return post(`${BASE}api/trad/withdrawal`, qs.stringify(data))
   },
   getRedeemRecordByStatus(data, config = {}) {
-    return this.get(`${BASE}api/trad/getWithList`, data, config)
+    return get(`${BASE}api/trad/getWithList`, data, config)
   },
   // 登录流程短信验证码
   getCode(data) {
-    return this.post(`${BASE}user/getCode`, qs.stringify(data))
+    return post(`${BASE}user/getCode`, qs.stringify(data))
   },
   // 获取信用卡列表
   getCreditCardList() {
-    return this.get('getCreditCardList')
+    return get('getCreditCardList')
   },
   // 信用卡还款
   creditCardRepayment(data) {
-    return this.post('creditCardRepayment', data)
+    return post('creditCardRepayment', data)
   },
   // 积分转赠
   transfer(data) {
-    return this.post('transfer', data)
+    return post('transfer', data)
   },
   // 获取电子卡券列表
   getECardList() {
-    return this.get('getECardList')
+    return get('getECardList')
   },
   // 获取电子卡券详情
   getECardDetailByType() {
-    return this.get('getECardDetailByType')
+    return get('getECardDetailByType')
   },
   // 添加车辆
   addVehicle(data) {
-    return this.post('addVehicle', data)
+    return post('addVehicle', data)
   },
   // 获取车辆列表
   getVehicleList() {
-    return this.get('getVehicleList')
+    return get('getVehicleList')
   },
   // 获取违章记录
   getViolationList() {
-    return this.get('getViolationList')
+    return get('getViolationList')
   },
   // 获取用户可用积分
   getUserInfo() {
-    return this.get(`${BASE}api/user/getUserInfo`)
+    return get(`${BASE}api/user/getUserInfo`)
   }
 };
 
@@ -178,6 +153,14 @@ export const changePswd = (data) => {
   return post(`${BASE}user/changePwd`, qs.stringify(data))
 }
 
-export const getProductList = (productClassifyId = '') => {
-  return get(`${BASE}api/product/list`, {productClassifyId})
+export const getProducts = (productClassifyId = '', config = {}) => {
+  return get(`${BASE}api/product/list`, {productClassifyId}, config)
+}
+
+export const getSubProducts = (id = '', config = {}) => {
+  return get(`${BASE}api/product/subList`, {productClassifyId: id}, config)
+}
+
+export const rechargeVideo = (data = {}, config = {}) => {
+  return post(`${BASE}api/video/charge`, qs.stringify(data), config)
 }

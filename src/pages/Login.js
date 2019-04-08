@@ -398,9 +398,9 @@ class Login extends Component {
     return (
       <Page>
         <header>
-          <div className="logo-box">
+          {/* <div className="logo-box">
             <img className="logo" src={logoIcon} alt="logo" />
-          </div>
+          </div> */}
           <ul>
             <li 
               className={classNames({active: this.state.loginType === LOGINTYPE_PASSWORD})}

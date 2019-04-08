@@ -59,6 +59,29 @@ const AsyncRechargePhone = Loadable({
   loader: () => import('./pages/RechargePhone'),
   loading: LoadingComponent
 })
+const AsyncRechargeTraffic = Loadable({
+  loader: () => import('./pages/RechargeTraffic').then(({ view }) => view),
+  loading: LoadingComponent
+})
+
+const AsyncRechargeOil = Loadable({
+  loader: () => import('./pages/RechargeOil').then(({ view }) => view),
+  loading: LoadingComponent
+})
+const AsyncRechargeQB = Loadable({
+  loader: () => import('./pages/RechargeQB').then(({ view }) => view),
+  loading: LoadingComponent
+})
+const AsyncRechargeVideo = Loadable({
+  loader: () => import('./pages/RechargeVideo').then(({ view }) => view),
+  loading: LoadingComponent
+})
+const AsyncRechargeVoucher = Loadable({
+  loader: () => import('./pages/RechargeVoucher').then(({ view }) => view),
+  loading: LoadingComponent
+})
+
+
 const AsyncOrder = Loadable({
   loader: () => import('./pages/Order'),
   loading: LoadingComponent
@@ -106,6 +129,13 @@ class App extends Component {
             <Auth path="/redeem-record" component={AsyncRedeemRecord} />
             <Auth path="/order" component={AsyncOrder} />
             <Auth path="/recharge-phone" component={AsyncRechargePhone} />
+            <Auth path="/recharge-traffic" component={AsyncRechargeTraffic} />
+            
+            <Auth path="/recharge-oil" component={AsyncRechargeOil} />
+            <Auth path="/recharge-QB" component={AsyncRechargeQB} />
+            <Auth path="/recharge-video" component={AsyncRechargeVideo} />
+            <Auth path="/recharge-voucher" component={AsyncRechargeVoucher} />
+
             <Auth path="/transfer" component={AsyncTransfer} />
             <Auth path="/change-pswd" component={AsyncChangePswd} />
 
