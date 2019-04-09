@@ -84,6 +84,11 @@ const AsyncRechargeVoucherDetail = Loadable({
   loader: () => import('./pages/RechargeVoucherDetail').then(({ view }) => view),
   loading: LoadingComponent
 })
+const AsyncVoucherRecord = Loadable({
+  loader: () => import('./pages/VoucherRecord').then(({ view }) => view),
+  loading: LoadingComponent
+})
+
 
 
 const AsyncOrder = Loadable({
@@ -106,11 +111,21 @@ const AsyncCreditCard = Loadable({
   loader: () => import('./pages/CreditCard').then(({view}) => view),
   loading: LoadingComponent
 })
+const AsyncCreditRecord = Loadable({
+  loader: () => import('./pages/CreditRecord'),
+  loading: LoadingComponent
+})
+
 
 const AsyncTransfer = Loadable({
   loader: () => import('./pages/Transfer'),
   loading: LoadingComponent
 })
+const AsyncTransferRecord = Loadable({
+  loader: () => import('./pages/TransferRecord').then(({view}) => view),
+  loading: LoadingComponent
+})
+
 const AsyncHome = Loadable({ 
   loader: () => import('./pages/home').then(({ view }) => view), 
   loading: LoadingComponent
@@ -137,6 +152,7 @@ class App extends Component {
             <Auth path="/redeem" component={AsyncRedeem} />
             <Auth path="/redeem-record" component={AsyncRedeemRecord} />
             <Auth path="/credit-card" component={AsyncCreditCard} />
+            <Auth path="/credit-record" component={AsyncCreditRecord} />
 
             <Auth path="/order" component={AsyncOrder} />
             <Auth path="/recharge-phone" component={AsyncRechargePhone} />
@@ -147,9 +163,13 @@ class App extends Component {
             <Auth path="/recharge-video" component={AsyncRechargeVideo} />
             <Auth path="/recharge-voucher" exact component={AsyncRechargeVoucher} />
             <Auth path="/recharge-voucher/:id"  component={AsyncRechargeVoucherDetail} />
+            <Auth path="/voucher-record" exact component={AsyncVoucherRecord} />
+            
             
 
             <Auth path="/transfer" component={AsyncTransfer} />
+            <Auth path="/transfer-record" component={AsyncTransferRecord} />
+            
             <Auth path="/change-pswd" component={AsyncChangePswd} />
 
             {/* <Auth path="/recharge-flow" component={RechargeFlow} /> */}

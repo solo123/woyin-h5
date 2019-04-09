@@ -163,7 +163,37 @@ class Me extends Component {
                   <img className="arrow" src={arrowIcon} alt="" />
                 </Link>
               </div>
-            </div>            
+            </div>  
+            <div className="item">
+              <div className="cell">
+                <label className="label">信用卡还款记录</label>
+              </div>
+              <div className="cell">
+                <Link to="/credit-record">
+                  <img className="arrow" src={arrowIcon} alt="" />
+                </Link>
+              </div>
+            </div> 
+            <div className="item">
+              <div className="cell">
+                <label className="label">积分转赠记录</label>
+              </div>
+              <div className="cell">
+                <Link to="/transfer-record">
+                  <img className="arrow" src={arrowIcon} alt="" />
+                </Link>
+              </div>
+            </div>  
+            <div className="item">
+              <div className="cell">
+                <label className="label">电子卡券</label>
+              </div>
+              <div className="cell">
+                <Link to="/voucher-record">
+                  <img className="arrow" src={arrowIcon} alt="" />
+                </Link>
+              </div>
+            </div>         
             <div className="item">
               <div className="cell">
                 <label className="label">我的订单</label>

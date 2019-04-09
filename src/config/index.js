@@ -19,6 +19,10 @@ export default {
     // 每页条数
     PAGE_LIMIT: 20
   },
+  // 电子卡券记录
+  voucher: {
+    PAGE_LIMIT: 20
+  },
   // 双色球
   double_color_ball: {
     red: {

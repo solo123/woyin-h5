@@ -171,9 +171,19 @@ export const rechargeVoucher = (data) => {
   return post(`${BASE}api/voucher/charge`, qs.stringify(data))
 }
 
+// 电子卡券记录
+export const getVoucherRecord = (data, config = {}) => {
+  return get(`${BASE}api/voucher/list`, data, config)
+}
+
 // 积分转赠
 export const integralTransfer = (data) => {
   return post(`${BASE}api/transferred/commit`, qs.stringify(data))
+}
+
+// 积分转赠记录
+export const integralTransferRecord = (data, config) => {
+  return get(`${BASE}api/transferred/list`, data, config)
 }
 
 // 获取银行卡/信用卡列表

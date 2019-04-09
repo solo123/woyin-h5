@@ -216,26 +216,26 @@ const SubmitBtn = ({pass, handleSubmit}) => {
   return <DisablePrimaryButton>确认赎回</DisablePrimaryButton>
 }
 
-const Bankcard = ({logo, bankcardNo, bankcardName}) => {
+const Bankcard = ({logo, bankcardNo, bankName}) => {
   return (
     <div className="bankcard">
       <div className="aside">
         <img className="icon" src={logo} alt=""/>
       </div>
       <div className="main" style={{marginLeft: 15}}>
-        <p className="name">{bankcardName}(尾号<span className="card">{util.getBankcardLastNum(bankcardNo)}</span>)</p>
+        <p className="name">{bankName}(尾号<span className="card">{util.getBankcardLastNum(bankcardNo)}</span>)</p>
         <p className="text">预计下一工作日到账，实际以银行到账日为准</p>
       </div>
     </div>
   )
 }
 
-const BankcardBox = ({loading, hasBankcard, bankcardLogo, bankcardNo, bankcardName}) => {
+const BankcardBox = ({loading, hasBankcard, bankcardLogo, bankcard, bankname}) => {
   if(loading) {
     return <BankcardLoading />
   }
   if(hasBankcard) {
-    return <Bankcard logo={bankcardLogo} bankcardNo={bankcardNo} bankcardName={bankcardName} />
+    return <Bankcard logo={bankcardLogo} bankcardNo={bankcard} bankcardName={bankname} />
   }
   return <div className="empty">暂无可用银行卡</div>
 }
@@ -245,27 +245,31 @@ const Agreement = ({agreementFlag}) => {
 }
 
 class Redeem extends Component {
-  state = {
-    integral: '',
-    availableIntegral: 0,
+  constructor(props) {
+    super(props)
 
-    smsCode: '',
+    this.state = {
+      integral: '',
+      availableIntegral: 0,
 
-    pass: false,
-    loading: true,
-    hasBankcard: false,
-    agreementFlag: true,
-    bankcardList: [],
-    bankcardNo: '',
-    bankcardName: '',
-    bankcardLogo: '',
+      smsCode: '',
 
-    timer: 60,
-    sendMsgCodeFlag: true,
-    phone: '',
-    redeemFee: 0,
-    actualReceived: 0,
-    deductIntegral: 0
+      pass: false,
+      loading: true,
+      hasBankcard: false,
+      agreementFlag: true,
+      bankcardList: [],
+      bankCard: '',
+      bankName: '',
+      bankcardLogo: '',
+
+      timer: 60,
+      sendMsgCodeFlag: true,
+      phone: '',
+      redeemFee: 0,
+      actualReceived: 0,
+      deductIntegral: 0
+    }
   }
 
   componentDidMount() {
@@ -291,24 +295,26 @@ class Redeem extends Component {
     this.setState({loading: false})
     if(data.status === 200) {
       this.setState({bankcardList: data.data}, () => {
-        const firstBankcard = data.data[0]
-        if(firstBankcard) {
-          this.setCurrBankcard(firstBankcard.bankCard, firstBankcard.bankName, firstBankcard.bankCode, firstBankcard.cardHoldName, firstBankcard.userPhoneNo)
+        const card = data.data[0]
+        if(card) {
+          this.setCard(card)
         }
       })
     }
   }
 
-  setCurrBankcard = (bankcardNo, bankcardName, bankcardClass, cardHoldName, userPhoneNo) =>  {
+  setCard = (card) =>  {
     this.setState({
-        bankCode: bankcardClass,
-        cardHoldName: cardHoldName,
-        cardPhoneNo: userPhoneNo,
-        bankcardNo,
-        bankcardName,
-        bankcardLogo: BANKCARD_SCHEMA[bankcardClass] || defaultIcon
+        bankName: card.bankName,
+        bankCode: card.bankCode,
+        bankCard: card.bankCard,
+        cardHoldName: card.cardHoldName,
+        userPhoneNo: card.userPhoneNo,
+        bankcardLogo: BANKCARD_SCHEMA[card.bankCode] || defaultIcon
       }, () => {
-        this.setState({hasBankcard: true})
+        this.setState({hasBankcard: true}, () => {
+          this.updateBtnStatus()
+        })
     })
   }
 
@@ -320,13 +326,7 @@ class Redeem extends Component {
       defaultValue: [0],
       onConfirm: result => {
         if(result && result[0]){
-          this.setCurrBankcard(
-            result[0].bankcardNo, 
-            result[0].bankcardName, 
-            result[0].bankcardClass, 
-            result[0].cardHoldName, 
-            result[0].userPhoneNo
-          )
+          this.setCard(result[0])
         }
       }
     })
@@ -334,13 +334,13 @@ class Redeem extends Component {
 
   handleToggle = e => {
     this.setState({agreementFlag: !this.state.agreementFlag}, () => {
-      this.updateSubmitBtnStatus()
+      this.updateBtnStatus()
     })
   }
 
   handleChange = e => {
     this.setState({[e.target.name]: e.target.value}, () => {
-      this.updateSubmitBtnStatus()
+      this.updateBtnStatus()
     })
   }
 
@@ -359,7 +359,7 @@ class Redeem extends Component {
     })
   }
 
-  updateSubmitBtnStatus = () => {
+  updateBtnStatus = () => {
     let flag = true
 
     if(this.state.integral < MIN_INTEGRAL) {
@@ -368,7 +368,7 @@ class Redeem extends Component {
     if(this.state.integral > MAX_INTEGRAL) {
       flag = false
     }
-    if(!this.state.bankcardNo) {
+    if(!this.state.bankCard) {
       flag = false
     }
     if(!this.state.smsCode) {
@@ -388,23 +388,23 @@ class Redeem extends Component {
       useable: this.state.availableIntegral,
       callback: (e, inputElem) => {
         if(!inputElem.value) {return false}
-        this.submitRedeem(inputElem.value)
+        this.doSubmit(inputElem.value)
       }
     })
   }
 
-  submitRedeem = async(pswd) => {
+  doSubmit = async(pswd) => {
     const loading = weui.loading('处理中')
     const params = {
       amount: this.state.integral,
 
       bankCode: this.state.bankCode,
-      bankName: this.state.bankcardName,
+      bankName: this.state.bankName,
       cardHoldName: this.state.cardHoldName,
-      cardPhoneNo: this.state.cardPhoneNo,
-      bankCard: this.state.bankcardNo,
-
+      cardPhoneNo: this.state.userPhoneNo,
+      bankCard: this.state.bankCard,
       code: this.state.smsCode,
+      
       tradPwd: pswd,
       payment: 1
     }
@@ -449,7 +449,7 @@ class Redeem extends Component {
 
   getMsgCode = async() => {
     const loading = weui.loading('发送中')
-    const params = {userPhoneNo: '15014095291', codeType: 3}   
+    const params = {userPhoneNo: this.state.phone, codeType: 3}   
     const {data} = await api.getCode(params)
     if(data.status === 200) {
       this.setState({sendMsgCodeFlag: false}, () => {
@@ -468,8 +468,8 @@ class Redeem extends Component {
       loading, 
       agreementFlag, 
       hasBankcard, 
-      bankcardNo, 
-      bankcardName, 
+      bankCard, 
+      bankName, 
       bankcardLogo,
       sendMsgCodeFlag
     } = this.state
@@ -491,8 +491,8 @@ class Redeem extends Component {
             loading={loading} 
             hasBankcard={hasBankcard} 
             bankcardLogo={bankcardLogo} 
-            bankcardNo={bankcardNo} 
-            bankcardName={bankcardName}
+            bankName={bankName}
+            bankcard={bankCard} 
           />
         </div>
 

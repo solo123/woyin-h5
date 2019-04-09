@@ -160,11 +160,11 @@ const Item = ({status, poundage, amount, createTime}) => {
   return (
     <div className="card">
       <div className="card__head">
-        <div className="card__title">积分赎回</div>
+        <div className="card__title">信用卡还款</div>
         <div className="card__status">{status}</div>
       </div>
       <div className="card__body">
-        <div>赎回{amount}积分 手续费{poundage}积分 实际到账{amount / 100}元</div>
+        <div>扣除{Number(amount) + Number(poundage)}积分 手续费{poundage}积分 实际到账{amount / 100}元</div>
       </div>
       <div className="card__foot">
         <div className="gray">{createTime}</div>
@@ -208,7 +208,9 @@ const Content = ({loading, items}) => {
 
 const CancelToken = axios.CancelToken
 
-class RedeemRecord extends Component {
+
+
+export default class extends Component {
   state = {
     status: '10',
     title: '新建',
@@ -222,8 +224,9 @@ class RedeemRecord extends Component {
       status: '10',
       limit: config.redeem.PAGE_LIMIT,
       page: 0,
-      payment: 1
+      payment: 2
     }    
+
     this.loadData(params)
   }
 
@@ -257,7 +260,7 @@ class RedeemRecord extends Component {
         status: status,
         limit: config.redeem.PAGE_LIMIT,
         page: 0,
-        payment: 1
+        payment: 2
       } 
       this.loadData(params)
     })
@@ -289,5 +292,3 @@ class RedeemRecord extends Component {
     )
   }
 }
-
-export default RedeemRecord

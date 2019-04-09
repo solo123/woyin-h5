@@ -306,7 +306,7 @@ export default class extends Component {
       const {data} = await paymentToCard(params)
       if(data.status === 200) {
         weui.alert(data.msg, () => {
-          replace('/repayment-record')
+          replace('/credit-record')
         })
       }else if(data.status === 1017){
         util.confirmRetry('密码错误', () => {
@@ -322,15 +322,16 @@ export default class extends Component {
 
   setCard(card) {
     this.setState({
-        bankCard: card.bankCard,
         bankName: card.bankName,
         bankCode: card.bankCode,
+        bankCard: card.bankCard,
         cardHoldName: card.cardHoldName,
         userPhoneNo: card.userPhoneNo,
         bankcardLogo: BANKCARD_SCHEMA[card.bankCode] || defaultIcon
       }, () => {
-        this.setState({hasCard: true})
-        this.updateBtnStatus()
+        this.setState({hasCard: true}, () => {
+          this.updateBtnStatus()
+        })
     })
   }
   
