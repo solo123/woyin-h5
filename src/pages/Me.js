@@ -76,8 +76,8 @@ const Page = styled.div`
 class Me extends Component {
   state = {
     balance: "",
-    contactMan: "",
-    userPhoneNo: ""    
+    contactMan: "--",
+    userPhoneNo: "--"    
   }
   componentDidMount() {
     this.loadUserinfo()

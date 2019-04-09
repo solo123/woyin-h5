@@ -274,23 +274,9 @@ class Redeem extends Component {
   }
 
   componentWillUnmount() {
-    this._isMounted = false
   }
 
-  loadBankcardList = async () => {
-    const {data} = await api.getBankcardList()
-    this.setState({loading: false})
-    if(data.status === 200) {
-      this.setState({bankcardList: data.data}, () => {
-        const firstBankcard = data.data[0]
-        if(firstBankcard) {
-          this.setCurrBankcard(firstBankcard.bankCard, firstBankcard.bankName, firstBankcard.bankCode)
-        }
-      })
-    }
-  }
-
-  loadUserInfo = async () => {
+  async loadUserInfo() {
     const {data} = await api.getUserInfo()
     if(data.status === 200) {
       this.setState({
@@ -300,9 +286,29 @@ class Redeem extends Component {
     }
   }
 
-  setCurrBankcard = (bankcardNo, bankcardName, bankcardClass) =>  {
-    this.setState({bankcardNo, bankcardName, bankcardLogo: BANKCARD_SCHEMA[bankcardClass] || defaultIcon}, () => {
-      this.setState({hasBankcard: true})
+  async loadBankcardList() {
+    const {data} = await api.getBankcardList()
+    this.setState({loading: false})
+    if(data.status === 200) {
+      this.setState({bankcardList: data.data}, () => {
+        const firstBankcard = data.data[0]
+        if(firstBankcard) {
+          this.setCurrBankcard(firstBankcard.bankCard, firstBankcard.bankName, firstBankcard.bankCode, firstBankcard.cardHoldName, firstBankcard.userPhoneNo)
+        }
+      })
+    }
+  }
+
+  setCurrBankcard = (bankcardNo, bankcardName, bankcardClass, cardHoldName, userPhoneNo) =>  {
+    this.setState({
+        bankCode: bankcardClass,
+        cardHoldName: cardHoldName,
+        cardPhoneNo: userPhoneNo,
+        bankcardNo,
+        bankcardName,
+        bankcardLogo: BANKCARD_SCHEMA[bankcardClass] || defaultIcon
+      }, () => {
+        this.setState({hasBankcard: true})
     })
   }
 
@@ -314,7 +320,13 @@ class Redeem extends Component {
       defaultValue: [0],
       onConfirm: result => {
         if(result && result[0]){
-          this.setCurrBankcard(result[0].bankcardNo, result[0].bankcardName, result[0].bankcardClass)
+          this.setCurrBankcard(
+            result[0].bankcardNo, 
+            result[0].bankcardName, 
+            result[0].bankcardClass, 
+            result[0].cardHoldName, 
+            result[0].userPhoneNo
+          )
         }
       }
     })
@@ -371,8 +383,7 @@ class Redeem extends Component {
 
   handleSubmit = e => {
     util.paymentConfirm({
-      title: '充值',
-      subtitle: '壹企服',
+      title: '赎回',
       amount: this.state.integral,
       useable: this.state.availableIntegral,
       callback: (e, inputElem) => {
@@ -386,13 +397,16 @@ class Redeem extends Component {
     const loading = weui.loading('处理中')
     const params = {
       amount: this.state.integral,
-      bankCard: '6227007200230197008',
-      bankCode: 0,
-      bankName: '建设银行',
-      cardHoldName: '高强',
-      cardPhoneNo: '15014095291',
+
+      bankCode: this.state.bankCode,
+      bankName: this.state.bankcardName,
+      cardHoldName: this.state.cardHoldName,
+      cardPhoneNo: this.state.cardPhoneNo,
+      bankCard: this.state.bankcardNo,
+
+      code: this.state.smsCode,
       tradPwd: pswd,
-      code: this.state.smsCode
+      payment: 1
     }
     try {
       const {data} = await api.redeemIntegral(params)
@@ -420,7 +434,6 @@ class Redeem extends Component {
   countDown = () => {
     if(this.state.timer > 0) {
       setTimeout(() => {
-        if(!this._isMounted){return}
         this.setState({timer: this.state.timer - 1}, () => {
           this.countDown()
         })
@@ -437,10 +450,8 @@ class Redeem extends Component {
   getMsgCode = async() => {
     const loading = weui.loading('发送中')
     const params = {userPhoneNo: '15014095291', codeType: 3}   
-    this._isMounted = true
     const {data} = await api.getCode(params)
     if(data.status === 200) {
-      if(!this._isMounted){return}
       this.setState({sendMsgCodeFlag: false}, () => {
         this.countDown()
       })

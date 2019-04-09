@@ -171,6 +171,8 @@ const parseBankcardList = function(arr) {
       bankcardNo: item.bankCard,
       bankcardName: item.bankName,
       bankcardClass: item.bankCode,
+      cardHoldName: item.cardHoldName,
+      userPhoneNo: item.userPhoneNo,
       label: item.bankName + '-' + getLastNum(item.bankCard)
     }
   })
@@ -185,7 +187,6 @@ const parseCreditcardList = function(arr) {
     }
   })
 }
-
 
 const confirmRetry = function(content, cb) {
   weui.confirm(content, {
