@@ -88,6 +88,12 @@ export default function({items}) {
           text={product.productClassifyName}
         />
       ))}
+      <div className="item">
+        <Link to="credit-card">
+          <img className="icon" src={creditCardIcon} alt=""/>
+          <div className="title">信用卡还款</div>
+        </Link>
+      </div>
     </LayoutPage>
   )
 }

@@ -168,9 +168,9 @@ const getLastNum = function(bankcardNo) {
 const parseBankcardList = function(arr) {
   return arr.map(item => {
     return {
-      bankcardNo: item.bankCard,
-      bankcardName: item.bankName,
-      bankcardClass: item.bankCode,
+      bankCard: item.bankCard,
+      bankName: item.bankName,
+      bankCode: item.bankCode,
       cardHoldName: item.cardHoldName,
       userPhoneNo: item.userPhoneNo,
       label: item.bankName + '-' + getLastNum(item.bankCard)

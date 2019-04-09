@@ -175,3 +175,13 @@ export const rechargeVoucher = (data) => {
 export const integralTransfer = (data) => {
   return post(`${BASE}api/transferred/commit`, qs.stringify(data))
 }
+
+// 获取银行卡/信用卡列表
+export const getBankcardList = () => {
+  return get(`${BASE}api/bank/getBankCardList`)
+}
+
+// 赎回或信用卡还款
+export const paymentToCard = (data) => {
+  return post(`${BASE}api/trad/withdrawal`, qs.stringify(data))
+}

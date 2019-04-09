@@ -102,6 +102,11 @@ const AsyncRedeemRecord = Loadable({
   loader: () => import('./pages/RedeemRecord'),
   loading: LoadingComponent
 })
+const AsyncCreditCard = Loadable({
+  loader: () => import('./pages/CreditCard').then(({view}) => view),
+  loading: LoadingComponent
+})
+
 const AsyncTransfer = Loadable({
   loader: () => import('./pages/Transfer'),
   loading: LoadingComponent
@@ -131,6 +136,8 @@ class App extends Component {
             <Auth path="/bankcard-add" component={AsyncAddBankcard} />
             <Auth path="/redeem" component={AsyncRedeem} />
             <Auth path="/redeem-record" component={AsyncRedeemRecord} />
+            <Auth path="/credit-card" component={AsyncCreditCard} />
+
             <Auth path="/order" component={AsyncOrder} />
             <Auth path="/recharge-phone" component={AsyncRechargePhone} />
             <Auth path="/recharge-traffic" component={AsyncRechargeTraffic} />
