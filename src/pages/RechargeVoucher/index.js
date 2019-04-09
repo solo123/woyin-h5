@@ -1,3 +1,3 @@
-import view from './views/RechargeECard'
+import view from './views/Voucher'
 
 export {view}

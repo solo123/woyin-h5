@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import weui from 'weui.js'
 
-import api from '../api'
+import api, {integralTransfer} from '../api'
 import Backhome from '../common/Backhome'
 
 import closeIcon from '../asset/images/icon/close.png'
@@ -60,17 +60,10 @@ const Input = styled.input`
   -webkit-appearance: none;
   background: transparent;
 `
-// const BigPrimaryInput = styled(Input)`
-//   color: #444;
-//   font-size: 16px;
-//   font-weight: bold;
-//   font-family: industry;
-// `
 const PrimaryInput = styled(Input)`
   color: #444;
   font-size: 14px;
 `
-
 const LayoutBox = styled.div`
   margin: 15px;
 `
@@ -139,21 +132,21 @@ class Transfer extends Component {
     this.handleSubmit = this.handleSubmit.bind(this)
     this.passwordToggle = this.passwordToggle.bind(this)
     this.integralClean = this.handleClean.bind(this, 'integral')
-    this.usernameClean = this.handleClean.bind(this, 'username')
     this.accountClean = this.handleClean.bind(this, 'account')
     this.passwordClean = this.handleClean.bind(this, 'password')
-    this.updateButtonStatus = this.updateButtonStatus.bind(this)
 
     this.state = {
       pass: false,
+
       integral: '',
       integralCleanView: false,
-      username: '',
-      usernameCleanView: false,
+
       account: '',
       accountCleanView: false,
+
       password: '',
       passwordCleanView: false,
+
       passwordType: 'password',
       passwordIcon: iconSchema['password']
     }
@@ -185,14 +178,13 @@ class Transfer extends Component {
   async handleSubmit(e) {
     const loading = weui.loading('处理中')
     const params = {
-      integral: this.state.integral,
-      username: this.state.username,
-      account: this.state.account,
-      password: this.state.password
+      to: this.state.account,
+      num: this.state.integral,
+      tranPwd: this.state.password
     }
     try {
-      const {data} = await api.transfer(params)
-      if(data.code === '1') {
+      const {data} = await integralTransfer(params)
+      if(data.status === 200) {
         weui.alert('转赠成功')
       }else {
         weui.alert(data.msg)
@@ -209,11 +201,8 @@ class Transfer extends Component {
 
   updateButtonStatus() {
     let flag = true
-    const {integral, username, account, password} = this.state
+    const {integral, account, password} = this.state
     if(!integral) {
-      flag = false
-    }
-    if(!username) {
       flag = false
     }
     if(!account) {
@@ -226,7 +215,7 @@ class Transfer extends Component {
   }
 
   render() {
-    const {integralCleanView, usernameCleanView, accountCleanView, passwordCleanView} = this.state
+    const {integralCleanView, accountCleanView, passwordCleanView} = this.state
     return (
       <Page>
         <LayoutBox>
@@ -245,22 +234,6 @@ class Transfer extends Component {
               </LayoutBody>
               <LayoutFoot>
                 <StyledCleanIcon style={{visibility: integralCleanView ? 'visible' : 'hidden'}} onClick={this.integralClean} src={closeIcon} alt="" />
-              </LayoutFoot>
-            </LayoutGroup>
-            <LayoutGroup>
-              <LayoutBody>
-                <PrimaryInput 
-                  type="text" 
-                  name="username" 
-                  value={this.state.username} 
-                  onChange={this.handleChange} 
-                  onFocus={this.handleFocus}
-                  onBlur={this.handleBlur}
-                  placeholder="请输入对方名称" 
-                />
-              </LayoutBody>
-              <LayoutFoot>
-                <StyledCleanIcon style={{visibility: usernameCleanView ? 'visible' : 'hidden'}} onClick={this.usernameClean} src={closeIcon} alt="" />
               </LayoutFoot>
             </LayoutGroup>
             <LayoutGroup>

@@ -80,6 +80,10 @@ const AsyncRechargeVoucher = Loadable({
   loader: () => import('./pages/RechargeVoucher').then(({ view }) => view),
   loading: LoadingComponent
 })
+const AsyncRechargeVoucherDetail = Loadable({
+  loader: () => import('./pages/RechargeVoucherDetail').then(({ view }) => view),
+  loading: LoadingComponent
+})
 
 
 const AsyncOrder = Loadable({
@@ -134,7 +138,9 @@ class App extends Component {
             <Auth path="/recharge-oil" component={AsyncRechargeOil} />
             <Auth path="/recharge-QB" component={AsyncRechargeQB} />
             <Auth path="/recharge-video" component={AsyncRechargeVideo} />
-            <Auth path="/recharge-voucher" component={AsyncRechargeVoucher} />
+            <Auth path="/recharge-voucher" exact component={AsyncRechargeVoucher} />
+            <Auth path="/recharge-voucher/:id"  component={AsyncRechargeVoucherDetail} />
+            
 
             <Auth path="/transfer" component={AsyncTransfer} />
             <Auth path="/change-pswd" component={AsyncChangePswd} />

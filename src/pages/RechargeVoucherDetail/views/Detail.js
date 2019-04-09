@@ -2,32 +2,34 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import classnames from 'classnames'
 import weui from 'weui.js'
+import axios from 'axios'
 
-import config from '../config'
-import Opeator from '../common/Operator'
-import api from '../api'
-import util from '../util'
+import config from '../../../config'
+import Opeator from '../../../common/Operator'
+import api, {getSubProducts, rechargeVoucher} from '../../../api'
+import util from '../../../util'
+import {replace} from '../../../services/redirect'
 
-import appleIcon from '../asset/images/ecard/apple.png'
-import bgyIcon from '../asset/images/ecard/bgy.png'
-import bskIcon from '../asset/images/ecard/bsk.png'
-import dqIcon from '../asset/images/ecard/dq.png'
-import hgdsIcon from '../asset/images/ecard/hgds.png'
-import jdIcon from '../asset/images/ecard/jd.png'
-import kdjIcon from '../asset/images/ecard/kdj.png'
-import qcsIcon from '../asset/images/ecard/qcs.png'
-import snIcon from '../asset/images/ecard/sn.png'
-import tmIcon from '../asset/images/ecard/tm.png'
-import wnIcon from '../asset/images/ecard/wn.png'
-import xbkIcon from '../asset/images/ecard/xbk.png'
-import xcIcon from '../asset/images/ecard/xc.png'
-import ymxIcon from '../asset/images/ecard/ymx.png'
+import appleIcon from '../../../asset/images/ecard/apple.png'
+import bgyIcon from '../../../asset/images/ecard/bgy.png'
+import bskIcon from '../../../asset/images/ecard/bsk.png'
+import dqIcon from '../../../asset/images/ecard/dq.png'
+import hgdsIcon from '../../../asset/images/ecard/hgds.png'
+import jdIcon from '../../../asset/images/ecard/jd.png'
+import kdjIcon from '../../../asset/images/ecard/kdj.png'
+import qcsIcon from '../../../asset/images/ecard/qcs.png'
+import snIcon from '../../../asset/images/ecard/sn.png'
+import tmIcon from '../../../asset/images/ecard/tm.png'
+import wnIcon from '../../../asset/images/ecard/wn.png'
+import xbkIcon from '../../../asset/images/ecard/xbk.png'
+import xcIcon from '../../../asset/images/ecard/xc.png'
+import ymxIcon from '../../../asset/images/ecard/ymx.png'
 
-const iconSchema = {
-  '1': tmIcon,
+const ICON_SCHEAM = {
+  '20': tmIcon,
   '2': snIcon,
   '3': ymxIcon,
-  '4': jdIcon,
+  '19': jdIcon,
   '5': xcIcon,
   '6': xcIcon,
   '7': hgdsIcon,
@@ -173,7 +175,27 @@ const Item = ({id, selectId, price, integral, handleSelect}) => {
   )
 }
 
-class RechargeECardDetail extends Component {
+const CancelToken = axios.CancelToken
+
+const TITLE_SCHEAM = {
+  '20': '京东E卡',
+  '2': '京东E卡',
+  '3': '京东E卡',
+  '19': '京东E卡',
+  '5': '京东E卡',
+  '6': '京东E卡',
+  '7': '京东E卡',
+  '8': '京东E卡',
+  '9': '京东E卡',
+  '10': '京东E卡',
+  '11': '京东E卡',
+  '12': '京东E卡',
+  '13': '京东E卡',
+  '14': '京东E卡',
+  '15': '京东E卡'
+}
+
+export default class extends Component {
   constructor(props) {
     super(props)
 
@@ -181,56 +203,70 @@ class RechargeECardDetail extends Component {
     this.handleChange = this.handleChange.bind(this)
     this.handleSelect = this.handleSelect.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
-    this.updateSubmitBtnStatus = this.updateSubmitBtnStatus.bind(this)
-
-    this.validationPswd = this.validationPswd.bind(this)
-    this.retryPswd = this.retryPswd.bind(this)
     
     this.state = {
       count: config.ecard.MIN_COUNT,
       class: props.match.params.id,
       pass: false,
-      integral: 0,
-      name: '',
+      name: TITLE_SCHEAM[props.match.params.id],
       selectId: '',
       items: [],
-      expire: '',
-      explain: []
+
+      integral: 0,
+      availableIntegral: 0
     }
   }
 
   componentDidMount() {
-    this.loadInitData()
+    this.loadUserInfo()
+    this.loadSubProducts(this.state.class)
   }
 
-  loadInitData() {
-    api.getECardDetailByType()
-      .then(res => {
-        const {data} = res
-        if(data.code) {
-          this.setState({
-            name: data.data.name,
-            items: data.data.items
-          })
-        }
-      })
+  componentWillUnmount() {
+    this.submitSource && this.submitSource.cancel('Operation canceled by the user.')
+    this.loadUserInfoSource && this.loadUserInfoSource.cancel('Operation canceled by the user.')
+    this.loadSubProductsSource && this.loadSubProductsSource.cancel('Operation canceled by the user.')
+  }
+
+  async loadUserInfo() {
+    this.loadUserInfoSource = CancelToken.source()
+    try {
+      const {data} = await api.getUserInfo(null, {cancelToken: this.loadUserInfoSource.token})
+      if(data.status === 200) {
+        this.setState({availableIntegral: Number(data.data[0].balance)})
+      }
+    }finally {
+    }
+  }
+
+  async loadSubProducts(id) {
+    this.setState({skeletonLoading: true})
+    this.loadSubProductsSource = CancelToken.source()
+    try {
+      const {data} = await getSubProducts(id, {cancelToken: this.loadSubProductsSource.token})
+      if(data.status === 200) {
+        this.setState({items: data.data})
+      }
+    }finally {
+      this.setState({skeletonLoading: false})
+    }
   }
 
   handleSelect(id, integral) {
     this.setState({selectId: id, integral: integral}, () => {
-      this.updateSubmitBtnStatus()
+      this.updateBtnStatus()
     })
   }
 
   handleClick(count) {
     if(config.ecard.MAX_COUNT >= count && count >= config.ecard.MIN_COUNT) {
       this.setState({count}, () => {
-        this.updateSubmitBtnStatus()
+        this.updateBtnStatus()
       })
     }
   }
 
-  updateSubmitBtnStatus() {
+  updateBtnStatus() {
     if(this.state.selectId) {
       this.setState({pass: true})
     }else {
@@ -242,55 +278,50 @@ class RechargeECardDetail extends Component {
   }
 
   handleSubmit() {
-    // 可用积分
-    // 当前积分
-    const useable = 50000
     const sum = this.state.count * this.state.integral
     util.paymentConfirm({
       title: '兑换卡券',
-      useable: useable,
+      useable: this.state.availableIntegral,
       amount: sum,
       callback: (e, input) => {
         if(!input.value.trim()) {
           alert('请输入交易密码')
           return false
         }
-        this.validationPswd(input.value)
+        this.submitRecharge(input.value)
       }
     })
   }
 
-  // 校验交易密码
-  validationPswd(pswd) {
-    const loading = weui.loading('处理中')
-    api.confirmTransPswd(pswd)
-      .then(res => {
-        const {data} = res
-        if(data.code === '1') {
-          this.submitExchange()
-        }else if(data.code === '0') {
-          // 交易密码错误
-          weui.confirm(data.msg, () => {
-            this.retryPswd()
-          })          
-        }else {
-          weui.alert(data.msg)
-        }
-      })
-      .then(() => {
-        loading.hide()
-      })
-      .catch(err => {
-      })    
-  }
-
-  // 重试密码
-  retryPswd() {
+  retryTransPswd() {
     this.handleSubmit()
   }
 
-  submitExchange() {
-    console.log('发起兑换')
+  async submitRecharge(pswd) {
+    const loading = weui.loading('处理中')
+    this.submitSource = CancelToken.source()
+    const params = {
+      productId: this.state.selectId,
+      chargeAddr: this.state.username,
+      chargeType: '1',
+      tranPwd: pswd
+    }
+    try {
+      const {data} = await rechargeVoucher(params, {cancelToken: this.submitSource.token})
+      if(data.status === 200) {
+        weui.alert(data.msg, () => {
+          replace('/order')
+        })
+      }else if(data.status === 1017) {
+        util.confirmRetry('密码错误', () => {
+          this.retryTransPswd()
+        })
+      }else {
+        weui.alert(data.msg)
+      }  
+    }finally {
+      loading.hide() 
+    }    
   }
 
   render() {
@@ -303,8 +334,8 @@ class RechargeECardDetail extends Component {
             <StyledPage>
                 <LayoutBox>
                   <StyledBgBox>
-                    <StyledIcon src={iconSchema[this.state.class]} />
-                    <StyledName>{this.state.name}</StyledName>
+                    <StyledIcon src={ICON_SCHEAM[this.state.class]} />
+                    <StyledName>{TITLE_SCHEAM[this.state.class]}</StyledName>
                   </StyledBgBox>
                   <StyledOpeator>
                     <span>兑换数量(最多可购10张)</span>
@@ -325,11 +356,11 @@ class RechargeECardDetail extends Component {
                   {items.map(item => {
                     return (
                       <Item 
-                        key={item.id} 
-                        id={item.id}
-                        price={item.price} 
+                        key={item.productId} 
+                        id={item.productId}
+                        price={item.salesPrice} 
                         selectId={selectId}
-                        integral={item.integral}
+                        integral={item.productCostBalance}
                         handleSelect={this.handleSelect}
                       />
                     )
@@ -377,5 +408,3 @@ class RechargeECardDetail extends Component {
     )
   }
 }
-
-export default RechargeECardDetail

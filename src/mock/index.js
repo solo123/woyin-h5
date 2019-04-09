@@ -208,16 +208,16 @@ Mock.mock(/creditCardRepayment/, 'post', function(options){
 })
 
 // 积分转赠
-Mock.mock(/transfer/, 'post', function(options){
-  return {
-    code: '1',
-    msg: '转赠成功'
-  }
-  // return {
-  //   code: '0',
-  //   msg: '交易密码错误'
-  // }
-})
+// Mock.mock(/transfer/, 'post', function(options){
+//   return {
+//     code: '1',
+//     msg: '转赠成功'
+//   }
+//   // return {
+//   //   code: '0',
+//   //   msg: '交易密码错误'
+//   // }
+// })
 
 // 登录
 // Mock.mock(/login/, 'post', function(options){

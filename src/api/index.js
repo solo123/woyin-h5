@@ -3,6 +3,7 @@ import {get, post} from './setup'
 
 let BASE = ''
 if(process.env.NODE_ENV === 'development') {
+  BASE = '/'
 }else if(process.env.NODE_ENV === 'production') {
   BASE = 'client/'
 }
@@ -163,4 +164,14 @@ export const getSubProducts = (id = '', config = {}) => {
 
 export const rechargeVideo = (data = {}, config = {}) => {
   return post(`${BASE}api/video/charge`, qs.stringify(data), config)
+}
+
+// 电子卡券充值
+export const rechargeVoucher = (data) => {
+  return post(`${BASE}api/voucher/charge`, qs.stringify(data))
+}
+
+// 积分转赠
+export const integralTransfer = (data) => {
+  return post(`${BASE}api/transferred/commit`, qs.stringify(data))
 }
