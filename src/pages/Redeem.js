@@ -3,10 +3,10 @@ import styled from 'styled-components'
 import weui from 'weui.js'
 import {Link} from 'react-router-dom'
 
-import api from '../api'
+import config from '../config'
+import {getUserInfo, getBankcardList, redeemIntegral, getRedeemFee, getCode} from '../api'
 import util from '../util'
 import {replace} from '../services/redirect'
-import {getItem} from '../services/storage'
 
 import Backhome from '../common/Backhome'
 
@@ -181,13 +181,23 @@ const Page = styled.div`
   }
 `
 
-const MIN_INTEGRAL = 100
-const MAX_INTEGRAL = 5000000
-
 const BANKCARD_SCHEMA = {
-  jsIcon,
-  zsIcon,
-  gsIcon
+  'GDB' : fzIcon,
+  'CEB' : gdIcon,
+  'ICBC' : gsIcon,
+  'HXB' : hxIcon,
+  'CCB' : jsIcon,
+  'COMM' : jtIcon,
+  'CMBC' : msIcon,
+  'ABC' : nyIcon,
+  'SZPAB' : paIcon,
+  'BOS' : shIcon,
+  'SPDB' : shfzIcon,
+  'CIB' : xyIcon,
+  'PSBC' : yzIcon,
+  'BOC' : zgIcon,
+  'CMB' : zsIcon,
+  'CITIC' : zxIcon
 }
 
 const BankcardLoading = () => {
@@ -202,11 +212,11 @@ const BankcardLoading = () => {
   )
 }
 
-const SendMessageBtn = ({flag, timer, handleClick}) => {
+const SendMessageBtn = ({flag, interval, handleClick}) => {
   if(flag) {
     return <MiniPrimaryBtn onClick={handleClick}>获取验证码</MiniPrimaryBtn>
   }
-  return <DisableMiniPrimaryBtn>{timer}秒后重发</DisableMiniPrimaryBtn>
+  return <DisableMiniPrimaryBtn>{interval}秒后重发</DisableMiniPrimaryBtn>
 }
 
 const SubmitBtn = ({pass, handleSubmit}) => {
@@ -230,29 +240,34 @@ const Bankcard = ({logo, bankcardNo, bankName}) => {
   )
 }
 
-const BankcardBox = ({loading, hasBankcard, bankcardLogo, bankcard, bankname}) => {
+const BankcardBox = ({loading, hasBankcard, bankcardLogo, bankcard, bankName}) => {
   if(loading) {
     return <BankcardLoading />
   }
   if(hasBankcard) {
-    return <Bankcard logo={bankcardLogo} bankcardNo={bankcard} bankcardName={bankname} />
+    return <Bankcard logo={bankcardLogo} bankcardNo={bankcard} bankName={bankName} />
   }
   return <div className="empty">暂无可用银行卡</div>
 }
 
 const Agreement = ({agreementFlag}) => {
-  return <img className="checkbox" src={agreementFlag ? checkedIcon : uncheckedIcon} />
+  return <img className="checkbox" src={agreementFlag ? checkedIcon : uncheckedIcon} alt="" />
 }
 
 class Redeem extends Component {
   constructor(props) {
     super(props)
 
+    this.handleGetCode = this.handleGetCode.bind(this)
+    this.handleClick = this.handleClick.bind(this)
+    this.handleToggle = this.handleToggle.bind(this)
+    this.handleChange = this.handleChange.bind(this)
+    this.handleBlur = this.handleBlur.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
+
     this.state = {
       integral: '',
       availableIntegral: 0,
-
-      smsCode: '',
 
       pass: false,
       loading: true,
@@ -263,8 +278,10 @@ class Redeem extends Component {
       bankName: '',
       bankcardLogo: '',
 
-      timer: 60,
-      sendMsgCodeFlag: true,
+      code: '',
+      interval: config.redeem.INTERVAL,
+      getCodeFlag: true,
+
       phone: '',
       redeemFee: 0,
       actualReceived: 0,
@@ -274,36 +291,150 @@ class Redeem extends Component {
 
   componentDidMount() {
     this.loadUserInfo()
-    this.loadBankcardList()
+    this.loadCardList()
   }
 
   componentWillUnmount() {
   }
 
   async loadUserInfo() {
-    const {data} = await api.getUserInfo()
-    if(data.status === 200) {
-      this.setState({
-        availableIntegral: data.data[0].balance,
-        phone: data.data[0].userPhoneNo
-      })
+    try {
+      const {data} = await getUserInfo()
+      if(data.status === 200) {
+        this.setState({
+          phone: data.data[0].userPhoneNo,
+          availableIntegral: data.data[0].balance
+        })
+      }
+    }finally {
     }
   }
 
-  async loadBankcardList() {
-    const {data} = await api.getBankcardList()
-    this.setState({loading: false})
-    if(data.status === 200) {
-      this.setState({bankcardList: data.data}, () => {
-        const card = data.data[0]
-        if(card) {
-          this.setCard(card)
-        }
-      })
+  async loadCardList() {
+    try {
+      const {data} = await getBankcardList()
+      if(data.status === 200) {
+        const cardList = util.filterBankCardByStatusAndType(data.data, '1', '1')
+        this.setState({bankcardList: cardList}, () => {
+          const card = cardList[0]
+          if(card) {
+            this.setCard(card)
+          }
+        })
+      }
+    }finally {
+      this.setState({loading: false})
     }
   }
 
-  setCard = (card) =>  {
+  async handleBlur(e) {
+    try {
+      const {data} = await getRedeemFee(this.state.integral || 0)
+      if(data.status === 200) {
+        this.updateFee(data.data)
+      }
+    }finally {
+    }
+  }
+
+  async handleGetCode() {
+    const loading = weui.loading('发送中')
+    const params = {userPhoneNo: this.state.phone, codeType: 3}   
+    try {
+      const {data} = await getCode(params)
+      if(data.status === 200) {
+        this.setState({getCodeFlag: false}, () => {
+          this.countDown()
+        })
+      }
+      weui.alert(data.msg)
+    }finally {
+      loading.hide()
+    }
+  }
+
+  async doSubmit(pswd) {
+    const loading = weui.loading('处理中')
+    const params = {
+      amount: this.state.integral,
+      bankCode: this.state.bankCode,
+      bankName: this.state.bankName,
+      cardHoldName: this.state.cardHoldName,
+      cardPhoneNo: this.state.userPhoneNo,
+      bankCard: this.state.bankCard,
+      code: this.state.code,
+      tradPwd: pswd,
+      payment: 1
+    }
+    try {
+      const {data} = await redeemIntegral(params)
+      if(data.status === 200) {
+        weui.alert(data.msg, () => {
+          replace('/redeem-record')
+        })
+      }else if(data.status === 1017){
+        util.confirmRetry('密码错误', () => {
+          this.retryTransPswd()
+        })
+      }else {
+        weui.alert(data.msg)
+      }
+    }finally {
+      loading.hide()
+    }
+  }
+
+  retryTransPswd() {
+    this.handleSubmit()
+  }
+
+  countDown() {
+    if(this.state.interval > 0) {
+      setTimeout(() => {
+        this.setState({interval: this.state.interval - 1}, () => {
+          this.countDown()
+        })
+      }, 1000)
+    }else {
+      this.resetGetCode()
+    }
+  }
+
+  resetGetCode() {
+    this.setState({interval: config.redeem.INTERVAL, getCodeFlag: true})
+  }
+
+  updateFee({poundage, money, totalAmount}) {
+    this.setState({
+      redeemFee: poundage,
+      actualReceived: money,
+      deductIntegral: totalAmount
+    })
+  }
+
+  updateBtnStatus() {
+    let flag = true
+
+    if(this.state.integral < config.redeem.MIN_INTEGRAL) {
+      flag = false
+    }
+    if(this.state.integral > config.redeem.MAX_INTEGRAL) {
+      flag = false
+    }
+    if(!this.state.bankCard) {
+      flag = false
+    }
+    if(!this.state.code) {
+      flag = false
+    }
+    if(!this.state.agreementFlag) {
+      flag = false
+    }
+
+    this.setState({pass: flag})
+  }
+
+  setCard(card) {
     this.setState({
         bankName: card.bankName,
         bankCode: card.bankCode,
@@ -318,8 +449,9 @@ class Redeem extends Component {
     })
   }
 
-  handleClick = e => {
+  handleClick(e) {
     if(!this.state.bankcardList.length) {
+      weui.alert('暂无可用')
       return false
     }
     weui.picker(util.parseBankcardList(this.state.bankcardList), {
@@ -338,50 +470,13 @@ class Redeem extends Component {
     })
   }
 
-  handleChange = e => {
+  handleChange(e) {
     this.setState({[e.target.name]: e.target.value}, () => {
       this.updateBtnStatus()
     })
   }
 
-  handleBlur = async e => {
-    const {data} = await api.getRedeemFee(this.state.integral || 0)
-    if(data.status === 200) {
-      this.updateFee(data.data)
-    }
-  }
-
-  updateFee = ({poundage, money, totalAmount}) => {
-    this.setState({
-      redeemFee: poundage,
-      actualReceived: money,
-      deductIntegral: totalAmount
-    })
-  }
-
-  updateBtnStatus = () => {
-    let flag = true
-
-    if(this.state.integral < MIN_INTEGRAL) {
-      flag = false
-    }
-    if(this.state.integral > MAX_INTEGRAL) {
-      flag = false
-    }
-    if(!this.state.bankCard) {
-      flag = false
-    }
-    if(!this.state.smsCode) {
-      flag = false
-    }
-    if(!this.state.agreementFlag) {
-      flag = false
-    }
-
-    this.setState({pass: flag})
-  }
-
-  handleSubmit = e => {
+  handleSubmit(e) {
     util.paymentConfirm({
       title: '赎回',
       amount: this.state.integral,
@@ -393,75 +488,6 @@ class Redeem extends Component {
     })
   }
 
-  doSubmit = async(pswd) => {
-    const loading = weui.loading('处理中')
-    const params = {
-      amount: this.state.integral,
-
-      bankCode: this.state.bankCode,
-      bankName: this.state.bankName,
-      cardHoldName: this.state.cardHoldName,
-      cardPhoneNo: this.state.userPhoneNo,
-      bankCard: this.state.bankCard,
-      code: this.state.smsCode,
-      
-      tradPwd: pswd,
-      payment: 1
-    }
-    try {
-      const {data} = await api.redeemIntegral(params)
-      if(data.status === 200) {
-        weui.alert(data.msg, () => {
-          replace('/redeem-record')
-        })
-      }else if(data.status === 1017){
-        util.confirmRetry('密码错误', () => {
-          this.retryTransPswd()
-        })
-      }else {
-        weui.alert(data.msg)
-      }
-    }finally {
-      loading.hide()
-    }
-  }
-
-  // 重试交易密码
-  retryTransPswd = () => {
-    this.handleSubmit()
-  }
-
-  countDown = () => {
-    if(this.state.timer > 0) {
-      setTimeout(() => {
-        this.setState({timer: this.state.timer - 1}, () => {
-          this.countDown()
-        })
-      }, 1000)
-    }else {
-      this.resetMessageState()
-    }
-  }
-
-  resetMessageState = () => {
-    this.setState({timer: 10, sendMsgCodeFlag: true})
-  }
-
-  getMsgCode = async() => {
-    const loading = weui.loading('发送中')
-    const params = {userPhoneNo: this.state.phone, codeType: 3}   
-    const {data} = await api.getCode(params)
-    if(data.status === 200) {
-      this.setState({sendMsgCodeFlag: false}, () => {
-        this.countDown()
-      })
-      weui.alert(data.msg)
-    }else {
-      weui.alert(data.msg)
-    }
-    loading.hide()
-  }
-
   render() {
     const {
       pass, 
@@ -471,10 +497,10 @@ class Redeem extends Component {
       bankCard, 
       bankName, 
       bankcardLogo,
-      sendMsgCodeFlag
+      getCodeFlag
     } = this.state
 
-    const placeholder = `最多可赎回${this.state.availableIntegral}`
+    const placeholder = `最多可赎回${this.state.availableIntegral}积分`
 
     return (
       <Page>
@@ -521,14 +547,14 @@ class Redeem extends Component {
             <div className="group__body">
               <MinPrimaryInput 
                 type="text"
-                name="smsCode"
-                value={this.state.smsCode} 
+                name="code"
+                value={this.state.code} 
                 onChange={this.handleChange} 
                 placeholder="请输入短信验证码"
               />
             </div>
             <div className="group__foot">
-              <SendMessageBtn flag={sendMsgCodeFlag} timer={this.state.timer} handleClick={this.getMsgCode} />
+              <SendMessageBtn flag={getCodeFlag} interval={this.state.interval} handleClick={this.handleGetCode} />
             </div>  
           </div>
         </div> 

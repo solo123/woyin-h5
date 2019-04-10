@@ -17,7 +17,10 @@ export default {
   // 积分赎回
   redeem: {
     // 每页条数
-    PAGE_LIMIT: 20
+    PAGE_LIMIT: 20,
+    INTERVAL: 60,
+    MIN_INTEGRAL: 100,
+    MAX_INTEGRAL: 5000000
   },
   // 电子卡券记录
   voucher: {

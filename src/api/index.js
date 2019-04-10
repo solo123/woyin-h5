@@ -150,12 +150,31 @@ export default {
   }
 };
 
+  // 获取用户信息
+export const getUserInfo = () => {
+  return get(`${BASE}api/user/getUserInfo`)
+}
+
+  // 发送短信验证码
+export const getCode = (data) => {
+  return post(`${BASE}user/getCode`, qs.stringify(data))
+}
+
+export const redeemIntegral = (data) => {
+  return post(`${BASE}api/trad/withdrawal`, qs.stringify(data))
+}
+
+  // 获取提现手续费
+export const getRedeemFee = (amount) => {
+  return get(`${BASE}api/trad/poundageList`, {amount})
+}
+
 export const changePswd = (data) => {
   return post(`${BASE}user/changePwd`, qs.stringify(data))
 }
 
 export const getProducts = (productClassifyId = '', config = {}) => {
-  return get(`${BASE}api/product/list`, {productClassifyId}, config)
+  return get(`${BASE}product/list`, {productClassifyId}, config)
 }
 
 export const getSubProducts = (id = '', config = {}) => {

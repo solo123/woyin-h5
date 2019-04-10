@@ -224,6 +224,19 @@ const fixIos12WeixinInputBug = function () {
   }, true)
 }
 
+const filterBankCardByStatus = function() {
+}
+
+const filterBankCardByType = function() {
+}
+
+// 根据类型和状态过滤银行卡
+const filterBankCardByStatusAndType = function(cardList, type, status) {
+  return cardList.filter(item => {
+    return ((item.type === type) && (item.status === status))
+  })
+}
+
 export default {
   fixIos12WeixinInputBug,
   accessTokenIsValid,
@@ -236,5 +249,6 @@ export default {
   parseBankcardList,
   parseCreditcardList,
   getBankcardLastNum: getLastNum,
-  confirmRetry: confirmRetry
+  confirmRetry: confirmRetry,
+  filterBankCardByStatusAndType
 };
