@@ -17,12 +17,12 @@ const Page = styled.div`
   bottom: 0;
   display: flex;
   flex-direction: column;
-  nav{
+  ul{
     display: flex;
     flex-shrink: 0;
     line-height: 60px;
     background: #fff;
-    a{
+    li{
       flex: 1;
       text-align: center;
       transition: all .3s ease;
@@ -41,14 +41,28 @@ const Page = styled.div`
   }
   .list{
     margin: 15px 15px 0 15px;
+    strong{
+      color: #F53415;
+    }
     .item{
       background: #fff;
       margin-bottom: 15px;
+      box-shadow: 0 1px 3px 0 rgba(0,0,0,.06);
       &__head{
+        position: relative;
         display: flex;
         justify-content: space-between;
-        border-bottom: 1px solid #eaeaea;
         padding: 15px;
+        &:after{
+          content: "";
+          position: absolute;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          height: 1px;
+          transform: scaleY(.3);
+          background: #eaeaea;
+        }
       }
       &__body{
         padding: 15px 15px 0 15px;
@@ -75,7 +89,7 @@ const STATUS_SCHEMA = {
   '13': '失败'
 }
 
-const Item = ({date, name, totalAmt, status}) => {
+const Item = ({date, name, productValue, status}) => {
   return (
     <div className="item">
       <div className="item__head">
@@ -87,7 +101,7 @@ const Item = ({date, name, totalAmt, status}) => {
       </div>
       <div className="item__foot">
         <div>{date}</div>
-        <div>合计积分 {totalAmt}</div>
+        <div>合计积分 <strong>{productValue}</strong></div>
       </div>
     </div>
   )
@@ -102,7 +116,7 @@ const List = ({items}) => {
         byOrderDetail={item.byOrderDetail}
         status={STATUS_SCHEMA[item.status]}
         date={item.createTime} 
-        totalAmt={item.totalAmt}
+        productValue={item.productValue}
       />
     )
   })
@@ -196,9 +210,11 @@ class Order extends Component {
     return (
       <Page>
         <nav>
-          <a className={classNames({active: status === '11'})} onClick={() => this.handleClick('11')}>处理中</a>
-          <a className={classNames({active: status === '12'})} onClick={() => this.handleClick('12')}>成功</a>
-          <a className={classNames({active: status === '13'})} onClick={() => this.handleClick('13')}>失败</a>
+          <ul>
+            <li className={classNames({active: status === '11'})} onClick={() => this.handleClick('11')}>处理中</li>
+            <li className={classNames({active: status === '12'})} onClick={() => this.handleClick('12')}>成功</li>
+            <li className={classNames({active: status === '13'})} onClick={() => this.handleClick('13')}>失败</li>
+          </ul>
         </nav>
         <div className="container" ref={node => this.scrollContainer = node}>
           <main ref={node => this.itemsElem = node}>

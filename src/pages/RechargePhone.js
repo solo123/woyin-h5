@@ -146,8 +146,6 @@ const SubmitBtn = ({pass, handleSubmit}) => {
 }
 
 const CMCC = '2'
-const CUCC = '3'
-const CTCC = '4'
 
 export default class extends Component {
   constructor(props) {
