@@ -6,6 +6,7 @@ import axios from 'axios'
 import api, {getBankcardList, paymentToCard} from '../../../api'
 import util from '../../../util'
 import {replace} from '../../../services/redirect'
+import Backhome from '../../../common/Backhome'
 
 import moreIcon from '../../../asset/images/icon/more.png'
 import spinner from '../../../asset/images/spinner.svg'
@@ -92,14 +93,24 @@ const DisableMiniPrimaryBtn = styled(Button)`
 `
 
 const StyledBox = styled.div`
-  padding: 15px;
+  padding: 15px 15px 0 15px;
 `
 const StyledPick = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  position: relative;
   padding: 0 0 15px 0;
-  border-bottom: 1px solid #eaeaea;
+  &:after{
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    transform: scaleY(.3);
+    background: #eaeaea;    
+  }
 `
 const StyledTitle = styled.div`
   font-size: 14px;
@@ -111,6 +122,7 @@ const StyledMore = styled.img`
 const StyledNoBankCard = styled.div`
   color: #888;
   font-size: 16px;
+  line-height: 50px;
   font-weight: bold;
   text-align: center;
 `
@@ -149,6 +161,10 @@ const StyledInfo = styled.div`
 
 const Page = styled.div`
   background: #fff;
+  .input-box{
+    padding: 15px;
+    background: #f4f4f4;    
+  }
   .group{
     display: flex;
     align-items: center;
@@ -277,8 +293,9 @@ export default class extends Component {
     try {
       const {data} = await getBankcardList()
       if(data.status === 200) {
-        this.setState({cardList: data.data}, () => {
-          const card = data.data[0]
+        const cardList = util.filterBankCardByStatusAndType(data.data, '2', '1')
+        this.setState({cardList: cardList}, () => {
+          const card = cardList[0]
           if(card) {
             this.setCard(card)
           }
@@ -451,13 +468,15 @@ export default class extends Component {
         }
 
         <div className="u_p_xxx">
-          <PrimaryInput 
-            name="integral" 
-            value={this.state.integral} 
-            onChange={this.handleChange} 
-            onBlur={this.handleBlur} 
-            placeholder={`最多可使用${this.state.availableIntegral}积分`}
-          />
+          <div className="input-box">
+            <PrimaryInput 
+              name="integral" 
+              value={this.state.integral} 
+              onChange={this.handleChange} 
+              onBlur={this.handleBlur} 
+              placeholder={`最多可使用${this.state.availableIntegral}积分`}
+            />
+          </div>
         </div>
 
         <StyledInfo className="u_px_xxx u_mb_xxx">
@@ -489,6 +508,8 @@ export default class extends Component {
           : <DisablePrimaryButton>立即还款</DisablePrimaryButton>
         }
         </div>
+
+        <Backhome />
 
       </Page>
     )

@@ -10,7 +10,7 @@ import {replace} from '../services/redirect'
 
 import Backhome from '../common/Backhome'
 
-import arrowRightIcon from '../asset/images/icon/arrow_right.svg'
+import moreIcon from '../asset/images/icon/more.png'
 import checkedIcon from '../asset/images/icon/checked.png'
 import uncheckedIcon from '../asset/images/icon/unchecked.svg'
 
@@ -86,6 +86,7 @@ const Input = styled.input`
 const PrimaryInput = styled(Input)`
   color: #444;
   font-size: 16px;
+  font-weight: bold;
   font-family: industry;
 `
 const MinPrimaryInput = styled(Input)`
@@ -101,8 +102,8 @@ const Page = styled.div`
     justify-content: space-between;
     align-items: center;
     .icon{
-      width: 20px;
-      height: 20px;
+      width: 25px;
+      height: 25px;
     }
   }
   .empty{
@@ -507,8 +508,8 @@ class Redeem extends Component {
 
         <div className="u_mb_xxx">
           <div className="trigger-bar">
-            <label>转入银行卡</label>
-            <img className="icon" onClick={this.handleClick} src={arrowRightIcon} alt="箭头" />
+            <label>选择银行卡</label>
+            <img className="icon" onClick={this.handleClick} src={moreIcon} alt="箭头" />
           </div>
         </div>
 

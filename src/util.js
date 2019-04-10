@@ -233,7 +233,7 @@ const filterBankCardByType = function() {
 // 根据类型和状态过滤银行卡
 const filterBankCardByStatusAndType = function(cardList, type, status) {
   return cardList.filter(item => {
-    return ((item.type === type) && (item.status === status))
+    return ((item.bankCardType === type) && (item.status === status))
   })
 }
 
