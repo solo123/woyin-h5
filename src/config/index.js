@@ -26,6 +26,10 @@ export default {
   voucher: {
     PAGE_LIMIT: 20
   },
+  // 转赠记录
+  transfer: {
+    PAGE_LIMIT: 20
+  },
   // 双色球
   double_color_ball: {
     red: {

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import weui from 'weui.js'
 
-import api, {integralTransfer} from '../api'
+import {integralTransfer} from '../api'
 import Backhome from '../common/Backhome'
 
 import closeIcon from '../asset/images/icon/close.png'
@@ -152,6 +152,29 @@ class Transfer extends Component {
     }
   }
 
+  async doSubmit() {
+    const loading = weui.loading('处理中')
+    const params = {
+      to: this.state.account,
+      num: this.state.integral,
+      tranPwd: this.state.password
+    }
+    try {
+      const {data} = await integralTransfer(params)
+      if(data.status === 200) {
+        weui.alert('转赠成功')
+      }else {
+        weui.alert(data.msg)
+      }
+    }finally {
+      loading.hide()
+    }
+  }
+
+  handleSubmit(e) {
+    this.doSubmit()
+  }
+
   handleClean(key) {
     this.setState({[key]: ''})
   }
@@ -173,25 +196,6 @@ class Transfer extends Component {
         this.updateButtonStatus()
       })
     }, 100)
-  }
-
-  async handleSubmit(e) {
-    const loading = weui.loading('处理中')
-    const params = {
-      to: this.state.account,
-      num: this.state.integral,
-      tranPwd: this.state.password
-    }
-    try {
-      const {data} = await integralTransfer(params)
-      if(data.status === 200) {
-        weui.alert('转赠成功')
-      }else {
-        weui.alert(data.msg)
-      }
-    }finally {
-      loading.hide()
-    }
   }
 
   passwordToggle() {
