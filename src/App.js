@@ -25,6 +25,7 @@ import Auth from './common/Auth'
 import history from './history'
 
 const LoadingComponent = ({ isLoading, error }) => {
+  console.log(isLoading, error)
   // Handle the loading state
   if (isLoading) {
     return <div style={{textAlign: 'center', paddingTop: 30}}>loading...</div>
