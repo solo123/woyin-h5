@@ -22,6 +22,8 @@ import Auth from './common/Auth'
 // import ViolationList from './components/ViolationList'
 // import ViolationDetail from './components/ViolationDetail'
 
+import AsyncRechargeVoucherDetail from './pages/RechargeVoucherDetail/views/Detail'
+
 import history from './history'
 
 const LoadingComponent = ({ isLoading, error }) => {
@@ -78,10 +80,10 @@ const AsyncRechargeVoucher = Loadable({
   loader: () => import('./pages/RechargeVoucher').then(({ view }) => view),
   loading: LoadingComponent
 })
-const AsyncRechargeVoucherDetail = Loadable({
-  loader: () => import('./pages/RechargeVoucherDetail').then(({view}) => view),
-  loading: LoadingComponent
-})
+// const AsyncRechargeVoucherDetail = Loadable({
+//   loader: () => import('./pages/RechargeVoucherDetail').then(({view}) => view),
+//   loading: LoadingComponent
+// })
 const AsyncVoucherRecord = Loadable({
   loader: () => import('./pages/VoucherRecord').then(({ view }) => view),
   loading: LoadingComponent
