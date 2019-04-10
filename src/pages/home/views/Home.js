@@ -197,10 +197,7 @@ class Home extends Component {
 
   async loadHotsell() {
     try {
-      const {data} = await api.getHotsell()
-      if(data.status === 200) {
-        this.setState({items: data.items})
-      }
+      this.setState({items: []})
     }finally {
       this.setState({loading: false})
     }

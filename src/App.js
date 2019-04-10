@@ -88,9 +88,6 @@ const AsyncVoucherRecord = Loadable({
   loader: () => import('./pages/VoucherRecord').then(({ view }) => view),
   loading: LoadingComponent
 })
-
-
-
 const AsyncOrder = Loadable({
   loader: () => import('./pages/Order'),
   loading: LoadingComponent
@@ -162,7 +159,7 @@ class App extends Component {
             <Auth path="/recharge-QB" component={AsyncRechargeQB} />
             <Auth path="/recharge-video" component={AsyncRechargeVideo} />
             <Auth path="/recharge-voucher" exact component={AsyncRechargeVoucher} />
-            <Auth path="/recharge-voucher/:id"  component={AsyncRechargeVoucherDetail} />
+            <Auth path="/recharge-voucher/:id" component={AsyncRechargeVoucherDetail} />
             <Auth path="/voucher-record" exact component={AsyncVoucherRecord} />
             
             
