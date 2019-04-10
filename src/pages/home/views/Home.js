@@ -4,7 +4,6 @@ import { Link, withRouter } from "react-router-dom"
 import { connect } from 'react-redux'
 
 import api, {getProducts} from '../../../api'
-import {getItem} from '../../../services/storage'
 import Menu from '../../../common/Menu'
 
 import pedestalBg from '../../../asset/images/pedestal.png'
@@ -166,8 +165,6 @@ class Home extends Component {
   constructor(props) {
     super(props)
 
-    this.loadProductList = this.loadProductList.bind(this)
-
     this.state = {
       menus: [],
       items: [],
@@ -180,14 +177,12 @@ class Home extends Component {
   componentDidMount() {
     this.loadHotsell()
     this.loadProductList()
-    // 已登录用户需要获取可用积分
     if(this.props.isAuthenticated) {
       this.loadUserinfo()
     }
   }
 
   componentWillUnmount() {
-    this._isMounted = false
   }
 
   async loadProductList() {
@@ -200,25 +195,26 @@ class Home extends Component {
     }
   }
 
-  loadHotsell = async () => {
-    this._isMounted = true
-    const {data} = await api.getHotsell()
-    if(data.code === '1') {
-      if(!this._isMounted){return}
-      this.setState({items: data.items})
+  async loadHotsell() {
+    try {
+      const {data} = await api.getHotsell()
+      if(data.status === 200) {
+        this.setState({items: data.items})
+      }
+    }finally {
+      this.setState({loading: false})
     }
-    if(!this._isMounted){return}
-    this.setState({loading: false})
   }
 
-  loadUserinfo = async () => {
-    this._isMounted = true
-    const {data} = await api.getUserInfo()
-    if(data.status === 200) {
-      if(data.data.length) {
-        if(!this._isMounted){return}
-        this.setState({availableIntegral: data.data[0].balance})
+  async loadUserinfo() {
+    try {
+      const {data} = await api.getUserInfo()
+      if(data.status === 200) {
+        if(data.data.length) {
+          this.setState({availableIntegral: data.data[0].balance})
+        }
       }
+    }finally {
     }
   }
 
