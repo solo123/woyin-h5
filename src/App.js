@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { HashRouter as Router, Route, Switch } from "react-router-dom"
+import { Router, Route, Switch } from "react-router-dom"
 import Loadable from 'react-loadable'
 
 import './App.css'
