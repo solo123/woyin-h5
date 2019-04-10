@@ -218,8 +218,8 @@ export default class extends Component {
   }
 
   componentDidMount() {
-    // this.loadUserInfo()
-    // this.loadSubProducts(this.state.class)
+    this.loadUserInfo()
+    this.loadSubProducts(this.state.class)
   }
 
   componentWillUnmount() {
@@ -327,7 +327,6 @@ export default class extends Component {
   render() {
     const {pass, items, selectId} = this.state
 
-    return <div>123</div>
     return (
       <div>
         <StyledPageContainer>
