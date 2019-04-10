@@ -125,7 +125,7 @@ export default class extends Component {
     const {loading, products} = this.state
 
     if(loading) {
-      return <SkeletonPlaceholder />
+      return <div className="u_m_xxx"><SkeletonPlaceholder count={3} /></div>  
     }
 
     if(!products.length) {
