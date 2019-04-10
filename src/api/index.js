@@ -214,3 +214,8 @@ export const getBankcardList = () => {
 export const paymentToCard = (data) => {
   return post(`${BASE}api/trad/withdrawal`, qs.stringify(data))
 }
+
+// 获取订单列表
+export const getOrderList = (data = {}, config = {}) => {
+  return get(`${BASE}api/order/getOrderList`, data, config)
+}

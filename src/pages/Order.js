@@ -3,7 +3,8 @@ import styled from 'styled-components'
 import classNames from 'classnames'
 import weui from 'weui.js'
 
-import api from '../api'
+import config from '../config'
+import api, {getOrderList} from '../api'
 import SkeletonPlaceholder from '../common/SkeletonPlaceholder'
 
 import EmptyArrayPlaceholder from '../common/EmptyArrayPlaceholder'
@@ -82,7 +83,7 @@ const Page = styled.div`
   }
 `
 
-let currentPage = 1
+let currentPage = 0
 const STATUS_SCHEMA = {
   '11': '处理中',
   '12': '成功',
@@ -134,48 +135,32 @@ const Content = ({loading, items}) => {
 
 let isLoading = false
 class Order extends Component {
-  state = {
-    status: '11',
-    loading: true,
-    items: []
+  constructor(props) {
+    super(props)
+
+    this.handleClick = this.handleClick.bind(this)
+    this.scrollListener = this.scrollListener.bind(this)
+
+    this.state = {
+      status: '11',
+      loading: true,
+      items: []
+    }
   }
 
   componentDidMount() {
-    this.loadNextPage(this.state.status, currentPage) 
+    this.loadData(currentPage) 
     this.scrollContainer.addEventListener('scroll', this.scrollListener)
   }
 
   componentWillUnmount() {
-    this._isMounted = false
     this.scrollContainer.removeEventListener('scroll', this.scrollListener)
   }
 
-  scrollListener = () => {
-    if(isLoading){ return }
-
-    const scrollTop = this.scrollContainer.scrollTop
-    const winHeight = this.scrollContainer.offsetHeight
-    const docHeight = this.itemsElem.offsetHeight
-
-    if((scrollTop + winHeight) >= docHeight){
-      isLoading = true
-      this.loading = weui.loading('加载中')
-      this.loadNextPage(this.state.status, ++currentPage)
-    }
-  }
-
-  loadNextPage = async(status, page) => {
-    this._isMounted = true
-    const params = {
-      status: this.state.status,
-      limit: 10,
-      page: 0
-    }
+  async loadNextPage(params) {
     try {
-      const {data} = await api.getOrderList(params)
+      const {data} = await getOrderList(params)
       if(data.status === 200){
-        if(!this._isMounted){return}
-        if(!data.data.count){return}
         this.setState({
           items: [...this.state.items, ...data.data.data]
         }, () => {
@@ -186,26 +171,49 @@ class Order extends Component {
       if(this.loading) {
         this.loading.hide()
       }
-      if(!this._isMounted){return}
       this.setState({loading: false})
     }
   }
 
-  reset = () => {
-    currentPage = 1
+  scrollListener() {
+    if(isLoading){return}
+
+    const scrollTop = this.scrollContainer.scrollTop
+    const winHeight = this.scrollContainer.offsetHeight
+    const docHeight = this.itemsElem.offsetHeight
+
+    if((scrollTop + winHeight) >= docHeight){
+      isLoading = true
+      this.loading = weui.loading('加载中')
+      this.loadData(++currentPage)
+    }
+  }
+
+  loadData(page) {
+    const params = {
+      status: this.state.status,
+      limit: config.order.PAGE_LIMIT,
+      page: page
+    }
+    this.loadNextPage(params)
+  }
+
+  reset() {
+    currentPage = 0
     this.setState({items: []})
   }
 
-  handleClick = status => {
+  handleClick(status) {
     if(this.state.status === status) {return}
     this.reset()
+
     this.setState({status: status, loading: true}, () => {
-      this.loadNextPage(status, currentPage)
+      this.loadData(currentPage)
     })
   }
 
   render() {
-    const {loading, items, status} = this.state
+    const {loading, status, items} = this.state
 
     return (
       <Page>

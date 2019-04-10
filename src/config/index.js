@@ -26,6 +26,10 @@ export default {
   voucher: {
     PAGE_LIMIT: 20
   },
+  // 我的订单
+  order: {
+    PAGE_LIMIT: 20
+  },
   // 转赠记录
   transfer: {
     PAGE_LIMIT: 20
