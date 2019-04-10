@@ -81,7 +81,7 @@ const AsyncRechargeVoucher = Loadable({
   loading: LoadingComponent
 })
 const AsyncRechargeVoucherDetail = Loadable({
-  loader: () => import('./pages/RechargeVoucherDetail').then(({ view }) => view),
+  loader: () => import('./pages/RechargeVoucherDetail/views/Detail'),
   loading: LoadingComponent
 })
 const AsyncVoucherRecord = Loadable({
