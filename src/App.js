@@ -25,7 +25,6 @@ import Auth from './common/Auth'
 import history from './history'
 
 const LoadingComponent = ({ isLoading, error }) => {
-  console.log(isLoading, error)
   // Handle the loading state
   if (isLoading) {
     return <div style={{textAlign: 'center', paddingTop: 30}}>loading...</div>
@@ -38,25 +37,6 @@ const LoadingComponent = ({ isLoading, error }) => {
     return null
   }
 }
-
-const RechargeVoucherDetail2 = React.lazy(() => import('./pages/RechargeVoucherDetail/views/Detail'))
-
-
-const Spinner = function() {
-  return (
-    <div style={{textAlign: 'center', paddingTop: 30}}>loading...</div>
-  )
-}
-
-const RechargeVoucherDetail3 = props => {
-  return (
-    <React.Suspense fallback={<Spinner />}>
-      <RechargeVoucherDetail2 {...props} />
-    </React.Suspense>
-  )
-}
-
-
 
 const AsyncLogin = Loadable({
   loader: () => import('./pages/Login'),
@@ -82,7 +62,6 @@ const AsyncRechargeTraffic = Loadable({
   loader: () => import('./pages/RechargeTraffic').then(({ view }) => view),
   loading: LoadingComponent
 })
-
 const AsyncRechargeOil = Loadable({
   loader: () => import('./pages/RechargeOil').then(({ view }) => view),
   loading: LoadingComponent
@@ -100,7 +79,7 @@ const AsyncRechargeVoucher = Loadable({
   loading: LoadingComponent
 })
 const AsyncRechargeVoucherDetail = Loadable({
-  loader: () => import('./pages/RechargeVoucherDetail/views/Detail'),
+  loader: () => import('./pages/RechargeVoucherDetail/').then(({view}) => view),
   loading: LoadingComponent
 })
 const AsyncVoucherRecord = Loadable({
@@ -131,8 +110,6 @@ const AsyncCreditRecord = Loadable({
   loader: () => import('./pages/CreditRecord'),
   loading: LoadingComponent
 })
-
-
 const AsyncTransfer = Loadable({
   loader: () => import('./pages/Transfer'),
   loading: LoadingComponent
@@ -178,7 +155,7 @@ class App extends Component {
             <Auth path="/recharge-QB" component={AsyncRechargeQB} />
             <Auth path="/recharge-video" component={AsyncRechargeVideo} />
             <Auth path="/recharge-voucher" exact component={AsyncRechargeVoucher} />
-            <Auth path="/recharge-voucher/:id" component={RechargeVoucherDetail3} />
+            <Auth path="/recharge-voucher/:id" component={AsyncRechargeVoucherDetail} />
             <Auth path="/voucher-record" exact component={AsyncVoucherRecord} />
 
 
