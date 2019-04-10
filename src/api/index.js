@@ -5,7 +5,7 @@ let BASE = ''
 if(process.env.NODE_ENV === 'development') {
   BASE = '/'
 }else if(process.env.NODE_ENV === 'production') {
-  BASE = 'client/'
+  BASE = '/client/'
 }
 
 export default {

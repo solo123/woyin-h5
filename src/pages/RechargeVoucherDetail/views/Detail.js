@@ -6,7 +6,7 @@ import axios from 'axios'
 
 import config from '../../../config'
 import Opeator from '../../../common/Operator'
-import api, {getSubProducts, rechargeVoucher} from '../../../api'
+import {getUserInfo, getSubProducts, rechargeVoucher} from '../../../api'
 import util from '../../../util'
 import {replace} from '../../../services/redirect'
 
@@ -231,7 +231,7 @@ export default class extends Component {
   async loadUserInfo() {
     this.loadUserInfoSource = CancelToken.source()
     try {
-      const {data} = await api.getUserInfo(null, {cancelToken: this.loadUserInfoSource.token})
+      const {data} = await getUserInfo(null, {cancelToken: this.loadUserInfoSource.token})
       if(data.status === 200) {
         this.setState({availableIntegral: Number(data.data[0].balance)})
       }
