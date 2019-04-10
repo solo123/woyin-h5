@@ -39,6 +39,25 @@ const LoadingComponent = ({ isLoading, error }) => {
   }
 }
 
+const RechargeVoucherDetail2 = React.lazy(() => import('./pages/RechargeVoucherDetail/views/Detail'))
+
+
+const Spinner = function() {
+  return (
+    <div style={{textAlign: 'center', paddingTop: 30}}>loading...</div>
+  )
+}
+
+const RechargeVoucherDetail3 = props => {
+  return (
+    <React.Suspense fallback={<Spinner />}>
+      <RechargeVoucherDetail2 {...props} />
+    </React.Suspense>
+  )
+}
+
+
+
 const AsyncLogin = Loadable({
   loader: () => import('./pages/Login'),
   loading: LoadingComponent
@@ -159,7 +178,7 @@ class App extends Component {
             <Auth path="/recharge-QB" component={AsyncRechargeQB} />
             <Auth path="/recharge-video" component={AsyncRechargeVideo} />
             <Auth path="/recharge-voucher" exact component={AsyncRechargeVoucher} />
-            <Auth path="/recharge-voucher/:id" component={AsyncRechargeVoucherDetail} />
+            <Auth path="/recharge-voucher/:id" component={RechargeVoucherDetail3} />
             <Auth path="/voucher-record" exact component={AsyncVoucherRecord} />
 
 
