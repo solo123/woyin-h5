@@ -21,7 +21,6 @@ import Auth from './common/Auth'
 // import Violation from './components/Violation'
 // import ViolationList from './components/ViolationList'
 // import ViolationDetail from './components/ViolationDetail'
-import RechargeVoucherDetail from './pages/RechargeVoucherDetail/views/Detail'
 
 import history from './history'
 
@@ -80,10 +79,10 @@ const AsyncRechargeVoucher = Loadable({
   loader: () => import('./pages/RechargeVoucher').then(({ view }) => view),
   loading: LoadingComponent
 })
-// const AsyncRechargeVoucherDetail = Loadable({
-//   loader: () => import('./pages/RechargeVoucherDetail/views/Detail'),
-//   loading: LoadingComponent
-// })
+const AsyncRechargeVoucherDetail = Loadable({
+  loader: () => import('./pages/RechargeVoucherDetail').then(({view}) => view),
+  loading: LoadingComponent
+})
 const AsyncVoucherRecord = Loadable({
   loader: () => import('./pages/VoucherRecord').then(({ view }) => view),
   loading: LoadingComponent
@@ -159,7 +158,7 @@ class App extends Component {
             <Auth path="/recharge-QB" component={AsyncRechargeQB} />
             <Auth path="/recharge-video" component={AsyncRechargeVideo} />
             <Auth path="/recharge-voucher" exact component={AsyncRechargeVoucher} />
-            <Auth path="/recharge-voucher/:id" component={RechargeVoucherDetail} />
+            <Auth path="/recharge-voucher/:id" component={AsyncRechargeVoucherDetail} />
             <Auth path="/voucher-record" exact component={AsyncVoucherRecord} />
 
 
