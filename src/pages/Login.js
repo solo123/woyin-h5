@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Redirect, withRouter } from "react-router-dom"
+import { Redirect, withRouter, Link } from "react-router-dom"
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 import classNames from 'classnames'
@@ -11,8 +11,6 @@ import hideIcon from '../asset/images/icon/hide.png'
 
 import checkedIcon from '../asset/images/icon/checked.png'
 import uncheckedIcon from '../asset/images/icon/unchecked.png'
-
-import logoIcon from '../asset/images/login-logo.png'
 
 import api from '../api'
 import {setItem, removeItem, getItem} from '../services/storage'
@@ -140,10 +138,23 @@ const Page = styled.div`
       height: 25px;
     }
   }
+  .flex{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    &__body{
+      flex: 1;
+    }    
+    .link {
+      color: #4aabff;
+      font-size: 12px;
+
+    }
+  }
   .label{
     display: flex;
     align-items: center;
-    margin: 0 5px 30px 5px;
     color: #4aabff;
     font-size: 12px;
     img{
@@ -398,9 +409,6 @@ class Login extends Component {
     return (
       <Page>
         <header>
-          {/* <div className="logo-box">
-            <img className="logo" src={logoIcon} alt="logo" />
-          </div> */}
           <ul>
             <li 
               className={classNames({active: this.state.loginType === LOGINTYPE_PASSWORD})}
@@ -487,9 +495,16 @@ class Login extends Component {
                 </div>)
               }
           </div>
-          <label className="label" onClick={this.handleRememberUsername}>
-            <img src={rememberUsernameIconSchema[this.state.rememberStatus]} />记住账号
-          </label>
+          <div className="flex">
+            <div className="flex__body">
+              <label className="label" onClick={this.handleRememberUsername}>
+                <img src={rememberUsernameIconSchema[this.state.rememberStatus]} alt=""/>记住账号
+              </label>
+            </div>
+            <div className="flex__foot">
+              <Link className="link" to="/find-pswd">找回密码</Link>
+            </div>
+          </div>
           <SubmitButton pass={pass} handleSubmit={this.handleSubmit} />
         </main>
       </Page>

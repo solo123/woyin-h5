@@ -164,7 +164,7 @@ class App extends Component {
             <Auth path="/transfer" component={AsyncTransfer} />
             <Auth path="/transfer-record" component={AsyncTransferRecord} />
             
-            <Auth path="/change-pswd" component={AsyncChangePswd} />
+            <Route path="/find-pswd" component={AsyncChangePswd} />
 
             {/* <Auth path="/recharge-flow" component={RechargeFlow} /> */}
             {/* <Auth path="/recharge-oil" component={RechargeOil} /> */}

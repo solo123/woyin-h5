@@ -214,10 +214,12 @@ class Me extends Component {
           <section>
             <div className="item">
               <div className="cell">
-                <label className="label">修改登录密码</label>
+                  <label className="label">修改登录密码</label>
               </div>
               <div className="cell">
-                <img className="arrow" src={arrowIcon} alt="" />
+                <Link to="/change-pswd">
+                  <img className="arrow" src={arrowIcon} alt="" />
+                </Link>
               </div>
             </div>
             <div className="item">

@@ -8,6 +8,7 @@
     "amfe-flexible": "^2.2.1",
     "axios": "^0.18.0",
     "classnames": "^2.2.6",
+    "dayjs": "^1.8.12",
     "jwt-decode": "^2.2.0",
     "moment": "^2.24.0",
     "qs": "^6.7.0",

@@ -1,6 +1,5 @@
 import React from 'react'
-import moment from 'moment'
-import 'moment/locale/zh-cn'
+import dayjs from 'dayjs'
 
 import EmptyArrayPlaceholder from '../../../common/EmptyArrayPlaceholder'
 
@@ -54,7 +53,7 @@ const List = ({items, type}) => {
                 toAccount={item.toAccount}
                 num={item.num}
                 poundage={item.poundage}
-                createTime={moment(item.createTime).format('YYYY-MM-DD HH:mm:ss')}
+                createTime={dayjs.unix(item.createTime).format('YYYY-MM-DD HH:mm:ss')}
               />
             )
           })
@@ -73,7 +72,7 @@ const List = ({items, type}) => {
                 from={item.form}
                 num={item.num}
                 poundage={item.poundage}
-                createTime={moment(item.createTime).format('YYYY-MM-DD HH:mm:ss')}
+                createTime={dayjs.unix(item.createTime).format('YYYY-MM-DD HH:mm:ss')}
               />
             )
           })

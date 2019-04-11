@@ -2,8 +2,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import classnames from 'classnames'
 import axios from 'axios'
-import moment from 'moment'
-import 'moment/locale/zh-cn'
+import dayjs from 'dayjs'
 import config from '../config'
 import api from '../api'
 import SkeletonPlaceholder from '../common/SkeletonPlaceholder'
@@ -189,7 +188,7 @@ const List = ({items}) => {
               key={item.orderId}
               amount={item.amount}
               poundage={item.poundage}
-              createTime={moment(item.createTime).format('YYYY-MM-DD HH:mm:ss')}
+              createTime={dayjs.unix(item.createTime).format('YYYY-MM-DD HH:mm:ss')}
               status={STATUS_SCHEMA[item.status]}
             />
           )

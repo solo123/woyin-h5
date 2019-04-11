@@ -30,6 +30,9 @@ export default {
   order: {
     PAGE_LIMIT: 20
   },
+  changePswd: {
+    INTERVAL: 60
+  },
   // 转赠记录
   transfer: {
     PAGE_LIMIT: 20
