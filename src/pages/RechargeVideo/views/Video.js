@@ -332,9 +332,7 @@ class RechargeVideo extends Component {
     try {
       const {data} = await rechargeVideo(params, {cancelToken: this.submitSource.token})
       if(data.status === 200) {
-        weui.alert(data.msg, () => {
-          replace('/order')
-        })
+        weui.alert(data.msg)
       }else if(data.status === 1017) {
         util.confirmRetry('密码错误', () => {
           this.retryTransPswd()
@@ -421,12 +419,13 @@ class RechargeVideo extends Component {
     })
 
     const productItems = subProducts.map(item => {
+      const disCount = (Number(item.disCount) / 10).toFixed(2)
       return (
         <ProductItem 
           id={item.productId}
           key={item.productId} 
           selectId={this.state.selectId}
-          buyPrice={item.productCostBalance}
+          buyPrice={item.productCostBalance * disCount}
           name={item.productName}
           handleClick={this.selectProduct}
         />

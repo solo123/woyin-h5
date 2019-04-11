@@ -1,4 +1,5 @@
 import weui from 'weui.js'
+import dayjs from 'dayjs'
 
 const refreshTokenIsValid = (refreshToken) => {
   return true;
@@ -237,7 +238,16 @@ const filterBankCardByStatusAndType = function(cardList, type, status) {
   })
 }
 
+const formatTimestamp = function(timestamp) {
+  if(timestamp) {
+    return dayjs.unix(timestamp).format('YYYY-MM-DD HH:mm:ss')
+  }
+  return null
+}
+
 export default {
+  addClass,
+  removeClass,
   fixIos12WeixinInputBug,
   accessTokenIsValid,
   refreshTokenIsValid,
@@ -250,5 +260,6 @@ export default {
   parseCreditcardList,
   getBankcardLastNum: getLastNum,
   confirmRetry: confirmRetry,
-  filterBankCardByStatusAndType
+  filterBankCardByStatusAndType,
+  formatTimestamp
 };

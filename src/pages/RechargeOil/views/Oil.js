@@ -231,9 +231,7 @@ export default class extends Component {
     try {
       const {data} = await api.rechargeOil(params)
       if(data.status === 200) {
-        weui.alert(data.msg, () => {
-          replace('/order')
-        })
+        weui.alert(data.msg)
       }else if(data.status === 1017) {
         util.confirmRetry('密码错误', () => {
           this.retryTransPswd()
@@ -317,16 +315,19 @@ export default class extends Component {
   render() {
     const {selectId, type, items, operators, skeletonLoading, pass} = this.state
 
-    const list = items.map(item => (
-      <Item
-        key={item.productId}
-        id={item.productId}
-        selectId={selectId}
-        money={item.salesPrice}
-        integral={item.salesPrice * 100}
-        handleClick={() => this.handleSelect(item.productId, item.salesPrice * 100)}
-      />
-    ))
+    const list = items.map(item => {
+      const disCount = (Number(item.disCount) / 10).toFixed(2)
+      return (
+        <Item
+          key={item.productId}
+          id={item.productId}
+          selectId={selectId}
+          money={item.salesPrice}
+          integral={item.productCostBalance * disCount}
+          handleClick={() => this.handleSelect(item.productId, item.productCostBalance * disCount)}
+        />
+      )
+    })
 
     return (
       <Page>

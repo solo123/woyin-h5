@@ -351,13 +351,14 @@ export default class extends Component {
               <div>
                 <StyledItems>
                   {items.map(item => {
+                    const disCount = (Number(item.disCount) / 10).toFixed(2)
                     return (
                       <Item 
                         key={item.productId} 
                         id={item.productId}
                         price={item.salesPrice} 
                         selectId={selectId}
-                        integral={item.productCostBalance}
+                        integral={item.productCostBalance * disCount}
                         handleSelect={this.handleSelect}
                       />
                     )

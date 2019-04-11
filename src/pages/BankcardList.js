@@ -161,12 +161,15 @@ class BankcardList extends Component {
     this.loadBankcardList()
   }
 
-  loadBankcardList = async () => {
-    const {data} = await api.getBankcardList()
-    if(data.status === 200) {
-      this.setState({items: data.data})
+  async loadBankcardList() {
+    try {
+      const {data} = await api.getBankcardList()
+      if(data.status === 200) {
+        this.setState({items: data.data})
+      }
+    }finally {
+      this.setState({loading: false})
     }
-    this.setState({loading: false})
   }
 
   render() {

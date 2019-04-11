@@ -104,6 +104,10 @@ img {
   src: url('./asset/fonts/Industry.otf');
 }
 
+body.white{
+  background: #fff;
+}
+
 .slide-enter{
   transform: translateX(-100%);
 }

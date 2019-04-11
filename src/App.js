@@ -41,7 +41,7 @@ const LoadingComponent = ({ isLoading, error }) => {
 }
 
 const AsyncLogin = Loadable({
-  loader: () => import('./pages/Login'),
+  loader: () => import('./pages/Login').then(({view}) => view),
   loading: LoadingComponent
 })
 const AsyncMe = Loadable({
@@ -129,6 +129,10 @@ const AsyncChangePswd = Loadable({
   loader: () => import('./pages/ChangePswd').then(({ view }) => view), 
   loading: LoadingComponent
 })
+const AsyncSetting = Loadable({ 
+  loader: () => import('./pages/Setting'), 
+  loading: LoadingComponent
+})
 
 class App extends Component {
   componentDidMount() {
@@ -165,6 +169,8 @@ class App extends Component {
             <Auth path="/transfer-record" component={AsyncTransferRecord} />
             
             <Route path="/find-pswd" component={AsyncChangePswd} />
+
+            <Auth path="/setting" component={AsyncSetting} />
 
             {/* <Auth path="/recharge-flow" component={RechargeFlow} /> */}
             {/* <Auth path="/recharge-oil" component={RechargeOil} /> */}

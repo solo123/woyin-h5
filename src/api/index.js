@@ -149,22 +149,45 @@ export default {
   }
 };
 
-  // 获取用户信息
+// 获取用户信息
 export const getUserInfo = () => {
   return get(`${BASE}api/user/getUserInfo`)
 }
 
-  // 发送短信验证码
+// 发送短信验证码
 export const getCode = (data) => {
   return post(`${BASE}user/getCode`, qs.stringify(data))
+}
+
+// 短信登录验证码
+export const getCodeForLogin = (phone) => {
+  const params = {userPhoneNo: phone, codeType: 1}
+  return post(`${BASE}user/getCode`, qs.stringify(params))
+}
+
+// 找回登录密码验证码
+export const getCodeForFindPswd = (phone) => {
+  const params = {userPhoneNo: phone, codeType: 2}
+  return post(`${BASE}user/getCode`, qs.stringify(params))
+}
+
+// 用户提现验证码
+export const getCodeForWithdraw = (phone) => {
+  const params = {userPhoneNo: phone, codeType: 3}
+  return post(`${BASE}user/getCode`, qs.stringify(params))
 }
 
 export const redeemIntegral = (data) => {
   return post(`${BASE}api/trad/withdrawal`, qs.stringify(data))
 }
 
-  // 获取提现手续费
+// 获取提现手续费
 export const getRedeemFee = (amount) => {
+  return get(`${BASE}api/trad/poundageList`, {amount})
+}
+
+// 获取提现手续费
+export const getwithdrawFee = (amount) => {
   return get(`${BASE}api/trad/poundageList`, {amount})
 }
 

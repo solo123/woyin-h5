@@ -42,7 +42,8 @@ function getIconByIdContainer() {
     '9': oilIcon,
     '12': qqIcon,
     '15': videoIcon,
-    '18': ecardIcon
+    '18': ecardIcon,
+    '22': creditCardIcon
   }
   return function(id) {
     return PRODUCT_ICON_SCHEMA[id] || listIcon
@@ -56,7 +57,8 @@ function getRouteByIdContainer() {
     '9': 'recharge-oil',
     '12': 'recharge-QB',
     '15': 'recharge-video',
-    '18': 'recharge-voucher'
+    '18': 'recharge-voucher',
+    '22': 'credit-card'
   }
   return function(id) {
     return PRODUCT_ICON_SCHEMA[id] || listIcon
@@ -90,12 +92,6 @@ export default function({items}) {
           text={product.productClassifyName}
         />
       ))}
-      <div className="item">
-        <Link to="credit-card">
-          <img className="icon" src={creditCardIcon} alt=""/>
-          <div className="title">信用卡还款</div>
-        </Link>
-      </div>
     </LayoutPage>
   )
 }

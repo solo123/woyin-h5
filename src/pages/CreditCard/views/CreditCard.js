@@ -3,9 +3,10 @@ import styled from 'styled-components'
 import weui from 'weui.js'
 import axios from 'axios'
 
-import api, {getBankcardList, paymentToCard} from '../../../api'
+import api, {getBankcardList, paymentToCard, getwithdrawFee, getCodeForWithdraw} from '../../../api'
 import util from '../../../util'
 import {replace} from '../../../services/redirect'
+import config from '../../../config'
 import Backhome from '../../../common/Backhome'
 
 import moreIcon from '../../../asset/images/icon/more.png'
@@ -221,11 +222,11 @@ const BankCard = ({bankCard, bankName}) => {
   )
 }
 
-const SendMessageBtn = ({flag, timer, handleClick}) => {
+const SendMessageBtn = ({flag, interval, handleClick}) => {
   if(flag) {
     return <MiniPrimaryBtn onClick={handleClick}>获取验证码</MiniPrimaryBtn>
   }
-  return <DisableMiniPrimaryBtn>{timer}秒后重发</DisableMiniPrimaryBtn>
+  return <DisableMiniPrimaryBtn>{interval}秒后重发</DisableMiniPrimaryBtn>
 }
 
 const CancelToken = axios.CancelToken
@@ -240,15 +241,17 @@ export default class extends Component {
   constructor(props) {
     super(props)
 
+    this.handleGetCode = this.handleGetCode.bind(this)
     this.handleOpenPicker = this.handleOpenPicker.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleBlur = this.handleBlur.bind(this)
 
     this.state = {
       pass: false,
 
-      timer: 60,
-      sendMsgCodeFlag: true,
+      interval: config.creditCard.INTERVAL,
+      getCodeFlag: true,
       smsCode: '',
 
       loading: true,
@@ -337,6 +340,28 @@ export default class extends Component {
     }
   }
 
+  async getCode() {
+    const loading = weui.loading('发送中')
+    try {
+      const {data} = await getCodeForWithdraw(this.state.userPhoneNo)
+      if(data.status === 200) {
+        this.setState({getCodeFlag: false}, () => {
+          this.countDown()
+        })
+      }
+      weui.alert(data.msg)
+    }finally {
+      loading.hide()
+    }
+  }
+
+  async getwithdrawFee() {
+    const {data} = await getwithdrawFee(this.state.integral || 0)
+    if(data.status === 200) {
+      this.updateFee(data.data)
+    }
+  }
+
   setCard(card) {
     this.setState({
         bankName: card.bankName,
@@ -351,7 +376,43 @@ export default class extends Component {
         })
     })
   }
-  
+
+  countDown() {
+    if(this.state.interval > 0) {
+      setTimeout(() => {
+        this.setState({interval: this.state.interval - 1}, () => {
+          this.countDown()
+        })
+      }, 1000)
+    }else {
+      this.resetGetCode()
+    }
+  }
+
+  resetGetCode = () => {
+    this.setState({interval: config.creditCard.INTERVAL, getCodeFlag: true})
+  }
+
+  updateBtnStatus() {
+    if(this.state.integral && this.state.hasCard && this.state.smsCode) {
+      this.setState({pass: true})
+    }else {
+      this.setState({pass: false})
+    }
+  }
+
+  updateFee = ({poundage, money, totalAmount}) => {
+    this.setState({
+      redeemFee: poundage,
+      actualReceived: money,
+      deductIntegral: totalAmount
+    })
+  }
+
+  retryTransPswd() {
+    this.handleSubmit()
+  }
+
   handleOpenPicker() {
     if(!this.state.cardList.length) {
       weui.alert('暂无可用信用卡')
@@ -367,70 +428,18 @@ export default class extends Component {
     })
   }
 
-  updateBtnStatus() {
-    if(this.state.integral && this.state.hasCard && this.state.smsCode) {
-      this.setState({pass: true})
-    }else {
-      this.setState({pass: false})
-    }
-  }
-
-  retryTransPswd() {
-    this.handleSubmit()
-  }
-
   handleChange(e) {
     this.setState({[e.target.name]: e.target.value}, () => {
       this.updateBtnStatus()
     })
   }
 
-  countDown = () => {
-    if(this.state.timer > 0) {
-      setTimeout(() => {
-        this.setState({timer: this.state.timer - 1}, () => {
-          this.countDown()
-        })
-      }, 1000)
-    }else {
-      this.resetMessageState()
-    }
+  handleGetCode() {
+    this.getCode()
   }
 
-  resetMessageState = () => {
-    this.setState({timer: 10, sendMsgCodeFlag: true})
-  }
-
-  getMsgCode = async() => {
-    const loading = weui.loading('发送中')
-    const params = {userPhoneNo: this.state.userPhoneNo, codeType: 3}   
-    try {
-      const {data} = await api.getCode(params)
-      if(data.status === 200) {
-        this.setState({sendMsgCodeFlag: false}, () => {
-          this.countDown()
-        })
-      }
-      weui.alert(data.msg)
-    }finally {
-      loading.hide()
-    }
-  }
-
-
-  handleBlur = async e => {
-    const {data} = await api.getRedeemFee(this.state.integral || 0)
-    if(data.status === 200) {
-      this.updateFee(data.data)
-    }
-  }
-
-  updateFee = ({poundage, money, totalAmount}) => {
-    this.setState({
-      redeemFee: poundage,
-      actualReceived: money,
-      deductIntegral: totalAmount
-    })
+  handleBlur(e) {
+    this.getwithdrawFee()
   }
 
   handleSubmit() {
@@ -449,7 +458,7 @@ export default class extends Component {
   }
 
   render() {
-    const {sendMsgCodeFlag} = this.state
+    const {getCodeFlag} = this.state
     return (
       <Page>
         <StyledBox>
@@ -497,7 +506,7 @@ export default class extends Component {
               />
             </div>
             <div className="group__foot">
-              <SendMessageBtn flag={sendMsgCodeFlag} timer={this.state.timer} handleClick={this.getMsgCode} />
+              <SendMessageBtn flag={getCodeFlag} interval={this.state.interval} handleClick={this.handleGetCode} />
             </div>  
           </div>
         </div> 

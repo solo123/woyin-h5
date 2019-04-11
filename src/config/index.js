@@ -4,6 +4,9 @@ export default {
   timeout: 10000,
   storage_namespace: 'woyin',
 
+  login: {
+    INTERVAL: 60,
+  },
   // 电子卡券配置
   ecard: {
     MAX_COUNT: 10,
@@ -13,6 +16,10 @@ export default {
   card: {
     MAX_COUNT: 10,
     MIN_COUNT: 1
+  },
+
+  creditCard: {
+    INTERVAL: 60
   },
   // 积分赎回
   redeem: {

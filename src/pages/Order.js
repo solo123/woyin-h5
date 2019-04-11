@@ -4,7 +4,8 @@ import classNames from 'classnames'
 import weui from 'weui.js'
 
 import config from '../config'
-import api, {getOrderList} from '../api'
+import {getOrderList} from '../api'
+import util from '../util'
 import SkeletonPlaceholder from '../common/SkeletonPlaceholder'
 
 import EmptyArrayPlaceholder from '../common/EmptyArrayPlaceholder'
@@ -116,7 +117,7 @@ const List = ({items}) => {
         name={item.productName}
         byOrderDetail={item.byOrderDetail}
         status={STATUS_SCHEMA[item.status]}
-        date={item.createTime} 
+        date={util.formatTimestamp(item.createTime)} 
         productValue={item.productValue}
       />
     )

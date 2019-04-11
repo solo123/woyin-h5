@@ -309,16 +309,19 @@ export default class extends Component {
   render() {
     const {selectId, type, items, operators, skeletonLoading, pass} = this.state
 
-    const list = items.map(item => (
-      <Item
-        key={item.productId}
-        id={item.productId}
-        selectId={selectId}
-        money={item.salesPrice}
-        integral={item.salesPrice * 100}
-        handleClick={() => this.handleSelect(item.productId, item.salesPrice * 100)}
-      />
-    ))
+    const list = items.map(item => {
+      const dicount = (Number(item.disCount) / 10).toFixed(2)
+      return (
+        <Item
+          key={item.productId}
+          id={item.productId}
+          selectId={selectId}
+          money={item.salesPrice}
+          integral={item.productCostBalance * dicount}
+          handleClick={() => this.handleSelect(item.productId, item.productCostBalance)}
+        />
+      )
+    })
 
     return (
       <Page>

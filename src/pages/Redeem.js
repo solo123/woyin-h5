@@ -4,7 +4,7 @@ import weui from 'weui.js'
 import {Link} from 'react-router-dom'
 
 import config from '../config'
-import {getUserInfo, getBankcardList, redeemIntegral, getRedeemFee, getCode} from '../api'
+import {getUserInfo, getBankcardList, redeemIntegral, getRedeemFee, getCodeForWithdraw} from '../api'
 import util from '../util'
 import {replace} from '../services/redirect'
 
@@ -338,11 +338,10 @@ class Redeem extends Component {
     }
   }
 
-  async handleGetCode() {
+  async getCode() {
     const loading = weui.loading('发送中')
-    const params = {userPhoneNo: this.state.phone, codeType: 3}   
     try {
-      const {data} = await getCode(params)
+      const {data} = await getCodeForWithdraw(this.state.phone)
       if(data.status === 200) {
         this.setState({getCodeFlag: false}, () => {
           this.countDown()
@@ -352,6 +351,10 @@ class Redeem extends Component {
     }finally {
       loading.hide()
     }
+  }
+
+  handleGetCode() {
+    this.getCode()
   }
 
   async doSubmit(pswd) {
@@ -370,9 +373,7 @@ class Redeem extends Component {
     try {
       const {data} = await redeemIntegral(params)
       if(data.status === 200) {
-        weui.alert(data.msg, () => {
-          replace('/redeem-record')
-        })
+        weui.alert(data.msg)
       }else if(data.status === 1017){
         util.confirmRetry('密码错误', () => {
           this.retryTransPswd()
