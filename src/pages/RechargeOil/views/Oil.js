@@ -138,11 +138,11 @@ const Product = ({loading, list}) => {
   return <EmptyArrayPlaceholder />
 }
 
-const SubmitBtn = ({pass, handleSubmit}) => {
+const SubmitBtn = ({pass, verify, handleSubmit}) => {
   if(pass) {
     return <PrimaryButton onClick={handleSubmit}>立即充值</PrimaryButton>
   }
-  return <DisablePrimaryButton onClick={handleSubmit}>立即充值</DisablePrimaryButton>
+  return <DisablePrimaryButton onClick={verify}>立即充值</DisablePrimaryButton>
 }
 
 const INIT_TYPE = '10'
@@ -156,14 +156,17 @@ export default class extends Component {
     this.handleToggleType = this.handleToggleType.bind(this)
     this.handleSelect = this.handleSelect.bind(this)
 
+    this.verify = this.verify.bind(this)
+
     this.state = {
       pass: false,
       skeletonLoading: false,
       items: [],
-      phone: '',
+      cardNumber: '',
       selectId: '',
       operators: [],
       type: INIT_TYPE,
+      cardType: '1',
       integral: 0,
       availableIntegral: 0
     }
@@ -220,13 +223,13 @@ export default class extends Component {
   async submitRecharge(pswd) {
     const loading = weui.loading('处理中')
     const params = {
-      phone: this.state.phone,
+      cardNumber: this.state.cardNumber,
       productId: this.state.selectId,
       tranPwd: pswd,
-      range: '0'
+      cardType: this.state.cardType
     }
     try {
-      const {data} = await api.rechargeTraffic(params)
+      const {data} = await api.rechargeOil(params)
       if(data.status === 200) {
         weui.alert(data.msg, () => {
           replace('/order')
@@ -248,7 +251,7 @@ export default class extends Component {
   }
 
   updateBtnStatus() {
-    if(this.state.phone && this.state.selectId && (this.state.integral <= this.state.availableIntegral)) {
+    if(this.state.cardNumber && this.state.selectId && (this.state.integral <= this.state.availableIntegral)) {
       this.setState({pass: true})
     }else {
       this.setState({pass: false})
@@ -264,7 +267,10 @@ export default class extends Component {
   handleToggleType(type) {
     if(type === this.state.type) {return}
     this.reset()
-    this.setState({type}, () => {
+
+    const cardType = type === '10' ? '1' : '2'
+
+    this.setState({type, cardType: cardType}, () => {
       this.loadProdcutsByType(type)
     })
   }
@@ -276,13 +282,13 @@ export default class extends Component {
   }
 
   handleChange(e) {
-    this.setState({phone: e.target.value}, () => {
+    this.setState({cardNumber: e.target.value}, () => {
       this.updateBtnStatus()
     })
   }
 
-  handleSubmit() {
-    if(!this.state.phone) {
+  verify() {
+    if(!this.state.cardNumber) {
       weui.alert('请输入加油卡卡号')
       return
     }
@@ -294,7 +300,9 @@ export default class extends Component {
       weui.alert('积分不足')
       return
     }
+  }
 
+  handleSubmit() {
     util.paymentConfirm({
       title: '充值',
       amount: this.state.integral,
@@ -339,7 +347,7 @@ export default class extends Component {
             <div className="input-inner-box">
               <StyledInput 
                 type="number" 
-                value={this.state.phone}
+                value={this.state.cardNumber}
                 onChange={this.handleChange} 
                 placeholder="请输入加油卡卡号" 
                 autoComplete="off"
@@ -351,7 +359,7 @@ export default class extends Component {
           <Product loading={skeletonLoading} list={list} />
 
           <div className="u_p_xxx">
-            <SubmitBtn pass={pass} handleSubmit={this.handleSubmit}/>
+            <SubmitBtn pass={pass} verify={this.verify} handleSubmit={this.handleSubmit}/>
           </div>
         </main>
 

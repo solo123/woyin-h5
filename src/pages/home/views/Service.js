@@ -17,9 +17,11 @@ import listIcon from '../../../asset/images/icon/list.svg'
 const LayoutPage = styled.div`
   display: flex;
   flex-wrap: wrap;
+  padding: 2% 0;
+  background: #fff;
   .item{
-    width: 25%;
-    margin: 5px 0;
+    width: 20%;
+    margin: 10px 0;
     text-align: center;
   }
   .icon{

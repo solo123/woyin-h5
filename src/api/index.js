@@ -65,6 +65,10 @@ export default {
   rechargePhone(data) {
     return post(`${BASE}api/charge/moreCredit`, qs.stringify(data))
   },
+  // QB充值
+  rechargeQB(data) {
+    return post(`${BASE}api/charge/moreCredit`, qs.stringify(data))
+  },  
   // 流量充值
   rechargeTraffic(data) {
     return post(`${BASE}api/traffic/charge`, qs.stringify(data))
@@ -81,10 +85,6 @@ export default {
   rechargeVoucher(data) {
     return post(`${BASE}api/voucher/charge`, qs.stringify(data))
   },
-  // QB充值
-  rechargeQB(id, phone) {
-    return get('rechargeQB', {id, phone})
-  },  
   // 获取银行卡列表
   getBankcardList() {
     return get(`${BASE}api/bank/getBankCardList`)

@@ -8,7 +8,6 @@ import config from '../../../config'
 import Opeator from '../../../common/Operator'
 import {getUserInfo, getSubProducts, rechargeVoucher} from '../../../api'
 import util from '../../../util'
-import {replace} from '../../../services/redirect'
 
 import appleIcon from '../../../asset/images/ecard/apple.png'
 import bgyIcon from '../../../asset/images/ecard/bgy.png'
@@ -252,6 +251,30 @@ export default class extends Component {
     }
   }
 
+  async doSubmit(pswd) {
+    const loading = weui.loading('处理中')
+    this.submitSource = CancelToken.source()
+    const params = {
+      productId: this.state.selectId,
+      amount: this.state.count,
+      tranPwd: pswd
+    }
+    try {
+      const {data} = await rechargeVoucher(params, {cancelToken: this.submitSource.token})
+      if(data.status === 200) {
+        weui.alert(data.msg)
+      }else if(data.status === 1017) {
+        util.confirmRetry('密码错误', () => {
+          this.retryTransPswd()
+        })
+      }else {
+        weui.alert(data.msg)
+      }  
+    }finally {
+      loading.hide() 
+    }    
+  }
+
   handleSelect(id, integral) {
     this.setState({selectId: id, integral: integral}, () => {
       this.updateBtnStatus()
@@ -288,7 +311,7 @@ export default class extends Component {
           alert('请输入交易密码')
           return false
         }
-        this.submitRecharge(input.value)
+        this.doSubmit(input.value)
       }
     })
   }
@@ -297,32 +320,6 @@ export default class extends Component {
     this.handleSubmit()
   }
 
-  async submitRecharge(pswd) {
-    const loading = weui.loading('处理中')
-    this.submitSource = CancelToken.source()
-    const params = {
-      productId: this.state.selectId,
-      chargeAddr: this.state.username,
-      chargeType: '1',
-      tranPwd: pswd
-    }
-    try {
-      const {data} = await rechargeVoucher(params, {cancelToken: this.submitSource.token})
-      if(data.status === 200) {
-        weui.alert(data.msg, () => {
-          replace('/order')
-        })
-      }else if(data.status === 1017) {
-        util.confirmRetry('密码错误', () => {
-          this.retryTransPswd()
-        })
-      }else {
-        weui.alert(data.msg)
-      }  
-    }finally {
-      loading.hide() 
-    }    
-  }
 
   render() {
     const {pass, items, selectId} = this.state
@@ -338,7 +335,7 @@ export default class extends Component {
                     <StyledName>{TITLE_SCHEAM[this.state.class]}</StyledName>
                   </StyledBgBox>
                   <StyledOpeator>
-                    <span>兑换数量(最多可购10张)</span>
+                    <span>兑换数量(最多可购{config.ecard.MAX_COUNT}张)</span>
                     <Opeator 
                       count={this.state.count}
                       onClick={this.handleClick}

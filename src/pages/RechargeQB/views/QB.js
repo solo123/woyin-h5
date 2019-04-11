@@ -161,7 +161,8 @@ export default class extends Component {
       pass: false,
       skeletonLoading: false,
       items: [],
-      phone: '',
+      qq: '',
+      chargeType: '2',
       selectId: '',
       operators: [],
       type: INIT_TYPE,
@@ -221,13 +222,13 @@ export default class extends Component {
   async submitRecharge(pswd) {
     const loading = weui.loading('处理中')
     const params = {
-      phone: this.state.phone,
+      chargeAddr: this.state.qq,
+      chargeType: this.state.chargeType,
       productId: this.state.selectId,
       tranPwd: pswd,
-      range: '0'
     }
     try {
-      const {data} = await api.rechargeTraffic(params)
+      const {data} = await api.rechargeQB(params)
       if(data.status === 200) {
         weui.alert(data.msg, () => {
           replace('/order')
@@ -249,7 +250,7 @@ export default class extends Component {
   }
 
   updateBtnStatus() {
-    if(this.state.phone && this.state.selectId && (this.state.integral <= this.state.availableIntegral)) {
+    if(this.state.qq && this.state.selectId && (this.state.integral <= this.state.availableIntegral)) {
       this.setState({pass: true})
     }else {
       this.setState({pass: false})
@@ -265,7 +266,8 @@ export default class extends Component {
   handleToggleType(type) {
     if(type === this.state.type) {return}
     this.reset()
-    this.setState({type}, () => {
+    const chargeType = type === '13' ? '2' : '3'
+    this.setState({type, chargeType: chargeType}, () => {
       this.loadProdcutsByType(type)
     })
   }
@@ -277,13 +279,13 @@ export default class extends Component {
   }
 
   handleChange(e) {
-    this.setState({phone: e.target.value}, () => {
+    this.setState({qq: e.target.value}, () => {
       this.updateBtnStatus()
     })
   }
 
   handleSubmit() {
-    if(!this.state.phone) {
+    if(!this.state.qq) {
       weui.alert('请输入QQ号')
       return
     }
@@ -340,7 +342,7 @@ export default class extends Component {
             <div className="input-inner-box">
               <StyledInput 
                 type="number" 
-                value={this.state.phone}
+                value={this.state.qq}
                 onChange={this.handleChange} 
                 placeholder="请输入QQ号" 
                 autoComplete="off"

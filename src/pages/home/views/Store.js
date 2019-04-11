@@ -2,30 +2,32 @@ import React from 'react'
 import styled from 'styled-components'
 
 const LayoutPage = styled.div`
-  display: flex;
-  margin: 0 5px;
+  margin: 0 10px;
   .aside{
-    flex: 1;
+    height: 80px;
     background: #eaeaea;
   }
   .main{
-    flex: 1;
-    margin-left: 10px;
+    display: flex;
   }
   .cell{
+    flex: 1;
     height: 80px;
     background: #eaeaea;
+    & + .cell{
+      margin-left: 10px;
+    }
   }
 `
 
 export default function() {
   return (
     <LayoutPage>
-      <div className="aside"></div>
-      <div className="main">
-        <div className="cell" style={{marginBottom: 10}}></div>
+      <div className="main" style={{marginBottom: 10}}>
+        <div className="cell"></div>
         <div className="cell"></div>
       </div>
+      <div className="aside"></div>
     </LayoutPage>
   )
 }
