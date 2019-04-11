@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import weui from 'weui.js'
 import axios from 'axios'
 
-import api, {getBankcardList, paymentToCard, getwithdrawFee, getCodeForWithdraw} from '../../../api'
+import api, {getBankcardList, paymentToCard, getWithdrawFee, getCodeForWithdraw} from '../../../api'
 import util from '../../../util'
 import {replace} from '../../../services/redirect'
 import config from '../../../config'
@@ -355,8 +355,8 @@ export default class extends Component {
     }
   }
 
-  async getwithdrawFee() {
-    const {data} = await getwithdrawFee(this.state.integral || 0)
+  async getWithdrawFee() {
+    const {data} = await getWithdrawFee(this.state.integral || 0)
     if(data.status === 200) {
       this.updateFee(data.data)
     }
@@ -439,7 +439,7 @@ export default class extends Component {
   }
 
   handleBlur(e) {
-    this.getwithdrawFee()
+    this.getWithdrawFee()
   }
 
   handleSubmit() {

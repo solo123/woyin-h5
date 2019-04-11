@@ -328,7 +328,7 @@ class Redeem extends Component {
     }
   }
 
-  async handleBlur(e) {
+  async getRedeemFee() {
     try {
       const {data} = await getRedeemFee(this.state.integral || 0)
       if(data.status === 200) {
@@ -351,10 +351,6 @@ class Redeem extends Component {
     }finally {
       loading.hide()
     }
-  }
-
-  handleGetCode() {
-    this.getCode()
   }
 
   async doSubmit(pswd) {
@@ -449,6 +445,14 @@ class Redeem extends Component {
           this.updateBtnStatus()
         })
     })
+  }
+
+  handleBlur(e) {
+    this.getRedeemFee()
+  }
+  
+  handleGetCode() {
+    this.getCode()
   }
 
   handleClick(e) {

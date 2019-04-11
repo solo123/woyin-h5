@@ -2,9 +2,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import { Link } from "react-router-dom"
 
-import api from '../api'
-import {getItem} from '../services/storage'
-
+import {getBankcardList} from '../api'
 import SkeletonPlaceholder from '../common/SkeletonPlaceholder'
 import EmptyArrayPlaceholder from '../common/EmptyArrayPlaceholder'
 import Backhome from '../common/Backhome'
@@ -96,9 +94,22 @@ const Page = styled.div`
 `
 
 const BANKCARD_SCHEMA = {
-  '001': jsIcon,
-  '002': zsIcon,
-  '003': gsIcon
+  'GDB' : fzIcon,
+  'CEB' : gdIcon,
+  'ICBC' : gsIcon,
+  'HXB' : hxIcon,
+  'CCB' : jsIcon,
+  'COMM' : jtIcon,
+  'CMBC' : msIcon,
+  'ABC' : nyIcon,
+  'SZPAB' : paIcon,
+  'BOS' : shIcon,
+  'SPDB' : shfzIcon,
+  'CIB' : xyIcon,
+  'PSBC' : yzIcon,
+  'BOC' : zgIcon,
+  'CMB' : zsIcon,
+  'CITIC' : zxIcon
 }
 
 // 绑定状态 0 待处理　１绑定成功　２绑定失败　３冻结
@@ -135,7 +146,7 @@ const List = ({items}) => (
         status={STATUS_SCHEMA[item.status]}
         bankcardNo={item.bankCard}
         bankcardName={item.bankName}
-        bankcardIcon={BANKCARD_SCHEMA[item.bankcardClass] || defaultIcon}
+        bankcardIcon={BANKCARD_SCHEMA[item.bankCode] || defaultIcon}
       />
     ))}
   </div>
@@ -163,7 +174,7 @@ class BankcardList extends Component {
 
   async loadBankcardList() {
     try {
-      const {data} = await api.getBankcardList()
+      const {data} = await getBankcardList()
       if(data.status === 200) {
         this.setState({items: data.data})
       }

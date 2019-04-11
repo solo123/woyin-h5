@@ -4,7 +4,7 @@ import classnames from 'classnames'
 import axios from 'axios'
 import dayjs from 'dayjs'
 import config from '../config'
-import api from '../api'
+import {getRedeemRecord} from '../api'
 import SkeletonPlaceholder from '../common/SkeletonPlaceholder'
 import EmptyArrayPlaceholder from '../common/EmptyArrayPlaceholder'
 import arrowDownIcon from '../asset/images/icon/arrow_down.svg'
@@ -208,21 +208,23 @@ const Content = ({loading, items}) => {
 const CancelToken = axios.CancelToken
 
 class RedeemRecord extends Component {
-  state = {
-    status: '10',
-    title: '新建',
-    seletViewFlag: false,
-    items: [],
-    loading: true
+  constructor(props) {
+    super(props)
+
+    this.handleToggle = this.handleToggle.bind(this)
+    this.handleClick = this.handleClick.bind(this)
+    
+    this.state = {
+      status: '10',
+      title: '新建',
+      seletViewFlag: false,
+      items: [],
+      loading: true
+    }
   }
 
   componentDidMount() {
-    const params = {
-      status: '10',
-      limit: config.redeem.PAGE_LIMIT,
-      page: 0,
-      payment: 1
-    }    
+    const params = {page: 0, status: '10'}    
     this.loadData(params)
   }
 
@@ -234,7 +236,7 @@ class RedeemRecord extends Component {
     this.setState({loading: true})
     this.source = CancelToken.source()
     try {
-      const {data} = await api.getRedeemRecordByStatus(params, {cancelToken: this.source.token})
+      const {data} = await getRedeemRecord(params, {cancelToken: this.source.token})
       if(data.status === 200) {
         this.setState({items: data.data.withdrawal})
       }
@@ -243,21 +245,16 @@ class RedeemRecord extends Component {
     }
   }
 
-  handleToggle = e => {
+  handleToggle(e) {
     this.setState({seletViewFlag: !this.state.seletViewFlag})
   }
 
-  handleClick = (status, title) => {
+  handleClick(status, title) {
     if(status === this.state.status) {return}
 
     this.setState({status, title}, () => {
       this.handleToggle()
-      const params = {
-        status: status,
-        limit: config.redeem.PAGE_LIMIT,
-        page: 0,
-        payment: 1
-      } 
+      const params = {page: 0, status: status}
       this.loadData(params)
     })
   }

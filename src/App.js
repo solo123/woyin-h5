@@ -6,6 +6,7 @@ import './App.css'
 import util from './util'
 import ScrollToTop from './common/ScrollToTop'
 import Auth from './common/Auth'
+import history from './history'
 
 // import Cate from './components/Cate'
 // import DoubleColorBall from './components/DoubleColorBall'
@@ -22,16 +23,11 @@ import Auth from './common/Auth'
 // import ViolationList from './components/ViolationList'
 // import ViolationDetail from './components/ViolationDetail'
 
-// import AsyncRechargeVoucherDetail from './pages/RechargeVoucherDetail/views/Detail'
-
-import history from './history'
 
 const LoadingComponent = ({ isLoading, error }) => {
-  // Handle the loading state
   if (isLoading) {
     return <div style={{textAlign: 'center', paddingTop: 30}}>loading...</div>
   }
-  // Handle the error state
   else if (error) {
     return <div>Sorry, there was a problem loading the page.</div>
   }
@@ -120,7 +116,6 @@ const AsyncTransferRecord = Loadable({
   loader: () => import('./pages/TransferRecord').then(({view}) => view),
   loading: LoadingComponent
 })
-
 const AsyncHome = Loadable({ 
   loader: () => import('./pages/home').then(({ view }) => view), 
   loading: LoadingComponent
@@ -164,7 +159,6 @@ class App extends Component {
             <Auth path="/recharge-voucher/:id" component={AsyncRechargeVoucherDetail} />
             <Auth path="/voucher-record" exact component={AsyncVoucherRecord} />
 
-
             <Auth path="/transfer" component={AsyncTransfer} />
             <Auth path="/transfer-record" component={AsyncTransferRecord} />
             
@@ -196,4 +190,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default App

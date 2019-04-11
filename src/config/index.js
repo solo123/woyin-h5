@@ -17,9 +17,11 @@ export default {
     MAX_COUNT: 10,
     MIN_COUNT: 1
   },
-
   creditCard: {
     INTERVAL: 60
+  },
+  creditRecord: {
+    PAGE_LIMIT: 20
   },
   // 积分赎回
   redeem: {

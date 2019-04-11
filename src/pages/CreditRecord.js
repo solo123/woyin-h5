@@ -2,9 +2,9 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import classnames from 'classnames'
 import axios from 'axios'
-import dayjs from 'dayjs'
-import config from '../config'
-import api from '../api'
+
+import util from '../util'
+import {getCreditRecord} from '../api'
 import SkeletonPlaceholder from '../common/SkeletonPlaceholder'
 import EmptyArrayPlaceholder from '../common/EmptyArrayPlaceholder'
 import arrowDownIcon from '../asset/images/icon/arrow_down.svg'
@@ -188,7 +188,7 @@ const List = ({items}) => {
               key={item.orderId}
               amount={item.amount}
               poundage={item.poundage}
-              createTime={dayjs.unix(item.createTime).format('YYYY-MM-DD HH:mm:ss')}
+              createTime={util.formatTimestamp(item.createTime)}
               status={STATUS_SCHEMA[item.status]}
             />
           )
@@ -207,25 +207,24 @@ const Content = ({loading, items}) => {
 
 const CancelToken = axios.CancelToken
 
-
-
 export default class extends Component {
-  state = {
-    status: '10',
-    title: '新建',
-    seletViewFlag: false,
-    items: [],
-    loading: true
+  constructor(props) {
+    super(props)
+
+    this.handleToggle = this.handleToggle.bind(this)
+    this.handleClick = this.handleClick.bind(this)
+
+    this.state = {
+      status: '10',
+      title: '新建',
+      selectFlag: false,
+      items: [],
+      loading: true
+    }
   }
 
   componentDidMount() {
-    const params = {
-      status: '10',
-      limit: config.redeem.PAGE_LIMIT,
-      page: 0,
-      payment: 2
-    }    
-
+    const params = {page: 0, status: this.state.status}
     this.loadData(params)
   }
 
@@ -237,7 +236,7 @@ export default class extends Component {
     this.setState({loading: true})
     this.source = CancelToken.source()
     try {
-      const {data} = await api.getRedeemRecordByStatus(params, {cancelToken: this.source.token})
+      const {data} = await getCreditRecord(params, {cancelToken: this.source.token})
       if(data.status === 200) {
         this.setState({items: data.data.withdrawal})
       }
@@ -246,39 +245,34 @@ export default class extends Component {
     }
   }
 
-  handleToggle = e => {
-    this.setState({seletViewFlag: !this.state.seletViewFlag})
+  handleToggle(e) {
+    this.setState({selectFlag: !this.state.selectFlag})
   }
 
-  handleClick = (status, title) => {
+  handleClick(status, title) {
     if(status === this.state.status) {return}
 
     this.setState({status, title}, () => {
       this.handleToggle()
-      const params = {
-        status: status,
-        limit: config.redeem.PAGE_LIMIT,
-        page: 0,
-        payment: 2
-      } 
+      const params = {page: 0, status: status} 
       this.loadData(params)
     })
   }
 
   render() {
-    const {loading, items, seletViewFlag} = this.state
+    const {loading, items, selectFlag} = this.state
     return (
       <Page>
         <div className="fixed-top">
           <div className="selecter" onClick={this.handleToggle}>
             {this.state.title}
-            <img src={arrowDownIcon} className={classnames({'active': seletViewFlag})} alt=""/>
+            <img src={arrowDownIcon} className={classnames({'active': selectFlag})} alt=""/>
           </div>
         </div>
 
         <SelectStatus 
           status={this.state.status}
-          flag={seletViewFlag} 
+          flag={selectFlag} 
           handleClick={this.handleClick}
         />
 

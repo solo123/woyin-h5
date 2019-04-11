@@ -3,11 +3,10 @@ import styled from 'styled-components'
 import weui from 'weui.js'
 
 import {push} from '../services/redirect'
-import {getItem} from '../services/storage'
 
 import Backhome from '../common/Backhome'
 import closeIcon from '../asset/images/icon/close.png'
-import api from '../api';
+import {addBankcard} from '../api';
 
 const Button = styled.button`
   outline: none;
@@ -91,26 +90,64 @@ const SubmitBtn = ({pass, onSubmit}) => {
   if(pass) {
     return <PrimaryBtn onClick={onSubmit}>添加</PrimaryBtn>
   }else {
-    return <DisablePrimaryBtn>添加</DisablePrimaryBtn>
+    return <DisablePrimaryBtn onClick={onSubmit}>添加</DisablePrimaryBtn>
   }
 }
 
 class AddBankcard extends Component {
-  state = {
-    pass: false,
-    username: '',
-    usernameCleanViewFlag: false,
-    id: '',
-    idCleanViewFlag: false,
-    cardNo: '',
-    cardNoCleanViewFlag: false,
-    phone: '',
-    phoneCleanViewFlag: false
+  constructor(props) {
+    super(props)
+
+    this.handleClick = this.handleClick.bind(this)
+    this.handleChange = this.handleChange.bind(this)
+    this.handleFocus = this.handleFocus.bind(this)
+    this.handleBlur = this.handleBlur.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
+
+    this.state = {
+      pass: false,
+      username: '',
+      usernameCleanViewFlag: false,
+      id: '',
+      idCleanViewFlag: false,
+      cardNo: '',
+      cardNoCleanViewFlag: false,
+      phone: '',
+      phoneCleanViewFlag: false
+    }
   }
 
-  check = () => {
-    const {username, id, cardNo, phone} = this.state
+  componentDidMount() {
+  }
+
+  componentWillUnmount() {
+  }
+
+  async doSubmit(phone, bankCard, username, id) {
+    const loading = weui.loading('处理中')
+    const params = {
+      cardPhoneNo: phone,
+      bankCard: bankCard,
+      cardHoldName: username,
+      idNo: id
+    }
+    try {
+      const {data} = await addBankcard(params)
+      if(data.status === 200) {
+        weui.alert(data.msg, () => {
+          push('/bankcard-list')
+        })
+      }else {
+        weui.alert(data.msg)
+      }
+    }finally {
+      loading.hide()
+    }
+  }
+
+  check() {
     let flag = true
+    const {username, id, cardNo, phone} = this.state
 
     if(!username) {
       flag = false
@@ -127,7 +164,27 @@ class AddBankcard extends Component {
     return flag
   }
 
-  updateBtnStatus = () => {
+  verify(phone, cardNo, username, id) {
+    if(!username) {
+      weui.alert('请输入姓名')
+      return false
+    }
+    if(!id) {
+      weui.alert('请输入身份证号')
+      return false
+    }
+    if(!cardNo) {
+      weui.alert('请输入卡号')
+      return false
+    }
+    if(!phone) {
+      weui.alert('请输入手机号')
+      return false
+    }    
+    return true
+  }
+
+  updateBtnStatus() {
     if(this.check()) {
       this.setState({pass: true})
     }else {
@@ -135,21 +192,21 @@ class AddBankcard extends Component {
     }
   }
 
-  handleClick = (name) => {
+  handleClick(name) {
     this.setState({[name]: ''})
   }
 
-  handleChange = (e) => {
+  handleChange(e) {
     this.setState({[e.target.name]: e.target.value}, () => {
       this.updateBtnStatus()
     })
   }
 
-  handleFocus = (e) => {
+  handleFocus(e) {
     this.setState({[`${e.target.name}CleanViewFlag`]: true})
   }
 
-  handleBlur = (e) => {
+  handleBlur(e) {
     const key =`${e.target.name}CleanViewFlag`
     setTimeout(() => {
       this.setState({[key]: false}, () => {
@@ -158,23 +215,13 @@ class AddBankcard extends Component {
     }, 100)
   }
 
-  handleSubmit = async () => {
-    const loading = weui.loading('处理中')
-    const params = {
-      cardPhoneNo: this.state.phone,
-      bankCard: this.state.cardNo,
-      cardHoldName: this.state.username,
-      idNo: this.state.id
+  handleSubmit() {
+    const {phone, cardNo, username, id} = this.state
+    if(!this.verify(phone, cardNo, username, id)) {
+      return
     }
-    const {data} = await api.addBankcard(params)
-    loading.hide()
-    if(data.status === 200) {
-      weui.alert(data.msg, () => {
-        push('/bankcard-list')
-      })
-    }else {
-      weui.alert(data.msg)
-    }
+
+    this.doSubmit(phone, cardNo, username, id)
   }
 
   render() {

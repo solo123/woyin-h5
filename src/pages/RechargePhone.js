@@ -217,7 +217,7 @@ export default class extends Component {
     }
   }
 
-  async submitRecharge(pswd) {
+  async doSubmit(pswd) {
     const loading = weui.loading('处理中')
     const params = {
       chargeAddr: this.state.phone,
@@ -228,9 +228,7 @@ export default class extends Component {
     try {
       const {data} = await api.rechargePhone(params)
       if(data.status === 200) {
-        weui.alert(data.msg, () => {
-          replace('/order')
-        })
+        weui.alert(data.msg)
       }else if(data.status === 1017) {
         util.confirmRetry('密码错误', () => {
           this.retryTransPswd()
@@ -301,7 +299,7 @@ export default class extends Component {
       useable: this.state.availableIntegral,
       callback: (e, inputElem) => {
         if(!inputElem.value) {return false}
-        this.submitRecharge(inputElem.value)
+        this.doSubmit(inputElem.value)
       }
     })
   }

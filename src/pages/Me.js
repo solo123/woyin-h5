@@ -3,8 +3,9 @@ import styled from 'styled-components'
 import { Link, withRouter } from "react-router-dom"
 import { connect } from 'react-redux'
 import weui from 'weui.js'
+import axios from 'axios'
 
-import api from '../api'
+import {getUserInfo} from '../api'
 import Menu from '../common/Menu'
 import { replace } from '../services/redirect'
 
@@ -150,8 +151,15 @@ const Page = styled.div`
     }
   }
 `
+const CancelToken = axios.CancelToken
 
 class Me extends Component {
+
+  constructor(props) {
+    super(props)
+
+    this.handleClick = this.handleClick.bind(this)
+  }
   state = {
     balance: 0,
     contactMan: "--",
@@ -163,17 +171,22 @@ class Me extends Component {
   }
 
   componentWillUnmount() {
+    this.source && this.source.cancel('Operation canceled by the user.')
   }
 
-  loadUserInfo = async () => {
-    const {data} = await api.getUserInfo()
-    if(data.status === 200) {
-      if(!data.data.length) {return}
-      this.setState({...data.data[0]})
+  async loadUserInfo() {
+    this.source = CancelToken.source()
+    try {
+      const {data} = await getUserInfo(null, {cancelToken: this.source.token})
+      if(data.status === 200) {
+        if(!data.data.length) {return}
+        this.setState({...data.data[0]})
+      }
+    }finally {
     }
   }
 
-  handleClick = e => {
+  handleClick(e) {
     weui.confirm('是否退出当前账号？', () => {
       this.props.logout()
       replace('/login')

@@ -1,6 +1,8 @@
 import qs from'qs'
 import {get, post} from './setup'
 
+import G_config from '../config'
+
 let BASE = ''
 if(process.env.NODE_ENV === 'development') {
   BASE = '/'
@@ -150,8 +152,8 @@ export default {
 };
 
 // 获取用户信息
-export const getUserInfo = () => {
-  return get(`${BASE}api/user/getUserInfo`)
+export const getUserInfo = (data = {}, config = {}) => {
+  return get(`${BASE}api/user/getUserInfo`, data, config)
 }
 
 // 发送短信验证码
@@ -187,7 +189,7 @@ export const getRedeemFee = (amount) => {
 }
 
 // 获取提现手续费
-export const getwithdrawFee = (amount) => {
+export const getWithdrawFee = (amount) => {
   return get(`${BASE}api/trad/poundageList`, {amount})
 }
 
@@ -227,6 +229,11 @@ export const integralTransferRecord = (data, config) => {
   return get(`${BASE}api/transferred/list`, data, config)
 }
 
+// 添加银卡
+export const addBankcard = (data = {}) => {
+  return post(`${BASE}api/bank/addBankCard`, qs.stringify(data))
+}
+
 // 获取银行卡/信用卡列表
 export const getBankcardList = () => {
   return get(`${BASE}api/bank/getBankCardList`)
@@ -240,4 +247,26 @@ export const paymentToCard = (data) => {
 // 获取订单列表
 export const getOrderList = (data = {}, config = {}) => {
   return get(`${BASE}api/order/getOrderList`, data, config)
+}
+
+// 获取信用卡还款记录
+export const getCreditRecord = (data = {}, config = {}) => {
+  const params = {
+    status: data.status,
+    limit: G_config.creditRecord.PAGE_LIMIT,
+    page: data.page,
+    payment: 2
+  }
+  return get(`${BASE}api/trad/getWithList`, params, config)
+}
+
+// 获取积分赎回记录
+export const getRedeemRecord = (data = {}, config = {}) => {
+  const params = {
+    status: data.status,
+    limit: G_config.redeem.PAGE_LIMIT,
+    page: data.page,
+    payment: 1
+  }
+  return get(`${BASE}api/trad/getWithList`, params, config)
 }
