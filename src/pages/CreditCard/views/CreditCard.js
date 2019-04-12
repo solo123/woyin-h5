@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import weui from 'weui.js'
 import axios from 'axios'
+import {Helmet} from "react-helmet"
 
 import api, {getBankcardList, paymentToCard, getWithdrawFee, getCodeForWithdraw} from '../../../api'
 import util from '../../../util'
@@ -460,6 +461,7 @@ export default class extends Component {
     const {getCodeFlag} = this.state
     return (
       <Page>
+        <Helmet defaultTitle="沃银企服" title="信用卡还款"/>
         <StyledBox>
           <CreditCardPick onPicker={this.handleOpenPicker} />
         </StyledBox>

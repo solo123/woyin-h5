@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 import weui from 'weui.js'
+import {Helmet} from "react-helmet"
 
 import {integralTransfer} from '../api'
 import Backhome from '../common/Backhome'
@@ -221,6 +222,7 @@ class Transfer extends Component {
     const {integralCleanView, accountCleanView, passwordCleanView} = this.state
     return (
       <Page>
+        <Helmet defaultTitle="沃银企服" title="积分转赠"/>
         <LayoutBox>
           <StyledBg>
             <LayoutGroup>

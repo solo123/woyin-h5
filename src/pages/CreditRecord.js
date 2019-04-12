@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import classnames from 'classnames'
 import axios from 'axios'
+import {Helmet} from "react-helmet"
 
 import util from '../util'
 import {getCreditRecord} from '../api'
@@ -263,6 +264,8 @@ export default class extends Component {
     const {loading, items, selectFlag} = this.state
     return (
       <Page>
+        <Helmet defaultTitle="沃银企服" title="信用卡还款记录"/>
+
         <div className="fixed-top">
           <div className="selecter" onClick={this.handleToggle}>
             {this.state.title}

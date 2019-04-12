@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios'
+import {Helmet} from "react-helmet"
+
 import classnames from 'classnames'
 import config from '../../../config'
 import {getVoucherRecord} from '../../../api'
@@ -67,6 +69,7 @@ export default class extends Component {
     const {items} = this.state
     return (
       <Page>
+        <Helmet defaultTitle="沃银企服" title="电子卡券"/>
         <div className="list">
           {items.map(item => {
             return (

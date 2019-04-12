@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import classNames from 'classnames'
+import {Helmet} from "react-helmet"
 
 import config from '../../../config'
 import {integralTransferRecord} from '../../../api'
@@ -76,6 +77,7 @@ export default class extends Component {
 
     return (
       <Page>
+        <Helmet defaultTitle="沃银企服" title="积分转赠记录"/>
         <nav>
           <ul>
             <li 

@@ -3,6 +3,7 @@ import { Redirect, withRouter, Link } from "react-router-dom"
 import { connect } from 'react-redux'
 import styled from 'styled-components'
 import weui from 'weui.js'
+import {Helmet} from "react-helmet"
 
 import closeIcon from '../../../asset/images/icon/close.png'
 import showIcon from '../../../asset/images/icon/show.png'
@@ -322,6 +323,7 @@ class Login extends Component {
 
     return (
       <Page>
+        <Helmet defaultTitle="沃银企服" title="登录"/>
         <header>
           <h1>登录</h1>
         </header>

@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import classnames from 'classnames'
 import axios from 'axios'
 import weui from 'weui.js'
+import {Helmet} from "react-helmet"
 
 import api, {getProducts} from '../../../api'
 import util from '../../../util'
@@ -326,6 +327,7 @@ export default class extends Component {
     return (
       <Page>
         
+        <Helmet defaultTitle="沃银企服" title="Q币充值"/>
         <ul className="nav">
           {operators.map(item => (
             <li 

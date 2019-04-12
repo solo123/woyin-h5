@@ -4,6 +4,7 @@ import { Link, withRouter } from "react-router-dom"
 import { connect } from 'react-redux'
 import weui from 'weui.js'
 import axios from 'axios'
+import {Helmet} from "react-helmet"
 
 import {getUserInfo} from '../api'
 import Menu from '../common/Menu'
@@ -195,7 +196,7 @@ class Me extends Component {
   render() {
     return (
       <Page>
-
+        <Helmet defaultTitle="沃银企服" title="我的"/>
         <header>
           <div className="info">
             <div>{this.state.contactMan} 商业客户</div>
@@ -298,7 +299,7 @@ class Me extends Component {
             <div className="item">
               <div className="cell">
                 <img className="icon" src={recordIcon} alt=""/>
-                <label className="label">服务订单</label>
+                <label className="label">我的订单</label>
               </div>
               <div className="cell">
                 <Link to="/order">

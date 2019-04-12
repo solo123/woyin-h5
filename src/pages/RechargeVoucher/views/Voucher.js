@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
+import {Helmet} from "react-helmet"
 import {Link} from 'react-router-dom'
 import axios from 'axios'
 
@@ -69,10 +70,10 @@ const colorScheam = [
 ]
 
 const iconSchema = {
+  '19': jdIcon,
   '20': tmIcon,
   '2': snIcon,
   '3': ymxIcon,
-  '19': jdIcon,
   '5': xcIcon,
   '6': xcIcon,
   '7': hgdsIcon,
@@ -134,6 +135,7 @@ export default class extends Component {
 
     return (
       <div>
+        <Helmet defaultTitle="沃银企服" title="电子卡券"  />
         <StyledSection>
           <StyledTitle style={{background: colorScheam[0]}}>
             电子卡券

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 import { Link } from "react-router-dom"
+import {Helmet} from "react-helmet"
 
 import {getBankcardList} from '../api'
 import SkeletonPlaceholder from '../common/SkeletonPlaceholder'
@@ -186,6 +187,7 @@ class BankcardList extends Component {
     const {loading, items} = this.state
     return (
       <Page>
+        <Helmet defaultTitle="沃银企服" title="银行卡/信用卡列表"/>
         <div className="main">
           <Content loading={loading} items={items} />
         </div>

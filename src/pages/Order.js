@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import classNames from 'classnames'
 import weui from 'weui.js'
+import {Helmet} from "react-helmet"
 
 import config from '../config'
 import {getOrderList} from '../api'
@@ -218,6 +219,7 @@ class Order extends Component {
 
     return (
       <Page>
+        <Helmet defaultTitle="沃银企服" title="我的订单"/>
         <nav>
           <ul>
             <li className={classNames({active: status === '11'})} onClick={() => this.handleClick('11')}>处理中</li>

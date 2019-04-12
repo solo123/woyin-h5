@@ -2,8 +2,10 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import classnames from 'classnames'
 import axios from 'axios'
-import dayjs from 'dayjs'
+import {Helmet} from "react-helmet"
+
 import config from '../config'
+import util from '../util'
 import {getRedeemRecord} from '../api'
 import SkeletonPlaceholder from '../common/SkeletonPlaceholder'
 import EmptyArrayPlaceholder from '../common/EmptyArrayPlaceholder'
@@ -188,7 +190,7 @@ const List = ({items}) => {
               key={item.orderId}
               amount={item.amount}
               poundage={item.poundage}
-              createTime={dayjs.unix(item.createTime).format('YYYY-MM-DD HH:mm:ss')}
+              createTime={util.formatTimestamp(item.createTime)}
               status={STATUS_SCHEMA[item.status]}
             />
           )
@@ -263,6 +265,8 @@ class RedeemRecord extends Component {
     const {loading, items, seletViewFlag} = this.state
     return (
       <Page>
+        <Helmet defaultTitle="沃银企服" title="积分赎回记录"/>
+
         <div className="fixed-top">
           <div className="selecter" onClick={this.handleToggle}>
             {this.state.title}

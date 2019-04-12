@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import styled from 'styled-components'
 import weui from 'weui.js'
+import {Helmet} from "react-helmet"
 
 import {push} from '../services/redirect'
 
@@ -233,6 +234,7 @@ class AddBankcard extends Component {
 
     return (
       <Page>
+        <Helmet defaultTitle="沃银企服" title="添加银行卡/信用卡"/>
         <main>
           <h2 className="u_my_xxx u_fs_xxx">请填写本人信息</h2>
           <div className="form">

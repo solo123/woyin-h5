@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import weui from 'weui.js'
 import styled from 'styled-components'
+import {Helmet} from "react-helmet"
 
 import Page from './styled'
 
@@ -272,6 +273,7 @@ export default class extends Component {
 
     return (
       <Page>
+        <Helmet defaultTitle="沃银企服" title="找回密码"/>
         <div className="group-list">
           <div className="group">
             <div className="group__body">

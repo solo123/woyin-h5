@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import classnames from 'classnames'
 import weui from 'weui.js'
 import axios from 'axios'
+import {Helmet} from "react-helmet"
 
 import config from '../../../config'
 import Opeator from '../../../common/Operator'
@@ -326,6 +327,7 @@ export default class extends Component {
 
     return (
       <div>
+        <Helmet defaultTitle="沃银企服" title="电子卡券"/>
         <StyledPageContainer>
           <div className="u_mb_xx">
             <StyledPage>

@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import classnames from 'classnames'
 import weui from 'weui.js'
 import axios from 'axios'
+import {Helmet} from "react-helmet"
 
 import SkeletonPlaceholder from '../../../common/SkeletonPlaceholder'
 import api, {getProducts, getSubProducts, rechargeVideo} from '../../../api'
@@ -433,7 +434,7 @@ class RechargeVideo extends Component {
 
     return (
       <div>
-
+        <Helmet defaultTitle="沃银企服" title="视频VIP"/>
         {this.state.loadProductLoading
           ? (
             <LayoutBoxSecondary>

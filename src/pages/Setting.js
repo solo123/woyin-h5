@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from "react-router-dom"
 import styled from 'styled-components'
+import {Helmet} from "react-helmet"
 
 import arrowIcon from '../asset/images/icon/arrow_right.svg'
 
@@ -43,6 +44,7 @@ const Page = styled.div`
 export default function() {
   return (
     <Page>
+      <Helmet defaultTitle="沃银企服" title="设置"/>
       <h1>设置相关</h1>
       <nav>
         <Link to="/change-pswd">

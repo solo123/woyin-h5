@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import weui from 'weui.js'
 import {Link} from 'react-router-dom'
+import {Helmet} from "react-helmet"
 
 import config from '../config'
 import {getUserInfo, getBankcardList, redeemIntegral, getRedeemFee, getCodeForWithdraw} from '../api'
@@ -509,7 +510,7 @@ class Redeem extends Component {
 
     return (
       <Page>
-
+        <Helmet defaultTitle="沃银企服" title="积分赎回"/>
         <div className="u_mb_xxx">
           <div className="trigger-bar">
             <label>选择银行卡</label>

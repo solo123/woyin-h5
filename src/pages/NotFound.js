@@ -1,5 +1,6 @@
-import React, { Component } from 'react'
+import React from 'react'
 import styled from 'styled-components'
+import {Helmet} from "react-helmet"
 
 import {replace} from '../services/redirect'
 
@@ -45,6 +46,7 @@ const StyledPage = styled.div`
 export default function() {
   return (
     <StyledPage>
+      <Helmet defaultTitle="沃银企服" title="页面不存在"/>
       <div className="content">
         <img className="img" src={notFound} alt=""/>
         <h1>对不起，您访问的页面不存在</h1>

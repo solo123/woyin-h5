@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components'
+import {Helmet} from "react-helmet"
 import { Link, withRouter } from "react-router-dom"
 import { connect } from 'react-redux'
 
@@ -147,7 +148,7 @@ class Home extends Component {
     const {isAuthenticated} = this.props
     return (
       <Page>
-
+        <Helmet defaultTitle="沃银企服" title="服务"  />
         <header>
           <Auth
             isAuthenticated={isAuthenticated} 
