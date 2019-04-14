@@ -1,89 +1,101 @@
 import React, { Component } from 'react'
 import axios from 'axios'
 import {Helmet} from "react-helmet"
+import weui from 'weui.js'
 
-import classnames from 'classnames'
-import config from '../../../config'
 import {getVoucherRecord} from '../../../api'
 import SkeletonPlaceholder from '../../../common/SkeletonPlaceholder'
 
 import Page from './styled'
 import Backhome from '../../../common/Backhome'
+import SimpleScroll from '@/components/SimpleScroll'
+import List from './List'
 
-function Item({amount, voucherId, voucherPwd, expireTime}) {
-  return (
-    <div className="item">
-      <div className="box">
-        <div className="title">京东E卡1</div>
-        <div className="subtitle">100积分</div>
-      </div>
-      <dl>
-        <dt>卡号：</dt><dd>{voucherId}</dd>
-      </dl>
-      <dl>
-        <dt>密码：</dt><dd>{voucherPwd}</dd>
-      </dl>
-      <dl>    
-        <dt>面值：</dt><dd>{amount}元</dd>
-      </dl>
-      <div className="date">有效期至：{expireTime}</div>
-    </div>
-  )
+const Content = ({placeholderLoading, items}) => {
+  if(placeholderLoading) {
+    return <SkeletonPlaceholder count={3} />
+  }
+  return <List items={items} />
 }
 
+const CancelToken = axios.CancelToken
 export default class extends Component {
   constructor(props) {
     super(props)
 
+    this.loadData = this.loadData.bind(this)
+
+    this.currentPage = 0
+
     this.state = {
-      items: []
+      items: [],
+      placeholderLoading: true
     }
   }
 
   componentDidMount() {
-    const params = {
-      limit: config.voucher.PAGE_LIMIT,
-      page: 0
-    }
-    this.loadCardList(params)
+    this.scroll = new SimpleScroll(this.wrapper, this.loadData)
+
+    const params = {page: this.currentPage++}
+    this.loadNextPage(params)
   }
 
   componentWillUnmount() {
+    this.scroll.destroy()
+    this.source && this.source.cancel('Operation canceled by the user.')
   }
 
-  async loadCardList(params) {
+  async loadNextPage(params) {
+    this.source = CancelToken.source()
     try {
       const {data} = await getVoucherRecord(params)
       if(data.status === 200) {
-
-        data.data = [
-          {buyOrderId: 12, amount: 50, voucherId: 21212121, voucherPwd: 1212121212, expireTime: 2121212121, productName: 'dfasfasfd'}
-        ]
-        this.setState({items: data.data})
+        this.setState({items: [...this.state.items, ...data.data]}, () => {
+          this.scroll.finish()
+        })
       }
     }finally {
+      if(this.loading) {
+        this.loading.hide()
+      }
+      this.setState({placeholderLoading: false})
     }
   }
 
+  reset() {
+    this.currentPage = 0
+    this.scroll.closeScroll()
+    this.setState({items: []})
+  }
+
+  loadData() {
+    const params = {page: this.currentPage++}
+    this.loading = weui.loading('加载中')
+    this.loadNextPage(params)
+  }  
+
   render() {
-    const {items} = this.state
+    const {items, placeholderLoading} = this.state
     return (
       <Page>
         <Helmet defaultTitle="沃银企服" title="电子卡券"/>
-        <div className="list">
-          {items.map(item => {
-            return (
-              <Item 
-                key={item.buyOrderId}
-                amount={item.amount}
-                voucherId={item.voucherId}
-                voucherPwd={item.voucherPwd}
-                expireTime={item.expireTime}
-                productName={item.productName}
-              />
-            )
-          })}
+
+        <div className="page">
+          <div className="page-body">
+
+            <div className="wrapper" ref={node => this.wrapper = node}>
+              <div className="scroller">
+
+                <div className="u_px_xxx u_pt_xxx">
+                  <Content items={items} placeholderLoading={placeholderLoading} />
+                </div>
+
+              </div>
+            </div>          
+          
+          </div>
         </div>
+
 
         <Backhome />
       </Page>

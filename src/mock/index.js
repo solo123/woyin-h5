@@ -499,16 +499,50 @@ Mock.mock(/sendMessageCode/, 'get', function(options){
 //   const page = util.parseUrl(options.url, 'page').page
 //   console.log(`getOrderList status:${status} page:${page}`)
 //   return {
-//     code: '1',
-//     items: [
-//       {id: uuid()},
-//       {id: uuid()},
-//       {id: uuid()},
-//       {id: uuid()},
-//       {id: uuid()},
-//       {id: uuid()},
-//       {id: uuid()},
-//       {id: uuid()}
+//     status: 200,
+//     data: {
+//       data: [
+//         {byOrderDetail: uuid(), productName: 'asdfsf', status: '11', createTime: new Date().getTime(), productValue: 1212},
+//         {byOrderDetail: uuid(), productName: 'asdfsf', status: '11', createTime: new Date().getTime(), productValue: 1212},
+//         {byOrderDetail: uuid(), productName: 'asdfsf', status: '11', createTime: new Date().getTime(), productValue: 1212},
+//         {byOrderDetail: uuid(), productName: 'asdfsf', status: '11', createTime: new Date().getTime(), productValue: 1212}
+//       ]
+//     }
+//   }
+// })
+
+// 信用卡还款记录
+// Mock.mock(/getWithList/, 'get', function(options){
+//   const status = util.parseUrl(options.url, 'status').status
+//   const page = util.parseUrl(options.url, 'page').page
+//   console.log(`getOrderList status:${status} page:${page}`)
+//   return {
+//     status: 200,
+//     data: {
+//       withdrawal: [
+//         {orderId: uuid(), amount: 1000, status: '11', createTime: new Date().getTime(), poundage: 1212},
+//         {orderId: uuid(), amount: 1000, status: '11', createTime: new Date().getTime(), poundage: 1212},
+//         {orderId: uuid(), amount: 1000, status: '11', createTime: new Date().getTime(), poundage: 1212},
+//         {orderId: uuid(), amount: 1000, status: '11', createTime: new Date().getTime(), poundage: 1212}
+//       ]
+//     }
+//   }
+// })
+
+// 获取电子卡券记录
+// Mock.mock(/voucher\/list/, 'get', function(options){
+//   const page = util.parseUrl(options.url, 'page').page
+//   console.log(`voucher list page:${page}`)
+//   return {
+//     status: 200,
+//     data: [
+//         {buyOrderId: uuid(), amount: 50, voucherId: uuid(), voucherPwd: uuid(), expireTime: new Date().getTime(), productName: 'dfasfasfd'},
+//         {buyOrderId: uuid(), amount: 50, voucherId: uuid(), voucherPwd: uuid(), expireTime: new Date().getTime(), productName: 'dfasfasfd'},
+//         {buyOrderId: uuid(), amount: 50, voucherId: uuid(), voucherPwd: uuid(), expireTime: new Date().getTime(), productName: 'dfasfasfd'},
+//         {buyOrderId: uuid(), amount: 50, voucherId: uuid(), voucherPwd: uuid(), expireTime: new Date().getTime(), productName: 'dfasfasfd'},
+//         {buyOrderId: uuid(), amount: 50, voucherId: uuid(), voucherPwd: uuid(), expireTime: new Date().getTime(), productName: 'dfasfasfd'},
+//         {buyOrderId: uuid(), amount: 50, voucherId: uuid(), voucherPwd: uuid(), expireTime: new Date().getTime(), productName: 'dfasfasfd'},
+//         {buyOrderId: uuid(), amount: 50, voucherId: uuid(), voucherPwd: uuid(), expireTime: new Date().getTime(), productName: 'dfasfasfd'}
 //     ]
 //   }
 // })

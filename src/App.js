@@ -23,7 +23,6 @@ import history from './history'
 // import ViolationList from './components/ViolationList'
 // import ViolationDetail from './components/ViolationDetail'
 
-
 const LoadingComponent = ({ isLoading, error }) => {
   if (isLoading) {
     return <div style={{textAlign: 'center', paddingTop: 30}}>loading...</div>
@@ -85,7 +84,7 @@ const AsyncVoucherRecord = Loadable({
   loading: LoadingComponent
 })
 const AsyncOrder = Loadable({
-  loader: () => import('./pages/Order'),
+  loader: () => import('./pages/Order').then(({ view }) => view),
   loading: LoadingComponent
 })
 const AsyncNotFound = Loadable({
@@ -97,7 +96,7 @@ const AsyncRedeem = Loadable({
   loading: LoadingComponent
 })
 const AsyncRedeemRecord = Loadable({
-  loader: () => import('./pages/RedeemRecord'),
+  loader: () => import('./pages/RedeemRecord').then(({view}) => view),
   loading: LoadingComponent
 })
 const AsyncCreditCard = Loadable({
@@ -105,7 +104,7 @@ const AsyncCreditCard = Loadable({
   loading: LoadingComponent
 })
 const AsyncCreditRecord = Loadable({
-  loader: () => import('./pages/CreditRecord'),
+  loader: () => import('./pages/CreditRecord').then(({view}) => view),
   loading: LoadingComponent
 })
 const AsyncTransfer = Loadable({

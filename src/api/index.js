@@ -1,7 +1,7 @@
 import qs from'qs'
 import {get, post} from './setup'
 
-import G_config from '../config'
+import G_config from '@/config'
 
 let BASE = ''
 if(process.env.NODE_ENV === 'development') {
@@ -216,7 +216,11 @@ export const rechargeVoucher = (data) => {
 
 // 电子卡券记录
 export const getVoucherRecord = (data, config = {}) => {
-  return get(`${BASE}api/voucher/list`, data, config)
+  const params = {
+    ...data,
+    limit: G_config.voucher.PAGE_LIMIT,
+  } 
+  return get(`${BASE}api/voucher/list`, params, config)
 }
 
 // 积分转赠
@@ -225,8 +229,12 @@ export const integralTransfer = (data) => {
 }
 
 // 积分转赠记录
-export const integralTransferRecord = (data, config) => {
-  return get(`${BASE}api/transferred/list`, data, config)
+export const transferRecord = (data, config) => {
+  const params = {
+    ...data,
+    limit: G_config.redeem.PAGE_LIMIT,
+  } 
+  return get(`${BASE}api/transferred/list`, params, config)
 }
 
 // 添加银卡
@@ -246,15 +254,18 @@ export const paymentToCard = (data) => {
 
 // 获取订单列表
 export const getOrderList = (data = {}, config = {}) => {
-  return get(`${BASE}api/order/getOrderList`, data, config)
+  const params = {
+    ...data,
+    limit: G_config.order.PAGE_LIMIT,
+  }
+  return get(`${BASE}api/order/getOrderList`, params, config)
 }
 
 // 获取信用卡还款记录
-export const getCreditRecord = (data = {}, config = {}) => {
+export function getCreditRecord(data = {}, config = {}) {
   const params = {
-    status: data.status,
+    ...data,
     limit: G_config.creditRecord.PAGE_LIMIT,
-    page: data.page,
     payment: 2
   }
   return get(`${BASE}api/trad/getWithList`, params, config)
@@ -263,9 +274,8 @@ export const getCreditRecord = (data = {}, config = {}) => {
 // 获取积分赎回记录
 export const getRedeemRecord = (data = {}, config = {}) => {
   const params = {
-    status: data.status,
+    ...data,
     limit: G_config.redeem.PAGE_LIMIT,
-    page: data.page,
     payment: 1
   }
   return get(`${BASE}api/trad/getWithList`, params, config)
