@@ -275,7 +275,7 @@
   font-size: 16px;
   line-height: 40px;
   border-radius: 5px;
-  background: -webkit-linear-gradient(47deg,#f23233,#ee6076);  
+  background: linear-gradient(to right,#f23233,#ee6076);  
 }
 .btn-secondary{
   color: #fff;
@@ -283,6 +283,20 @@
   line-height: 40px;
   border-radius: 5px;
   background: #1c92ff;  
+}
+.btn-tertiary{
+  color: #fff;
+  font-size: 16px;
+  line-height: 40px;
+  border-radius: 5px;
+  background: linear-gradient(to right,#e6c283,#99703d);    
+}
+.btn-quartus{
+  color: #fff;
+  font-size: 16px;
+  line-height: 40px;
+  border-radius: 5px;
+  background: #ffa537;    
 }
 .disable{
   color: #fff;
@@ -295,7 +309,7 @@
   padding: 3px 10px;
   line-height: 1.5;
   border-radius: 5px;
-  background: -webkit-linear-gradient(47deg,#f23233,#ee6076);
+  background: linear-gradient(to right,#f23233,#ee6076);
 }
 .btn-mini-disable{
   color: #fff;

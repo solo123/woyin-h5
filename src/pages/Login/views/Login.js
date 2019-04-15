@@ -43,7 +43,7 @@ function SubmitButton({pass, handleSubmit}) {
   if(pass) {
     return <button className="btn btn-primary" onClick={handleSubmit}>登录</button>
   }
-  return <button className="btn btn-primary-disable">登录</button>
+  return <button className="btn btn-primary disable">登录</button>
 }
 
 function PswdInput({passwordType, password, passwordCleanView, handleChange, handleFocus, handleBlur, passwordClean, handleTogglePswdVisibleOrHidden}) {

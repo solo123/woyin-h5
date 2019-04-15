@@ -205,8 +205,13 @@ export const getSubProducts = (id = '', config = {}) => {
   return get(`${BASE}api/product/subList`, {productClassifyId: id}, config)
 }
 
+// 视频充值 直充
 export const rechargeVideo = (data = {}, config = {}) => {
-  return post(`${BASE}api/video/charge`, qs.stringify(data), config)
+  const params = {
+    ...data,
+    chargeType: 1
+  }
+  return post(`${BASE}api/video/charge`, qs.stringify(params), config)
 }
 
 // 电子卡券充值
