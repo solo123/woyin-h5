@@ -1,106 +1,112 @@
 import React, { Component } from 'react'
 import { Redirect, withRouter, Link } from "react-router-dom"
 import { connect } from 'react-redux'
-import styled from 'styled-components'
 import weui from 'weui.js'
 import {Helmet} from "react-helmet"
 
-import closeIcon from '../../../asset/images/icon/close.png'
-import showIcon from '../../../asset/images/icon/show.png'
-import hideIcon from '../../../asset/images/icon/hide.png'
+import closeIcon from '@/asset/images/icon/close.png'
 
-import checkedIcon from '../../../asset/images/icon/checked.png'
-import uncheckedIcon from '../../../asset/images/icon/unchecked.png'
+import showIcon from '@/asset/images/icon/show.png'
+import hideIcon from '@/asset/images/icon/hide.png'
+import checkedIcon from '@/asset/images/icon/checked.png'
+import uncheckedIcon from '@/asset/images/icon/unchecked.png'
 
-import api, {getCode} from '../../../api'
-import util from '../../../util'
-import config from '../../../config'
-import {setItem, removeItem, getItem} from '../../../services/storage'
+import api, {getCode} from '@/api'
+import util from '@/util'
+import config from '@/config'
+import {setItem, removeItem, getItem} from '@/services/storage'
 import Page from './styled'
 
-const Button = styled.button`
-  border: 0;
-  padding: 0;
-  width: 100%;
-  outline: none;
-  display: block;
-  background: transparent;
-`
-const PrimaryButton = styled(Button)`
-  color: #fff;
-  font-size: 16px;
-  font-weight: bold;
-  line-height: 50px;
-  border-radius: 3px;
-  background: -webkit-linear-gradient(47deg,#f36263,#f36263);
-`
-const DisablePrimaryButton = styled(Button)`
-  color: #fff;
-  font-weight: bold;
-  font-size: 16px;
-  line-height: 50px;
-  border-radius: 3px;
-  background: #ccc;
-`
-const MiniPrimaryBtn = styled(Button)`
-  color: #fff;
-  font-size: 12px;
-  padding: 3px 10px;
-  line-height: 1.5;
-  border-radius: 3px;
-  background: -webkit-linear-gradient(47deg,#f36263,#f36263);
-`
-const DisableMiniPrimaryBtn = styled(Button)`
-  color: #fff;
-  font-size: 12px;
-  padding: 3px 10px;
-  line-height: 1.5;
-  border-radius: 3px;
-  background: #ccc;
-`
-const Input = styled.input`
-  border: 0;
-  padding: 0;
-  width: 100%;
-  outline: none;
-  color: inherit;
-  font-size: inherit;
-  -webkit-appearance: none;
-  background: transparent;
-`
-const PrimaryInput = styled(Input)`
-  color: #444;
-  font-size: 14px;
-`
-
-const iconSchema = {
+const ICON_SCHEMA = {
   text: showIcon,
-  password: hideIcon
-}
-const rememberUsernameIconSchema = {
+  password: hideIcon,
   checked: checkedIcon,
   unchecked: uncheckedIcon
 }
 
 const LOGINTYPE_PASSWORD = 'password'
 const LOGINTYPE_MESSAGE = 'message'
+
 const LOGINTYPE_SCHEMA = {
   'password': 1,
   'message': 2
 }
 
-const SendMessageBtn = ({flag, interval, handleClick}) => {
+function SendMessageBtn({flag, interval, handleClick}) {
   if(flag) {
-    return <MiniPrimaryBtn onClick={handleClick}>获取验证码</MiniPrimaryBtn>
+    return <button className="btn btn-mini" onClick={handleClick}>获取验证码</button>
   }
-  return <DisableMiniPrimaryBtn>{interval}秒后重发</DisableMiniPrimaryBtn>
+  return <button className="btn btn-mini-disable">{interval}秒后重发</button>
 }
 
-const SubmitButton = ({pass, handleSubmit}) => {
+function SubmitButton({pass, handleSubmit}) {
   if(pass) {
-    return <PrimaryButton onClick={handleSubmit}>登录</PrimaryButton>
+    return <button className="btn btn-primary" onClick={handleSubmit}>登录</button>
   }
-  return <DisablePrimaryButton>登录</DisablePrimaryButton>
+  return <button className="btn btn-primary-disable">登录</button>
+}
+
+function PswdInput({passwordType, password, passwordCleanView, handleChange, handleFocus, handleBlur, passwordClean, handleTogglePswdVisibleOrHidden}) {
+  return (
+    <div className="group">
+      <div className="group__body">
+        <input
+          className="input input-primary" 
+          type={passwordType} 
+          name="password" 
+          value={password} 
+          onChange={handleChange} 
+          onFocus={handleFocus}
+          onBlur={handleBlur}                  
+          placeholder="请输入密码" 
+        />
+      </div>
+      <div className="group__foot">
+        <img 
+          className="group__clean-btn"
+          style={{visibility: passwordCleanView ? 'visible' : 'hidden'}} 
+          onClick={passwordClean} 
+          src={closeIcon} 
+          alt="" 
+        />
+        <img 
+          className="group__toggle-btn"
+          onClick={handleTogglePswdVisibleOrHidden} 
+          src={ICON_SCHEMA[passwordType]} alt="切换" 
+        />
+        <Link className="link" to="/find-pswd">忘记密码</Link>
+      </div>
+    </div>
+  )
+}
+
+function MessageInput({messageCode, interval, getCodeFlag, messageCodeCleanView, messageClean, handleChange, handleFocus, handleBlur, handleGetCode}) {
+  return (
+    <div className="group">
+      <div className="group__body">
+        <input
+          className="input input-primary" 
+          type='text'
+          name="messageCode" 
+          value={messageCode} 
+          onChange={handleChange} 
+          onFocus={handleFocus}
+          onBlur={handleBlur}                  
+          placeholder="请输入验证码" 
+        />
+      </div>
+      <div className="group__foot">
+        <img 
+          className="group__clean-btn"
+          style={{visibility: messageCodeCleanView ? 'visible' : 'hidden'}} 
+          onClick={messageClean} 
+          src={closeIcon} 
+          alt="" 
+        />
+        <SendMessageBtn flag={getCodeFlag} interval={interval} handleClick={handleGetCode}>获取验证码</SendMessageBtn>
+      </div>
+    </div>
+  )
 }
 
 class Login extends Component {
@@ -112,14 +118,12 @@ class Login extends Component {
     this.handleFocus = this.handleFocus.bind(this)
     this.handleBlur = this.handleBlur.bind(this)
     this.handleTogglePswdVisibleOrHidden = this.handleTogglePswdVisibleOrHidden.bind(this)
-    this.updateBtnStatus = this.updateBtnStatus.bind(this)
     this.handleRememberUsername = this.handleRememberUsername.bind(this)
     this.usernameClean = this.handleClean.bind(this, 'username')
     this.passwordClean = this.handleClean.bind(this, 'password')
     this.messageClean = this.handleClean.bind(this, 'messageCode')
     this.handlePasswordLogin = this.handleToggleLoginType.bind(this, LOGINTYPE_PASSWORD)
     this.handleMessageLogin = this.handleToggleLoginType.bind(this, LOGINTYPE_MESSAGE)
-
     this.handleGetCode = this.handleGetCode.bind(this)
 
     this.state = {
@@ -219,7 +223,6 @@ class Login extends Component {
     this.setState({pass: flag})
   }
 
-  // 从缓存充读取用户名
   readUsernameFromStore() {
     const username = getItem('username')
     if(username) {
@@ -282,7 +285,6 @@ class Login extends Component {
     this.doSubmit()
   }
 
-  // 切换是否记住用户名
   handleRememberUsername() {
     const status = this.state.rememberStatus === 'checked' ? 'unchecked' : 'checked'
     this.setState({rememberStatus: status}, () => {
@@ -317,7 +319,7 @@ class Login extends Component {
   render() {
     const {isAuthenticated} = this.props;
     const {from} = this.props.location.state || {from: {pathname: "/"}}
-    const {pass, usernameCleanView, passwordCleanView, messageCodeCleanView, getCodeFlag} = this.state
+    const {pass, usernameCleanView} = this.state
 
     if(isAuthenticated){return <Redirect to={from} />}
 
@@ -331,7 +333,8 @@ class Login extends Component {
           <div className="group-list">
             <div className="group">
               <div className="group__body">
-                <PrimaryInput
+                <input
+                  className="input input-primary"
                   type="text" 
                   name="username"
                   value={this.state.username} 
@@ -352,63 +355,29 @@ class Login extends Component {
               </div>
             </div>    
             {this.state.loginType === LOGINTYPE_PASSWORD
-              ? (<div className="group">
-                  <div className="group__body">
-                    <PrimaryInput 
-                      type={this.state.passwordType} 
-                      name="password" 
-                      value={this.state.password} 
-                      onChange={this.handleChange} 
-                      onFocus={this.handleFocus}
-                      onBlur={this.handleBlur}                  
-                      placeholder="请输入密码" 
-                    />
-                  </div>
-                  <div className="group__foot">
-                    <img 
-                      className="group__clean-btn"
-                      style={{visibility: passwordCleanView ? 'visible' : 'hidden'}} 
-                      onClick={this.passwordClean} 
-                      src={closeIcon} 
-                      alt="" 
-                    />
-                    <img 
-                      className="group__toggle-btn"
-                      onClick={this.handleTogglePswdVisibleOrHidden} 
-                      src={iconSchema[this.state.passwordType]} alt="切换" 
-                    />
-                    <Link className="link" to="/find-pswd">忘记密码</Link>
-                  </div>
-                </div>)
-              : (<div className="group">
-                  <div className="group__body">
-                    <PrimaryInput 
-                      type='text'
-                      name="messageCode" 
-                      value={this.state.messageCode} 
-                      onChange={this.handleChange} 
-                      onFocus={this.handleFocus}
-                      onBlur={this.handleBlur}                  
-                      placeholder="请输入验证码" 
-                    />
-                  </div>
-                  <div className="group__foot">
-                    <img 
-                      className="group__clean-btn"
-                      style={{visibility: messageCodeCleanView ? 'visible' : 'hidden'}} 
-                      onClick={this.messageClean} 
-                      src={closeIcon} 
-                      alt="" 
-                    />
-                    <SendMessageBtn flag={getCodeFlag} interval={this.state.interval} handleClick={this.handleGetCode}>获取验证码</SendMessageBtn>
-                  </div>
-                </div>)
-              }
+              ? <PswdInput 
+                  {...this.state}
+                  handleChange={this.handleChange} 
+                  handleFocus={this.handleFocus}
+                  handleBlur={this.handleBlur}   
+                  passwordClean={this.passwordClean}
+                  handleTogglePswdVisibleOrHidden={this.handleTogglePswdVisibleOrHidden} 
+                />
+              : <MessageInput
+                  {...this.state}
+                  handleChange={this.handleChange} 
+                  handleFocus={this.handleFocus}
+                  handleBlur={this.handleBlur}      
+                  messageClean={this.messageClean}
+                  handleGetCode={this.handleGetCode}
+                />
+            }
           </div>
+
           <div className="flex">
             <div className="flex__body">
               <label className="label" onClick={this.handleRememberUsername}>
-                <img src={rememberUsernameIconSchema[this.state.rememberStatus]} alt=""/>记住账号
+                <img src={ICON_SCHEMA[this.state.rememberStatus]} alt=""/>记住账号
               </label>
             </div>
             <div className="flex__foot">
@@ -418,6 +387,7 @@ class Login extends Component {
               }
             </div>
           </div>
+          
           <SubmitButton pass={pass} handleSubmit={this.handleSubmit} />
         </main>
         
@@ -425,9 +395,6 @@ class Login extends Component {
     )
   }
 }
-
-
-
 
 const mapStateToProps = (state) => {
   return { isAuthenticated: state.auth.isAuthenticated }

@@ -54,22 +54,23 @@ export default styled.div`
       flex: 1;
     }    
     .link {
-      color: #f36263;
+      color: #ff0000;
       font-size: 12px;
       border: 0;
       background: transparent;
     }
   }
-      .link {
-      color: #f36263;
-      font-size: 14px;
-      border: 0;
-      background: transparent;
-    }
+  .link {
+    color: #ff0000;
+    font-size: 12px;
+    border: 0;
+    margin-left: 5px;
+    background: transparent;
+  }
   .label{
     display: flex;
     align-items: center;
-    color: #f36263;
+    color: #ff0000;
     font-size: 12px;
     img{
       width: 16px;

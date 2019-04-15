@@ -52,7 +52,7 @@ const AsyncAddBankcard = Loadable({
   loading: LoadingComponent
 })
 const AsyncRechargePhone = Loadable({
-  loader: () => import('./pages/RechargePhone'),
+  loader: () => import('./pages/RechargePhone').then(({ view }) => view),
   loading: LoadingComponent
 })
 const AsyncRechargeTraffic = Loadable({

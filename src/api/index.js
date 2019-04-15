@@ -280,3 +280,17 @@ export const getRedeemRecord = (data = {}, config = {}) => {
   }
   return get(`${BASE}api/trad/getWithList`, params, config)
 }
+
+// 话费充值
+export function rechargePhone(data) {
+  const params = {
+    ...data,
+    chargeType: 1
+  }
+  return post(`${BASE}api/charge/moreCredit`, qs.stringify(params))
+}
+
+// QB充值
+export function rechargeQB(data) {
+  return post(`${BASE}api/charge/moreCredit`, qs.stringify(data))
+}
