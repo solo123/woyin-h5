@@ -5,25 +5,26 @@ import weui from 'weui.js'
 import axios from 'axios'
 import {Helmet} from "react-helmet"
 
-import config from '../../../config'
-import Opeator from '../../../common/Operator'
-import {getUserInfo, getSubProducts, rechargeVoucher} from '../../../api'
-import util from '../../../util'
+import config from '@/config'
+import Opeator from '@/common/Operator'
+import {getUserInfo, getSubProducts, rechargeVoucher} from '@/api'
+import util from '@/util'
+import Backhome from '@/common/Backhome'
 
-import appleIcon from '../../../asset/images/ecard/apple.png'
-import bgyIcon from '../../../asset/images/ecard/bgy.png'
-import bskIcon from '../../../asset/images/ecard/bsk.png'
-import dqIcon from '../../../asset/images/ecard/dq.png'
-import hgdsIcon from '../../../asset/images/ecard/hgds.png'
-import jdIcon from '../../../asset/images/ecard/jd.png'
-import kdjIcon from '../../../asset/images/ecard/kdj.png'
-import qcsIcon from '../../../asset/images/ecard/qcs.png'
-import snIcon from '../../../asset/images/ecard/sn.png'
-import tmIcon from '../../../asset/images/ecard/tm.png'
-import wnIcon from '../../../asset/images/ecard/wn.png'
-import xbkIcon from '../../../asset/images/ecard/xbk.png'
-import xcIcon from '../../../asset/images/ecard/xc.png'
-import ymxIcon from '../../../asset/images/ecard/ymx.png'
+import appleIcon from '@/asset/images/ecard/apple.png'
+import bgyIcon from '@/asset/images/ecard/bgy.png'
+import bskIcon from '@/asset/images/ecard/bsk.png'
+import dqIcon from '@/asset/images/ecard/dq.png'
+import hgdsIcon from '@/asset/images/ecard/hgds.png'
+import jdIcon from '@/asset/images/ecard/jd.png'
+import kdjIcon from '@/asset/images/ecard/kdj.png'
+import qcsIcon from '@/asset/images/ecard/qcs.png'
+import snIcon from '@/asset/images/ecard/sn.png'
+import tmIcon from '@/asset/images/ecard/tm.png'
+import wnIcon from '@/asset/images/ecard/wn.png'
+import xbkIcon from '@/asset/images/ecard/xbk.png'
+import xcIcon from '@/asset/images/ecard/xc.png'
+import ymxIcon from '@/asset/images/ecard/ymx.png'
 
 const ICON_SCHEAM = {
   '20': tmIcon,
@@ -404,6 +405,7 @@ export default class extends Component {
             </LayoutFlex>
           </StyledFixedBottom>
         </StyledPageContainer>
+        <Backhome />
       </div>
     )
   }

@@ -71,8 +71,8 @@ const AsyncRechargeVideo = Loadable({
   loader: () => import('./pages/RechargeVideo').then(({ view }) => view),
   loading: LoadingComponent
 })
-const AsyncRechargeVoucher = Loadable({
-  loader: () => import('./pages/RechargeVoucher').then(({ view }) => view),
+const AsyncVoucher = Loadable({
+  loader: () => import('./pages/Voucher').then(({ view }) => view),
   loading: LoadingComponent
 })
 const AsyncRechargeVoucherDetail = Loadable({
@@ -154,7 +154,7 @@ class App extends Component {
             <Auth path="/recharge-oil" component={AsyncRechargeOil} />
             <Auth path="/recharge-QB" component={AsyncRechargeQB} />
             <Auth path="/recharge-video" component={AsyncRechargeVideo} />
-            <Auth path="/recharge-voucher" exact component={AsyncRechargeVoucher} />
+            <Auth path="/voucher" component={AsyncVoucher} />
             <Auth path="/recharge-voucher/:id" component={AsyncRechargeVoucherDetail} />
             <Auth path="/voucher-record" exact component={AsyncVoucherRecord} />
 

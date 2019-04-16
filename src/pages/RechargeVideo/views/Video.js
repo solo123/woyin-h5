@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import styled from 'styled-components'
 import weui from 'weui.js'
 import axios from 'axios'
 import {Helmet} from "react-helmet"
@@ -194,10 +193,7 @@ class RechargeVideo extends Component {
         <Helmet defaultTitle="沃银企服" title="视频VIP"/>
 
         <header>
-          <div className="bg"></div>
-          <div className="content">
-            <ProviderList selectId={providerId} items={products} selectProvider={this.selectProvider} />
-          </div>
+          <ProviderList selectId={providerId} items={products} selectProvider={this.selectProvider} />
         </header>
 
         <section className="u_mb_xxx">

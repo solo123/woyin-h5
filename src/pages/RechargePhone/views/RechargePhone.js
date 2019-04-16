@@ -12,7 +12,7 @@ import List from './List'
 import Nav from './Nav'
 import Page from './styled'
 
-
+import banner from '@/asset/images/recharge/banner.png'
 
 const CancelToken = axios.CancelToken
 
@@ -205,7 +205,10 @@ export default class extends Component {
         <Helmet defaultTitle="沃银企服" title="话费充值"/>
         
         <header>
-          <Nav type={type} items={operators} handleToggleType={this.handleToggleType} />
+          <img src={banner} alt=""/>
+          <div className="nav-box">
+            <Nav type={type} items={operators} handleToggleType={this.handleToggleType} />
+          </div>
         </header>
 
         <main className="main">

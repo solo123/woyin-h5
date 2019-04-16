@@ -1,14 +1,14 @@
 import styled from 'styled-components'
 
-import banner from '@/asset/images/recharge/banner.png'
 import checked from '@/asset/images/recharge/checked.png'
 
 export default styled.div`
   header{
-    padding: 30px 15px 0 15px;
-    background: url(${banner}) center top no-repeat;
-    background-size: 100%;
     margin-bottom: 15px;
+    .nav-box{
+      position: relative;
+      margin: -70px 15px 0 15px;
+    }
     .nav{
       display: flex;
       background: #fff;

@@ -2,17 +2,17 @@ import React from 'react'
 import styled from 'styled-components'
 import { Link } from "react-router-dom"
 
-import phoneIcon from '../../../asset/images/icon/phone.png'
-import flowIcon from '../../../asset/images/icon/flow.png'
-import oilIcon from '../../../asset/images/icon/oil.png'
-import videoIcon from '../../../asset/images/icon/video.png'
-import qqIcon from '../../../asset/images/icon/qq.png'
-import lotteryIcon from '../../../asset/images/icon/lottery.png'
-import sevenLotteryIcon from '../../../asset/images/icon/seven_lottery.png'
-import ecardIcon from '../../../asset/images/icon/ecard.png'
-import creditCardIcon from '../../../asset/images/icon/credit_card.png'
-import carIcon from '../../../asset/images/icon/car.png'
-import listIcon from '../../../asset/images/icon/list.svg'
+import phoneIcon from '@/asset/images/icon/phone.png'
+import flowIcon from '@/asset/images/icon/flow.png'
+import oilIcon from '@/asset/images/icon/oil.png'
+import videoIcon from '@/asset/images/icon/video.png'
+import qqIcon from '@/asset/images/icon/qq.png'
+import lotteryIcon from '@/asset/images/icon/lottery.png'
+import sevenLotteryIcon from '@/asset/images/icon/seven_lottery.png'
+import ecardIcon from '@/asset/images/icon/ecard.png'
+import creditCardIcon from '@/asset/images/icon/credit_card.png'
+import carIcon from '@/asset/images/icon/car.png'
+import listIcon from '@/asset/images/icon/list.svg'
 
 const LayoutPage = styled.div`
   display: flex;
@@ -57,7 +57,7 @@ function getRouteByIdContainer() {
     '9': 'recharge-oil',
     '12': 'recharge-QB',
     '15': 'recharge-video',
-    '18': 'recharge-voucher',
+    '18': 'voucher',
     '22': 'credit-card'
   }
   return function(id) {

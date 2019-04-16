@@ -5,18 +5,9 @@ import checked from '@/asset/images/video/checked.png'
 export default styled.div`
   header{
     position: relative;
+    padding: 15px;
     margin-bottom: 15px;
-    .bg{
-      position: absolute;
-      left: 0;
-      right: 0;
-      z-index: -1;
-      height: 100px;
-      background: linear-gradient(to right,#e6c283,#99703d);    
-    }
-    .content{
-      padding: 15px 15px 0 15px;
-    }
+    background: linear-gradient(to right,#e6c283,#99703d);  1  
   }
   .provider-list{
     background: #fff;
