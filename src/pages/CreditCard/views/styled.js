@@ -31,7 +31,11 @@ export default styled.div`
         font-size: 12px;
         color: #888;
       }
-    }    
+    }  
+    .arrow{
+      width: 20px;
+      height: 40px;
+    }  
   }
   .empty{
     text-align: center;

@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import { Link } from "react-router-dom"
 import weui from 'weui.js'
 import axios from 'axios'
 import {Helmet} from "react-helmet"
@@ -12,7 +13,7 @@ import Page from './styled'
 
 import banner from '@/asset/images/creditCard/banner.jpg'
 import plus from '@/asset/images/creditCard/plus.png'
-import moreIcon from '@/asset/images/icon/more.png'
+import arrow from '@/asset/images/icon/arrow_right.svg'
 import spinner from '@/asset/images/spinner.svg'
 
 import fzIcon from '@/asset/images/bank/fz.svg'
@@ -40,14 +41,14 @@ function SendMsgBtn ({flag, interval, handleClick}) {
   return <button className="btn btn-mini disable">{interval}秒后重发</button>
 }
 
-function SubmitBtn({pass}) {
+function SubmitBtn({pass, handleSubmit}) {
   if(pass) {
-    return <button className="btn btn-primary" onClick={this.handleSubmit}>立即还款</button>
+    return <button className="btn btn-primary" onClick={handleSubmit}>立即还款</button>
   }
   return <button className="btn btn-primary disable">立即还款</button>
 }
 
-function Card({hasCard}) {
+function Card({bankName, bankCard, hasCard, handleOpenPicker}) {
   if(hasCard) {
     return (
       <div className="u_p_xxx u_mb_xx u_bg_white">
@@ -56,8 +57,11 @@ function Card({hasCard}) {
             <img className="icon" src={jsIcon} alt=""/>
           </div>
           <div className="main">
-            <p className="title">建设银行 (尾号<span>8526</span>)</p>
+            <p className="title">{bankName} (尾号<span>{util.getBankcardLastNum(bankCard)}</span>)</p>
             <p className="text">预计下一工作日到账，实际以银行到账日为准</p>
+          </div>
+          <div className="foot">
+            <img className="arrow" onClick={handleOpenPicker} src={arrow} alt=""/>
           </div>
         </div>          
       </div>      
@@ -65,10 +69,15 @@ function Card({hasCard}) {
   }
   return (
     <div className="empty">
-      <div className="wrap">
-        <img className="icon" src={plus} alt=""/>
-        <p>请添加信用卡</p>
-      </div>
+      <Link to={{
+        pathname: "bankcard-add",
+        state: {from: '/credit-card'}
+      }}>
+        <div className="wrap">
+          <img className="icon" src={plus} alt=""/>
+          <p>请添加信用卡</p>
+        </div>
+      </Link>
       <p className="text">暂无可用</p>
     </div>
   )
@@ -141,7 +150,7 @@ export default class extends Component {
     try {
       const {data} = await getBankcardList()
       if(data.status === 200) {
-        const cardList = util.filterBankCardByStatusAndType(data.data, 2, 1)
+        const cardList = util.filterBankCardByStatusAndType(data.data, 2, 0)
         this.setState({cardList: cardList}, () => {
           const card = cardList[0]
           if(card) {
@@ -170,9 +179,7 @@ export default class extends Component {
     try {
       const {data} = await paymentToCard(params)
       if(data.status === 200) {
-        weui.alert(data.msg, () => {
-          replace('/credit-record')
-        })
+        weui.alert(data.msg)
       }else if(data.status === 1017){
         util.confirmRetry('密码错误', () => {
           this.retryTransPswd()
@@ -314,7 +321,12 @@ export default class extends Component {
           <img src={banner} alt=""/>
         </header>
 
-        <Card hasCard={this.state.hasCard} />
+        <Card 
+          hasCard={this.state.hasCard} 
+          bankName={this.state.bankName}
+          bankCard={this.state.bankCard}
+          handleOpenPicker={this.handleOpenPicker}
+        />
 
         <div className="u_bg_white">
           <div className="u_p_xxx">
@@ -359,7 +371,7 @@ export default class extends Component {
         </div>
 
         <div className="u_p_xxx">
-          <SubmitBtn pass={this.state.pass} />
+          <SubmitBtn pass={this.state.pass} handleSubmit={this.handleSubmit} />
         </div>
 
         <Backhome />

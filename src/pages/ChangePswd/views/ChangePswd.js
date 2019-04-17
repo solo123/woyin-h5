@@ -2,15 +2,17 @@ import React, { Component } from 'react'
 import weui from 'weui.js'
 import styled from 'styled-components'
 import {Helmet} from "react-helmet"
+import md5 from 'md5'
+
+import config from '@/config'
+import api, {changePswd} from '@/api'
+import { push } from '@/services/redirect'
+import closeIcon from '@/asset/images/icon/close.png'
+import showIcon from '@/asset/images/icon/show.png'
+import hideIcon from '@/asset/images/icon/hide.png'
 
 import Page from './styled'
-
-import config from '../../../config'
-import api, {changePswd} from '../../../api'
-import { push } from '../../../services/redirect'
-import closeIcon from '../../../asset/images/icon/close.png'
-import showIcon from '../../../asset/images/icon/show.png'
-import hideIcon from '../../../asset/images/icon/hide.png'
+import Backhome from '@/common/Backhome'
 
 const Input = styled.input`
   border: 0;
@@ -127,7 +129,7 @@ export default class extends Component {
     const loading = weui.loading('处理中')
     const params = {
       userPhoneNo: phone,
-      password: newPswd,
+      password: md5(newPswd),
       code: code
     }
     try {
@@ -383,6 +385,8 @@ export default class extends Component {
             : <DisablePrimaryButton onClick={this.verify}>提交</DisablePrimaryButton>
           }
         </div>
+
+        <Backhome />
       </Page>
     )
   } 

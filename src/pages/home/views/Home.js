@@ -4,16 +4,16 @@ import {Helmet} from "react-helmet"
 import { Link, withRouter } from "react-router-dom"
 import { connect } from 'react-redux'
 
-import api, {getProducts} from '../../../api'
-import Menu from '../../../common/Menu'
+import api, {getProducts} from '@/api'
+import Menu from '@/common/Menu'
 
-import pedestalBg from '../../../asset/images/pedestal.png'
-import integralIcon from '../../../asset/images/icon/integral.svg'
-import couponIcon from '../../../asset/images/icon/coupon.svg'
-import listIcon from '../../../asset/images/icon/list.svg'
-import banner from '../../../asset/images/banner.jpg'
+import pedestalBg from '@/asset/images/pedestal.png'
+import integralIcon from '@/asset/images/icon/integral.svg'
+import couponIcon from '@/asset/images/icon/coupon.svg'
+import listIcon from '@/asset/images/icon/list.svg'
+import banner from '@/asset/images/banner.jpg'
 
-import arrowRightWhiteIcon from '../../../asset/images/icon/arrow_right_white.svg'
+import arrowRightWhiteIcon from '@/asset/images/icon/arrow_right_white.svg'
 
 import Store from './Store'
 import Service from './Service'
@@ -48,7 +48,6 @@ const Page = styled.div`
   }
   .section{
     margin-bottom: 10px;
-    background: #fff;
     .head{
       padding: 10px 0;
       .title{
@@ -170,9 +169,9 @@ class Home extends Component {
           </div>
           <div className="body">
             <div style={{display: 'flex', justifyContent: 'space-around'}}>
-              <div style={{height: 40, width: 80, background: '#eaeaea'}}></div>
-              <div style={{height: 40, width: 80, background: '#eaeaea'}}></div>
-              <div style={{height: 40, width: 80, background: '#eaeaea'}}></div>
+              <div style={{height: 50, width: 80, background: '#eaeaea'}}></div>
+              <div style={{height: 50, width: 80, background: '#eaeaea'}}></div>
+              <div style={{height: 50, width: 80, background: '#eaeaea'}}></div>
             </div>
           </div>
         </div>

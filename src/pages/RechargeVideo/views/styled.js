@@ -7,7 +7,7 @@ export default styled.div`
     position: relative;
     padding: 15px;
     margin-bottom: 15px;
-    background: linear-gradient(to right,#e6c283,#99703d);  1  
+    background: linear-gradient(to right,#e6c283,#99703d);
   }
   .provider-list{
     background: #fff;

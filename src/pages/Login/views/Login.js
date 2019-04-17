@@ -3,6 +3,7 @@ import { Redirect, withRouter, Link } from "react-router-dom"
 import { connect } from 'react-redux'
 import weui from 'weui.js'
 import {Helmet} from "react-helmet"
+import md5 from 'md5'
 
 import closeIcon from '@/asset/images/icon/close.png'
 
@@ -161,7 +162,7 @@ class Login extends Component {
     if(LOGINTYPE_SCHEMA[this.state.loginType] === 1) {
       params = {
         userPhoneNo: this.state.username,
-        password: this.state.password,
+        password: md5(this.state.password),
         loginType: LOGINTYPE_SCHEMA[this.state.loginType]
       }
     }else if(LOGINTYPE_SCHEMA[this.state.loginType] === 2) {

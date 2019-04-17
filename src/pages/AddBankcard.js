@@ -135,7 +135,12 @@ class AddBankcard extends Component {
       const {data} = await addBankcard(params)
       if(data.status === 200) {
         weui.alert(data.msg, () => {
-          push('/bankcard-list')
+          const {from} = this.props.location.state || {from: false}
+          if(from) {
+            push(from)
+          }else {
+            push('/bankcard-list')
+          }
         })
       }else {
         weui.alert(data.msg)

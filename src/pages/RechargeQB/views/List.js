@@ -2,7 +2,6 @@ import React from 'react'
 import classnames from 'classnames'
 
 function Item({id, selectId, money, integral, handleSelect}) {
-  console.log(handleSelect)
   const itemInnerClass = classnames('item__inner', {'active': id === selectId})
   return (
     <div className="item">

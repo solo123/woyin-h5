@@ -116,7 +116,7 @@ const AsyncTransferRecord = Loadable({
   loading: LoadingComponent
 })
 const AsyncHome = Loadable({ 
-  loader: () => import('./pages/home').then(({ view }) => view), 
+  loader: () => import('./pages/Home').then(({ view }) => view), 
   loading: LoadingComponent
 });
 const AsyncChangePswd = Loadable({ 
@@ -125,6 +125,10 @@ const AsyncChangePswd = Loadable({
 })
 const AsyncSetting = Loadable({ 
   loader: () => import('./pages/Setting'), 
+  loading: LoadingComponent
+})
+const AsyncDeveloping = Loadable({ 
+  loader: () => import('./pages/Developing').then(({ view }) => view), 
   loading: LoadingComponent
 })
 
@@ -165,6 +169,8 @@ class App extends Component {
 
             <Auth path="/setting" component={AsyncSetting} />
 
+            
+
             {/* <Auth path="/recharge-flow" component={RechargeFlow} /> */}
             {/* <Auth path="/recharge-oil" component={RechargeOil} /> */}
             {/* <Auth path="/recharge-qb" component={RechargeQB} /> */}
@@ -181,6 +187,8 @@ class App extends Component {
             {/* <Route path="/cate" component={Cate} /> */}
             {/* <Route path="/product" component={Product} /> */}
             {/* <Route path="/buy/:id" component={Buy} /> */}
+
+            <Route path="/developing" component={AsyncDeveloping} />
             <Route render={ ()=> <AsyncNotFound /> } />
           </Switch>
         </ScrollToTop>

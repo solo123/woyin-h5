@@ -1,98 +1,176 @@
 import React from 'react'
+import {Link} from "react-router-dom"
 import styled from 'styled-components'
 
-import EmptyArrayPlaceholder from '../../../common/EmptyArrayPlaceholder'
-import SkeletonPlaceholder from '../../../common/SkeletonPlaceholder'
+import dz from '@/asset/images/home/dz.png'
+import hf from '@/asset/images/home/hf.png'
+import ls from '@/asset/images/home/ls.png'
 
-const LayoutPage = styled.div`
-  .list{
+const Page = styled.div`
+  .box__head{
     display: flex;
-    flex-wrap: wrap;
+    justify-content: center;
+    &.dz{
+      color: #0084a1;
+      background: #bff4ff;
+    }
+    &.hf{
+      color: #e0605d;
+      background: #fedcdb;
+    }
+    &.ls{
+      color: #f3a831;
+      background: #feefac;
+    }
+    .content{
+      padding: 5px 0;
+      display: flex;
+      .text{
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        margin-right: 30px;
+        font-size: 12px;
+        h2{
+          font-size: 16px;
+        }
+        p{
+          margin-bottom: 15px;
+        }
+        span{
+          text-align: center;
+          border: 1px solid;
+          border-radius: 10px;
+          line-height: 1.3;
+        }
+      }
+      .img{
+        width: 110px;
+        height: 80px;
+      }
+    }
+  }
+  .swiper{
+    padding: 10px;
+    .swiper-box{
+      overflow-x: auto;
+      display: flex;
+    }
   }
   .item{
-    width: 50%;
-  }
-  .wrap{
-    margin: 5px;
+    text-align: center;
+    margin-right: 10px;
     padding: 10px;
     background: #fff;
-  }
-  .img{
-    margin-bottom: 10px;
-  }
-  .title{
-    font-weight: bold;
-    margin-bottom: 5px;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-  }
-  .price{
-    color: #f53415;
-    font-weight: bold;
-    margin-bottom: 5px;
-    font-family: industry;
-  }
-  .box{
-    display: flex;
-    justify-content: space-between;
-  }
-  .badge{
-    font-size: 12px;
-    padding: 2px 8px;
-    color: #7e7e7e7e;
-    border-radius: 3px;
-    background: #f2f2f2;
-    &.active{
+    width: 100px;
+    .img{
+    }
+    .title{
+      text-align: center;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .link{
       color: #fff;
-      background: #f63618;
+      padding: 0 20px;
+      font-size: 12px;
+      border-radius: 10px;
+      background: #ef1a20;
+      display: inline-block;
     }
   }
 `
 
-const ProductItems = ({items}) => {
-  if(!items.length) {
-    return <EmptyArrayPlaceholder />
-  }
+function Item({children, title, subTitle, type}) {
   return (
-    <div className="list">
-      {items.map(item => (
-        <Item 
-          key={item.id}
-          url={item.url}
-          title={item.title}
-          price={item.price}
-          status={item.status}
-        />
-      ))}
-    </div>
-  )
-}
-
-const Item = ({id, title, price, url, status}) => {
-  return (
-    <div className="item">
-      <div className="wrap">
-        <img className="img" src="https://img13.360buyimg.com/n0/jfs/t1/19531/26/3823/118504/5c2c35beE66ec977c/8133abedfda92680.jpg" alt="" />
-        <div className="title">{title}</div>
-        <div className="price">￥{price}</div>
-        <div className="box">
-          <div className="badge">{status}</div>
-          <div className="badge active">兑换</div>
+    <section className="box">
+      {children}
+      <div className="box__body">
+        <div className="swiper">
+          <div className="swiper-box">
+            <div className="item">
+              <Link to="/developing">
+                <img className="img" src={src} alt=""/>
+                <p className="title">大头风扇大头风扇</p>
+                <span className="link">兑换</span>
+              </Link>
+            </div>
+            <div className="item">
+              <Link to="/developing">
+                <img className="img" src={src} alt=""/>
+                <p className="title">大头风扇大头风扇</p>
+                <span className="link">兑换</span>
+              </Link>
+            </div>
+            <div className="item">
+              <Link to="/developing">
+                <img className="img" src={src} alt=""/>
+                <p className="title">大头风扇大头风扇</p>
+                <span className="link">兑换</span>
+              </Link>
+            </div>
+            <div className="item">
+              <Link to="/developing">
+                <img className="img" src={src} alt=""/>
+                <p className="title">大头风扇大头风扇</p>
+                <span className="link">兑换</span>
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </section>
   )
 }
 
-export default ({loading, items}) => {
-  if(loading) {
-    return <div className="u_mx_x"><SkeletonPlaceholder count={2} /></div>
-  }
+const src = 'http://yanxuan.nosdn.127.net/aed3ae23b0ee7ad024d545b1300f2ba7.png'
 
+export default ({loading, items}) => {
   return (
-    <LayoutPage>
-      <ProductItems items={items} />
-    </LayoutPage>
+    <Page>
+      <Item>
+        <Link to="/developing">
+          <div className="box__head dz">
+            <div className="content">
+              <div className="text">
+                <h2>电子产品</h2>
+                <p>电子产品分类标语</p>
+                <span>查看详情</span>
+              </div>
+              <img className="img" src={dz} alt=""/>
+            </div>
+          </div>
+        </Link>
+      </Item>
+      <Item>
+        <Link to="/developing">
+          <div className="box__head hf">
+            <div className="content">
+              <div className="text">
+                <h2>护肤类</h2>
+                <p>护肤类分类标语</p>
+                <span>查看详情</span>
+              </div>
+              <img className="img" src={hf} alt=""/>
+            </div>
+          </div>
+        </Link>
+      </Item>
+      <Item>
+        <Link to="/developing">
+          <div className="box__head ls">
+            <div className="content">
+              <div className="text">
+                <h2>零食类</h2>
+                <p>零食类分类标语</p>
+                <span>查看详情</span>
+              </div>
+              <img className="img" src={ls} alt=""/>
+            </div>
+          </div>
+        </Link>
+      </Item>
+    </Page>
   )
 }

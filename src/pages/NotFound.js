@@ -2,10 +2,10 @@ import React from 'react'
 import styled from 'styled-components'
 import {Helmet} from "react-helmet"
 
-import {replace} from '../services/redirect'
+import {replace} from '@/services/redirect'
 
-import Backhome from '../common/Backhome'
-import notFound from '../asset/images/404.svg'
+import Backhome from '@/common/Backhome'
+import notFound from '@/asset/images/404.svg'
 
 const Button = styled.button`
   outline: none;
