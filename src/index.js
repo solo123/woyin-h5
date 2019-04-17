@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import 'weui'
-
+import "@babel/polyfill"
 import {getItem} from './services/storage'
 
 import './index.css';
