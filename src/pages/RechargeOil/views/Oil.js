@@ -3,7 +3,7 @@ import axios from 'axios'
 import weui from 'weui.js'
 import {Helmet} from "react-helmet"
 
-import api, {getProducts} from '@/api'
+import api, {getProducts, rechargeOil} from '@/api'
 import util from '@/util'
 import ProductSkeleton from '@/common/ProductSkeleton'
 import EmptyArrayPlaceholder from '@/common/EmptyArrayPlaceholder'
@@ -119,7 +119,7 @@ export default class extends Component {
       cardType: this.state.cardType
     }
     try {
-      const {data} = await api.rechargeOil(params)
+      const {data} = await rechargeOil(params)
       if(data.status === 200) {
         weui.alert(data.msg)
       }else if(data.status === 1017) {

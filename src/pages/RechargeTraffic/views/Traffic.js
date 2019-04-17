@@ -3,7 +3,7 @@ import axios from 'axios'
 import weui from 'weui.js'
 import {Helmet} from "react-helmet"
 
-import api, {getProducts} from '@/api'
+import api, {getProducts, rechargeTraffic} from '@/api'
 import util from '@/util'
 import ProductSkeleton from '@/common/ProductSkeleton'
 import EmptyArrayPlaceholder from '@/common/EmptyArrayPlaceholder'
@@ -111,7 +111,7 @@ export default class extends Component {
     }
   }
 
-  async submitRecharge(pswd) {
+  async doSubmit(pswd) {
     const loading = weui.loading('处理中')
     const params = {
       phone: this.state.phone,
@@ -120,7 +120,7 @@ export default class extends Component {
       range: '0'
     }
     try {
-      const {data} = await api.rechargeTraffic(params)
+      const {data} = await rechargeTraffic(params)
       if(data.status === 200) {
         weui.alert(data.msg)
       }else if(data.status === 1017) {
@@ -193,7 +193,7 @@ export default class extends Component {
       useable: this.state.availableIntegral,
       callback: (e, inputElem) => {
         if(!inputElem.value) {return false}
-        this.submitRecharge(inputElem.value)
+        this.doSubmit(inputElem.value)
       }
     })
   }

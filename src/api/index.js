@@ -1,4 +1,5 @@
 import qs from'qs'
+import md5 from 'md5'
 import {get, post} from './setup'
 
 import G_config from '@/config'
@@ -12,6 +13,12 @@ if(process.env.NODE_ENV === 'development') {
 
 export default {
   login(data) {
+    if(data.loginType === 1) {
+      data = {
+        ...data,
+        password: md5(data.password)
+      }
+    }
     return post(`${BASE}user/login`, qs.stringify(data));
   },
   // 获取指定状态的订单列表
@@ -180,6 +187,10 @@ export const getCodeForWithdraw = (phone) => {
 }
 
 export const redeemIntegral = (data) => {
+  data = {
+    ...data,
+    tradPwd: md5(data.tradPwd)
+  }
   return post(`${BASE}api/trad/withdrawal`, qs.stringify(data))
 }
 
@@ -193,7 +204,11 @@ export const getWithdrawFee = (amount) => {
   return get(`${BASE}api/trad/poundageList`, {amount})
 }
 
-export const changePswd = (data) => {
+export const findPswd = (data) => {
+  data = {
+    ...data,
+    password: md5(data.password)
+  }
   return post(`${BASE}user/changePwd`, qs.stringify(data))
 }
 
@@ -209,6 +224,7 @@ export const getSubProducts = (id = '', config = {}) => {
 export const rechargeVideo = (data = {}, config = {}) => {
   const params = {
     ...data,
+    tranPwd: md5(data.tranPwd),
     chargeType: 1
   }
   return post(`${BASE}api/video/charge`, qs.stringify(params), config)
@@ -216,6 +232,10 @@ export const rechargeVideo = (data = {}, config = {}) => {
 
 // 电子卡券充值
 export const rechargeVoucher = (data) => {
+  data = {
+    ...data,
+    tranPwd: md5(data.tranPwd)
+  }  
   return post(`${BASE}api/voucher/charge`, qs.stringify(data))
 }
 
@@ -230,6 +250,10 @@ export const getVoucherRecord = (data, config = {}) => {
 
 // 积分转赠
 export const integralTransfer = (data) => {
+  data = {
+    ...data,
+    tranPwd: md5(data.tranPwd)
+  }  
   return post(`${BASE}api/transferred/commit`, qs.stringify(data))
 }
 
@@ -254,6 +278,10 @@ export const getBankcardList = () => {
 
 // 赎回或信用卡还款
 export const paymentToCard = (data) => {
+  data = {
+    ...data,
+    tradPwd: md5(data.tradPwd)
+  }
   return post(`${BASE}api/trad/withdrawal`, qs.stringify(data))
 }
 
@@ -288,14 +316,37 @@ export const getRedeemRecord = (data = {}, config = {}) => {
 
 // 话费充值
 export function rechargePhone(data) {
-  const params = {
+  data = {
     ...data,
+    tranPwd: md5(data.tranPwd),
     chargeType: 1
   }
-  return post(`${BASE}api/charge/moreCredit`, qs.stringify(params))
+  return post(`${BASE}api/charge/moreCredit`, qs.stringify(data))
 }
 
 // QB充值
 export function rechargeQB(data) {
+  data = {
+    ...data,
+    tranPwd: md5(data.tranPwd)
+  }  
   return post(`${BASE}api/charge/moreCredit`, qs.stringify(data))
+}
+
+// 流量充值
+export function rechargeTraffic(data) {
+  data = {
+    ...data,
+    tranPwd: md5(data.tranPwd)
+  }
+  return post(`${BASE}api/traffic/charge`, qs.stringify(data))
+}
+
+// 加油卡充值
+export function rechargeOil(data) {
+  data = {
+    ...data,
+    tranPwd: md5(data.tranPwd)
+  }
+  return post(`${BASE}api/oilCard/charge`, qs.stringify(data))
 }

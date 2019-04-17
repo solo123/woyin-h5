@@ -108,7 +108,7 @@ class RechargeVideo extends Component {
     }
   }
 
-  async submitRecharge(pswd) {
+  async doSubmit(pswd) {
     const loading = weui.loading('处理中')
     this.submitSource = CancelToken.source()
     const params = {
@@ -180,7 +180,7 @@ class RechargeVideo extends Component {
       useable: this.state.availableIntegral,
       callback: (e, inputElem) => {
         if(!inputElem.value) {return false}
-        this.submitRecharge(inputElem.value)
+        this.doSubmit(inputElem.value)
       }
     })
   }

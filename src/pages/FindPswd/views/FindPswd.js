@@ -2,10 +2,9 @@ import React, { Component } from 'react'
 import weui from 'weui.js'
 import styled from 'styled-components'
 import {Helmet} from "react-helmet"
-import md5 from 'md5'
 
 import config from '@/config'
-import api, {changePswd} from '@/api'
+import api, {findPswd} from '@/api'
 import { push } from '@/services/redirect'
 import closeIcon from '@/asset/images/icon/close.png'
 import showIcon from '@/asset/images/icon/show.png'
@@ -84,7 +83,6 @@ export default class extends Component {
   constructor(props) {
     super(props)
 
-    this.verify = this.verify.bind(this)
     this.handleGetCode = this.handleGetCode.bind(this)
 
     this.handleToggleNewPswd = this.handleToggle.bind(this, 'newPswd')
@@ -107,7 +105,7 @@ export default class extends Component {
 
       code: '',
       getCodeFlag: true,
-      interval: config.changePswd.INTERVAL,
+      interval: config.findPswd.INTERVAL,
 
       newPswd: '',
       newPswdClean: false,
@@ -125,15 +123,15 @@ export default class extends Component {
   componentWillUnmount() {
   }
 
-  async changePswd(phone, newPswd, code) {
+  async findPswd(phone, newPswd, code) {
     const loading = weui.loading('处理中')
     const params = {
       userPhoneNo: phone,
-      password: md5(newPswd),
+      password: newPswd,
       code: code
     }
     try {
-      const {data} = await changePswd(params)
+      const {data} = await findPswd(params)
       if(data.status === 200) {
         weui.alert(data.msg, () => {
           push('/login')
@@ -172,7 +170,7 @@ export default class extends Component {
   }
 
   resetGetCode() {
-    this.setState({interval: config.changePswd.INTERVAL, getCodeFlag: true})
+    this.setState({interval: config.findPswd.INTERVAL, getCodeFlag: true})
   }
 
   countDown() {
@@ -212,24 +210,29 @@ export default class extends Component {
   verify() {
     if(!this.state.phone) {
       weui.alert('请输入登录手机号')
-      return
+      return false
     }
     if(!this.state.newPswd) {
       weui.alert('请输入新密码')
-      return
+      return false
+    }
+    if(this.state.newPswd.length !== config.findPswd.PSWD_DIGIT) {
+      weui.alert(`请输入${config.findPswd.PSWD_DIGIT}位数的密码`)
+      return false
     }
     if(!this.state.confNewPswd) {
       weui.alert('请确认新密码')
-      return
+      return false
     }
     if(this.state.newPswd !== this.state.confNewPswd) {
       weui.alert('新密码不一致')
-      return
+      return false
     }
     if(!this.state.code) {
       weui.alert('请输入验证码')
-      return
+      return false
     }
+    return true
   }
 
   handleChange(e) {
@@ -261,7 +264,11 @@ export default class extends Component {
   }
 
   handleSubmit(e) {
-    this.changePswd(this.state.phone, this.state.newPswd, this.state.code)
+    if(!this.verify()) {
+      return
+    }
+
+    this.findPswd(this.state.phone, this.state.newPswd, this.state.code)
   }
 
   render() {
@@ -286,7 +293,7 @@ export default class extends Component {
                 onChange={this.handleChange} 
                 onFocus={this.handleFocus}
                 onBlur={this.handleBlur}
-                placeholder="请输入登录手机号"
+                placeholder="请输入手机号"
               />
             </div>
             <div className="group__foot">
@@ -308,7 +315,7 @@ export default class extends Component {
                 onChange={this.handleChange} 
                 onFocus={this.handleFocus}
                 onBlur={this.handleBlur}
-                placeholder="新密码"
+                placeholder={`请输入${config.findPswd.PSWD_DIGIT}位数新密码`}
               />
             </div>
             <div className="group__foot">
@@ -382,7 +389,7 @@ export default class extends Component {
         <div className="u_m_xxx">
           {pass
             ? <PrimaryButton onClick={this.handleSubmit}>提交</PrimaryButton>
-            : <DisablePrimaryButton onClick={this.verify}>提交</DisablePrimaryButton>
+            : <DisablePrimaryButton onClick={this.handleSubmit}>提交</DisablePrimaryButton>
           }
         </div>
 

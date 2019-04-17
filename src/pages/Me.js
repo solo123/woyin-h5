@@ -285,72 +285,60 @@ class Me extends Component {
 
         <div>
           <section>
-            <div className="item">
+            <Link className="item" to="/credit-record">
               <div className="cell">
                 <img className="icon" src={card2Icon} alt=""/>
                 <label className="label">信用卡还款记录</label>
               </div>
               <div className="cell">
-                <Link to="/credit-record">
-                  <img className="arrow" src={arrowIcon} alt="" />
-                </Link>
+                <img className="arrow" src={arrowIcon} alt="" />
               </div>
-            </div> 
-            <div className="item">
+            </Link> 
+            <Link className="item" to="/order">
               <div className="cell">
                 <img className="icon" src={recordIcon} alt=""/>
                 <label className="label">我的订单</label>
               </div>
               <div className="cell">
-                <Link to="/order">
-                  <img className="arrow" src={arrowIcon} alt="" />
-                </Link>
+                <img className="arrow" src={arrowIcon} alt="" />
               </div>
-            </div>
-            <div className="item">
+            </Link>
+            <Link className="item" to="/redeem-record">
               <div className="cell">
                 <img className="icon" src={recordIcon} alt=""/>
                 <label className="label">积分赎回记录</label>
               </div>
               <div className="cell">
-                <Link to="/redeem-record">
-                  <img className="arrow" src={arrowIcon} alt="" />
-                </Link>
+                <img className="arrow" src={arrowIcon} alt="" />
               </div>
-            </div> 
-            <div className="item">
+            </Link> 
+            <Link className="item" to="/transfer-record">
               <div className="cell">
                 <img className="icon" src={recordIcon} alt=""/>
                 <label className="label">积分转赠记录</label>
               </div>
               <div className="cell">
-                <Link to="/transfer-record">
-                  <img className="arrow" src={arrowIcon} alt="" />
-                </Link>
+                <img className="arrow" src={arrowIcon} alt="" />
               </div>
-            </div>  
-            <div className="item">
+            </Link>  
+            <Link className="item" to="/voucher-record">
               <div className="cell">
                 <img className="icon" src={recordIcon} alt=""/>
                 <label className="label">电子卡券</label>
               </div>
               <div className="cell">
-                <Link to="/voucher-record">
-                  <img className="arrow" src={arrowIcon} alt="" />
-                </Link>
+                <img className="arrow" src={arrowIcon} alt="" />
               </div>
-            </div>         
-            <div className="item">
+            </Link>         
+            <Link className="item" to="/setting">
               <div className="cell">
                 <img className="icon" src={settingIcon} alt=""/>
                 <label className="label">设置</label>
               </div>
               <div className="cell">
-                <Link to="/setting">
-                  <img className="arrow" src={arrowIcon} alt="" />
-                </Link>
+                <img className="arrow" src={arrowIcon} alt="" />
               </div>
-            </div>
+            </Link>
           </section>
         </div>
 

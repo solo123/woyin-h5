@@ -119,8 +119,8 @@ const AsyncHome = Loadable({
   loader: () => import('./pages/Home').then(({ view }) => view), 
   loading: LoadingComponent
 });
-const AsyncChangePswd = Loadable({ 
-  loader: () => import('./pages/ChangePswd').then(({ view }) => view), 
+const AsyncFindPswd = Loadable({ 
+  loader: () => import('./pages/FindPswd').then(({ view }) => view), 
   loading: LoadingComponent
 })
 const AsyncSetting = Loadable({ 
@@ -129,6 +129,10 @@ const AsyncSetting = Loadable({
 })
 const AsyncDeveloping = Loadable({ 
   loader: () => import('./pages/Developing').then(({ view }) => view), 
+  loading: LoadingComponent
+})
+const AsyncJD = Loadable({ 
+  loader: () => import('./pages/JD').then(({ view }) => view), 
   loading: LoadingComponent
 })
 
@@ -164,12 +168,14 @@ class App extends Component {
 
             <Auth path="/transfer" component={AsyncTransfer} />
             <Auth path="/transfer-record" component={AsyncTransferRecord} />
+
+
+            <Auth path="/store-jd" component={AsyncJD} />
             
-            <Route path="/find-pswd" component={AsyncChangePswd} />
+            <Route path="/find-pswd" component={AsyncFindPswd} />
 
             <Auth path="/setting" component={AsyncSetting} />
 
-            
 
             {/* <Auth path="/recharge-flow" component={RechargeFlow} /> */}
             {/* <Auth path="/recharge-oil" component={RechargeOil} /> */}

@@ -39,8 +39,9 @@ export default {
   order: {
     PAGE_LIMIT: 20
   },
-  changePswd: {
-    INTERVAL: 60
+  findPswd: {
+    INTERVAL: 60,
+    PSWD_DIGIT: 6
   },
   // 转赠记录
   transfer: {
