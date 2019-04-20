@@ -437,7 +437,7 @@ Mock.mock(/getViolationList/, 'get', function(options){
   }
 })
 
-// 获取赎回手续费
+// 获取代卖手续费
 Mock.mock(/getRedeemFee/, 'get', function(options){
   const result = util.parseUrl(options.url, 'integral');
   return {
@@ -448,17 +448,17 @@ Mock.mock(/getRedeemFee/, 'get', function(options){
   }
 })
 
-// 发起积分赎回
+// 发起积分代卖
 Mock.mock(/redeemIntegral/, 'post', function(options){
   const data = JSON.parse(options.body)
   console.log('redeemIntegral', data)
   return {
     code: '1',
-    msg: '积分赎回申请成功'
+    msg: '积分代卖申请成功'
   }
 })
 
-// 获取积分赎回记录
+// 获取积分代卖记录
 Mock.mock(/getRedeemRecordByStatus/, 'get', function(options){
   const status = util.parseUrl(options.url, 'status').status;
   console.log('getRedeemRecordByStatus', status)
@@ -472,7 +472,7 @@ Mock.mock(/getRedeemRecordByStatus/, 'get', function(options){
   }
 })
 
-// 发送短信验证码（积分赎回流程）
+// 发送短信验证码（积分代卖流程）
 Mock.mock(/sendMsgCode/, 'get', function(options){
   return {
     code: '1',
@@ -546,3 +546,55 @@ Mock.mock(/sendMessageCode/, 'get', function(options){
 //     ]
 //   }
 // })
+
+
+const province = {
+  "湖北省": 6612,
+  "湖南省": 6613,
+  "广东省": 6614,
+  "四川省": 6615
+}
+const city = {
+  "深圳市": 1212,
+  "汕头市": 1213
+}
+const county = {
+  "光明新区": 6675,
+  "南山区": 3155
+}
+const street = {
+  "龙华街道": 1232,
+  "坂田街道": 1222
+}
+
+// 删除指定用户地址
+Mock.mock(/address\/\d+/, 'get', function(options){
+  console.log("删除地址")
+  return {"status":200,"data":{},"msg":"请求成功"}
+})
+
+// 获取京东地址
+Mock.mock(/address/, 'get', function(options){
+  const type = util.parseUrl(options.url, 'type').type
+  let data = null
+  if(type === '1') {
+    data = province
+  }else if(type === '2') {
+    data = city
+  }else if(type === '3') {
+    data = county
+  }else if(type === '4') {
+    data = street
+  }
+  return {
+    status: 200,
+    data: data
+  }
+})
+
+// 获取用户地址列表
+Mock.mock(/userAddressList/, 'get', function(options){
+  return {"status":200,"data":[{"id":1,name: "杰森斯坦森", "province":"江西", "city":"抚州","county":"临川区","town":"腾桥镇","address":"邓坊村","phone":"15999685974","defaultAddress":0},{"id":2,name: "杰森斯坦森", "province":"广东","city":"深圳市","county":"宝安区","town":"腾桥镇","address":"邓坊村","phone":"15999685974","defaultAddress":0},{"id":3,name: "杰森斯坦森", "province":"江西","city":"抚州","county":"临川区","town":"腾桥镇","address":"邓坊村","phone":"15999685974","defaultAddress":0},{"id":4,name: "杰森斯坦森", "province":"江西","city":"抚州","county":"临川区","town":"腾桥镇","address":"邓坊村","phone":"15999685974","defaultAddress":0},{"id":6,name: "杰森斯坦森", "province":"江西","city":"抚州","county":"临川区","town":"腾桥镇","address":"邓坊村","phone":"15999685974","defaultAddress":0},{"id":7,name: "杰森斯坦森", "province":"江西","city":"抚州","county":"临川区","town":"腾桥镇","address":"邓坊村","phone":"15999685974","defaultAddress":1}],"msg":"请求成功"}  
+})
+
+

@@ -23,7 +23,7 @@ export default {
   creditRecord: {
     PAGE_LIMIT: 20
   },
-  // 积分赎回
+  // 积分代卖
   redeem: {
     // 每页条数
     PAGE_LIMIT: 20,
@@ -46,6 +46,11 @@ export default {
   // 转赠记录
   transfer: {
     PAGE_LIMIT: 20
+  },
+  // 商品购买
+  store: {
+    MAX_COUNT: 10,
+    MIN_COUNT: 1    
   },
   // 双色球
   double_color_ball: {

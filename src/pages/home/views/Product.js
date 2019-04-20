@@ -90,28 +90,28 @@ function Item({children, title, subTitle, type}) {
         <div className="swiper">
           <div className="swiper-box">
             <div className="item">
-              <Link to="/developing">
+              <Link to="/store-jd">
                 <img className="img" src={src} alt=""/>
                 <p className="title">大头风扇大头风扇</p>
                 <span className="link">兑换</span>
               </Link>
             </div>
             <div className="item">
-              <Link to="/developing">
+              <Link to="/store-jd">
                 <img className="img" src={src} alt=""/>
                 <p className="title">大头风扇大头风扇</p>
                 <span className="link">兑换</span>
               </Link>
             </div>
             <div className="item">
-              <Link to="/developing">
+              <Link to="/store-jd">
                 <img className="img" src={src} alt=""/>
                 <p className="title">大头风扇大头风扇</p>
                 <span className="link">兑换</span>
               </Link>
             </div>
             <div className="item">
-              <Link to="/developing">
+              <Link to="/store-jd">
                 <img className="img" src={src} alt=""/>
                 <p className="title">大头风扇大头风扇</p>
                 <span className="link">兑换</span>
@@ -124,13 +124,13 @@ function Item({children, title, subTitle, type}) {
   )
 }
 
-const src = 'http://yanxuan.nosdn.127.net/aed3ae23b0ee7ad024d545b1300f2ba7.png'
+const src = 'https://yanxuan.nosdn.127.net/aed3ae23b0ee7ad024d545b1300f2ba7.png'
 
 export default ({loading, items}) => {
   return (
     <Page>
       <Item>
-        <Link to="/developing">
+        <Link to="/store-jd">
           <div className="box__head dz">
             <div className="content">
               <div className="text">
@@ -144,7 +144,7 @@ export default ({loading, items}) => {
         </Link>
       </Item>
       <Item>
-        <Link to="/developing">
+        <Link to="/store-jd">
           <div className="box__head hf">
             <div className="content">
               <div className="text">
@@ -158,7 +158,7 @@ export default ({loading, items}) => {
         </Link>
       </Item>
       <Item>
-        <Link to="/developing">
+        <Link to="/store-jd">
           <div className="box__head ls">
             <div className="content">
               <div className="text">

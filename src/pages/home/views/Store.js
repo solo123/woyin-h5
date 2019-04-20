@@ -46,7 +46,7 @@ export default function() {
     <LayoutPage>
       <div className="main" style={{marginBottom: 10}}>
         <div className="cell">
-          <Link to="/developing">
+          <Link to="/store-jd">
             <img src={jd} alt=""/>
             <div className="content">
               <h2>京东商城</h2>

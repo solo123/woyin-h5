@@ -88,9 +88,9 @@ const Page = styled.div`
 
 const SubmitBtn = ({pass, onSubmit}) => {
   if(pass) {
-    return <PrimaryBtn onClick={onSubmit}>添加</PrimaryBtn>
+    return <button className="btn btn-secondary" onClick={onSubmit}>添加</button>
   }else {
-    return <DisablePrimaryBtn onClick={onSubmit}>添加</DisablePrimaryBtn>
+    return <button className="btn btn-secondary disable" onClick={onSubmit}>添加</button>
   }
 }
 

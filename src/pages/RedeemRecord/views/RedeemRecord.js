@@ -98,7 +98,7 @@ export default class extends Component {
     const {placeholderLoading, items, seletViewFlag} = this.state
     return (
       <Page>
-        <Helmet defaultTitle="沃银企服" title="积分赎回记录"/>
+        <Helmet defaultTitle="沃银企服" title="积分代卖记录"/>
 
         <div className="page">
           <div className="page-head">

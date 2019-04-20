@@ -106,7 +106,7 @@ export default {
   getRedeemFee(amount) {
     return get(`${BASE}api/trad/poundageList`, {amount})
   },
-  // 积分赎回流程短信验证码
+  // 积分代卖流程短信验证码
   sendMsgCode(phone) {
     return get('sendMsgCode', {phone})
   },
@@ -276,7 +276,7 @@ export const getBankcardList = () => {
   return get(`${BASE}api/bank/getBankCardList`)
 }
 
-// 赎回或信用卡还款
+// 代卖或信用卡还款
 export const paymentToCard = (data) => {
   data = {
     ...data,
@@ -304,7 +304,7 @@ export function getCreditRecord(data = {}, config = {}) {
   return get(`${BASE}api/trad/getWithList`, params, config)
 }
 
-// 获取积分赎回记录
+// 获取积分代卖记录
 export const getRedeemRecord = (data = {}, config = {}) => {
   const params = {
     ...data,
@@ -349,4 +349,32 @@ export function rechargeOil(data) {
     tranPwd: md5(data.tranPwd)
   }
   return post(`${BASE}api/oilCard/charge`, qs.stringify(data))
+}
+
+// 获取地址
+export function getAddr(data = {}, config = {}) {
+  return get(`${BASE}mail/address`, data, config)
+}
+
+// 添加地址
+export function addJDAddr(data) {
+  data = {
+    ...data,
+    addType: 1
+  }
+  return post(`${BASE}mail/address`, qs.stringify(data))
+}
+
+export function getJDAddrList(data = {}, config = {}) {
+  data = {
+    ...data,
+    addType: 1
+  }
+  return get(`${BASE}mail/userAddressList`, data, config)
+}
+
+// 删除用户地址
+export function deleteAddrById(id, config) {
+  console.log(id, config)
+  return get(`${BASE}mail/address/${id}`, null, config)
 }

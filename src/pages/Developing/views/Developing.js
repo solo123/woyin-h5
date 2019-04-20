@@ -7,27 +7,11 @@ import {replace} from '@/services/redirect'
 import Backhome from '@/common/Backhome'
 import developing from '@/asset/images/developing.svg'
 
-const Button = styled.button`
-  outline: none;
-  display: block;
-  border: 0;
-  width: 100%;
-  padding: 0;
-`
-const PrimaryButton = styled(Button)`
-  color: #fff;
-  font-size: 16px;
-  font-weight: bold;
-  line-height: 50px;
-  border-radius: 3px;
-  background: -webkit-linear-gradient(47deg,#4cadff,#8ce0ff);
-`
-const LayoutBtnBox = styled.div`
-  margin: 15px;
-`
-
 const Page = styled.div`
   padding-top: 50px;
+  .box{
+    margin: 15px;
+  }
   .content{
     text-align: center;
     margin-bottom: 50px;
@@ -51,9 +35,9 @@ export default function() {
         <img className="img" src={developing} alt=""/>
         <h1>该页面正在开发中</h1>
       </div>
-      <LayoutBtnBox>
-        <PrimaryButton onClick={() => replace('/')}>返回首页</PrimaryButton>
-      </LayoutBtnBox>
+      <div className="box">
+        <button className="btn btn-secondary" onClick={() => replace('/')}>返回首页</button>
+      </div>
 
       <Backhome />
     </Page>

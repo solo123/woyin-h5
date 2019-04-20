@@ -222,9 +222,9 @@ const SendMessageBtn = ({flag, interval, handleClick}) => {
 
 const SubmitBtn = ({pass, handleSubmit}) => {
   if(pass) {
-    return <PrimaryButton onClick={handleSubmit}>确认赎回</PrimaryButton>
+    return <button className="btn btn-secondary" onClick={handleSubmit}>确认代卖</button>
   }
-  return <DisablePrimaryButton>确认赎回</DisablePrimaryButton>
+  return <button className="btn btn-secondary disable">确认代卖</button>
 }
 
 const Bankcard = ({logo, bankcardNo, bankName}) => {
@@ -484,7 +484,7 @@ class Redeem extends Component {
 
   handleSubmit(e) {
     util.paymentConfirm({
-      title: '赎回',
+      title: '代卖',
       amount: this.state.integral,
       useable: this.state.availableIntegral,
       callback: (e, inputElem) => {
@@ -506,11 +506,11 @@ class Redeem extends Component {
       getCodeFlag
     } = this.state
 
-    const placeholder = `最多可赎回${this.state.availableIntegral}积分`
+    const placeholder = `最多可代卖${this.state.availableIntegral}积分`
 
     return (
       <Page>
-        <Helmet defaultTitle="沃银企服" title="积分赎回"/>
+        <Helmet defaultTitle="沃银企服" title="积分代卖"/>
         <div className="u_mb_xxx">
           <div className="trigger-bar">
             <label>选择银行卡</label>
@@ -568,7 +568,7 @@ class Redeem extends Component {
         <div className="u_mb_xxx">
           <div className="small-text flex-y-center" onClick={this.handleToggle}>
             <Agreement agreementFlag={agreementFlag} />
-            同意用户<Link to="/redeen-agreement" style={{color: '#007AFF'}}>《赎回规则协议》</Link>
+            同意用户<Link to="/redeen-agreement" style={{color: '#007AFF'}}>《代卖规则协议》</Link>
           </div>
         </div>
 

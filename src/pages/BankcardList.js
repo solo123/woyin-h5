@@ -26,23 +26,8 @@ import zsIcon from '../asset/images/bank/zs.svg'
 import zxIcon from '../asset/images/bank/zx.svg'
 import defaultIcon from '../asset/images/bank/default.svg'
 
-const Button = styled.button`
-  outline: none;
-  display: block;
-  border: 0;
-  width: 100%;
-  padding: 0;
-`
-const PrimaryButton = styled(Button)`
-  color: #fff;
-  font-size: 16px;
-  font-weight: bold;
-  line-height: 50px;
-  border-radius: 3px;
-  background: -webkit-linear-gradient(47deg,#4cadff,#8ce0ff);
-`
 const Page = styled.div`
-  margin-bottom: 80px;
+  margin-bottom: 70px;
   .main{
     padding: 15px 15px 0 15px;
   }
@@ -195,7 +180,7 @@ class BankcardList extends Component {
         <div className="fixed-bottom">
           <div className="u_m_xxx">
             <Link to="/bankcard-add">
-              <PrimaryButton>添加银行卡</PrimaryButton>
+              <button className="btn btn-secondary">添加银行卡</button>
             </Link>
           </div>
         </div>

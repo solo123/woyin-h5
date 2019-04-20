@@ -8,29 +8,12 @@ import ScrollToTop from './common/ScrollToTop'
 import Auth from './common/Auth'
 import history from './history'
 
-// import Cate from './components/Cate'
-// import DoubleColorBall from './components/DoubleColorBall'
-// import Product from './components/Product'
-// import Buy from './components/Buy'
-// import RechargeFlow from './components/RechargeFlow'
-// import RechargeOil from './components/RechargeOil'
-// import RechargeQB from './components/RechargeQB'
-// import RechargeVideo from './components/RechargeVideo'
-// import RechargeECard from './components/RechargeECard'
-// import RechargeECardDetail from './components/RechargeECardDetail'
-// import CreditCard from './components/CreditCard'
-// import Violation from './components/Violation'
-// import ViolationList from './components/ViolationList'
-// import ViolationDetail from './components/ViolationDetail'
-
 const LoadingComponent = ({ isLoading, error }) => {
   if (isLoading) {
     return <div style={{textAlign: 'center', paddingTop: 30}}>loading...</div>
-  }
-  else if (error) {
+  }else if (error) {
     return <div>Sorry, there was a problem loading the page.</div>
-  }
-  else {
+  }else {
     return null
   }
 }
@@ -52,39 +35,39 @@ const AsyncAddBankcard = Loadable({
   loading: LoadingComponent
 })
 const AsyncRechargePhone = Loadable({
-  loader: () => import('./pages/RechargePhone').then(({ view }) => view),
+  loader: () => import('./pages/RechargePhone').then(({view}) => view),
   loading: LoadingComponent
 })
 const AsyncRechargeTraffic = Loadable({
-  loader: () => import('./pages/RechargeTraffic').then(({ view }) => view),
+  loader: () => import('./pages/RechargeTraffic').then(({view}) => view),
   loading: LoadingComponent
 })
 const AsyncRechargeOil = Loadable({
-  loader: () => import('./pages/RechargeOil').then(({ view }) => view),
+  loader: () => import('./pages/RechargeOil').then(({view}) => view),
   loading: LoadingComponent
 })
 const AsyncRechargeQB = Loadable({
-  loader: () => import('./pages/RechargeQB').then(({ view }) => view),
+  loader: () => import('./pages/RechargeQB').then(({view}) => view),
   loading: LoadingComponent
 })
 const AsyncRechargeVideo = Loadable({
-  loader: () => import('./pages/RechargeVideo').then(({ view }) => view),
+  loader: () => import('./pages/RechargeVideo').then(({view}) => view),
   loading: LoadingComponent
 })
 const AsyncVoucher = Loadable({
-  loader: () => import('./pages/Voucher').then(({ view }) => view),
+  loader: () => import('./pages/Voucher').then(({view}) => view),
   loading: LoadingComponent
 })
-const AsyncRechargeVoucherDetail = Loadable({
-  loader: () => import('./pages/RechargeVoucherDetail').then(({view}) => view),
+const AsyncRechargeVoucher = Loadable({
+  loader: () => import('./pages/RechargeVoucher').then(({view}) => view),
   loading: LoadingComponent
 })
 const AsyncVoucherRecord = Loadable({
-  loader: () => import('./pages/VoucherRecord').then(({ view }) => view),
+  loader: () => import('./pages/VoucherRecord').then(({view}) => view),
   loading: LoadingComponent
 })
 const AsyncOrder = Loadable({
-  loader: () => import('./pages/Order').then(({ view }) => view),
+  loader: () => import('./pages/Order').then(({view}) => view),
   loading: LoadingComponent
 })
 const AsyncNotFound = Loadable({
@@ -116,11 +99,15 @@ const AsyncTransferRecord = Loadable({
   loading: LoadingComponent
 })
 const AsyncHome = Loadable({ 
-  loader: () => import('./pages/Home').then(({ view }) => view), 
+  loader: () => import('./pages/Home').then(({view}) => view), 
   loading: LoadingComponent
 });
 const AsyncFindPswd = Loadable({ 
-  loader: () => import('./pages/FindPswd').then(({ view }) => view), 
+  loader: () => import('./pages/FindPswd').then(({view}) => view), 
+  loading: LoadingComponent
+})
+const AsyncResetAllPswd = Loadable({ 
+  loader: () => import('./pages/ResetAllPswd').then(({view}) => view), 
   loading: LoadingComponent
 })
 const AsyncSetting = Loadable({ 
@@ -128,18 +115,37 @@ const AsyncSetting = Loadable({
   loading: LoadingComponent
 })
 const AsyncDeveloping = Loadable({ 
-  loader: () => import('./pages/Developing').then(({ view }) => view), 
+  loader: () => import('./pages/Developing').then(({view}) => view), 
   loading: LoadingComponent
 })
-const AsyncJD = Loadable({ 
-  loader: () => import('./pages/JD').then(({ view }) => view), 
+const AsyncJDHome = Loadable({ 
+  loader: () => import('./pages/jd/Home').then(({view}) => view), 
+  loading: LoadingComponent
+})
+const AsyncStoreDetail = Loadable({ 
+  loader: () => import('./pages/StoreDetail').then(({view}) => view), 
+  loading: LoadingComponent
+})
+const AsyncStoreConfirm = Loadable({ 
+  loader: () => import('./pages/StoreConfirm').then(({view}) => view), 
+  loading: LoadingComponent
+})
+const AsyncAddAddr = Loadable({ 
+  loader: () => import('./pages/AddAddr').then(({view}) => view), 
+  loading: LoadingComponent
+})
+const AsyncAddr = Loadable({ 
+  loader: () => import('./pages/Addr').then(({view}) => view), 
   loading: LoadingComponent
 })
 
-class App extends Component {
+
+export default class extends Component {
+  
   componentDidMount() {
     util.fixIos12WeixinInputBug()
   }
+
   render() {
     return (
       <Router history={history}>
@@ -154,46 +160,26 @@ class App extends Component {
             <Auth path="/redeem-record" component={AsyncRedeemRecord} />
             <Auth path="/credit-card" component={AsyncCreditCard} />
             <Auth path="/credit-record" component={AsyncCreditRecord} />
-
             <Auth path="/order" component={AsyncOrder} />
             <Auth path="/recharge-phone" component={AsyncRechargePhone} />
             <Auth path="/recharge-traffic" component={AsyncRechargeTraffic} />
-            
             <Auth path="/recharge-oil" component={AsyncRechargeOil} />
             <Auth path="/recharge-QB" component={AsyncRechargeQB} />
             <Auth path="/recharge-video" component={AsyncRechargeVideo} />
             <Auth path="/voucher" component={AsyncVoucher} />
-            <Auth path="/recharge-voucher/:id" component={AsyncRechargeVoucherDetail} />
+            <Auth path="/recharge-voucher/:id" component={AsyncRechargeVoucher} />
             <Auth path="/voucher-record" exact component={AsyncVoucherRecord} />
-
             <Auth path="/transfer" component={AsyncTransfer} />
             <Auth path="/transfer-record" component={AsyncTransferRecord} />
-
-
-            <Auth path="/store-jd" component={AsyncJD} />
-            
-            <Route path="/find-pswd" component={AsyncFindPswd} />
-
+            <Auth path="/store-jd" component={AsyncJDHome} />
+            <Auth path="/store-detail" component={AsyncStoreDetail} />
+            <Auth path="/store-confirm" component={AsyncStoreConfirm} />
+            <Route path="/addr" component={AsyncAddr} />
+            <Route path="/add-addr" component={AsyncAddAddr} />
             <Auth path="/setting" component={AsyncSetting} />
+            <Auth path="/reset-all-pswd" component={AsyncResetAllPswd} />
 
-
-            {/* <Auth path="/recharge-flow" component={RechargeFlow} /> */}
-            {/* <Auth path="/recharge-oil" component={RechargeOil} /> */}
-            {/* <Auth path="/recharge-qb" component={RechargeQB} /> */}
-            {/* <Auth path="/recharge-video" component={RechargeVideo} /> */}
-            {/* <Auth exact path="/recharge-ecard" component={RechargeECard} /> */}
-            {/* <Auth path="/recharge-ecard/:id" component={RechargeECardDetail} /> */}
-            {/* <Auth path="/credit-card" component={CreditCard} /> */}
-            {/* <Auth exact path="/violation" component={Violation} /> */}
-            {/* <Auth path="/violation/:id" component={ViolationList} /> */}
-            {/* <Auth path="/violation-detail/:id" component={ViolationDetail} /> */}
-            {/* <Auth path="/add-vehicle" component={AddVehicle} /> */}
-            {/* <Auth path="/double-color-ball" component={DoubleColorBall} /> */}
-            
-            {/* <Route path="/cate" component={Cate} /> */}
-            {/* <Route path="/product" component={Product} /> */}
-            {/* <Route path="/buy/:id" component={Buy} /> */}
-
+            <Route path="/find-pswd" component={AsyncFindPswd} />
             <Route path="/developing" component={AsyncDeveloping} />
             <Route render={ ()=> <AsyncNotFound /> } />
           </Switch>
@@ -202,5 +188,3 @@ class App extends Component {
     );
   }
 }
-
-export default App

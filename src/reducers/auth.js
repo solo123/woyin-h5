@@ -2,6 +2,7 @@ import {setItem, removeItem} from '../services/storage'
 
 const initialState = {
   token: '',
+  resetAllPswd: false,
   isAuthenticated: false
 }
 
@@ -23,7 +24,6 @@ export default (state = initialState, action) => {
         isAuthenticated: true
       }
     case 'UNAUTH_USER':
-      // 清理localStorage中的token
       removeToken();
       return {
         ...state,

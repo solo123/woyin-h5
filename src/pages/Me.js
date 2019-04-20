@@ -26,22 +26,6 @@ import recordIcon from '../asset/images/icon/record.png'
 import record2Icon from '../asset/images/icon/record2.png'
 import settingIcon from '../asset/images/icon/setting.png'
 
-const Button = styled.button`
-  outline: none;
-  display: block;
-  border: 0;
-  width: 100%;
-  padding: 0;
-`
-const PrimaryButton = styled(Button)`
-  color: #fff;
-  font-size: 16px;
-  font-weight: bold;
-  line-height: 50px;
-  border-radius: 3px;
-  background: -webkit-linear-gradient(47deg,#4cadff,#8ce0ff);
-`
-
 const Page = styled.div`
   padding-bottom: 50px;
   header{
@@ -119,7 +103,7 @@ const Page = styled.div`
       position: relative;
       padding: 15px;
       &:after{
-      content: " ";
+        content: " ";
         position: absolute;
         left: 15px;
         bottom: 0;
@@ -206,7 +190,7 @@ class Me extends Component {
           <div className="card">
             <div className="card__cell">
               <p>{this.state.balance}</p>
-              <p>可赎回积分</p>
+              <p>我的积分</p>
             </div>
             <div className="card__cell">
               <p>{this.state.integralCoupon}</p>
@@ -215,7 +199,7 @@ class Me extends Component {
           </div>
         </header>
 
-        <div className="u_mb_xx">
+        {/* <div className="u_mb_xx">
           <div className="service">
             <div className="service__head">
               <h2 className="service__title">我的订单</h2>
@@ -247,7 +231,7 @@ class Me extends Component {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
 
         <div className="u_mb_xx">
           <div className="service">
@@ -264,19 +248,13 @@ class Me extends Component {
               <div className="cell">
                 <Link to="/redeem">
                   <img className="icon" src={card3Icon} alt=""/>
-                  积分赎回
+                  积分代卖
                 </Link>
               </div>
               <div className="cell">
                 <Link to="/transfer">
                   <img className="icon" src={giftIcon} alt=""/>
                   积分转赠
-                </Link>
-              </div>
-              <div className="cell">
-                <Link to="/developing">
-                  <img className="icon" src={lotteryIcon} alt=""/>
-                  投注
                 </Link>
               </div>
             </div>
@@ -306,7 +284,7 @@ class Me extends Component {
             <Link className="item" to="/redeem-record">
               <div className="cell">
                 <img className="icon" src={recordIcon} alt=""/>
-                <label className="label">积分赎回记录</label>
+                <label className="label">积分代卖记录</label>
               </div>
               <div className="cell">
                 <img className="arrow" src={arrowIcon} alt="" />
@@ -343,7 +321,7 @@ class Me extends Component {
         </div>
 
         <div className="u_m_xxx">
-          <PrimaryButton onClick={this.handleClick}>退出</PrimaryButton>
+          <button className="btn btn-secondary" onClick={this.handleClick}>退出</button>
         </div>
 
         <div className="fixed-bottom">

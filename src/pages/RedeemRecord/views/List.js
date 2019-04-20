@@ -17,11 +17,11 @@ const Item = ({status, poundage, amount, createTime}) => {
   return (
     <div className="card">
       <div className="card__head">
-        <div className="card__title">积分赎回</div>
+        <div className="card__title">积分代卖</div>
         <div className="card__status">{status}</div>
       </div>
       <div className="card__body">
-        <div>赎回{amount}积分 手续费{poundage}积分 实际到账{amount / 100}元</div>
+        <div>代卖{amount}积分 手续费{poundage}积分 实际到账{amount / 100}元</div>
       </div>
       <div className="card__foot">
         <div className="card__date">{createTime}</div>

@@ -162,11 +162,11 @@ const paymentConfirm = function (options) {
   addClass($dialog, 'weui-animate-fade-slideDown')
 }
 
-const getLastNum = function(bankcardNo) {
+const getLastNum = function (bankcardNo) {
   return bankcardNo.substring(bankcardNo.length - 4, bankcardNo.length)
 }
 
-const parseBankcardList = function(arr) {
+const parseBankcardList = function (arr) {
   return arr.map(item => {
     return {
       bankCard: item.bankCard,
@@ -179,7 +179,7 @@ const parseBankcardList = function(arr) {
   })
 }
 
-const parseCreditcardList = function(arr) {
+const parseCreditcardList = function (arr) {
   return arr.map(item => {
     return {
       creditCardNo: item.creditCardNo,
@@ -189,18 +189,18 @@ const parseCreditcardList = function(arr) {
   })
 }
 
-const confirmRetry = function(content, cb) {
+const confirmRetry = function (content, cb) {
   weui.confirm(content, {
-      buttons: [{
-        label: '取消',
-        type: 'default'
-      }, {
-        label: '重试',
-        type: 'primary',
-        onClick: function(){
-          cb && cb()
-        }
-      }]
+    buttons: [{
+      label: '取消',
+      type: 'default'
+    }, {
+      label: '重试',
+      type: 'primary',
+      onClick: function () {
+        cb && cb()
+      }
+    }]
   })
 }
 
@@ -213,37 +213,72 @@ const fixIos12WeixinInputBug = function () {
   }
 
   document.querySelector('body').addEventListener('focus', e => {
-    if(e.type === 'focus' && e.target.tagName === 'INPUT') {
+    if (e.type === 'focus' && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT')) {
       currentScrollTop = document.documentElement.scrollTop || window.pageYOffset || document.body.scrollTop
     }
-  }, true)  
+  }, true)
 
   document.querySelector('body').addEventListener('blur', e => {
-    if(e.type === 'blur' && e.target.tagName === 'INPUT') {
+    if (e.type === 'blur' && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT')) {
       scrollTop(currentScrollTop)
     }
   }, true)
 }
 
-const filterBankCardByStatus = function() {
-}
+const filterBankCardByStatus = function () {}
 
-const filterBankCardByType = function() {
-}
+const filterBankCardByType = function () {}
 
 // 根据类型和状态过滤银行卡
-const filterBankCardByStatusAndType = function(cardList, type, status) {
+const filterBankCardByStatusAndType = function (cardList, type, status) {
   return cardList.filter(item => {
     return ((item.bankCardType === type) && (item.status === status))
   })
 }
 
-const formatTimestamp = function(timestamp) {
-  if(timestamp) {
+const formatTimestamp = function (timestamp) {
+  if (timestamp) {
     return dayjs.unix(timestamp).format('YYYY-MM-DD HH:mm:ss')
   }
   return null
 }
+
+// 延迟执行
+// 在一个指定时间之内 再次调用会被忽略
+function throttle(func, delay) {
+  let flag
+  let arg
+  return function () {
+    arg = arguments
+    if (!flag) {
+      flag = setTimeout(() => {
+        func.apply(this, arg)
+        flag = null
+      }, delay)
+    }
+  }
+}
+
+// const superTest = throttle(test, 100)
+// superTest()
+
+
+// 每次调用请求都会延迟执行 
+// 但是如果上次的调用请求还没被执行 最新的调用请求会覆盖掉之前的调用请求
+function debounce(func, delay) {
+  let flag
+  return function () {
+    const args = arguments
+    clearTimeout(flag)
+    flag = setTimeout(() => {
+      func.apply(this, args)
+    }, delay)
+  }
+}
+
+// const superTest = debounce(test, 100)
+// superTest()
+
 
 export default {
   addClass,

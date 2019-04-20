@@ -10,46 +10,6 @@ import closeIcon from '../asset/images/icon/close.png'
 import showIcon from '../asset/images/icon/show.png'
 import hideIcon from '../asset/images/icon/hide.png'
 
-const Button = styled.button`
-  border: 0;
-  padding: 0;
-  width: 100%;
-  outline: none;
-  display: block;
-  background: transparent;
-`
-const PrimaryButton = styled(Button)`
-  color: #fff;
-  font-size: 16px;
-  font-weight: bold;
-  line-height: 50px;
-  border-radius: 3px;
-  background: -webkit-linear-gradient(47deg,#4cadff,#8ce0ff);
-`
-const DisablePrimaryButton = styled(Button)`
-  color: #fff;
-  font-weight: bold;
-  font-size: 16px;
-  line-height: 50px;
-  border-radius: 3px;
-  background: #ccc;
-`
-const MiniPrimaryBtn = styled(Button)`
-  color: #fff;
-  font-size: 12px;
-  padding: 5px 10px;
-  line-height: 1.5;
-  border-radius: 3px;
-  background: -webkit-linear-gradient(47deg,#4cadff,#8ce0ff);
-`
-const DisableMiniPrimaryBtn = styled(Button)`
-  color: #fff;
-  font-size: 12px;
-  padding: 5px 10px;
-  line-height: 1.5;
-  border-radius: 3px;
-  background: #ccc;
-`
 const Input = styled.input`
   border: 0;
   padding: 0;
@@ -278,8 +238,8 @@ class Transfer extends Component {
         </LayoutBox>
         <LayoutBox>
           {this.state.pass
-            ? <PrimaryButton onClick={this.handleSubmit}>转赠</PrimaryButton>
-            : <DisablePrimaryButton>转赠</DisablePrimaryButton>}
+            ? <button className="btn btn-secondary" onClick={this.handleSubmit}>转赠</button>
+            : <button className="btn btn-secondary disable">转赠</button>}
         </LayoutBox>
 
         <Backhome />
