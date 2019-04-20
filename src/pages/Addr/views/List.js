@@ -2,11 +2,11 @@ import React  from 'react'
 
 import locationIcon from '@/asset/images/location.svg'
 
-function Item({defaultAddress, handleDelete}) {
+function Item({use, defaultAddress, handleDelete, handleSelect}) {
   return (
-    <div className="addr">
+    <div className="addr" onClick={handleSelect}>
       <div className="addr__head">
-        <img className="addr__icon" src={locationIcon} alt=""/>
+        <img className="addr__icon" style={use ? {visibility: 'visible'} : {visibility: 'hidden'}} src={locationIcon} alt=""/>
       </div>
       <div className="addr__body">
         <div className="addr__info">
@@ -21,15 +21,17 @@ function Item({defaultAddress, handleDelete}) {
   )
 }
 
-function List({items, handleDelete}) {
+function List({items, handleDelete, handleSelect}) {
   return (
     <div>
       {items.map(addr => {
         return (
           <Item
             key={addr.id}
+            use={addr.use}
             defaultAddress={addr.defaultAddress}
             handleDelete={() => handleDelete(addr.id)}
+            handleSelect={() => handleSelect(addr.id)}
           />
         )
       })}

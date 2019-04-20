@@ -351,7 +351,7 @@ export function rechargeOil(data) {
   return post(`${BASE}api/oilCard/charge`, qs.stringify(data))
 }
 
-// 获取地址
+// 获取层级地址
 export function getAddr(data = {}, config = {}) {
   return get(`${BASE}mail/address`, data, config)
 }
@@ -375,6 +375,5 @@ export function getJDAddrList(data = {}, config = {}) {
 
 // 删除用户地址
 export function deleteAddrById(id, config) {
-  console.log(id, config)
   return get(`${BASE}mail/address/${id}`, null, config)
 }

@@ -171,9 +171,9 @@ export default class extends Component {
             <Auth path="/voucher-record" exact component={AsyncVoucherRecord} />
             <Auth path="/transfer" component={AsyncTransfer} />
             <Auth path="/transfer-record" component={AsyncTransferRecord} />
-            <Auth path="/store-jd" component={AsyncJDHome} />
-            <Auth path="/store-detail" component={AsyncStoreDetail} />
-            <Auth path="/store-confirm" component={AsyncStoreConfirm} />
+            <Route path="/store-jd" component={AsyncJDHome} />
+            <Route path="/store-detail" component={AsyncStoreDetail} />
+            <Route path="/store-confirm" component={AsyncStoreConfirm} />
             <Route path="/addr" component={AsyncAddr} />
             <Route path="/add-addr" component={AsyncAddAddr} />
             <Auth path="/setting" component={AsyncSetting} />

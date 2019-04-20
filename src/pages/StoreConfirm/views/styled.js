@@ -15,6 +15,20 @@ export default styled.div`
       width: 20px;
       height: 20px;
     }
+    .addr{
+      display: flex;
+      justify-content: space-between;
+      h2{
+        font-size: 16px;
+      }
+      &__body{
+        flex: 1;
+      }
+      &__foot{
+        display: flex;
+        align-items: center;
+      }
+    }
   }
   main{
     padding: 15px;

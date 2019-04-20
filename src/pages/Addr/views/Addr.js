@@ -1,11 +1,15 @@
-import React, {Component} from 'react';
+import React, {Component} from 'react'
+import {connect} from 'react-redux'
 import {Helmet} from "react-helmet"
 import weui from 'weui.js'
 
-import {getJDAddrList, deleteAddrById} from '@/api'
+import {deleteAddrById} from '@/api'
 import {push} from '@/services/redirect'
 import Page from './styled'
 import List from './List'
+import SkeletonPlaceholder from '@/common/SkeletonPlaceholder'
+
+import {actions as addrActions} from '@/pages/StoreConfirm'
 
 class Addr extends Component {
   constructor(props) {
@@ -14,36 +18,23 @@ class Addr extends Component {
     this.handleCancel = this.handleCancel.bind(this)
     this.handleClick = this.handleClick.bind(this)
     this.handleDelete = this.handleDelete.bind(this)
+    this.handleSelect = this.handleSelect.bind(this)
 
     this.state = {
       items: []
     }
   }
 
-  componentDidMount() {
-    this.getAddrList()
-  }
-
-  async getAddrList() {
-    try {
-      const {data} = await getJDAddrList()
-      if(data.status === 200) {
-        this.setState({items: data.data})
-        console.log(data.data)
-
-      }
-    }finally {
-    }
-  }
-
   async deleteAddr(id) {
+    const loading = weui.loading('处理中')
     try {
       const {data} = await deleteAddrById(id)
       if(data.status === 200) {
-        const items = this.state.items.filter(item => item.id !== id)
-        this.setState({items: items})
+        this.props.deleteAddr(id)
       }
-    }finally{}
+    }finally{
+      loading.hide()
+    }
   }
 
   handleClick() {
@@ -51,6 +42,7 @@ class Addr extends Component {
   }
 
   handleCancel(e) {
+    this.props.history.goBack()
   }
 
   handleDelete(id) {
@@ -59,11 +51,21 @@ class Addr extends Component {
     })
   }
 
+  handleSelect(id) {
+    if(id) {
+      this.props.selectAddr(id)
+      push('/store-confirm')
+    }
+  }
+
   render() {
     return (
       <Page>
         
-        <List items={this.state.items} handleDelete={this.handleDelete}/>
+        {this.props.status === 'loading'
+          ? <div className="u_m_xxx"><SkeletonPlaceholder count={3} /></div>
+          : <List items={this.props.addrs} handleDelete={this.handleDelete} handleSelect={this.handleSelect} />
+        }
         
         <div className="fixed-bottom">
           <div className="btn-list">
@@ -76,4 +78,23 @@ class Addr extends Component {
   }
 }
 
-export default Addr
+const mapStateTopProps = (state) => {
+  const addr = state.addr
+  return {
+    status: addr.status,
+    addrs: addr.addrs
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    deleteAddr: (id) => {
+      dispatch(addrActions.deleteAddr(id))
+    },
+    selectAddr: (id) => {
+      dispatch(addrActions.selectAddr(id))
+    }
+  }
+}
+
+export default connect(mapStateTopProps, mapDispatchToProps)(Addr)

@@ -1,3 +1,4 @@
 import view from './views/StoreConfirm'
-
-export {view}
+import reducer from './reducer'
+import * as actions from './actions';
+export {view, reducer, actions}
