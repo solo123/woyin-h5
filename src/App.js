@@ -130,6 +130,10 @@ const AsyncStoreConfirm = Loadable({
   loader: () => import('./pages/StoreConfirm').then(({view}) => view), 
   loading: LoadingComponent
 })
+const AsyncStoreSort = Loadable({ 
+  loader: () => import('./pages/StoreSort').then(({view}) => view), 
+  loading: LoadingComponent
+})
 const AsyncAddAddr = Loadable({ 
   loader: () => import('./pages/AddAddr').then(({view}) => view), 
   loading: LoadingComponent
@@ -174,6 +178,8 @@ export default class extends Component {
             <Route path="/store-jd" component={AsyncJDHome} />
             <Route path="/store-detail" component={AsyncStoreDetail} />
             <Route path="/store-confirm" component={AsyncStoreConfirm} />
+            <Route path="/store-sort" component={AsyncStoreSort} />
+
             <Route path="/addr" component={AsyncAddr} />
             <Route path="/add-addr" component={AsyncAddAddr} />
             <Auth path="/setting" component={AsyncSetting} />

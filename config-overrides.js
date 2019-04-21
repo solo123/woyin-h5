@@ -7,10 +7,10 @@ function resolve (dir) {
 module.exports = function override(config, env) {
   config.resolve.alias['@'] = resolve('src')
   if(env === 'production') {
-    config.externals = {
-      'react': 'React',
-      'react-dom': 'ReactDOM'
-    }
+    // config.externals = {
+    //   'react': 'React',
+    //   'react-dom': 'ReactDOM'
+    // }
   }
 
   // do stuff with the webpack config...

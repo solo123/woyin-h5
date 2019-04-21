@@ -50,7 +50,8 @@ export default {
   // 商品购买
   store: {
     MAX_COUNT: 10,
-    MIN_COUNT: 1    
+    MIN_COUNT: 1,
+    PAGE_LIMIT: 20
   },
   // 双色球
   double_color_ball: {

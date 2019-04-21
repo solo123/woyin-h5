@@ -21,8 +21,17 @@ export default styled.div`
       h2{
         font-size: 16px;
       }
+      &__head{
+        padding-top: 5px;
+        margin-right: 15px;        
+      }
+      &__icon{
+        width: 25px;
+        height: 25px;
+      }
       &__body{
         flex: 1;
+        margin-right: 15px;
       }
       &__foot{
         display: flex;

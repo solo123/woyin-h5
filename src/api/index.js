@@ -377,3 +377,17 @@ export function getJDAddrList(data = {}, config = {}) {
 export function deleteAddrById(id, config) {
   return get(`${BASE}mail/address/${id}`, null, config)
 }
+
+// 获取京东商品类别列表
+export function getJDGoodsSort(data = {}, config) {
+  return get(`${BASE}mail/goodsClassLists`, data, config)
+}
+
+// 获取京东商品列表
+export function getJDGoodsList(data = {}, config) {
+  data = {
+    ...data,
+    limit: G_config.store.PAGE_LIMIT
+  }
+  return get(`${BASE}mail/goodsList`, data, config)
+}

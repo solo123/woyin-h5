@@ -1,4 +1,4 @@
-import {FETCH_STARTED, FETCH_SUCCESS, FETCH_FAILURE, DELETE_ADDR, SELECT_ADDR} from './actionTypes.js'
+import {FETCH_STARTED, FETCH_SUCCESS, FETCH_FAILURE, DELETE_ADDR, SELECT_ADDR, ADD_ADDR} from './actionTypes.js'
 
 const initialState = {
   status: 'loading',
@@ -49,6 +49,12 @@ export default (state = initialState, action) => {
             }
           }
         })        
+      }
+    }
+    case ADD_ADDR: {
+      return {
+        ...state,
+        addrs: [...state.addrs, action.addr]
       }
     }
     default: {

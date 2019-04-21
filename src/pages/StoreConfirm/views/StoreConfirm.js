@@ -4,12 +4,14 @@ import {Helmet} from "react-helmet"
 import weui from 'weui.js'
 
 import arrow from '@/asset/images/icon/arrow_right.svg'
+import locationIcon from '@/asset/images/location.svg'
 
 import Backhome from '@/common/Backhome'
 import {push} from '@/services/redirect'
 import Page from './styled'
 
 import {fetchAddr} from '../actions'
+import {actions as addrActions} from '@/pages/StoreConfirm'
 
 function AddBar({handleClick}) {
   return (
@@ -23,6 +25,9 @@ function AddBar({handleClick}) {
 function Addr({name, phone, province, city, country, town, addr, handleClick}) {
   return (
     <div className="addr">
+      <div className="addr__head">
+        <img className="addr__icon" src={locationIcon} alt=""/>
+      </div>
       <div className="addr__body">
         <h2>{name} {phone}</h2>
         <div>{province}{city}{country}{town} {addr}</div>
@@ -62,10 +67,7 @@ class StoreConfirm extends Component {
         this.setDefaultAddr()
       })
     }else {
-      // 这里只后续进入
-      // 需要首先读取use为true的地址 然后才是默认地址
       this.setUseAddr()
-      // this.setDefaultAddr()
     }
   }
 
@@ -99,6 +101,7 @@ class StoreConfirm extends Component {
           town: addr.town,
           addr: addr.address
         })
+        this.props.selectAddr(addr.id)
       }
     })
   }
@@ -175,6 +178,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     loadAddr: (cb) => {
       dispatch(fetchAddr(cb))
+    },
+    selectAddr: (id) => {
+      dispatch(addrActions.selectAddr(id))
     }
   }
 }

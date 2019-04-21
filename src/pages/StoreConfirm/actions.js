@@ -1,4 +1,4 @@
-import {FETCH_STARTED, FETCH_SUCCESS, FETCH_FAILURE, DELETE_ADDR, SELECT_ADDR} from './actionTypes.js'
+import {FETCH_STARTED, FETCH_SUCCESS, FETCH_FAILURE, DELETE_ADDR, SELECT_ADDR, ADD_ADDR} from './actionTypes.js'
 
 import {getJDAddrList} from '@/api'
 
@@ -24,6 +24,11 @@ export const deleteAddr = (id) => ({
 export const selectAddr = (id) => ({
   type: SELECT_ADDR,
   id: id
+})
+
+export const addAddr = (addr) => ({
+  type: ADD_ADDR,
+  addr: addr
 })
 
 export const fetchAddr = (cb) => {

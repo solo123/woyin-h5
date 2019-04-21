@@ -1,17 +1,18 @@
 import React, {Component} from 'react';
 import {Helmet} from "react-helmet"
 import weui from 'weui.js'
-
+import {connect} from 'react-redux'
 import arrow from '@/asset/images/icon/arrow_right.svg'
 
 import config from '@/config'
-import {getAddr} from '@/api'
-import {push} from '@/services/redirect'
+import {getAddr, addJDAddr} from '@/api'
+import {replace} from '@/services/redirect'
 
 import Page from './styled'
 import Backhome from '@/common/Backhome'
 
 import AddrSelect from './AddrSelect'
+import {actions as addrActions} from '@/pages/StoreConfirm'
 
 function parseObjectToArr(data) {
   const arr = []
@@ -82,11 +83,26 @@ class AddAddr extends Component {
     }
   }
 
+  async addAddr(params) {
+    const loading = weui.loading('处理中')
+    try {
+      const {data} = await addJDAddr(params)
+      if(data.status === 200) {
+        this.props.addAddr({
+          ...params,
+          id: data.data.id
+        })
+        replace('/addr')
+      }
+    }finally {
+      loading.hide()
+    }
+  }
+
   handleChange(e) {
     const target = e.target
     const name = target.name
     const value = target.type === 'checkbox' ? target.checked : target.value
-    console.log(value)
     this.setState({[name]: value})
   }
 
@@ -197,9 +213,7 @@ class AddAddr extends Component {
       addr: this.state.addr,
       isDefault: this.state.isDefault
     }
-
-
-    console.log(params)
+    this.addAddr(params)
   }
 
   render() {
@@ -305,4 +319,17 @@ class AddAddr extends Component {
   }
 }
 
-export default AddAddr
+
+const mapStateTopProps = (state) => {
+  return {}
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    addAddr: (addr) => {
+      dispatch(addrActions.addAddr(addr))
+    }
+  }
+}
+
+export default connect(mapStateTopProps, mapDispatchToProps)(AddAddr)
