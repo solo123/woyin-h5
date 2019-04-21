@@ -45,7 +45,8 @@ class Addr extends Component {
     this.props.history.goBack()
   }
 
-  handleDelete(id) {
+  handleDelete(e, id) {
+    e.stopPropagation()
     weui.confirm('确认删除吗？', () => {
       this.deleteAddr(id)
     })

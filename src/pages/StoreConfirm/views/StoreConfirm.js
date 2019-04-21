@@ -62,8 +62,28 @@ class StoreConfirm extends Component {
         this.setDefaultAddr()
       })
     }else {
-      this.setDefaultAddr()
+      // 这里只后续进入
+      // 需要首先读取use为true的地址 然后才是默认地址
+      this.setUseAddr()
+      // this.setDefaultAddr()
     }
+  }
+
+  setUseAddr() {
+    this.props.addrs.forEach(addr => {
+      if(addr.use) {
+        this.setState({
+          addrId: addr.id,
+          name: addr.name,
+          phone: addr.phone,
+          province: addr.province,
+          city: addr.city,
+          country: addr.country,
+          town: addr.town,
+          addr: addr.address
+        })
+      }
+    })    
   }
 
   setDefaultAddr() {

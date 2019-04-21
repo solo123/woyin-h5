@@ -1,8 +1,9 @@
 import React  from 'react'
 
+import EmptyArrayPlaceholder from '@/common/EmptyArrayPlaceholder'
 import locationIcon from '@/asset/images/location.svg'
 
-function Item({use, defaultAddress, handleDelete, handleSelect}) {
+function Item({use, name, phone, province, city, country, town, addr, defaultAddress, handleDelete, handleSelect}) {
   return (
     <div className="addr" onClick={handleSelect}>
       <div className="addr__head">
@@ -10,9 +11,9 @@ function Item({use, defaultAddress, handleDelete, handleSelect}) {
       </div>
       <div className="addr__body">
         <div className="addr__info">
-          高强 15014095291 {defaultAddress && <label className="addr__label">默认</label>}
+          {name} {phone} {defaultAddress && <label className="addr__label">默认</label>}
         </div>
-        <div>广东省深圳市福田区福华三路时代财富大厦43d</div>
+        <div>{province}{city}{country}{town} {addr}</div>
       </div>
       <div className="addr__foot">
         <span className="addr__del" onClick={handleDelete}>删除</span>
@@ -22,15 +23,19 @@ function Item({use, defaultAddress, handleDelete, handleSelect}) {
 }
 
 function List({items, handleDelete, handleSelect}) {
+  if(!items.length) {
+    return <EmptyArrayPlaceholder />
+  }
+
   return (
     <div>
       {items.map(addr => {
         return (
           <Item
             key={addr.id}
-            use={addr.use}
+            {...addr}
             defaultAddress={addr.defaultAddress}
-            handleDelete={() => handleDelete(addr.id)}
+            handleDelete={(e) => handleDelete(e, addr.id)}
             handleSelect={() => handleSelect(addr.id)}
           />
         )
