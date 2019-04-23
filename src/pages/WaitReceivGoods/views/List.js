@@ -1,7 +1,6 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
 
-import SkeletonPlaceholder from '@/common/SkeletonPlaceholder'
 import EmptyArrayPlaceholder from '@/common/EmptyArrayPlaceholder'
 
 function Item({id, name, phone, goodsName, externalOrder, totalScore, addr}) {

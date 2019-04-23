@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 import styled from 'styled-components'
 import {Helmet} from "react-helmet"
 
-import arrowIcon from '../asset/images/icon/arrow_right.svg'
+import arrowIcon from '@/asset/images/icon/arrow_right.svg'
 
 const Page = styled.div`
   h1{

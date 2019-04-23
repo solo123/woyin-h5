@@ -1,5 +1,5 @@
 import React from 'react'
-import SkeletonPlaceholder from '@/common/SkeletonPlaceholder'
+
 import EmptyArrayPlaceholder from '@/common/EmptyArrayPlaceholder'
 
 function Item({content, msgTime, operator}) {

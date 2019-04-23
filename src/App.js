@@ -26,11 +26,11 @@ const AsyncMe = Loadable({
   loading: LoadingComponent
 })
 const AsyncBankcardList = Loadable({
-  loader: () => import('./pages/BankcardList'),
+  loader: () => import('./pages/bankcard/BankcardList').then(({view}) => view),
   loading: LoadingComponent
 })
 const AsyncAddBankcard = Loadable({
-  loader: () => import('./pages/AddBankcard'),
+  loader: () => import('./pages/bankcard/AddBankcard').then(({view}) => view),
   loading: LoadingComponent
 })
 const AsyncRechargePhone = Loadable({
@@ -70,11 +70,11 @@ const AsyncOrder = Loadable({
   loading: LoadingComponent
 })
 const AsyncNotFound = Loadable({
-  loader: () => import('./pages/NotFound'),
+  loader: () => import('./pages/NotFound').then(({view}) => view),
   loading: LoadingComponent
 })
 const AsyncRedeem = Loadable({
-  loader: () => import('./pages/Redeem'),
+  loader: () => import('./pages/Redeem').then(({view}) => view),
   loading: LoadingComponent
 })
 const AsyncRedeemRecord = Loadable({
@@ -90,7 +90,7 @@ const AsyncCreditRecord = Loadable({
   loading: LoadingComponent
 })
 const AsyncTransfer = Loadable({
-  loader: () => import('./pages/Transfer'),
+  loader: () => import('./pages/Transfer').then(({view}) => view),
   loading: LoadingComponent
 })
 const AsyncTransferRecord = Loadable({
@@ -118,7 +118,7 @@ const AsyncResetAllPswd = Loadable({
   loading: LoadingComponent
 })
 const AsyncSetting = Loadable({ 
-  loader: () => import('./pages/Setting'), 
+  loader: () => import('./pages/Setting').then(({view}) => view), 
   loading: LoadingComponent
 })
 const AsyncDeveloping = Loadable({ 
@@ -176,8 +176,10 @@ export default class extends Component {
             <Route path="/" exact component={AsyncHome} />
             <Route path="/login" component={AsyncLogin} />
             <Auth path="/me" component={AsyncMe} />
+
             <Auth path="/bankcard-list" component={AsyncBankcardList} />
             <Auth path="/bankcard-add" component={AsyncAddBankcard} />
+
             <Auth path="/redeem" component={AsyncRedeem} />
             <Auth path="/redeem-record" component={AsyncRedeemRecord} />
             <Auth path="/credit-card" component={AsyncCreditCard} />
@@ -204,12 +206,9 @@ export default class extends Component {
             <Route path="/find-login-pswd" component={AsyncFindLoginPswd} />
             <Auth path="/find-trade-pswd" component={AsyncFindTradePswd} />
             <Auth path="/change-trade-pswd" component={AsyncChangeTradePswd} />
-            {/* 商品 */}
-
             <Auth path="/wait-send-goods" component={AsyncWaitSendGoods} />
             <Auth path="/wait-receiv-goods" exact component={AsyncWaitReceivGoods} />
             <Auth path="/wait-receiv-goods/:id" component={AsyncGoodsTrack} />
-
             <Route path="/developing" component={AsyncDeveloping} />
             <Route render={ ()=> <AsyncNotFound /> } />
           </Switch>

@@ -1,61 +1,14 @@
-import React, { Component } from 'react'
-import styled from 'styled-components'
-import weui from 'weui.js'
+import React, {Component} from 'react'
 import {Helmet} from "react-helmet"
+import weui from 'weui.js'
 
 import {addBankcard} from '@/api'
 import {push} from '@/services/redirect'
 
 import Backhome from '@/common/Backhome'
+import Page from './styled'
 
 import closeIcon from '@/asset/images/icon/close.png'
-
-const Page = styled.div`
-  margin: 15px;
-  .form{
-    background: #fff;
-    border-radius: 3px;
-    box-shadow: 1px 1px 3px rgba(26, 26, 26, 0.1);
-    .close-btn{
-      width: 25px;
-      height: 25px;
-    }
-  }
-  .group{
-    position: relative;
-    padding: 15px;
-    display: flex;
-    align-items: center;
-    &:after{
-      content: " ";
-      position: absolute;
-      left: 15px;
-      bottom: 0;
-      right: 0;
-      height: 1px;
-      background: #eaeaea;
-      transform: scaleY(0.5);
-    }
-    &:last-child:after{
-      content: none;
-    }
-    &__body{
-      flex: 1;
-    }
-    &__foot{
-      display: flex;
-      margin-left: 10px;
-    }
-  }
-`
-
-const SubmitBtn = ({pass, onSubmit}) => {
-  if(pass) {
-    return <button className="btn btn-secondary" onClick={onSubmit}>添加</button>
-  }else {
-    return <button className="btn btn-secondary disable" onClick={onSubmit}>添加</button>
-  }
-}
 
 class AddBankcard extends Component {
   constructor(props) {
@@ -68,7 +21,6 @@ class AddBankcard extends Component {
     this.handleSubmit = this.handleSubmit.bind(this)
 
     this.state = {
-      pass: false,
       username: '',
       usernameCleanViewFlag: false,
       id: '',
@@ -152,22 +104,12 @@ class AddBankcard extends Component {
     return true
   }
 
-  updateBtnStatus() {
-    if(this.check()) {
-      this.setState({pass: true})
-    }else {
-      this.setState({pass: false})
-    }
-  }
-
   handleClick(name) {
     this.setState({[name]: ''})
   }
 
   handleChange(e) {
-    this.setState({[e.target.name]: e.target.value}, () => {
-      this.updateBtnStatus()
-    })
+    this.setState({[e.target.name]: e.target.value})
   }
 
   handleFocus(e) {
@@ -177,9 +119,7 @@ class AddBankcard extends Component {
   handleBlur(e) {
     const key =`${e.target.name}CleanViewFlag`
     setTimeout(() => {
-      this.setState({[key]: false}, () => {
-        this.updateBtnStatus()
-      })
+      this.setState({[key]: false})
     }, 100)
   }
 
@@ -188,7 +128,6 @@ class AddBankcard extends Component {
     if(!this.verify(phone, cardNo, username, id)) {
       return
     }
-
     this.doSubmit(phone, cardNo, username, id)
   }
 
@@ -302,7 +241,7 @@ class AddBankcard extends Component {
         </main>
 
         <div className="u_mt_xxx">
-          <SubmitBtn pass={this.state.pass} onSubmit={this.handleSubmit} />
+          <button className="btn btn-secondary" onClick={this.handleSubmit}>添加</button>
         </div> 
 
         <Backhome />

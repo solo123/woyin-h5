@@ -3,6 +3,7 @@ import {Helmet} from "react-helmet"
 
 import {getJDOrders} from '@/api'
 import Backhome from '@/common/Backhome'
+import SkeletonPlaceholder from '@/common/SkeletonPlaceholder'
 
 import List from './List'
 
@@ -13,7 +14,8 @@ export default class extends Component {
     super(props)
 
     this.state = {
-      items: []
+      items: [],
+      loading: true
     }
   }
 
@@ -33,6 +35,7 @@ export default class extends Component {
         this.setState({items: data.data})
       }
     }finally {
+      this.setState({loading: false})
     }
   }
 
@@ -41,7 +44,10 @@ export default class extends Component {
       <Page>
         <Helmet title="待发货" />
 
-        <List items={this.state.items} />
+        {this.state.loading
+          ? <div className="u_m_xxx"><SkeletonPlaceholder count={3}/></div>
+          : <List items={this.state.items} />
+        }
 
         <Backhome />
       </Page>

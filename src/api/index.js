@@ -465,3 +465,8 @@ export function getJDOrders(data = {}, config) {
 export function getJDTrack(id, config) {
   return get(`${BASE}mail/JDTrack/${id}`, null, config)
 }
+
+// 删除银行卡
+export function delBankCard(id, config) {
+  return del(`${BASE}api/bankCard/${id}`, null, config)
+}

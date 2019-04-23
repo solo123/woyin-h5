@@ -1,5 +1,4 @@
-import React, { Component } from 'react'
-import styled from 'styled-components'
+import React, {Component} from 'react'
 import weui from 'weui.js'
 import {Link} from 'react-router-dom'
 import {Helmet} from "react-helmet"
@@ -9,6 +8,7 @@ import {getUserInfo, getBankcardList, redeemIntegral, getRedeemFee, getCodeForWi
 import util from '@/util'
 
 import Backhome from '@/common/Backhome'
+import Page from './styled'
 
 import moreIcon from '@/asset/images/icon/more.png'
 import checkedIcon from '@/asset/images/icon/checked.png'
@@ -30,94 +30,6 @@ import zgIcon from '@/asset/images/bank/zg.svg'
 import zsIcon from '@/asset/images/bank/zs.svg'
 import zxIcon from '@/asset/images/bank/zx.svg'
 import defaultIcon from '@/asset/images/bank/default.svg'
-
-const Page = styled.div`
-  padding: 15px;
-  background: #fff;
-  .trigger-bar{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    .icon{
-      width: 25px;
-      height: 25px;
-    }
-  }
-  .empty{
-    color: #888;
-    line-height: 50px;
-    font-size: 16px;
-    font-weight: bold;
-    text-align: center;
-  }
-  .bankcard{
-    display: flex;
-    .icon{
-      width: 50px;
-      height: 50px;
-    }
-    .card{
-      font-family: industry;
-    }
-    .main{
-      flex: 1;
-      .name{
-        font-size: 16px;
-        font-weight: bold;
-        margin-bottom: 5px;
-      }
-      .text{
-        line-height: 1.5;
-        font-size: 12px;
-        color: #888;
-      }
-    }
-  }
-  .input-box{
-    padding: 15px;
-    background: #f4f4f4;
-  }
-  .small-text{
-    color: #888;
-    font-size: 12px;
-  }
-
-  .checkbox{
-    width: 16px;
-    height: 16px;
-    margin-right: 3px;
-  }
-  .flex-y-center{
-    display: flex;
-    align-items: center;
-  }
-  .group{
-    display: flex;
-    align-items: center;
-    &__body{
-      flex: 1;
-    }
-    &__foot{
-      margin-left: 10px;
-    }
-  }  
-  .loading{
-    display: flex;
-    &__head{
-     width: 50px;
-     height: 50px;
-     background: #eaeaea;
-    }
-    &__main{
-      flex: 1;
-      margin-left: 15px;
-    }
-    &__line{
-      height: 20px;
-      background: #eaeaea;
-    }
-  }
-`
 
 const BANKCARD_SCHEMA = {
   'GDB' : fzIcon,

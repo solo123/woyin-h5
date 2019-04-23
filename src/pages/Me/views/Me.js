@@ -21,8 +21,6 @@ import car2Icon from '@/asset/images/icon/car2.png'
 import car3Icon from '@/asset/images/icon/car3.png'
 import cardIcon from '@/asset/images/icon/card.png'
 import card2Icon from '@/asset/images/icon/card2.png'
-import card3Icon from '@/asset/images/icon/card3.png'
-import giftIcon from '@/asset/images/icon/gift.png'
 import recordIcon from '@/asset/images/icon/record.png'
 import settingIcon from '@/asset/images/icon/setting.png'
 

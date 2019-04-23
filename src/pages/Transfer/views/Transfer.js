@@ -3,12 +3,12 @@ import styled from 'styled-components'
 import weui from 'weui.js'
 import {Helmet} from "react-helmet"
 
-import {integralTransfer} from '../api'
-import Backhome from '../common/Backhome'
+import {integralTransfer} from '@/api'
+import Backhome from '@/common/Backhome'
 
-import closeIcon from '../asset/images/icon/close.png'
-import showIcon from '../asset/images/icon/show.png'
-import hideIcon from '../asset/images/icon/hide.png'
+import closeIcon from '@/asset/images/icon/close.png'
+import showIcon from '@/asset/images/icon/show.png'
+import hideIcon from '@/asset/images/icon/hide.png'
 
 const Input = styled.input`
   border: 0;
