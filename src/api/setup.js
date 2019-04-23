@@ -71,12 +71,15 @@ instance.interceptors.response.use(
 const get = (path, params = {}, config = {}) => {
   return instance.get(path, {...config, params: params})
 }
-
+const del = (path, params = {}, config = {}) => {
+  return instance.delete(path, {...config, params: params})
+}
 const post = (path, data = {}, config = {}) => {
   return instance.post(path, data, config)
 }
 
 export {
   get,
+  del,
   post
 }

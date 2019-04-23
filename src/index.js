@@ -23,9 +23,9 @@ if(token) {
   })
 }
 
-if(module.hot){
-  module.hot.accept();
-}
+// if(module.hot){
+//   module.hot.accept();
+// }
 
 ReactDOM.render(<Provider store={store}><App /></Provider>, document.getElementById('root'))
 

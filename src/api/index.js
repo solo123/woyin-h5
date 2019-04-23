@@ -1,6 +1,6 @@
 import qs from'qs'
 import md5 from 'md5'
-import {get, post} from './setup'
+import {get, del, post} from './setup'
 
 import G_config from '@/config'
 
@@ -375,11 +375,15 @@ export function getJDAddrList(data = {}, config = {}) {
 
 // 删除用户地址
 export function deleteAddrById(id, config) {
-  return get(`${BASE}mail/address/${id}`, null, config)
+  return del(`${BASE}mail/address/${id}`, null, config)
 }
 
 // 获取京东商品类别列表
 export function getJDGoodsSort(data = {}, config) {
+  data = {
+    ...data,
+    typeId: 1
+  }
   return get(`${BASE}mail/goodsClassLists`, data, config)
 }
 
@@ -389,5 +393,37 @@ export function getJDGoodsList(data = {}, config) {
     ...data,
     limit: G_config.store.PAGE_LIMIT
   }
-  return get(`${BASE}mail/goodsList`, data, config)
+  return get(`${BASE}mail/goodsLists`, data, config)
+}
+
+// 京东商品下单
+export function placeOrder(data) {
+  data = {
+    ...data,
+    // tranPwd: md5(data.tranPwd)
+  }
+  return post(`${BASE}mail/placeOrder`, qs.stringify(data))
+}
+
+// 获取京东运费
+export function getJDFreight(data = {}, config) {
+  return get(`${BASE}mail/JDFreight`, data, config)
+}
+
+// 修改登录密码
+export function changeLoginPswd(data = {}, config) {
+  data = {
+    ...data,
+    modifyType: 1
+  }
+  return get(`${BASE}mail/modifyPwd`, data, config)
+}
+
+// 修改交易密码
+export function changeTradePswd(data = {}, config) {
+  data = {
+    ...data,
+    modifyType: 2
+  }
+  return get(`${BASE}api/modifyPwd`, data, config)
 }

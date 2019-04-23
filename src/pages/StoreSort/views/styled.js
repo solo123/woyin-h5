@@ -22,6 +22,9 @@ export default styled.div`
   .menu{
     li{
       padding: 15px;
+      &.active{
+        color: red;
+      }
     }
   }
   .product{

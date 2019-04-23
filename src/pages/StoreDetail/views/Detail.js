@@ -27,8 +27,8 @@ class Detail extends Component {
 
       count: 1,
 
-      integral: 1400,
-      availableIntegral: 1900     
+      integral: this.props.location.state.detail.jdPrice * 100,
+      balance: 0     
     }
   }
 
@@ -53,7 +53,7 @@ class Detail extends Component {
   }
 
   verify() {
-    if((this.state.integral * this.state.count) > this.state.availableIntegral) {
+    if((this.state.integral * this.state.count) > this.state.balance) {
       weui.alert('积分不足')
       return false
     }
@@ -77,66 +77,37 @@ class Detail extends Component {
     if(!this.verify()) {
       return
     }
-    push('/store-confirm')
+    const {name, jdPrice, skuId} = this.props.location.state.detail
+    const {count} = this.state
+    push('/store-confirm', {
+      name,
+      jdPrice,
+      skuId,
+      count
+    })
   }
 
   render() {
     const totalIntegral = this.state.count * this.state.integral
+    const {name, jdPrice, imagePath, introduction, param} = this.props.location.state.detail
     return (
       <Page>
         <Helmet defaultTitle="沃银企服" title="商品详情"  />
 
         <header>
           <div className="swiper">
-            <img src="http://img13.360buyimg.com/n0/jfs/t19621/298/1931817790/260874/b4152b69/5add87fbNa0547d28.jpg" alt=""/>
+            <img src={`http://img13.360buyimg.com/n0/${imagePath}`} alt=""/>
           </div>
           <div className="info">
             <div className="head">
-              <span className="price">¥14</span>
+              <span className="price">¥{jdPrice}</span>
               <span className="badge">有货</span>
             </div>
-            <h2>蓝月亮 芦荟抑菌 滋润保湿洗手液  500g瓶+500g袋装补充装</h2>
+            <h2>{name}</h2>
           </div>
         </header>
-
         <main>
-          <table>
-            <thead>
-              <tr>
-                <th colSpan="2">商品参数</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <th>功效</th>
-                <td>清洁</td>
-              </tr>
-              <tr>
-                <th>功效</th>
-                <td>清洁</td>
-              </tr>
-              <tr>
-                <th>功效</th>
-                <td>清洁</td>
-              </tr>
-              <tr>
-                <th>功效</th>
-                <td>清洁</td>
-              </tr>
-              <tr>
-                <th>功效</th>
-                <td>清洁</td>
-              </tr>
-              <tr>
-                <th>功效</th>
-                <td>清洁</td>
-              </tr>
-              <tr>
-                <th>功效</th>
-                <td>清洁</td>
-              </tr>
-            </tbody>
-          </table>
+          <div dangerouslySetInnerHTML={{__html: param}}></div>
         </main>
 
         <div className="fixed-bottom">
@@ -147,7 +118,7 @@ class Detail extends Component {
           <ConfirmInfo
             count={this.state.count}
             totalIntegral={totalIntegral}
-            availableIntegral={this.state.availableIntegral}
+            balance={this.state.balance}
             handleClick={this.handleClick}
             handleChange={this.handleChange}
             handleSubmit={this.handleSubmit}

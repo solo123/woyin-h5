@@ -43,6 +43,10 @@ export default {
     INTERVAL: 60,
     PSWD_DIGIT: 6
   },
+  pswd: {
+    INTERVAL: 60,
+    PSWD_DIGIT: 6
+  },
   // 转赠记录
   transfer: {
     PAGE_LIMIT: 20

@@ -52,10 +52,22 @@ export default (state = initialState, action) => {
       }
     }
     case ADD_ADDR: {
+      if(action.addr.defaultAddress === 1) {
+        const addrs = state.addrs.map(item => {
+          return {
+            ...item,
+            defaultAddress: 0
+          }
+        })
+        return {
+          ...state,
+          addrs: [...addrs, action.addr]
+        }        
+      }
       return {
         ...state,
         addrs: [...state.addrs, action.addr]
-      }
+      }  
     }
     default: {
       return state

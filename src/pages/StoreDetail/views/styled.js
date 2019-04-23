@@ -2,7 +2,13 @@ import styled from 'styled-components'
 
 export default styled.div`
   padding-bottom: 40px;
-
+  .badge{
+    font-size: 14px;
+    color: #7e7e7e;
+    padding: 0 5px;
+    border-radius: 3px;
+    background: #f2f2f2;          
+  }   
   header{
     margin-bottom: 15px;
     .info{
@@ -30,6 +36,7 @@ export default styled.div`
   main{
     background: #fff;
     margin-bottom: 15px;
+   
     table{
       width: 100%;
       text-align: left;
@@ -55,7 +62,7 @@ export default styled.div`
         }
       }
       tbody{
-        th{
+        .tdTitle, th{
           position: relative;
           color: #888;
           width: 28%;
@@ -74,6 +81,10 @@ export default styled.div`
             transform: scaleY(.5);
           }
         }
+        .tdTitle[colspan] {
+          color: #333;
+          font-weight: bold;
+        }        
         td{
           position: relative;
           padding: 15px 0;

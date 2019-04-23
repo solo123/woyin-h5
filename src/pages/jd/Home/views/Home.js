@@ -1,82 +1,94 @@
-import React from 'react';
+import React, {Component} from 'react'
 import {Helmet} from "react-helmet"
 import {Link} from "react-router-dom"
+import weui from 'weui.js'
+import classNames from 'classnames'
+
+import {getJDGoodsList} from '@/api'
 
 import Backhome from '@/common/Backhome'
 import Page from './styled'
+import List from './List'
 
 import slogan from '@/asset/images/jd/slogan.png'
 import more from '@/asset/images/more.svg'
 
-function Product({title, src, price}) {
-  return (
-    <Link className="product" to="/store-detail/123456">
-      <div className="product-thumb">
-        <img src={src} alt=""/>
-      </div>
-      <div className="product-title">{title}</div>
-      <div className="product-price">￥{price}</div>
-      <div className="product-info">
-        <span className="product-status">有货</span>
-        <span className="product-btn">兑换</span>
-      </div>
-    </Link>
-  )
-}
 
-export default function() {
-  return (
-    <Page>
-      <Helmet defaultTitle="沃银企服" title="京东购物"  />
+class Home extends Component {
+  constructor(props) {
+    super(props)
 
-      <div className="top">
-        <Link to="/store-sort">
-          <img src={more} alt=""/>
-        </Link>
-      </div>
+    this.handleClick = this.handleClick.bind(this)
 
-      <header>
-        <img className="slogan" src={slogan} alt=""/>
-      </header>
+    this.state = {
+      currentId: 1,
+      items: []
+    }
+  }
 
-      <nav>
-        <ul>
-          <li>数码电器</li>
-          <li>居家日用</li>
-          <li>食品饮料</li>
-          <li>美妆护肤</li>
-          <li>电脑配件</li>
-          <li>中外名酒</li>
-        </ul>
-      </nav>
+  componentDidMount() {
+    this.loadProducts(1)
+  }
 
-      <main>
-        <div className="layout">
-          <div className="layout-item">
-            <Product
-              title="索尼（SONY）ILCE-7K 全画幅微单数码相机 标准套装（约2430万有效像素 28-70mm镜头 1080P录像 a7K）"
-              src="http://yanxuan.nosdn.127.net/aed3ae23b0ee7ad024d545b1300f2ba7.png"
-              price="6399"
-            />
-          </div>
-          <div className="layout-item">
-            <Product
-              title="索尼（SONY）ILCE-7K 全画幅微单数码相机 标准套装（约2430万有效像素 28-70mm镜头 1080P录像 a7K）"
-              src="http://yanxuan.nosdn.127.net/aed3ae23b0ee7ad024d545b1300f2ba7.png"
-              price="6399"
-            />
-          </div>
-          <div className="layout-item">
-            <Product
-              title="索尼（SONY）ILCE-7K 全画幅微单数码相机 标准套装（约2430万有效像素 28-70mm镜头 1080P录像 a7K）"
-              src="http://yanxuan.nosdn.127.net/aed3ae23b0ee7ad024d545b1300f2ba7.png"
-              price="6399"
-            />
-          </div>
+  async loadProducts(id) {
+    const loading = weui.loading('处理中')
+    const params = {
+      goodsClassId: id,
+      page: 0
+    }
+    try {
+      const {data} = await getJDGoodsList(params)
+      if(data.status === 200) {
+        this.setState({
+          items: data.data.data
+        })
+      }
+    }finally{
+      loading.hide()
+    }
+  }
+
+  handleClick(id) {
+    this.setState({currentId: id}, () => {
+      this.loadProducts(id)
+    })
+  }
+
+  render() {
+    const {currentId} = this.state
+    return (
+      <Page>
+        <Helmet defaultTitle="沃银企服" title="京东购物"  />
+
+        <div className="top">
+          <Link to="/store-sort">
+            <img src={more} alt=""/>
+          </Link>
         </div>
-      </main>
 
-      <Backhome />
-    </Page>
-  )
+        <header>
+          <img className="slogan" src={slogan} alt=""/>
+        </header>
+
+        <nav>
+          <ul>
+            <li className={classNames({active: currentId === 1})} onClick={() => this.handleClick(1)}>手机配件</li>
+            <li className={classNames({active: currentId === 2})} onClick={() => this.handleClick(2)}>数码产品</li>
+            <li className={classNames({active: currentId === 3})} onClick={() => this.handleClick(3)}>家居日用</li>
+            <li className={classNames({active: currentId === 4})} onClick={() => this.handleClick(4)}>食品饮料</li>
+            <li className={classNames({active: currentId === 5})} onClick={() => this.handleClick(5)}>个人护理</li>
+            <li className={classNames({active: currentId === 10})} onClick={() => this.handleClick(10)}>中外名酒</li>
+          </ul>
+        </nav>
+
+        <main>
+          <List items={this.state.items} />
+        </main>
+
+        <Backhome />
+      </Page>
+    )    
+  }
 }
+
+export default Home

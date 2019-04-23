@@ -270,8 +270,12 @@
   display: block;
   background: transparent;
 }
+.btn:visited{
+  color: #fff;
+}
 .btn-primary{
   color: #fff;
+  text-align: center;
   font-size: 16px;
   line-height: 40px;
   border-radius: 5px;
@@ -279,6 +283,7 @@
 }
 .btn-secondary{
   color: #fff;
+  text-align: center;
   font-size: 16px;
   line-height: 40px;
   border-radius: 5px;
@@ -286,6 +291,7 @@
 }
 .btn-tertiary{
   color: #fff;
+  text-align: center;
   font-size: 16px;
   line-height: 40px;
   border-radius: 5px;
@@ -293,6 +299,7 @@
 }
 .btn-quartus{
   color: #fff;
+  text-align: center;
   font-size: 16px;
   line-height: 40px;
   border-radius: 5px;

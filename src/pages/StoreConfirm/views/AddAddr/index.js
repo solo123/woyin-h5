@@ -1,10 +1,6 @@
 import React, {Component} from 'react';
-import {Helmet} from "react-helmet"
 import weui from 'weui.js'
-import {connect} from 'react-redux'
-import arrow from '@/asset/images/icon/arrow_right.svg'
 
-import config from '@/config'
 import {getAddr, addJDAddr} from '@/api'
 import {replace} from '@/services/redirect'
 
@@ -12,7 +8,6 @@ import Page from './styled'
 import Backhome from '@/common/Backhome'
 
 import AddrSelect from './AddrSelect'
-import {actions as addrActions} from '@/pages/StoreConfirm'
 
 function parseObjectToArr(data) {
   const arr = []
@@ -92,7 +87,6 @@ class AddAddr extends Component {
           ...params,
           id: data.data
         })
-        replace('/addr')
       }
     }finally {
       loading.hide()
@@ -308,7 +302,7 @@ class AddAddr extends Component {
 
         <div className="fixed-bottom">
           <div className="btn-list">
-            <div onClick={this.handleCancel}>取消</div>
+            <div onClick={this.props.handleCancel}>取消</div>
             <div onClick={this.handleSubmit}>确定</div>
           </div>
         </div>
@@ -319,17 +313,4 @@ class AddAddr extends Component {
   }
 }
 
-
-const mapStateTopProps = (state) => {
-  return {}
-}
-
-const mapDispatchToProps = dispatch => {
-  return {
-    addAddr: (addr) => {
-      dispatch(addrActions.addAddr(addr))
-    }
-  }
-}
-
-export default connect(mapStateTopProps, mapDispatchToProps)(AddAddr)
+export default AddAddr

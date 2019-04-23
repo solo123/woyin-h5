@@ -1,12 +1,14 @@
 import React from 'react'
 import {Link} from "react-router-dom"
 
-function Item({name, price}) {
+import EmptyArrayPlaceholder from '@/common/EmptyArrayPlaceholder'
+
+function Item({name, src, price}) {
   return (
     <Link to="" className="product">
       <div className="product__aside">
         <div className="product__thumb">
-          <img src="http://img13.360buyimg.com/n0/jfs/t19621/298/1931817790/260874/b4152b69/5add87fbNa0547d28.jpg" alt=""/>
+          <img src={src} alt=""/>
         </div>      
       </div>
       <div className="product__main">
@@ -22,6 +24,10 @@ function Item({name, price}) {
 }
 
 function List({items}) {
+  if(!items.length) {
+    return <EmptyArrayPlaceholder />
+  }
+
   return (
     <div className="product-list">
       {items.map(product => {
@@ -30,6 +36,7 @@ function List({items}) {
             key={product.skuId}
             id={product.skuId}
             name={product.name}
+            src={`https://img13.360buyimg.com/n1/${product.imagePath}`}
             price={product.price}
           />
         )

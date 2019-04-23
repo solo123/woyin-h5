@@ -1,5 +1,7 @@
 import React, {Component} from 'react'
 import {Helmet} from "react-helmet"
+import weui from 'weui.js'
+import classNames from 'classnames'
 
 import {getJDGoodsSort, getJDGoodsList} from '@/api'
 
@@ -12,6 +14,7 @@ class StoreSort extends Component {
     super(props)
 
     this.state = {
+      currentId: '',
       menus: [],
       items: []
     }
@@ -35,9 +38,11 @@ class StoreSort extends Component {
   }
 
   async getGoodsList(id) {
+    this.setState({currentId: id})
+    const loading = weui.loading('加载中')
     const params = {
       goodsClassId: id,
-      page: '0'
+      page: 0
     }
     try {
       const {data} = await getJDGoodsList(params)
@@ -45,10 +50,12 @@ class StoreSort extends Component {
         this.setState({items: data.data.data})
       }      
     }finally {
+      loading.hide()
     }
   }
 
   render() {
+    const {currentId} = this.state
     return (
       <Page>
         <Helmet title="商品分类"/>
@@ -56,7 +63,17 @@ class StoreSort extends Component {
         <div className="layout">
           <div className="layout__aside">
             <ul className="menu">
-              {this.state.menus.map(item => <li key={item.id} onClick={() => this.getGoodsList(item.id)}>{item.category}</li>)}
+              {this.state.menus.map(item => {
+                return (
+                  <li 
+                    key={item.id} 
+                    className={classNames({active: currentId === item.id})}  
+                    onClick={() => this.getGoodsList(item.id)}
+                  >
+                    {item.category}
+                  </li>
+                )
+              })}
             </ul>
           </div>
           <div className="layout__main">

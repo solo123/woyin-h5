@@ -33,15 +33,12 @@ const Page = styled.div`
     padding: 20px;
     background: url(${headerBg}) top center no-repeat;
     background-size: 100%;
-    .info{
-      font-size: 16px;
-      margin-bottom: 10px;
-    }
     .card{
       display: flex;
       color: #333;
       background: #fff;
       font-family: industry;
+      border-radius: 5px;
       &__cell{
         text-align: center;
         flex: 1;
@@ -63,7 +60,6 @@ const Page = styled.div`
       }
     }
   }
-
   .item{
     position: relative;
     padding: 15px;
@@ -83,7 +79,6 @@ const Page = styled.div`
       content: none;
     }
   }
-
   .arrow{
     width: 15px;
     height: 15px;
@@ -119,7 +114,7 @@ const Page = styled.div`
     }
     &__body{
       display: flex;
-      padding: 15px 0;
+      padding: 20px 0;
     }
     .cell {
       flex: 1;
@@ -182,11 +177,6 @@ class Me extends Component {
       <Page>
         <Helmet defaultTitle="沃银企服" title="我的"/>
         <header>
-          <div className="info">
-            <div>{this.state.contactMan} 商业客户</div>
-            <small>电话：{this.state.userPhoneNo}</small>
-          </div>
-
           <div className="card">
             <div className="card__cell">
               <p>{this.state.balance}</p>
@@ -199,18 +189,34 @@ class Me extends Component {
           </div>
         </header>
 
-        {/* <div className="u_mb_xx">
+        <div className="u_mb_xx">
           <div className="service">
-            <div className="service__head">
-              <h2 className="service__title">我的订单</h2>
-            </div>
             <div className="service__body">
               <div className="cell">
-                <Link to="/developing">
-                  <img className="icon" src={orderIcon} alt=""/>
-                  待付款
+                <Link to="/redeem">
+                  <img className="icon" src={card3Icon} alt=""/>
+                  {this.state.balance} 积分
                 </Link>
               </div>
+              <div className="cell">
+                <Link to="/transfer">
+                  <img className="icon" src={giftIcon} alt=""/>
+                  我的卡券
+                </Link>
+              </div>
+              <div className="cell">
+                <Link to="/bankcard-list">
+                  <img className="icon" src={cardIcon} alt=""/>
+                  银行卡
+                </Link>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="u_mb_xx">
+          <div className="service">
+            <div className="service__body">
               <div className="cell">
                 <Link to="/developing">
                   <img className="icon" src={car2Icon} alt=""/>
@@ -224,37 +230,9 @@ class Me extends Component {
                 </Link>
               </div>
               <div className="cell">
-                <Link to="/developing">
-                  <img className="icon" src={moneyIcon} alt=""/>
-                  待退货
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div> */}
-
-        <div className="u_mb_xx">
-          <div className="service">
-            <div className="service__head">
-              <h2 className="service__title">其他服务</h2>
-            </div>
-            <div className="service__body">
-              <div className="cell">
-                <Link to="/bankcard-list">
-                  <img className="icon" src={cardIcon} alt=""/>
-                  银行卡
-                </Link>
-              </div>
-              <div className="cell">
-                <Link to="/redeem">
-                  <img className="icon" src={card3Icon} alt=""/>
-                  积分代卖
-                </Link>
-              </div>
-              <div className="cell">
-                <Link to="/transfer">
-                  <img className="icon" src={giftIcon} alt=""/>
-                  积分转赠
+                <Link to="/order">
+                  <img className="icon" src={orderIcon} alt=""/>
+                  全部订单
                 </Link>
               </div>
             </div>
@@ -272,15 +250,6 @@ class Me extends Component {
                 <img className="arrow" src={arrowIcon} alt="" />
               </div>
             </Link> 
-            <Link className="item" to="/order">
-              <div className="cell">
-                <img className="icon" src={recordIcon} alt=""/>
-                <label className="label">我的订单</label>
-              </div>
-              <div className="cell">
-                <img className="arrow" src={arrowIcon} alt="" />
-              </div>
-            </Link>
             <Link className="item" to="/redeem-record">
               <div className="cell">
                 <img className="icon" src={recordIcon} alt=""/>
@@ -307,7 +276,25 @@ class Me extends Component {
               <div className="cell">
                 <img className="arrow" src={arrowIcon} alt="" />
               </div>
-            </Link>         
+            </Link>  
+            <Link className="item" to="/setting">
+              <div className="cell">
+                <img className="icon" src={settingIcon} alt=""/>
+                <label className="label">在线客服</label>
+              </div>
+              <div className="cell">
+                <img className="arrow" src={arrowIcon} alt="" />
+              </div>
+            </Link>
+            <Link className="item" to="/setting">
+              <div className="cell">
+                <img className="icon" src={settingIcon} alt=""/>
+                <label className="label">意见反馈</label>
+              </div>
+              <div className="cell">
+                <img className="arrow" src={arrowIcon} alt="" />
+              </div>
+            </Link>       
             <Link className="item" to="/setting">
               <div className="cell">
                 <img className="icon" src={settingIcon} alt=""/>

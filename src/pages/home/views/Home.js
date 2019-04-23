@@ -67,12 +67,11 @@ const Page = styled.div`
   }
 `
 
-const Auth = ({isAuthenticated, merchantName, availableIntegral}) => {
+const Auth = ({isAuthenticated, availableIntegral}) => {
   if(isAuthenticated) {
     return (
       <div className="content">
          <div>我的积分：{availableIntegral}</div>
-         <div>所属商户：{merchantName}</div>
       </div>
     )
   }
@@ -151,7 +150,6 @@ class Home extends Component {
         <header>
           <Auth
             isAuthenticated={isAuthenticated} 
-            merchantName={merchantName}
             availableIntegral={availableIntegral}
           />
         </header>

@@ -29,6 +29,9 @@ export default styled.div`
       li{
         padding: 0 20px;
         flex-shrink: 0;
+        &.active{
+          color: red;
+        }
       }
     }
   }

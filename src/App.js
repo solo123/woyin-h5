@@ -106,6 +106,10 @@ const AsyncFindPswd = Loadable({
   loader: () => import('./pages/FindPswd').then(({view}) => view), 
   loading: LoadingComponent
 })
+const AsyncChangePswd = Loadable({ 
+  loader: () => import('./pages/ChangePswd').then(({view}) => view), 
+  loading: LoadingComponent
+})
 const AsyncResetAllPswd = Loadable({ 
   loader: () => import('./pages/ResetAllPswd').then(({view}) => view), 
   loading: LoadingComponent
@@ -142,7 +146,10 @@ const AsyncAddr = Loadable({
   loader: () => import('./pages/Addr').then(({view}) => view), 
   loading: LoadingComponent
 })
-
+const AsyncResult = Loadable({ 
+  loader: () => import('./pages/Result').then(({view}) => view), 
+  loading: LoadingComponent
+})
 
 export default class extends Component {
   
@@ -175,17 +182,19 @@ export default class extends Component {
             <Auth path="/voucher-record" exact component={AsyncVoucherRecord} />
             <Auth path="/transfer" component={AsyncTransfer} />
             <Auth path="/transfer-record" component={AsyncTransferRecord} />
-            <Route path="/store-jd" component={AsyncJDHome} />
-            <Route path="/store-detail" component={AsyncStoreDetail} />
-            <Route path="/store-confirm" component={AsyncStoreConfirm} />
-            <Route path="/store-sort" component={AsyncStoreSort} />
+            <Auth path="/store-jd" component={AsyncJDHome} />
+            <Auth path="/store-detail" component={AsyncStoreDetail} />
+            <Auth path="/store-confirm" component={AsyncStoreConfirm} />
+            <Auth path="/store-sort" component={AsyncStoreSort} />
 
-            <Route path="/addr" component={AsyncAddr} />
-            <Route path="/add-addr" component={AsyncAddAddr} />
+            <Auth path="/addr" component={AsyncAddr} />
+            <Auth path="/add-addr" component={AsyncAddAddr} />
             <Auth path="/setting" component={AsyncSetting} />
             <Auth path="/reset-all-pswd" component={AsyncResetAllPswd} />
+            <Auth path="/result" component={AsyncResult} />
 
             <Route path="/find-pswd" component={AsyncFindPswd} />
+            <Auth path="/change-pswd" component={AsyncChangePswd} />
             <Route path="/developing" component={AsyncDeveloping} />
             <Route render={ ()=> <AsyncNotFound /> } />
           </Switch>

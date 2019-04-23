@@ -243,6 +243,12 @@ const formatTimestamp = function (timestamp) {
   return null
 }
 
+const formatTimestamp2 = function (timestamp) {
+  if (timestamp) {
+    return dayjs(timestamp).format('YYYY-MM-DD HH:mm:ss')
+  }
+  return null
+}
 // 延迟执行
 // 在一个指定时间之内 再次调用会被忽略
 function throttle(func, delay) {
@@ -296,5 +302,6 @@ export default {
   getBankcardLastNum: getLastNum,
   confirmRetry: confirmRetry,
   filterBankCardByStatusAndType,
-  formatTimestamp
+  formatTimestamp,
+  formatTimestamp2
 };
