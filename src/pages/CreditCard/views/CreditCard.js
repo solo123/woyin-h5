@@ -1,10 +1,10 @@
-import React, { Component } from 'react'
-import { Link } from "react-router-dom"
+import React, {Component} from 'react'
+import {Link} from "react-router-dom"
 import weui from 'weui.js'
 import axios from 'axios'
 import {Helmet} from "react-helmet"
 
-import api, {getBankcardList, paymentToCard, getWithdrawFee, getCodeForWithdraw} from '@/api'
+import {getUserInfo, getBankcardList, paymentToCard, getWithdrawFee, getCodeForWithdraw} from '@/api'
 import util from '@/util'
 import config from '@/config'
 import Backhome from '@/common/Backhome'
@@ -32,22 +32,22 @@ import zxIcon from '@/asset/images/bank/zx.svg'
 import defaultIcon from '@/asset/images/bank/default.svg'
 
 const BANKCARD_SCHEMA = {
-  jsIcon,
-  zsIcon,
-  gsIcon,
-  zxIcon,
-  fzIcon,
-  gdIcon,
-  zgIcon,
-  yzIcon,
-  xyIcon,
-  shfzIcon,
-  shIcon,
-  paIcon,
-  nyIcon,
-  msIcon,
-  jtIcon,
-  hxIcon
+  'GDB' : fzIcon,
+  'CEB' : gdIcon,
+  'ICBC' : gsIcon,
+  'HXB' : hxIcon,
+  'CCB' : jsIcon,
+  'COMM' : jtIcon,
+  'CMBC' : msIcon,
+  'ABC' : nyIcon,
+  'SZPAB' : paIcon,
+  'BOS' : shIcon,
+  'SPDB' : shfzIcon,
+  'CIB' : xyIcon,
+  'PSBC' : yzIcon,
+  'BOC' : zgIcon,
+  'CMB' : zsIcon,
+  'CITIC' : zxIcon
 }
 
 function SendMsgBtn ({flag, interval, handleClick}) {
@@ -64,13 +64,13 @@ function SubmitBtn({pass, handleSubmit}) {
   return <button className="btn btn-primary disable">立即还款</button>
 }
 
-function Card({bankName, bankCard, hasCard, handleOpenPicker}) {
+function Card({logo, bankName, bankCard, hasCard, handleOpenPicker}) {
   if(hasCard) {
     return (
       <div className="u_p_xxx u_mb_xx u_bg_white">
         <div className="card">
           <div className="aside">
-            <img className="icon" src={jsIcon} alt=""/>
+            <img className="icon" src={logo} alt=""/>
           </div>
           <div className="main">
             <p className="title">{bankName} (尾号<span>{util.getBankcardLastNum(bankCard)}</span>)</p>
@@ -148,7 +148,7 @@ export default class extends Component {
   async loadUserInfo() {
     this.loadUserInfoSource = CancelToken.source()
     try {
-      const {data} = await api.getUserInfo(null, {cancelToken: this.loadUserInfoSource.token})
+      const {data} = await getUserInfo(null, {cancelToken: this.loadUserInfoSource.token})
       if(data.status === 200) {
         this.setState({availableIntegral: Number(data.data[0].balance)})
       }
@@ -333,6 +333,7 @@ export default class extends Component {
 
         <Card 
           hasCard={this.state.hasCard} 
+          logo={BANKCARD_SCHEMA[this.state.bankCode]}
           bankName={this.state.bankName}
           bankCard={this.state.bankCard}
           handleOpenPicker={this.handleOpenPicker}

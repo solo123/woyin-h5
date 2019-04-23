@@ -22,7 +22,7 @@ const AsyncLogin = Loadable({
   loading: LoadingComponent
 })
 const AsyncMe = Loadable({
-  loader: () => import('./pages/Me'),
+  loader: () => import('./pages/Me').then(({view}) => view),
   loading: LoadingComponent
 })
 const AsyncBankcardList = Loadable({
@@ -149,6 +149,18 @@ const AsyncFindTradePswd = Loadable({
   loader: () => import('./pages/FindTradePswd').then(({view}) => view), 
   loading: LoadingComponent
 })
+const AsyncWaitSendGoods = Loadable({ 
+  loader: () => import('./pages/WaitSendGoods').then(({view}) => view), 
+  loading: LoadingComponent
+})
+const AsyncWaitReceivGoods = Loadable({ 
+  loader: () => import('./pages/WaitReceivGoods').then(({view}) => view), 
+  loading: LoadingComponent
+})
+const AsyncGoodsTrack = Loadable({ 
+  loader: () => import('./pages/GoodsTrack').then(({view}) => view), 
+  loading: LoadingComponent
+})
 
 export default class extends Component {
   
@@ -192,6 +204,12 @@ export default class extends Component {
             <Route path="/find-login-pswd" component={AsyncFindLoginPswd} />
             <Auth path="/find-trade-pswd" component={AsyncFindTradePswd} />
             <Auth path="/change-trade-pswd" component={AsyncChangeTradePswd} />
+            {/* 商品 */}
+
+            <Auth path="/wait-send-goods" component={AsyncWaitSendGoods} />
+            <Auth path="/wait-receiv-goods" exact component={AsyncWaitReceivGoods} />
+            <Auth path="/wait-receiv-goods/:id" component={AsyncGoodsTrack} />
+
             <Route path="/developing" component={AsyncDeveloping} />
             <Route render={ ()=> <AsyncNotFound /> } />
           </Switch>

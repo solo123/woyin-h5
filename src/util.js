@@ -225,7 +225,6 @@ const fixIos12WeixinInputBug = function () {
   }, true)
 }
 
-
 // 根据类型和状态过滤银行卡
 const filterBankCardByStatusAndType = function (cardList, type, status) {
   return cardList.filter(item => {

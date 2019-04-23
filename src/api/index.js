@@ -455,3 +455,13 @@ export const resetAllPswd = (data) => {
   }
   return put(`${BASE}api/resetAllPwd`, qs.stringify(data))
 }
+
+// 获取京东订单列表
+export function getJDOrders(data = {}, config) {
+  return get(`${BASE}mail/JDOrders`, data, config)
+}
+
+// 获取京东商品物流信息
+export function getJDTrack(id, config) {
+  return get(`${BASE}mail/JDTrack/${id}`, null, config)
+}
