@@ -101,22 +101,28 @@ const AsyncHome = Loadable({
   loader: () => import('./pages/Home').then(({view}) => view), 
   loading: LoadingComponent
 });
+
 const AsyncFindLoginPswd = Loadable({ 
-  loader: () => import('./pages/FindLoginPswd').then(({view}) => view), 
+  loader: () => import('./pages/pswd/FindLoginPswd').then(({view}) => view), 
   loading: LoadingComponent
 })
 const AsyncChangeLoginPswd = Loadable({ 
-  loader: () => import('./pages/ChangeLoginPswd').then(({view}) => view), 
+  loader: () => import('./pages/pswd/ChangeLoginPswd').then(({view}) => view), 
   loading: LoadingComponent
 })
 const AsyncChangeTradePswd = Loadable({ 
-  loader: () => import('./pages/ChangeTradePswd').then(({view}) => view), 
+  loader: () => import('./pages/pswd/ChangeTradePswd').then(({view}) => view), 
+  loading: LoadingComponent
+})
+const AsyncFindTradePswd = Loadable({ 
+  loader: () => import('./pages/pswd/FindTradePswd').then(({view}) => view), 
   loading: LoadingComponent
 })
 const AsyncResetAllPswd = Loadable({ 
-  loader: () => import('./pages/ResetAllPswd').then(({view}) => view), 
+  loader: () => import('./pages/pswd/ResetAllPswd').then(({view}) => view), 
   loading: LoadingComponent
 })
+
 const AsyncSetting = Loadable({ 
   loader: () => import('./pages/Setting').then(({view}) => view), 
   loading: LoadingComponent
@@ -145,10 +151,6 @@ const AsyncResult = Loadable({
   loader: () => import('./pages/Result').then(({view}) => view), 
   loading: LoadingComponent
 })
-const AsyncFindTradePswd = Loadable({ 
-  loader: () => import('./pages/FindTradePswd').then(({view}) => view), 
-  loading: LoadingComponent
-})
 const AsyncWaitSendGoods = Loadable({ 
   loader: () => import('./pages/WaitSendGoods').then(({view}) => view), 
   loading: LoadingComponent
@@ -161,6 +163,11 @@ const AsyncGoodsTrack = Loadable({
   loader: () => import('./pages/GoodsTrack').then(({view}) => view), 
   loading: LoadingComponent
 })
+const AsyncProfile = Loadable({ 
+  loader: () => import('./pages/Profile').then(({view}) => view), 
+  loading: LoadingComponent
+})
+
 
 export default class extends Component {
   
@@ -209,8 +216,9 @@ export default class extends Component {
             <Auth path="/wait-send-goods" component={AsyncWaitSendGoods} />
             <Auth path="/wait-receiv-goods" exact component={AsyncWaitReceivGoods} />
             <Auth path="/wait-receiv-goods/:id" component={AsyncGoodsTrack} />
+            <Auth path="/profile" component={AsyncProfile} />
             <Route path="/developing" component={AsyncDeveloping} />
-            <Route render={ ()=> <AsyncNotFound /> } />
+            <Route render={()=> <AsyncNotFound />}/>
           </Switch>
         </ScrollToTop>
       </Router>

@@ -1,13 +1,14 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import {Helmet} from "react-helmet"
 import axios from 'axios'
 
+import {getProducts} from '@/api'
+import Backhome from '@/common/Backhome'
 import SkeletonPlaceholder from '@/common/SkeletonPlaceholder'
 import EmptyArrayPlaceholder from '@/common/EmptyArrayPlaceholder'
-import {getProducts} from '@/api'
-import Page from './styled'
+
 import List from './List'
-import Backhome from '@/common/Backhome'
+import Page from './styled'
 
 import banner from '@/asset/images/ecard/banner.png'
 
@@ -53,7 +54,7 @@ export default class extends Component {
     }
 
     if(!items.length) {
-      return <EmptyArrayPlaceholder />
+      return <EmptyArrayPlaceholder/>
     }
 
     return (
@@ -87,7 +88,7 @@ export default class extends Component {
           <List items={items} />            
         </section>
         
-        <Backhome />
+        <Backhome/>
       </Page>
     )
   }

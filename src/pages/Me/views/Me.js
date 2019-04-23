@@ -70,7 +70,9 @@ class Me extends Component {
         <Helmet defaultTitle="沃银企服" title="我的"/>
         <header>
           <div className="card">
-            <img className="profile" src={profile} alt=""/>
+            <Link to="/profile">
+              <img className="profile" src={profile} alt=""/>
+            </Link>
             <div>
               <img className="icon" src={rule} alt=""/>
               <img className="icon" src={arrowIcon} alt=""/>
@@ -157,7 +159,7 @@ class Me extends Component {
                 <img className="arrow" src={arrowIcon} alt="" />
               </div>
             </Link>  
-            <Link className="item" to="/setting">
+            <Link className="item" to="/developing">
               <div className="cell">
                 <img className="icon" src={settingIcon} alt=""/>
                 <label className="label">在线客服</label>
@@ -166,7 +168,7 @@ class Me extends Component {
                 <img className="arrow" src={arrowIcon} alt="" />
               </div>
             </Link>
-            <Link className="item" to="/setting">
+            <Link className="item" to="/developing">
               <div className="cell">
                 <img className="icon" src={settingIcon} alt=""/>
                 <label className="label">意见反馈</label>

@@ -1,77 +1,23 @@
 import React, { Component } from 'react'
 import weui from 'weui.js'
-import styled from 'styled-components'
 import {Helmet} from "react-helmet"
 
 import config from '@/config'
 import api, {findPswd} from '@/api'
-import { push } from '@/services/redirect'
+import {push} from '@/services/redirect'
+
+import Backhome from '@/common/Backhome'
+import Page from './styled'
+
 import closeIcon from '@/asset/images/icon/close.png'
 import showIcon from '@/asset/images/icon/show.png'
 import hideIcon from '@/asset/images/icon/hide.png'
 
-import Page from './styled'
-import Backhome from '@/common/Backhome'
-
-const Input = styled.input`
-  border: 0;
-  padding: 0;
-  width: 100%;
-  outline: none;
-  color: inherit;
-  font-size: inherit;
-  appearance: none;
-  background: transparent;
-`
-const PrimaryInput = styled(Input)`
-  color: #444;
-  font-size: 14px;
-`
-const Button = styled.button`
-  outline: none;
-  display: block;
-  border: 0;
-  width: 100%;
-  padding: 0;
-`
-const PrimaryButton = styled(Button)`
-  color: #fff;
-  font-size: 16px;
-  font-weight: bold;
-  line-height: 50px;
-  border-radius: 3px;
-  
-  background: -webkit-linear-gradient(47deg,#4cadff,#8ce0ff);
-`
-const DisablePrimaryButton = styled(Button)`
-  color: #fff;
-  font-weight: bold;
-  font-size: 16px;
-  line-height: 50px;
-  border-radius: 3px;
-  background: #ccc;
-`
-const MiniPrimaryBtn = styled(Button)`
-  color: #fff;
-  font-size: 12px;
-  padding: 3px 10px;
-  line-height: 1.5;
-  border-radius: 3px;
-  background: -webkit-linear-gradient(47deg,#4cadff,#8ce0ff);
-`
-const DisableMiniPrimaryBtn = styled(Button)`
-  color: #fff;
-  font-size: 12px;
-  padding: 3px 10px;
-  line-height: 1.5;
-  border-radius: 3px;
-  background: #ccc;
-`
 const SendMessageBtn = ({flag, interval, handleClick}) => {
   if(flag) {
-    return <MiniPrimaryBtn onClick={handleClick}>获取验证码</MiniPrimaryBtn>
+    return <button className="btn btn-secondary btn-mini" onClick={handleClick}>获取验证码</button>
   }
-  return <DisableMiniPrimaryBtn>{interval}秒后重发</DisableMiniPrimaryBtn>
+  return <button className="btn btn-secondary btn-mini disable">{interval}秒后重发</button>
 }
 
 const ICON_SCHEMA = {
@@ -98,14 +44,12 @@ export default class extends Component {
     this.handleCodeClean = this.handleClean.bind(this, 'code')
 
     this.state = {
-      pass: false,
-
       phone: '',
       phoneClean: false,
 
       code: '',
       getCodeFlag: true,
-      interval: config.findPswd.INTERVAL,
+      interval: config.pswd.INTERVAL,
 
       newPswd: '',
       newPswdClean: false,
@@ -170,7 +114,7 @@ export default class extends Component {
   }
 
   resetGetCode() {
-    this.setState({interval: config.findPswd.INTERVAL, getCodeFlag: true})
+    this.setState({interval: config.pswd.INTERVAL, getCodeFlag: true})
   }
 
   countDown() {
@@ -185,28 +129,6 @@ export default class extends Component {
     }
   }
 
-  updateBtnStatus() {
-    let flag = true
-
-    if(!this.state.code) {
-      flag = false
-    }
-    if(!this.state.phone) {
-      flag = false
-    }
-    if(!this.state.newPswd) {
-      flag = false
-    }
-    if(!this.state.confNewPswd) {
-      flag = false
-    }
-    if(this.state.newPswd !== this.state.confNewPswd) {
-      flag = false
-    }    
-
-    this.setState({pass: flag})
-  }
-
   verify() {
     if(!this.state.phone) {
       weui.alert('请输入登录手机号')
@@ -216,8 +138,8 @@ export default class extends Component {
       weui.alert('请输入新密码')
       return false
     }
-    if(this.state.newPswd.length !== config.findPswd.PSWD_DIGIT) {
-      weui.alert(`请输入${config.findPswd.PSWD_DIGIT}位数的密码`)
+    if(this.state.newPswd.length !== config.pswd.PSWD_DIGIT) {
+      weui.alert(`请输入${config.pswd.PSWD_DIGIT}位数的密码`)
       return false
     }
     if(!this.state.confNewPswd) {
@@ -236,9 +158,7 @@ export default class extends Component {
   }
 
   handleChange(e) {
-    this.setState({[e.target.name]: e.target.value}, () => {
-      this.updateBtnStatus()
-    })
+    this.setState({[e.target.name]: e.target.value})
   }
 
   handleClean(name) {
@@ -267,13 +187,11 @@ export default class extends Component {
     if(!this.verify()) {
       return
     }
-
     this.findPswd(this.state.phone, this.state.newPswd, this.state.code)
   }
 
   render() {
     const {
-      pass,
       code, codeClean, getCodeFlag,
       phone, phoneClean,
       newPswd, newPswdClean, newPswdType,
@@ -286,7 +204,8 @@ export default class extends Component {
         <div className="group-list">
           <div className="group">
             <div className="group__body">
-              <PrimaryInput
+              <input
+                className="input"
                 type="text"
                 name="phone"
                 value={phone} 
@@ -308,14 +227,16 @@ export default class extends Component {
           </div>
           <div className="group">
             <div className="group__body">
-              <PrimaryInput
+              <input
+                className="input"
                 type={newPswdType} 
                 name="newPswd"
                 value={newPswd} 
+                maxLength={config.pswd.PSWD_DIGIT}
                 onChange={this.handleChange} 
                 onFocus={this.handleFocus}
                 onBlur={this.handleBlur}
-                placeholder={`请输入${config.findPswd.PSWD_DIGIT}位数新密码`}
+                placeholder={`请输入${config.pswd.PSWD_DIGIT}位数新密码`}
               />
             </div>
             <div className="group__foot">
@@ -336,10 +257,12 @@ export default class extends Component {
           </div>
           <div className="group">
             <div className="group__body">
-              <PrimaryInput
+              <input
+                className="input"
                 type={confNewPswdType} 
                 name="confNewPswd"
                 value={confNewPswd} 
+                maxLength={config.pswd.PSWD_DIGIT}
                 onChange={this.handleChange} 
                 onFocus={this.handleFocus}
                 onBlur={this.handleBlur}
@@ -364,7 +287,8 @@ export default class extends Component {
           </div>
           <div className="group">
             <div className="group__body">
-              <PrimaryInput
+              <input
+                className="input"
                 type="text"
                 name="code"
                 value={code} 
@@ -387,10 +311,7 @@ export default class extends Component {
           </div>          
         </div>
         <div className="u_m_xxx">
-          {pass
-            ? <PrimaryButton onClick={this.handleSubmit}>提交</PrimaryButton>
-            : <DisablePrimaryButton onClick={this.handleSubmit}>提交</DisablePrimaryButton>
-          }
+          <button className="btn btn-secondary" onClick={this.handleSubmit}>提交</button>
         </div>
 
         <Backhome />
