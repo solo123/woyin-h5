@@ -4,95 +4,32 @@ import weui from 'weui.js'
 import {Link} from 'react-router-dom'
 import {Helmet} from "react-helmet"
 
-import config from '../config'
-import {getUserInfo, getBankcardList, redeemIntegral, getRedeemFee, getCodeForWithdraw} from '../api'
-import util from '../util'
-import {replace} from '../services/redirect'
+import config from '@/config'
+import {getUserInfo, getBankcardList, redeemIntegral, getRedeemFee, getCodeForWithdraw} from '@/api'
+import util from '@/util'
 
-import Backhome from '../common/Backhome'
+import Backhome from '@/common/Backhome'
 
-import moreIcon from '../asset/images/icon/more.png'
-import checkedIcon from '../asset/images/icon/checked.png'
-import uncheckedIcon from '../asset/images/icon/unchecked.svg'
-
-import fzIcon from '../asset/images/bank/fz.svg'
-import gdIcon from '../asset/images/bank/gd.svg'
-import gsIcon from '../asset/images/bank/gs.svg'
-import hxIcon from '../asset/images/bank/hx.svg'
-import jsIcon from '../asset/images/bank/js.svg'
-import jtIcon from '../asset/images/bank/jt.svg'
-import msIcon from '../asset/images/bank/ms.svg'
-import nyIcon from '../asset/images/bank/ny.svg'
-import paIcon from '../asset/images/bank/pa.svg'
-import shIcon from '../asset/images/bank/sh.svg'
-import shfzIcon from '../asset/images/bank/shfz.svg'
-import xyIcon from '../asset/images/bank/xy.svg'
-import yzIcon from '../asset/images/bank/yz.svg'
-import zgIcon from '../asset/images/bank/zg.svg'
-import zsIcon from '../asset/images/bank/zs.svg'
-import zxIcon from '../asset/images/bank/zx.svg'
-import defaultIcon from '../asset/images/bank/default.svg'
-
-const Button = styled.button`
-  border: 0;
-  padding: 0;
-  width: 100%;
-  outline: none;
-  display: block;
-  background: transparent;
-`
-const PrimaryButton = styled(Button)`
-  color: #fff;
-  font-size: 16px;
-  font-weight: bold;
-  line-height: 50px;
-  border-radius: 3px;
-  background: -webkit-linear-gradient(47deg,#4cadff,#8ce0ff);
-`
-const DisablePrimaryButton = styled(Button)`
-  color: #fff;
-  font-weight: bold;
-  font-size: 16px;
-  line-height: 50px;
-  border-radius: 3px;
-  background: #ccc;
-`
-const MiniPrimaryBtn = styled(Button)`
-  color: #fff;
-  font-size: 12px;
-  padding: 5px 10px;
-  line-height: 1.5;
-  border-radius: 3px;
-  background: -webkit-linear-gradient(47deg,#4cadff,#8ce0ff);
-`
-const DisableMiniPrimaryBtn = styled(Button)`
-  color: #fff;
-  font-size: 12px;
-  padding: 5px 10px;
-  line-height: 1.5;
-  border-radius: 3px;
-  background: #ccc;
-`
-const Input = styled.input`
-  border: 0;
-  padding: 0;
-  width: 100%;
-  outline: none;
-  color: inherit;
-  font-size: inherit;
-  -webkit-appearance: none;
-  background: transparent;
-`
-const PrimaryInput = styled(Input)`
-  color: #444;
-  font-size: 16px;
-  font-weight: bold;
-  font-family: industry;
-`
-const MinPrimaryInput = styled(Input)`
-  font-family: industry;
-  font-size: 14px;
-`
+import moreIcon from '@/asset/images/icon/more.png'
+import checkedIcon from '@/asset/images/icon/checked.png'
+import uncheckedIcon from '@/asset/images/icon/unchecked.svg'
+import fzIcon from '@/asset/images/bank/fz.svg'
+import gdIcon from '@/asset/images/bank/gd.svg'
+import gsIcon from '@/asset/images/bank/gs.svg'
+import hxIcon from '@/asset/images/bank/hx.svg'
+import jsIcon from '@/asset/images/bank/js.svg'
+import jtIcon from '@/asset/images/bank/jt.svg'
+import msIcon from '@/asset/images/bank/ms.svg'
+import nyIcon from '@/asset/images/bank/ny.svg'
+import paIcon from '@/asset/images/bank/pa.svg'
+import shIcon from '@/asset/images/bank/sh.svg'
+import shfzIcon from '@/asset/images/bank/shfz.svg'
+import xyIcon from '@/asset/images/bank/xy.svg'
+import yzIcon from '@/asset/images/bank/yz.svg'
+import zgIcon from '@/asset/images/bank/zg.svg'
+import zsIcon from '@/asset/images/bank/zs.svg'
+import zxIcon from '@/asset/images/bank/zx.svg'
+import defaultIcon from '@/asset/images/bank/default.svg'
 
 const Page = styled.div`
   padding: 15px;
@@ -215,9 +152,9 @@ const BankcardLoading = () => {
 
 const SendMessageBtn = ({flag, interval, handleClick}) => {
   if(flag) {
-    return <MiniPrimaryBtn onClick={handleClick}>获取验证码</MiniPrimaryBtn>
+    return <button className="btn btn-secondary btn-mini" onClick={handleClick}>获取验证码</button>
   }
-  return <DisableMiniPrimaryBtn>{interval}秒后重发</DisableMiniPrimaryBtn>
+  return <button className="btn btn-secondary btn-mini disable">{interval}秒后重发</button>
 }
 
 const SubmitBtn = ({pass, handleSubmit}) => {
@@ -530,7 +467,8 @@ class Redeem extends Component {
 
         <div className="u_mb_x">
           <div className="input-box">
-            <PrimaryInput 
+            <input
+              className="input" 
               type="number"
               name="integral"
               value={this.state.integral} 
@@ -551,7 +489,8 @@ class Redeem extends Component {
         <div className="u_mb_xxx">
           <div className="group">
             <div className="group__body">
-              <MinPrimaryInput 
+              <input
+                className="input" 
                 type="text"
                 name="code"
                 value={this.state.code} 

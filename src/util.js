@@ -225,9 +225,6 @@ const fixIos12WeixinInputBug = function () {
   }, true)
 }
 
-const filterBankCardByStatus = function () {}
-
-const filterBankCardByType = function () {}
 
 // 根据类型和状态过滤银行卡
 const filterBankCardByStatusAndType = function (cardList, type, status) {
@@ -268,7 +265,6 @@ function throttle(func, delay) {
 // const superTest = throttle(test, 100)
 // superTest()
 
-
 // 每次调用请求都会延迟执行 
 // 但是如果上次的调用请求还没被执行 最新的调用请求会覆盖掉之前的调用请求
 function debounce(func, delay) {
@@ -284,7 +280,6 @@ function debounce(func, delay) {
 
 // const superTest = debounce(test, 100)
 // superTest()
-
 
 export default {
   addClass,
@@ -303,5 +298,7 @@ export default {
   confirmRetry: confirmRetry,
   filterBankCardByStatusAndType,
   formatTimestamp,
-  formatTimestamp2
+  formatTimestamp2,
+  throttle,
+  debounce
 };

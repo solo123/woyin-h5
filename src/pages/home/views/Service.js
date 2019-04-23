@@ -7,11 +7,8 @@ import flowIcon from '@/asset/images/icon/flow.png'
 import oilIcon from '@/asset/images/icon/oil.png'
 import videoIcon from '@/asset/images/icon/video.png'
 import qqIcon from '@/asset/images/icon/qq.png'
-import lotteryIcon from '@/asset/images/icon/lottery.png'
-import sevenLotteryIcon from '@/asset/images/icon/seven_lottery.png'
 import ecardIcon from '@/asset/images/icon/ecard.png'
 import creditCardIcon from '@/asset/images/icon/credit_card.png'
-import carIcon from '@/asset/images/icon/car.png'
 import listIcon from '@/asset/images/icon/list.svg'
 
 const LayoutPage = styled.div`

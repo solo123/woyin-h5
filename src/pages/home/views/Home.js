@@ -5,19 +5,14 @@ import { Link, withRouter } from "react-router-dom"
 import { connect } from 'react-redux'
 
 import api, {getProducts} from '@/api'
+
 import Menu from '@/common/Menu'
-
-import pedestalBg from '@/asset/images/pedestal.png'
-import integralIcon from '@/asset/images/icon/integral.svg'
-import couponIcon from '@/asset/images/icon/coupon.svg'
-import listIcon from '@/asset/images/icon/list.svg'
-import banner from '@/asset/images/banner.jpg'
-
-import arrowRightWhiteIcon from '@/asset/images/icon/arrow_right_white.svg'
-
 import Store from './Store'
 import Service from './Service'
 import Product from './Product'
+
+import banner from '@/asset/images/banner.jpg'
+import arrowRightWhiteIcon from '@/asset/images/icon/arrow_right_white.svg'
 
 const Page = styled.div`
   padding-bottom: 50px;
@@ -92,7 +87,6 @@ class Home extends Component {
       items: [],
       loading: true,
       integral: '',
-      merchantName: '',
       availableIntegral: 0
     }
   }
@@ -142,7 +136,7 @@ class Home extends Component {
   }
 
   render() {
-    const {loading, items, merchantName, availableIntegral} = this.state
+    const {loading, items, availableIntegral} = this.state
     const {isAuthenticated} = this.props
     return (
       <Page>

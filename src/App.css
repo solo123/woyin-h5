@@ -306,18 +306,17 @@
   background: #ffa537;    
 }
 
-.disable{
-  color: #fff;
-  background: #ccc;  
-}
-
 .btn-mini{
   color: #fff;
   font-size: 12px;
   padding: 3px 10px;
   line-height: 1.5;
   border-radius: 5px;
-  background: linear-gradient(to right,#f23233,#ee6076);
+}
+
+.disable{
+  color: #fff;
+  background: #ccc;  
 }
 
 /* input */

@@ -74,12 +74,16 @@ const get = (path, params = {}, config = {}) => {
 const del = (path, params = {}, config = {}) => {
   return instance.delete(path, {...config, params: params})
 }
+const put = (path, data = {}, config = {}) => {
+  return instance.put(path, data, config)
+}
 const post = (path, data = {}, config = {}) => {
   return instance.post(path, data, config)
 }
 
 export {
   get,
+  put,
   del,
   post
 }

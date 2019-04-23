@@ -14,12 +14,11 @@ if(process.env.NODE_ENV === 'development') {
   require ('./mock/index.js');
 }
 
-const token = getItem('token');
+const token = getItem('token')
+const reset = Number(getItem('reset'))
 if(token) {
   store.dispatch({ 
-    type: 'AUTH_USER', payload: {
-      token: token
-    } 
+    type: 'AUTH_USER', payload: {token, reset} 
   })
 }
 

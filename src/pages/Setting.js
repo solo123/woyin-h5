@@ -47,13 +47,13 @@ export default function() {
       <Helmet defaultTitle="沃银企服" title="设置"/>
       <h1>设置相关</h1>
       <nav>
-        <Link to="/change-pswd">
+        <Link to="/change-login-pswd">
           <span>修改登录密码</span>
           <img className="icon" src={arrowIcon} alt=""/></Link>
-        <Link to="/change-transpswd">
+        <Link to="/change-trade-pswd">
           <span>修改交易密码</span>
           <img className="icon" src={arrowIcon} alt=""/></Link>
-        <Link to="/find-transpswd">
+        <Link to="/find-trade-pswd">
           <span>找回交易密码</span>
           <img className="icon" src={arrowIcon} alt=""/></Link>
       </nav>

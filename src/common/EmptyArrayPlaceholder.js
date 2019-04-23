@@ -1,7 +1,7 @@
-import React, { Component } from 'react'
+import React from 'react'
 import styled from 'styled-components'
 
-import empty from '../asset/images/empty.svg'
+import empty from '@/asset/images/empty.svg'
 
 const LayoutPage = styled.div`
   padding: 40px 0;

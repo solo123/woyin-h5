@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react'
 import styled from 'styled-components'
-import { Link } from "react-router-dom"
+import {Link} from "react-router-dom"
 
-import homeIcon from '../asset/images/icon/home.svg'
+import homeIcon from '@/asset/images/icon/home.svg'
 
 const LayoutFixedRight = styled.div`
   position: fixed;

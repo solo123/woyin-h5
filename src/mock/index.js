@@ -548,24 +548,24 @@ Mock.mock(/sendMessageCode/, 'get', function(options){
 // })
 
 
-const province = {
-  "湖北省": 6612,
-  "湖南省": 6613,
-  "广东省": 6614,
-  "四川省": 6615
-}
-const city = {
-  "深圳市": 1212,
-  "汕头市": 1213
-}
-const county = {
-  "光明新区": 6675,
-  "南山区": 3155
-}
-const street = {
-  "龙华街道": 1232,
-  "坂田街道": 1222
-}
+// const province = {
+//   "湖北省": 6612,
+//   "湖南省": 6613,
+//   "广东省": 6614,
+//   "四川省": 6615
+// }
+// const city = {
+//   "深圳市": 1212,
+//   "汕头市": 1213
+// }
+// const county = {
+//   "光明新区": 6675,
+//   "南山区": 3155
+// }
+// const street = {
+//   "龙华街道": 1232,
+//   "坂田街道": 1222
+// }
 
 // 删除指定用户地址
 // Mock.mock(/address\/\d+/, 'get', function(options){

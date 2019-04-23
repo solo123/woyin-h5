@@ -5,6 +5,7 @@ import {Helmet} from "react-helmet"
 
 import api, {getProducts, rechargePhone} from '@/api'
 import util from '@/util'
+
 import ProductSkeleton from '@/common/ProductSkeleton'
 import EmptyArrayPlaceholder from '@/common/EmptyArrayPlaceholder'
 import Backhome from '@/common/Backhome'
@@ -34,8 +35,6 @@ const SubmitBtn = ({pass, handleSubmit}) => {
 }
 
 const CMCC = '2'
-const CUCC = '3'
-const CTCC = '4'
 
 export default class extends Component {
   constructor(props) {

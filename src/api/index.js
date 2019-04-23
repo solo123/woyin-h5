@@ -1,6 +1,6 @@
 import qs from'qs'
 import md5 from 'md5'
-import {get, del, post} from './setup'
+import {get, del, put, post} from './setup'
 
 import G_config from '@/config'
 
@@ -204,13 +204,7 @@ export const getWithdrawFee = (amount) => {
   return get(`${BASE}api/trad/poundageList`, {amount})
 }
 
-export const findPswd = (data) => {
-  data = {
-    ...data,
-    password: md5(data.password)
-  }
-  return post(`${BASE}user/changePwd`, qs.stringify(data))
-}
+
 
 export const getProducts = (productClassifyId = '', config = {}) => {
   return get(`${BASE}product/list`, {productClassifyId}, config)
@@ -400,7 +394,7 @@ export function getJDGoodsList(data = {}, config) {
 export function placeOrder(data) {
   data = {
     ...data,
-    // tranPwd: md5(data.tranPwd)
+    tranPwd: md5(data.tranPwd)
   }
   return post(`${BASE}mail/placeOrder`, qs.stringify(data))
 }
@@ -414,16 +408,50 @@ export function getJDFreight(data = {}, config) {
 export function changeLoginPswd(data = {}, config) {
   data = {
     ...data,
+    oldPwd: md5(data.oldPwd),
+    newPwdOne: md5(data.newPwdOne),
     modifyType: 1
   }
-  return get(`${BASE}mail/modifyPwd`, data, config)
+  return put(`${BASE}api/modifyPwd`, qs.stringify(data), config)
+}
+
+// 找回登录密码
+export const findPswd = (data) => {
+  data = {
+    ...data,
+    password: md5(data.password)
+  }
+  return post(`${BASE}user/changePwd`, qs.stringify(data))
 }
 
 // 修改交易密码
 export function changeTradePswd(data = {}, config) {
   data = {
     ...data,
+    oldPwd: md5(data.oldPwd),
+    newPwdOne: md5(data.newPwdOne),
     modifyType: 2
   }
-  return get(`${BASE}api/modifyPwd`, data, config)
+  return put(`${BASE}api/modifyPwd`, qs.stringify(data), config)
+}
+
+// 找回交易密码
+export const findTradePswd = (data) => {
+  data = {
+    ...data,
+    password: md5(data.password)
+  }
+  return put(`${BASE}api/resetTranPwd`, qs.stringify(data))
+}
+
+// 重置登录密码和交易密码
+export const resetAllPswd = (data) => {
+  data = {
+    ...data,
+    oldLoginPwd: md5(data.oldLoginPwd),
+    newLoginPwdOne: md5(data.newLoginPwdOne),
+    oldTranPwd: md5(data.oldTranPwd),
+    newTranPwdOne: md5(data.newTranPwdOne)
+  }
+  return put(`${BASE}api/resetAllPwd`, qs.stringify(data))
 }

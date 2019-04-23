@@ -1,10 +1,11 @@
 import React, { Component } from 'react'
+import { connect } from 'react-redux'
 import weui from 'weui.js'
 import {Helmet} from "react-helmet"
 
 import config from '@/config'
 import {changeLoginPswd} from '@/api'
-import { push } from '@/services/redirect'
+import { replace } from '@/services/redirect'
 import closeIcon from '@/asset/images/icon/close.png'
 import showIcon from '@/asset/images/icon/show.png'
 import hideIcon from '@/asset/images/icon/hide.png'
@@ -17,7 +18,7 @@ const ICON_SCHEMA = {
   password: hideIcon
 }
 
-export default class extends Component {
+class ChangeLoginPswd extends Component {
   constructor(props) {
     super(props)
     
@@ -58,7 +59,8 @@ export default class extends Component {
       const {data} = await changeLoginPswd(params)
       if(data.status === 200) {
         weui.alert(data.msg, () => {
-          push('/login')
+          this.props.logout()
+          replace('/login')
         })
       }else {
         weui.alert(data.msg)
@@ -143,7 +145,7 @@ export default class extends Component {
                 type={oldPswdType}
                 name="oldPswd"
                 value={oldPswd} 
-                maxlength={config.pswd.PSWD_DIGIT}
+                maxLength={config.pswd.PSWD_DIGIT}
                 onChange={this.handleChange} 
                 onFocus={this.handleFocus}
                 onBlur={this.handleBlur}
@@ -173,7 +175,7 @@ export default class extends Component {
                 type={newPswdType} 
                 name="newPswd"
                 value={newPswd} 
-                maxlength={config.pswd.PSWD_DIGIT}
+                maxLength={config.pswd.PSWD_DIGIT}
                 onChange={this.handleChange} 
                 onFocus={this.handleFocus}
                 onBlur={this.handleBlur}
@@ -203,7 +205,7 @@ export default class extends Component {
                 type={confNewPswdType} 
                 name="confNewPswd"
                 value={confNewPswd} 
-                maxlength={config.pswd.PSWD_DIGIT}
+                maxLength={config.pswd.PSWD_DIGIT}
                 onChange={this.handleChange} 
                 onFocus={this.handleFocus}
                 onBlur={this.handleBlur}
@@ -236,3 +238,12 @@ export default class extends Component {
     )
   } 
 }
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    logout: () => dispatch({type: 'UNAUTH_USER'})
+  }
+}
+
+
+export default connect(null, mapDispatchToProps)(ChangeLoginPswd)

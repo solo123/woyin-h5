@@ -6,7 +6,6 @@ import {Helmet} from "react-helmet"
 
 import api, {getBankcardList, paymentToCard, getWithdrawFee, getCodeForWithdraw} from '@/api'
 import util from '@/util'
-import {replace} from '@/services/redirect'
 import config from '@/config'
 import Backhome from '@/common/Backhome'
 import Page from './styled'
@@ -14,8 +13,6 @@ import Page from './styled'
 import banner from '@/asset/images/creditCard/banner.jpg'
 import plus from '@/asset/images/creditCard/plus.png'
 import arrow from '@/asset/images/icon/arrow_right.svg'
-import spinner from '@/asset/images/spinner.svg'
-
 import fzIcon from '@/asset/images/bank/fz.svg'
 import gdIcon from '@/asset/images/bank/gd.svg'
 import gsIcon from '@/asset/images/bank/gs.svg'
@@ -33,6 +30,25 @@ import zgIcon from '@/asset/images/bank/zg.svg'
 import zsIcon from '@/asset/images/bank/zs.svg'
 import zxIcon from '@/asset/images/bank/zx.svg'
 import defaultIcon from '@/asset/images/bank/default.svg'
+
+const BANKCARD_SCHEMA = {
+  jsIcon,
+  zsIcon,
+  gsIcon,
+  zxIcon,
+  fzIcon,
+  gdIcon,
+  zgIcon,
+  yzIcon,
+  xyIcon,
+  shfzIcon,
+  shIcon,
+  paIcon,
+  nyIcon,
+  msIcon,
+  jtIcon,
+  hxIcon
+}
 
 function SendMsgBtn ({flag, interval, handleClick}) {
   if(flag) {
@@ -84,12 +100,6 @@ function Card({bankName, bankCard, hasCard, handleOpenPicker}) {
 }
 
 const CancelToken = axios.CancelToken
-
-const BANKCARD_SCHEMA = {
-  jsIcon,
-  zsIcon,
-  gsIcon
-}
 
 export default class extends Component {
   constructor(props) {

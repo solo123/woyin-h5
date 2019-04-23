@@ -2,7 +2,6 @@ import React, {Component} from 'react';
 import weui from 'weui.js'
 
 import {getAddr, addJDAddr} from '@/api'
-import {replace} from '@/services/redirect'
 
 import Page from './styled'
 import Backhome from '@/common/Backhome'
@@ -12,7 +11,7 @@ import AddrSelect from './AddrSelect'
 function parseObjectToArr(data) {
   const arr = []
   Object.keys(data).map(key => {
-    arr.push({
+    return arr.push({
       text: key,
       value: data[key]
     })

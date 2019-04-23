@@ -8,14 +8,13 @@ import ScrollToTop from './common/ScrollToTop'
 import Auth from './common/Auth'
 import history from './history'
 
-const LoadingComponent = ({ isLoading, error }) => {
+function LoadingComponent({ isLoading, error }) {
   if (isLoading) {
     return <div style={{textAlign: 'center', paddingTop: 30}}>loading...</div>
   }else if (error) {
     return <div>Sorry, there was a problem loading the page.</div>
-  }else {
-    return null
   }
+  return null
 }
 
 const AsyncLogin = Loadable({
@@ -102,12 +101,16 @@ const AsyncHome = Loadable({
   loader: () => import('./pages/Home').then(({view}) => view), 
   loading: LoadingComponent
 });
-const AsyncFindPswd = Loadable({ 
-  loader: () => import('./pages/FindPswd').then(({view}) => view), 
+const AsyncFindLoginPswd = Loadable({ 
+  loader: () => import('./pages/FindLoginPswd').then(({view}) => view), 
   loading: LoadingComponent
 })
-const AsyncChangePswd = Loadable({ 
-  loader: () => import('./pages/ChangePswd').then(({view}) => view), 
+const AsyncChangeLoginPswd = Loadable({ 
+  loader: () => import('./pages/ChangeLoginPswd').then(({view}) => view), 
+  loading: LoadingComponent
+})
+const AsyncChangeTradePswd = Loadable({ 
+  loader: () => import('./pages/ChangeTradePswd').then(({view}) => view), 
   loading: LoadingComponent
 })
 const AsyncResetAllPswd = Loadable({ 
@@ -138,16 +141,12 @@ const AsyncStoreSort = Loadable({
   loader: () => import('./pages/StoreSort').then(({view}) => view), 
   loading: LoadingComponent
 })
-const AsyncAddAddr = Loadable({ 
-  loader: () => import('./pages/AddAddr').then(({view}) => view), 
-  loading: LoadingComponent
-})
-const AsyncAddr = Loadable({ 
-  loader: () => import('./pages/Addr').then(({view}) => view), 
-  loading: LoadingComponent
-})
 const AsyncResult = Loadable({ 
   loader: () => import('./pages/Result').then(({view}) => view), 
+  loading: LoadingComponent
+})
+const AsyncFindTradePswd = Loadable({ 
+  loader: () => import('./pages/FindTradePswd').then(({view}) => view), 
   loading: LoadingComponent
 })
 
@@ -186,15 +185,13 @@ export default class extends Component {
             <Auth path="/store-detail" component={AsyncStoreDetail} />
             <Auth path="/store-confirm" component={AsyncStoreConfirm} />
             <Auth path="/store-sort" component={AsyncStoreSort} />
-
-            <Auth path="/addr" component={AsyncAddr} />
-            <Auth path="/add-addr" component={AsyncAddAddr} />
             <Auth path="/setting" component={AsyncSetting} />
             <Auth path="/reset-all-pswd" component={AsyncResetAllPswd} />
             <Auth path="/result" component={AsyncResult} />
-
-            <Route path="/find-pswd" component={AsyncFindPswd} />
-            <Auth path="/change-pswd" component={AsyncChangePswd} />
+            <Auth path="/change-login-pswd" component={AsyncChangeLoginPswd} />
+            <Route path="/find-login-pswd" component={AsyncFindLoginPswd} />
+            <Auth path="/find-trade-pswd" component={AsyncFindTradePswd} />
+            <Auth path="/change-trade-pswd" component={AsyncChangeTradePswd} />
             <Route path="/developing" component={AsyncDeveloping} />
             <Route render={ ()=> <AsyncNotFound /> } />
           </Switch>

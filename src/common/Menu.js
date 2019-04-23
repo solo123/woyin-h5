@@ -1,14 +1,14 @@
-import React, { Component } from 'react';
+import React from 'react'
 import styled from 'styled-components'
-import { Link, withRouter } from "react-router-dom"
-import { connect } from 'react-redux'
+import {Link, withRouter} from "react-router-dom"
+import {connect} from 'react-redux'
 
-import fenleiActive from '../asset/images/icon/fenlei_active.svg'
-import fenlei from '../asset/images/icon/fenlei.svg'
-import liwuActive from '../asset/images/icon/liwu_active.svg'
-import liwu from '../asset/images/icon/liwu.svg'
-import wodeActive from '../asset/images/icon/wode_active.svg'
-import wode from '../asset/images/icon/wode.svg'
+import fenleiActive from '@/asset/images/icon/fenlei_active.svg'
+import fenlei from '@/asset/images/icon/fenlei.svg'
+import liwuActive from '@/asset/images/icon/liwu_active.svg'
+import liwu from '@/asset/images/icon/liwu.svg'
+import wodeActive from '@/asset/images/icon/wode_active.svg'
+import wode from '@/asset/images/icon/wode.svg'
 
 const LayoutItems = styled.ul`
   display: flex;

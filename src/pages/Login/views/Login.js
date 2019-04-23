@@ -3,7 +3,6 @@ import { Redirect, withRouter, Link } from "react-router-dom"
 import { connect } from 'react-redux'
 import weui from 'weui.js'
 import {Helmet} from "react-helmet"
-
 import closeIcon from '@/asset/images/icon/close.png'
 
 import showIcon from '@/asset/images/icon/show.png'
@@ -55,6 +54,7 @@ function PswdInput({passwordType, password, passwordCleanView, handleChange, han
           type={passwordType} 
           name="password" 
           value={password} 
+          maxLength={config.pswd.PSWD_DIGIT}
           onChange={handleChange} 
           onFocus={handleFocus}
           onBlur={handleBlur}                  
@@ -74,12 +74,11 @@ function PswdInput({passwordType, password, passwordCleanView, handleChange, han
           onClick={handleTogglePswdVisibleOrHidden} 
           src={ICON_SCHEMA[passwordType]} alt="切换" 
         />
-        <Link className="link" to="/find-pswd">忘记密码</Link>
+        <Link className="link" to="/find-login-pswd">忘记密码</Link>
       </div>
     </div>
   )
 }
-
 function MessageInput({messageCode, interval, getCodeFlag, messageCodeCleanView, messageClean, handleChange, handleFocus, handleBlur, handleGetCode}) {
   return (
     <div className="group">
@@ -174,7 +173,7 @@ class Login extends Component {
     try {
       const {data} = await api.login(params)
       if(data.status === 200) {
-        this.props.login({token: data.data.sessionId})
+        this.props.login({token: data.data.sessionId, reset: data.data.isModify})
       }else if(data.status === 1010){
         weui.alert('账号或密码错误')
       }else {
@@ -320,7 +319,7 @@ class Login extends Component {
     const {isAuthenticated} = this.props;
     const {from} = this.props.location.state || {from: {pathname: "/"}}
     const {pass, usernameCleanView} = this.state
-
+    
     if(isAuthenticated){return <Redirect to={from} />}
 
     return (
@@ -405,10 +404,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     login: payload => {
       dispatch({
         type: 'AUTH_USER',
-        payload: {token: payload.token}
+        payload: {token: payload.token, reset: payload.reset}
       })
     }
   }
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Login));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Login))

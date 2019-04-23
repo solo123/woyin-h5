@@ -89,7 +89,7 @@ class Detail extends Component {
 
   render() {
     const totalIntegral = this.state.count * this.state.integral
-    const {name, jdPrice, imagePath, introduction, param} = this.props.location.state.detail
+    const {name, jdPrice, imagePath, param} = this.props.location.state.detail
     return (
       <Page>
         <Helmet defaultTitle="沃银企服" title="商品详情"  />

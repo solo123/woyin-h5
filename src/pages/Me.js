@@ -6,25 +6,22 @@ import weui from 'weui.js'
 import axios from 'axios'
 import {Helmet} from "react-helmet"
 
-import {getUserInfo} from '../api'
-import Menu from '../common/Menu'
-import { replace } from '../services/redirect'
+import {getUserInfo} from '@/api'
+import {replace} from '@/services/redirect'
 
-import headerBg from '../asset/images/header_bg.png'
-import arrowIcon from '../asset/images/icon/arrow_right.svg'
+import Menu from '@/common/Menu'
 
-import orderIcon from '../asset/images/icon/order.png'
-import car2Icon from '../asset/images/icon/car2.png'
-import car3Icon from '../asset/images/icon/car3.png'
-import moneyIcon from '../asset/images/icon/money.png'
-import cardIcon from '../asset/images/icon/card.png'
-import card2Icon from '../asset/images/icon/card2.png'
-import card3Icon from '../asset/images/icon/card3.png'
-import giftIcon from '../asset/images/icon/gift.png'
-import lotteryIcon from '../asset/images/icon/lottery.png'
-import recordIcon from '../asset/images/icon/record.png'
-import record2Icon from '../asset/images/icon/record2.png'
-import settingIcon from '../asset/images/icon/setting.png'
+import headerBg from '@/asset/images/header_bg.png'
+import arrowIcon from '@/asset/images/icon/arrow_right.svg'
+import orderIcon from '@/asset/images/icon/order.png'
+import car2Icon from '@/asset/images/icon/car2.png'
+import car3Icon from '@/asset/images/icon/car3.png'
+import cardIcon from '@/asset/images/icon/card.png'
+import card2Icon from '@/asset/images/icon/card2.png'
+import card3Icon from '@/asset/images/icon/card3.png'
+import giftIcon from '@/asset/images/icon/gift.png'
+import recordIcon from '@/asset/images/icon/record.png'
+import settingIcon from '@/asset/images/icon/setting.png'
 
 const Page = styled.div`
   padding-bottom: 50px;
@@ -133,18 +130,18 @@ const Page = styled.div`
 const CancelToken = axios.CancelToken
 
 class Me extends Component {
-
   constructor(props) {
     super(props)
 
     this.handleClick = this.handleClick.bind(this)
+    this.state = {
+      balance: 0,
+      contactMan: "--",
+      userPhoneNo: "--",
+      integralCoupon: 0
+    }    
   }
-  state = {
-    balance: 0,
-    contactMan: "--",
-    userPhoneNo: "--",
-    integralCoupon: 0
-  }
+
   componentDidMount() {
     this.loadUserInfo()
   }

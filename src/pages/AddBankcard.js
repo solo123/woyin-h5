@@ -3,49 +3,12 @@ import styled from 'styled-components'
 import weui from 'weui.js'
 import {Helmet} from "react-helmet"
 
-import {push} from '../services/redirect'
+import {addBankcard} from '@/api'
+import {push} from '@/services/redirect'
 
-import Backhome from '../common/Backhome'
-import closeIcon from '../asset/images/icon/close.png'
-import {addBankcard} from '../api';
+import Backhome from '@/common/Backhome'
 
-const Button = styled.button`
-  outline: none;
-  display: block;
-  border: 0;
-  width: 100%;
-  padding: 0;
-`
-const PrimaryBtn = styled(Button)`
-  color: #fff;
-  font-size: 16px;
-  font-weight: bold;
-  line-height: 50px;
-  border-radius: 3px;
-  background: -webkit-linear-gradient(47deg,#4cadff,#8ce0ff);
-`
-const Input = styled.input`
-  border: 0;
-  padding: 0;
-  width: 100%;
-  outline: none;
-  color: inherit;
-  font-size: inherit;
-  -webkit-appearance: none;
-  background: transparent;
-`
-const PrimaryInput = styled(Input)`
-  color: #444;
-  font-size: 14px;
-`
-const DisablePrimaryBtn = styled(Button)`
-  color: #fff;
-  font-weight: bold;
-  font-size: 16px;
-  line-height: 50px;
-  border-radius: 3px;
-  background: #ccc;
-`
+import closeIcon from '@/asset/images/icon/close.png'
 
 const Page = styled.div`
   margin: 15px;
@@ -245,7 +208,8 @@ class AddBankcard extends Component {
           <div className="form">
             <div className="group">
               <div className="group__body">
-                <PrimaryInput 
+                <input
+                  className="input" 
                   type="text" 
                   name="username" 
                   value={this.state.username} 
@@ -267,7 +231,8 @@ class AddBankcard extends Component {
             </div>
             <div className="group">
               <div className="group__body">
-                <PrimaryInput 
+                <input
+                  className="input" 
                   type="text" 
                   name="id" 
                   value={this.state.id} 
@@ -289,7 +254,8 @@ class AddBankcard extends Component {
             </div>
             <div className="group">
               <div className="group__body">
-                <PrimaryInput 
+                <input
+                  className="input" 
                   type="text" 
                   name="cardNo" 
                   value={this.state.cardNo} 
@@ -311,7 +277,8 @@ class AddBankcard extends Component {
             </div>            
             <div className="group">
             <div className="group__body">
-              <PrimaryInput 
+              <input
+                className="input" 
                 type="text" 
                 name="phone" 
                 value={this.state.phone} 
