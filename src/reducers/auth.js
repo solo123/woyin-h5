@@ -27,7 +27,6 @@ const removeReset = () => {
 export default (state = initialState, action) => {
   switch (action.type) {
     case 'AUTH_USER':
-      
       saveToken(action.payload.token)
       saveReset(action.payload.reset)
       return {

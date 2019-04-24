@@ -1,5 +1,4 @@
 import React, {Component} from 'react'
-import {connect} from 'react-redux'
 import {Helmet} from "react-helmet"
 import weui from 'weui.js'
 
@@ -11,11 +10,9 @@ import FullLayer from '@/common/FullLayer'
 import {getJDAddrList, deleteAddrById, placeOrder, getJDFreight} from '@/api'
 import Backhome from '@/common/Backhome'
 import {replace} from '@/services/redirect'
-import Page from './styled'
 import AddrList from './AddrList'
 import AddAddr from './AddAddr'
-import {fetchAddr} from '../actions'
-import {actions as addrActions} from '@/pages/StoreConfirm'
+import Page from './styled'
 
 function AddBar({handleClick}) {
   return (
@@ -345,23 +342,4 @@ class StoreConfirm extends Component {
   }
 }
 
-const mapStateTopProps = (state) => {
-  const addr = state.addr
-  return {
-    status: addr.status,
-    addrs: addr.addrs
-  }
-}
-
-const mapDispatchToProps = (dispatch) => {
-  return {
-    loadAddr: (cb) => {
-      dispatch(fetchAddr(cb))
-    },
-    selectAddr: (id) => {
-      dispatch(addrActions.selectAddr(id))
-    }
-  }
-}
-
-export default connect(mapStateTopProps, mapDispatchToProps)(StoreConfirm)
+export default StoreConfirm
