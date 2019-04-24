@@ -86,4 +86,36 @@ export default styled.div`
       background: #eaeaea;
     }
   }
+  .fixed-bottom{
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+  }
+  .protocol {
+    margin-left: 15px;
+    color: #333;
+    font-size: 16px;
+    line-height: 1.5;
+    text-align: left;
+    li{
+      list-style: decimal;
+      margin-bottom: 10px;
+    }
+    table {
+      color: #666;
+      width: 100%;
+      margin: 10px 0;
+      th {
+        font-weight: normal;
+        padding: 10px;
+        border: 1px dashed #888;
+        white-space: nowrap;
+      }
+      td{
+        border: 1px dashed #888;
+        padding: 10px;
+      }
+    }
+  }
 `

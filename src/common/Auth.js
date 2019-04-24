@@ -33,4 +33,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return {}
 }
 
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Auth));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Auth))

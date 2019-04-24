@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {Helmet} from "react-helmet"
 import weui from 'weui.js'
+import md5 from 'md5'
 
 import {addBankcard} from '@/api'
 import {push} from '@/services/redirect'
@@ -40,11 +41,14 @@ class AddBankcard extends Component {
 
   async doSubmit(phone, bankCard, username, id) {
     const loading = weui.loading('处理中')
+    const timestamp = new Date().getTime()
     const params = {
       cardPhoneNo: phone,
       bankCard: bankCard,
       cardHoldName: username,
-      idNo: id
+      idNo: id,
+      sign: md5(`key=&afdY%d2^uy3&timestamp=${timestamp}&cardPhoneNo=${phone}&bankCard=${bankCard}&cardHoldName=${username}&idNo=${id}`),
+      timestamp: timestamp
     }
     try {
       const {data} = await addBankcard(params)

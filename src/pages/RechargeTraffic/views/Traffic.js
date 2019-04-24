@@ -1,11 +1,10 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import axios from 'axios'
 import weui from 'weui.js'
 import {Helmet} from "react-helmet"
 
 import api, {getProducts, rechargeTraffic} from '@/api'
 import util from '@/util'
-
 import ProductSkeleton from '@/common/ProductSkeleton'
 import EmptyArrayPlaceholder from '@/common/EmptyArrayPlaceholder'
 import Backhome from '@/common/Backhome'
@@ -27,13 +26,6 @@ function Product({loading, id, items, handleSelect}) {
   return <EmptyArrayPlaceholder />
 }
 
-function SubmitBtn({pass, handleSubmit}) {
-  if(pass) {
-    return <button className="btn btn-secondary" onClick={handleSubmit}>立即充值</button>
-  }
-  return <button className="btn btn-secondary disable" onClick={handleSubmit}>立即充值</button>
-}
-
 const CMCC = '6'
 
 export default class extends Component {
@@ -46,8 +38,6 @@ export default class extends Component {
     this.handleSelect = this.handleSelect.bind(this)
 
     this.state = {
-      pass: false,
-
       items: [],
       skeletonLoading: false,
 
@@ -138,18 +128,8 @@ export default class extends Component {
     this.handleSubmit()
   }
 
-  updateBtnStatus() {
-    if(this.state.phone && this.state.selectId && (this.state.integral <= this.state.availableIntegral)) {
-      this.setState({pass: true})
-    }else {
-      this.setState({pass: false})
-    }
-  }
-
   reset() {
-    this.setState({selectId: ''}, () => {
-      this.updateBtnStatus()
-    })
+    this.setState({selectId: ''})
   }
 
   handleToggleType(type) {
@@ -161,15 +141,11 @@ export default class extends Component {
   }
 
   handleSelect(selectId, integral) {
-    this.setState({selectId, integral}, () => {
-      this.updateBtnStatus()
-    })
+    this.setState({selectId, integral})
   }
 
   handleChange(e) {
-    this.setState({phone: e.target.value}, () => {
-      this.updateBtnStatus()
-    })
+    this.setState({phone: e.target.value})
   }
 
   handleSubmit() {
@@ -198,7 +174,7 @@ export default class extends Component {
   }
 
   render() {
-    const {selectId, type, items, operators, skeletonLoading, pass} = this.state
+    const {selectId, type, items, operators, skeletonLoading} = this.state
 
     return (
       <Page>
@@ -230,7 +206,7 @@ export default class extends Component {
           <Product loading={skeletonLoading} id={selectId} items={items} handleSelect={this.handleSelect} />
 
           <div className="u_p_xxx">
-            <SubmitBtn pass={pass} handleSubmit={this.handleSubmit}/>
+            <button className="btn btn-secondary" onClick={this.handleSubmit}>立即充值</button>
           </div>
         </main>
 

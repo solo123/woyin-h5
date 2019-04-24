@@ -470,3 +470,8 @@ export function getJDTrack(id, config) {
 export function delBankCard(id, config) {
   return del(`${BASE}api/bankCard/${id}`, null, config)
 }
+
+// 获取积分派发记录
+export function getIntegralList(id, config) {
+  return get(`${BASE}api/integralList`, null, config)
+}

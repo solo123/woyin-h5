@@ -6,10 +6,10 @@ import axios from 'axios'
 import {Helmet} from "react-helmet"
 
 import config from '@/config'
-import Opeator from '@/common/Operator'
 import {getUserInfo, getSubProducts, rechargeVoucher} from '@/api'
 import util from '@/util'
 import Backhome from '@/common/Backhome'
+import Opeator from '@/common/Operator'
 
 import appleIcon from '@/asset/images/ecard/apple.png'
 import bgyIcon from '@/asset/images/ecard/bgy.png'

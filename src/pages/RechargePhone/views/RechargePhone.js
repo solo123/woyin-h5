@@ -27,13 +27,6 @@ const Product = ({loading, selectId, handleSelect, items}) => {
   return <EmptyArrayPlaceholder />
 }
 
-const SubmitBtn = ({pass, handleSubmit}) => {
-  if(pass) {
-    return <button className="btn btn-secondary" onClick={handleSubmit}>立即充值</button>
-  }
-  return <button className="btn btn-secondary disable" onClick={handleSubmit}>立即充值</button>
-}
-
 const CMCC = '2'
 
 export default class extends Component {
@@ -46,8 +39,6 @@ export default class extends Component {
     this.handleToggleType = this.handleToggleType.bind(this)
 
     this.state = {
-      pass: false,
-
       items: [],
       skeletonLoading: false,
 
@@ -137,18 +128,8 @@ export default class extends Component {
     this.handleSubmit()
   }
 
-  updateBtnStatus() {
-    if(this.state.phone && this.state.selectId && (this.state.integral <= this.state.availableIntegral)) {
-      this.setState({pass: true})
-    }else {
-      this.setState({pass: false})
-    }
-  }
-
   reset() {
-    this.setState({selectId: ''}, () => {
-      this.updateBtnStatus()
-    })
+    this.setState({selectId: ''})
   }
 
   handleToggleType(type) {
@@ -160,15 +141,11 @@ export default class extends Component {
   }
 
   handleSelect(selectId, integral) {
-    this.setState({selectId, integral}, () => {
-      this.updateBtnStatus()
-    })
+    this.setState({selectId, integral})
   }
 
   handleChange(e) {
-    this.setState({phone: e.target.value}, () => {
-      this.updateBtnStatus()
-    })
+    this.setState({phone: e.target.value})
   }
 
   handleSubmit() {
@@ -229,8 +206,9 @@ export default class extends Component {
           <Product loading={skeletonLoading} selectId={selectId} items={items} handleSelect={this.handleSelect} />
 
           <div className="u_p_xxx">
-            <SubmitBtn pass={pass} handleSubmit={this.handleSubmit}/>
+            <button className="btn btn-secondary" onClick={this.handleSubmit}>立即充值</button>
           </div>
+          
         </main>
 
         <Backhome />

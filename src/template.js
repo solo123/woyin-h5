@@ -23,6 +23,14 @@ export default class extends Component {
 }
 
 
+// styled
+import styled from 'styled-components'
+
+export default styled.div`
+
+
+`
+
 // List
 
 import React from 'react'

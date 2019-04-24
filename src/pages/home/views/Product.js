@@ -1,6 +1,9 @@
-import React from 'react'
+import React, {Component} from 'react'
 import {Link} from "react-router-dom"
 import styled from 'styled-components'
+import weui from 'weui.js'
+
+import {getJDGoodsList} from '@/api'
 
 import dz from '@/asset/images/home/dz.png'
 import hf from '@/asset/images/home/hf.png'
@@ -82,54 +85,83 @@ const Page = styled.div`
   }
 `
 
-function Item({children, title, subTitle, type}) {
+const prefix = 'https://img13.360buyimg.com/n2/'
+
+function Item({id, src, name, data}) {
+  const to = {
+    pathname: `/store-detail/${id}`,
+    state: {detail: data}
+  }
   return (
-    <section className="box">
-      {children}
-      <div className="box__body">
-        <div className="swiper">
-          <div className="swiper-box">
-            <div className="item">
-              <Link to="/store-jd">
-                <img className="img" src={src} alt=""/>
-                <p className="title">大头风扇大头风扇</p>
-                <span className="link">兑换</span>
-              </Link>
-            </div>
-            <div className="item">
-              <Link to="/store-jd">
-                <img className="img" src={src} alt=""/>
-                <p className="title">大头风扇大头风扇</p>
-                <span className="link">兑换</span>
-              </Link>
-            </div>
-            <div className="item">
-              <Link to="/store-jd">
-                <img className="img" src={src} alt=""/>
-                <p className="title">大头风扇大头风扇</p>
-                <span className="link">兑换</span>
-              </Link>
-            </div>
-            <div className="item">
-              <Link to="/store-jd">
-                <img className="img" src={src} alt=""/>
-                <p className="title">大头风扇大头风扇</p>
-                <span className="link">兑换</span>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+    <div className="item">
+      <Link to={to}>
+        <img className="img" src={`${prefix}${src}`} alt=""/>
+        <p className="title">{name}</p>
+        <span className="link">兑换</span>
+      </Link>
+    </div>
   )
 }
 
-const src = 'https://yanxuan.nosdn.127.net/aed3ae23b0ee7ad024d545b1300f2ba7.png'
+class Cate extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      items: []
+    }
+  }
+
+  componentDidMount() {
+    const params = {
+      goodsClassId: this.props.id,
+      page: 0
+    }    
+    this.loadProducts(params)
+  }
+
+  async loadProducts(params) {
+    try {
+      const {data} = await getJDGoodsList(params)
+      if(data.status === 200) {
+        this.setState({
+          items: data.data.data
+        })
+      }
+    }finally {
+    }
+  }
+  
+  render() {
+    const {children} = this.props
+    return (
+      <section className="box">
+        {children}
+        <div className="box__body">
+          <div className="swiper">
+            <div className="swiper-box">
+              {this.state.items.map(item => {
+                return (
+                  <Item
+                    key={item.skuId}
+                    id={item.skuId}
+                    src={item.imagePath}
+                    name={item.name}
+                    data={item}
+                  />
+                )
+              })}
+            </div>
+          </div>
+        </div>
+      </section>
+    )
+  }
+}
 
 export default ({loading, items}) => {
   return (
     <Page>
-      <Item>
+      <Cate id="2">
         <Link to="/store-jd">
           <div className="box__head dz">
             <div className="content">
@@ -142,13 +174,14 @@ export default ({loading, items}) => {
             </div>
           </div>
         </Link>
-      </Item>
-      <Item>
+      </Cate>
+      
+      <Cate id="5">
         <Link to="/store-jd">
           <div className="box__head hf">
             <div className="content">
               <div className="text">
-                <h2>护肤类</h2>
+                <h2>护肤美容</h2>
                 <p>护肤类分类标语</p>
                 <span>查看详情</span>
               </div>
@@ -156,13 +189,14 @@ export default ({loading, items}) => {
             </div>
           </div>
         </Link>
-      </Item>
-      <Item>
+      </Cate>
+
+      <Cate id="4">
         <Link to="/store-jd">
           <div className="box__head ls">
             <div className="content">
               <div className="text">
-                <h2>零食类</h2>
+                <h2>食品饮料</h2>
                 <p>零食类分类标语</p>
                 <span>查看详情</span>
               </div>
@@ -170,7 +204,7 @@ export default ({loading, items}) => {
             </div>
           </div>
         </Link>
-      </Item>
+      </Cate>
     </Page>
   )
 }

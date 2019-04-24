@@ -8,6 +8,7 @@ import {getUserInfo, getBankcardList, redeemIntegral, getRedeemFee, getCodeForWi
 import util from '@/util'
 
 import Backhome from '@/common/Backhome'
+import FullLayer from '@/common/FullLayer'
 import Page from './styled'
 
 import moreIcon from '@/asset/images/icon/more.png'
@@ -69,13 +70,6 @@ const SendMessageBtn = ({flag, interval, handleClick}) => {
   return <button className="btn btn-secondary btn-mini disable">{interval}秒后重发</button>
 }
 
-const SubmitBtn = ({pass, handleSubmit}) => {
-  if(pass) {
-    return <button className="btn btn-secondary" onClick={handleSubmit}>确认代卖</button>
-  }
-  return <button className="btn btn-secondary disable">确认代卖</button>
-}
-
 const Bankcard = ({logo, bankcardNo, bankName}) => {
   return (
     <div className="bankcard">
@@ -114,12 +108,12 @@ class Redeem extends Component {
     this.handleChange = this.handleChange.bind(this)
     this.handleBlur = this.handleBlur.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleToggleAgreement = this.handleToggleAgreement.bind(this)
 
     this.state = {
       integral: '',
       availableIntegral: 0,
 
-      pass: false,
       loading: true,
       hasBankcard: false,
       agreementFlag: true,
@@ -135,7 +129,9 @@ class Redeem extends Component {
       phone: '',
       redeemFee: 0,
       actualReceived: 0,
-      deductIntegral: 0
+      deductIntegral: 0,
+
+      showAgreement: false
     }
   }
 
@@ -153,7 +149,7 @@ class Redeem extends Component {
       if(data.status === 200) {
         this.setState({
           phone: data.data[0].userPhoneNo,
-          availableIntegral: data.data[0].balance
+          availableIntegral: Number(data.data[0].balance)
         })
       }
     }finally {
@@ -259,26 +255,32 @@ class Redeem extends Component {
     })
   }
 
-  updateBtnStatus() {
-    let flag = true
-
+  verify() {
     if(this.state.integral < config.redeem.MIN_INTEGRAL) {
-      flag = false
+      weui.alert(`最少输入${config.redeem.MIN_INTEGRAL}积分`)
+      return
     }
     if(this.state.integral > config.redeem.MAX_INTEGRAL) {
-      flag = false
+      weui.alert(`最多输入${config.redeem.MAX_INTEGRAL}积分`)
+      return
+    }
+    if(this.state.integral > this.state.availableIntegral) {
+      weui.alert(`可用积分不足`)
+      return
     }
     if(!this.state.bankCard) {
-      flag = false
+      weui.alert('暂无可用银行卡')
+      return
     }
     if(!this.state.code) {
-      flag = false
+      weui.alert('请输入短信码')
+      return
     }
     if(!this.state.agreementFlag) {
-      flag = false
+      weui.alert('请勾选代卖协议')
+      return
     }
-
-    this.setState({pass: flag})
+    return true
   }
 
   setCard(card) {
@@ -290,9 +292,7 @@ class Redeem extends Component {
         userPhoneNo: card.userPhoneNo,
         bankcardLogo: BANKCARD_SCHEMA[card.bankCode] || defaultIcon
       }, () => {
-        this.setState({hasBankcard: true}, () => {
-          this.updateBtnStatus()
-        })
+        this.setState({hasBankcard: true})
     })
   }
 
@@ -301,6 +301,9 @@ class Redeem extends Component {
   }
   
   handleGetCode() {
+    if(!this.verify()) {
+      return
+    }    
     this.getCode()
   }
 
@@ -320,18 +323,21 @@ class Redeem extends Component {
   }
 
   handleToggle = e => {
-    this.setState({agreementFlag: !this.state.agreementFlag}, () => {
-      this.updateBtnStatus()
-    })
+    this.setState({agreementFlag: !this.state.agreementFlag})
+  }
+
+  handleToggleAgreement() {
+    this.setState({showAgreement: !this.state.showAgreement})
   }
 
   handleChange(e) {
-    this.setState({[e.target.name]: e.target.value}, () => {
-      this.updateBtnStatus()
-    })
+    this.setState({[e.target.name]: e.target.value})
   }
 
   handleSubmit(e) {
+    if(!this.verify()) {
+      return
+    }
     util.paymentConfirm({
       title: '代卖',
       amount: this.state.integral,
@@ -345,7 +351,6 @@ class Redeem extends Component {
 
   render() {
     const {
-      pass, 
       loading, 
       agreementFlag, 
       hasBankcard, 
@@ -419,12 +424,47 @@ class Redeem extends Component {
         <div className="u_mb_xxx">
           <div className="small-text flex-y-center" onClick={this.handleToggle}>
             <Agreement agreementFlag={agreementFlag} />
-            同意用户<Link to="/redeen-agreement" style={{color: '#007AFF'}}>《代卖规则协议》</Link>
+            同意用户 <span onClick={this.handleToggleAgreement} style={{color: '#007AFF'}}>《代卖规则协议》</span>
           </div>
         </div>
 
-        <SubmitBtn pass={pass} handleSubmit={this.handleSubmit} />
+        <button className="btn btn-secondary" onClick={this.handleSubmit}>确认代卖</button>
         
+        <FullLayer show={this.state.showAgreement} handleClose={this.handleToggleAgreement} close>
+          <div style={{padding: '15px 15px 70px 15px'}}>
+            <ol class="protocol">
+              <li>
+                积分赎回到帐时间为：
+                <table>
+                  <tbody>
+                    <tr>
+                      <th>9：00前订单</th>
+                      <td>10：30处理</td>
+                    </tr>
+                    <tr>
+                      <th>14：00前订单</th>
+                      <td>14：30处理</td>
+                    </tr>
+                    <tr>
+                      <th>17：00前订单</th>
+                      <td>17：30处理</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div class="sub-text">（节假及周六日顺延，具体到帐时间以银行到帐时间为准）</div>
+              </li>
+              <li>每人每次赎回最低积分：100积分</li>
+              <li>每人每天赎回最高积分：5000000积分</li>
+              <li>每人每天最多赎回3次</li>
+            </ol>
+          </div>
+          <div className="fixed-bottom">
+            <div className="u_m_xxx">
+              <button className="btn btn-secondary" onClick={this.handleToggleAgreement}>关闭</button>
+            </div>
+          </div>          
+        </FullLayer>
+
         <Backhome />
       </Page>
     )

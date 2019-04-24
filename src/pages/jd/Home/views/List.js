@@ -37,7 +37,7 @@ function List({items}) {
             data={item}
             id={item.skuId}
             title={item.name}
-            src={`http://img13.360buyimg.com/n1/${item.imagePath}`}
+            src={`https://img13.360buyimg.com/n1/${item.imagePath}`}
             price={item.jdPrice}
           />
         )

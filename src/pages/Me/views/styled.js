@@ -6,9 +6,18 @@ export default styled.div`
   padding-bottom: 50px;
   header{
     color: #fff;
-    padding: 15px;
+    padding: 0 15px 15px 15px;
     background: url(${headerBg}) top center no-repeat;
     background-size: cover;
+    .top{
+      text-align: right;
+      padding: 0 20px;
+      .email{
+        margin: 8px 0;
+        width: 20px;
+        height: 20px;
+      }
+    }
     .card{
       display: flex;
       align-items: center;
@@ -110,5 +119,15 @@ export default styled.div`
         margin: 0 auto 5px auto;
       }
     }
+  }
+  .ruler{
+    li{
+      color: #666;
+      font-size: 14px;
+      padding-bottom: 15px;      
+      &:last-child{
+        padding-bottom: 0;
+      }
+    }    
   }
 `

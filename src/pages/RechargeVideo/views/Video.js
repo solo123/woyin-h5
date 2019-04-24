@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import weui from 'weui.js'
 import axios from 'axios'
 import {Helmet} from "react-helmet"
@@ -6,10 +6,9 @@ import {Helmet} from "react-helmet"
 import api, {getProducts, getSubProducts, rechargeVideo} from '@/api'
 import util from '@/util'
 import Backhome from '@/common/Backhome'
-import Page from './styled'
-
 import ProviderList from './ProviderList'
 import ProductList from './ProductList'
+import Page from './styled'
 
 const CancelToken = axios.CancelToken
 
@@ -23,13 +22,6 @@ function getProviderById(arr, id) {
   return null
 }
 
-function SubmitBtn({pass, handleSubmit}) {
-  if(pass) {
-    return <button className="btn btn-tertiary" onClick={handleSubmit}>立即充值</button>
-  }
-  return <button className="btn btn-tertiary disable">立即充值</button>
-}
-
 class RechargeVideo extends Component {
   constructor(props) {
     super(props)
@@ -40,7 +32,6 @@ class RechargeVideo extends Component {
     this.handleSubmit = this.handleSubmit.bind(this)
 
     this.state = {
-      pass: false,
       subProducts: [],
       products: [],
       selectId: '',
@@ -132,20 +123,10 @@ class RechargeVideo extends Component {
     }
   }
 
-  updateBtnStatus() {
-    if(this.state.username && this.state.selectId) {
-      this.setState({pass: true})
-    }else {
-      this.setState({pass: false})
-    }    
-  }
-
   setProduct(provider) {
     this.setState({
       providerName: provider.productClassifyName,
       providerId: provider.productClassifyId
-    }, () => {
-      this.updateBtnStatus()
     })
   }
 
@@ -158,9 +139,7 @@ class RechargeVideo extends Component {
   }
 
   selectProduct(id, integral) {
-    this.setState({selectId: id, integral: integral}, () => {
-      this.updateBtnStatus()
-    })
+    this.setState({selectId: id, integral: integral})
   }
 
   retryTransPswd() {
@@ -168,9 +147,7 @@ class RechargeVideo extends Component {
   }
 
   handleChange(e) {
-    this.setState({username: e.target.value}, () => {
-      this.updateBtnStatus()
-    })
+    this.setState({username: e.target.value})
   }
 
   handleSubmit() {
@@ -186,7 +163,7 @@ class RechargeVideo extends Component {
   }
 
   render() {
-    const {pass, providerId, products, selectId, subProducts} = this.state
+    const {providerId, products, selectId, subProducts} = this.state
 
     return (
       <Page>
@@ -224,7 +201,7 @@ class RechargeVideo extends Component {
           </div>
 
           <div className="u_mx_xxx u_pb_xxx u_pt_x">
-            <SubmitBtn pass={pass} handleSubmit={this.handleSubmit} />
+            <button className="btn btn-tertiary" onClick={this.handleSubmit}>立即充值</button>
           </div>
         </section>
 

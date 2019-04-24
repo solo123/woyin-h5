@@ -11,6 +11,7 @@ import Backhome from '@/common/Backhome'
 import Nav from './Nav'
 import List from './List'
 import Page from './styled'
+
 import banner from '@/asset/images/recharge/banner.png'
 
 const CancelToken = axios.CancelToken
@@ -23,13 +24,6 @@ const Product = ({loading, selectId, items, handleSelect}) => {
     return <List selectId={selectId} items={items} handleSelect={handleSelect} />
   }
   return <EmptyArrayPlaceholder />
-}
-
-const SubmitBtn = ({pass, verify, handleSubmit}) => {
-  if(pass) {
-    return <button className="btn btn-secondary" onClick={handleSubmit}>立即充值</button>
-  }
-  return <button className="btn btn-secondary disable" onClick={verify}>立即充值</button>
 }
 
 const INIT_TYPE = '10'
@@ -45,8 +39,6 @@ export default class extends Component {
     this.handleToggleType = this.handleToggleType.bind(this)
 
     this.state = {
-      pass: false,
-
       items: [],
       skeletonLoading: false,
 
@@ -138,18 +130,8 @@ export default class extends Component {
     this.handleSubmit()
   }
 
-  updateBtnStatus() {
-    if(this.state.cardNumber && this.state.selectId && (this.state.integral <= this.state.availableIntegral)) {
-      this.setState({pass: true})
-    }else {
-      this.setState({pass: false})
-    }
-  }
-
   reset() {
-    this.setState({selectId: ''}, () => {
-      this.updateBtnStatus()
-    })
+    this.setState({selectId: ''})
   }
 
   handleToggleType(type) {
@@ -164,15 +146,11 @@ export default class extends Component {
   }
 
   handleSelect(selectId, integral) {
-    this.setState({selectId, integral}, () => {
-      this.updateBtnStatus()
-    })
+    this.setState({selectId, integral})
   }
 
   handleChange(e) {
-    this.setState({cardNumber: e.target.value}, () => {
-      this.updateBtnStatus()
-    })
+    this.setState({cardNumber: e.target.value})
   }
 
   verify() {
@@ -203,7 +181,7 @@ export default class extends Component {
   }
 
   render() {
-    const {selectId, type, items, operators, skeletonLoading, pass} = this.state
+    const {selectId, type, items, operators, skeletonLoading} = this.state
 
     return (
       <Page>
@@ -235,7 +213,7 @@ export default class extends Component {
           <Product loading={skeletonLoading} selectId={selectId} items={items} handleSelect={this.handleSelect} />
 
           <div className="u_p_xxx">
-            <SubmitBtn pass={pass} verify={this.verify} handleSubmit={this.handleSubmit}/>
+            <button className="btn btn-secondary" onClick={this.handleSubmit}>立即充值</button>
           </div>
         </main>
 

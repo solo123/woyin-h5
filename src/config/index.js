@@ -55,7 +55,7 @@ export default {
   store: {
     MAX_COUNT: 10,
     MIN_COUNT: 1,
-    PAGE_LIMIT: 20
+    PAGE_LIMIT: 10
   },
   // 双色球
   double_color_ball: {

@@ -1,66 +1,17 @@
-import React, { Component } from 'react';
-import styled from 'styled-components'
+import React, {Component} from 'react'
 import {Helmet} from "react-helmet"
-import { Link, withRouter } from "react-router-dom"
-import { connect } from 'react-redux'
+import {Link, withRouter} from "react-router-dom"
+import {connect} from 'react-redux'
 
 import api, {getProducts} from '@/api'
-
 import Menu from '@/common/Menu'
 import Store from './Store'
 import Service from './Service'
 import Product from './Product'
+import Page from './styled'
 
 import banner from '@/asset/images/banner.jpg'
 import arrowRightWhiteIcon from '@/asset/images/icon/arrow_right_white.svg'
-
-const Page = styled.div`
-  padding-bottom: 50px;
-  header{
-    display: flex;
-    align-items: center;
-    color: #fff;
-    padding: 0 20px;
-    height: 88px;
-    background: linear-gradient(to right, #ff5c4e, #f22d3a);
-    font-weight: bold;
-    font-size: 16px;
-    font-family: industry;
-    .link{
-      display: flex;
-      align-items: center;
-
-      color: #fff;
-      img{
-        width: 20px;
-        height: 20px;
-      }
-    }
-  }
-  .banner-box{
-    padding: 0 10px 10px 10px;
-    background: #fff;
-  }
-  .section{
-    margin-bottom: 10px;
-    .head{
-      padding: 10px 0;
-      .title{
-        font-size: 16px;
-        text-align: center;
-      }
-    }
-    .body{
-      padding-bottom: 10px;
-    }
-  }
-  .fixed-bottom{
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-  }
-`
 
 const Auth = ({isAuthenticated, availableIntegral}) => {
   if(isAuthenticated) {
@@ -78,6 +29,7 @@ const Auth = ({isAuthenticated, availableIntegral}) => {
     </div>
   )
 }
+
 class Home extends Component {
   constructor(props) {
     super(props)
@@ -167,7 +119,6 @@ class Home extends Component {
             </div>
           </div>
         </div>
-
 
         <div className="section">
           <div className="head">

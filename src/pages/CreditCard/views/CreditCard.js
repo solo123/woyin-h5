@@ -1,12 +1,13 @@
 import React, {Component} from 'react'
+import {connect} from 'react-redux'
 import {Link} from "react-router-dom"
 import weui from 'weui.js'
 import axios from 'axios'
 import {Helmet} from "react-helmet"
 
+import config from '@/config'
 import {getUserInfo, getBankcardList, paymentToCard, getWithdrawFee, getCodeForWithdraw} from '@/api'
 import util from '@/util'
-import config from '@/config'
 import Backhome from '@/common/Backhome'
 import Page from './styled'
 
@@ -52,16 +53,9 @@ const BANKCARD_SCHEMA = {
 
 function SendMsgBtn ({flag, interval, handleClick}) {
   if(flag) {
-    return <button className="btn btn-mini" onClick={handleClick}>获取验证码</button>
+    return <button className="btn btn-primary btn-mini" onClick={handleClick}>获取验证码</button>
   }
   return <button className="btn btn-mini disable">{interval}秒后重发</button>
-}
-
-function SubmitBtn({pass, handleSubmit}) {
-  if(pass) {
-    return <button className="btn btn-primary" onClick={handleSubmit}>立即还款</button>
-  }
-  return <button className="btn btn-primary disable">立即还款</button>
 }
 
 function Card({logo, bankName, bankCard, hasCard, handleOpenPicker}) {
@@ -101,7 +95,7 @@ function Card({logo, bankName, bankCard, hasCard, handleOpenPicker}) {
 
 const CancelToken = axios.CancelToken
 
-export default class extends Component {
+class CreditCard extends Component {
   constructor(props) {
     super(props)
 
@@ -112,8 +106,6 @@ export default class extends Component {
     this.handleBlur = this.handleBlur.bind(this)
 
     this.state = {
-      pass: false,
-
       interval: config.creditCard.INTERVAL,
       getCodeFlag: true,
       smsCode: '',
@@ -205,7 +197,7 @@ export default class extends Component {
   async getCode() {
     const loading = weui.loading('发送中')
     try {
-      const {data} = await getCodeForWithdraw(this.state.userPhoneNo)
+      const {data} = await getCodeForWithdraw(this.props.phone)
       if(data.status === 200) {
         this.setState({getCodeFlag: false}, () => {
           this.countDown()
@@ -224,6 +216,26 @@ export default class extends Component {
     }
   }
 
+  verify() {
+    if(!this.state.hasCard) {
+      weui.alert('暂无可用的信用卡')
+      return
+    }
+    if(!this.state.integral) {
+      weui.alert('请输入积分')
+      return
+    }
+    if(!this.state.smsCode) {
+      weui.alert('请输入短信码')
+      return
+    }
+    if(this.state.integral > this.state.availableIntegral) {
+      weui.alert('积分不足')
+      return
+    }
+    return true
+  }
+
   setCard(card) {
     this.setState({
         bankName: card.bankName,
@@ -233,9 +245,7 @@ export default class extends Component {
         userPhoneNo: card.userPhoneNo,
         bankcardLogo: BANKCARD_SCHEMA[card.bankCode] || defaultIcon
       }, () => {
-        this.setState({hasCard: true}, () => {
-          this.updateBtnStatus()
-        })
+        this.setState({hasCard: true})
     })
   }
 
@@ -253,14 +263,6 @@ export default class extends Component {
 
   resetGetCode() {
     this.setState({interval: config.creditCard.INTERVAL, getCodeFlag: true})
-  }
-
-  updateBtnStatus() {
-    if(this.state.integral && this.state.hasCard && this.state.smsCode) {
-      this.setState({pass: true})
-    }else {
-      this.setState({pass: false})
-    }
   }
 
   updateFee({poundage, money, totalAmount}) {
@@ -291,12 +293,13 @@ export default class extends Component {
   }
 
   handleChange(e) {
-    this.setState({[e.target.name]: e.target.value}, () => {
-      this.updateBtnStatus()
-    })
+    this.setState({[e.target.name]: e.target.value})
   }
 
   handleGetCode() {
+    if(!this.verify()) {
+      return
+    }    
     this.getCode()
   }
 
@@ -305,8 +308,9 @@ export default class extends Component {
   }
 
   handleSubmit() {
-    // 错误提示
-    
+    if(!this.verify()) {
+      return
+    }
     util.paymentConfirm({
       title: '还款',
       amount: this.state.integral,
@@ -382,7 +386,7 @@ export default class extends Component {
         </div>
 
         <div className="u_p_xxx">
-          <SubmitBtn pass={this.state.pass} handleSubmit={this.handleSubmit} />
+          <button className="btn btn-primary" onClick={this.handleSubmit}>立即还款</button>
         </div>
 
         <Backhome />
@@ -390,3 +394,15 @@ export default class extends Component {
     )
   }
 }
+
+const mapStateToProps = (state) => {
+  return {
+    phone: state.auth.phone
+  }
+}
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CreditCard)

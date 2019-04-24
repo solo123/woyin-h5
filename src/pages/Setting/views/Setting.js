@@ -6,14 +6,10 @@ import {Helmet} from "react-helmet"
 import arrowIcon from '@/asset/images/icon/arrow_right.svg'
 
 const Page = styled.div`
-  h1{
-    padding: 15px 15px 0 15px;
-    font-size: 16px;
-    font-weight: bold;
-  }
+  padding-top: 15px;
   nav{
-    margin: 15px;
     background: #fff;
+    margin-bottom: 15px;
     a{
       position: relative;
       display: flex;
@@ -45,7 +41,6 @@ export default function() {
   return (
     <Page>
       <Helmet defaultTitle="沃银企服" title="设置"/>
-      <h1>设置相关</h1>
       <nav>
         <Link to="/change-login-pswd">
           <span>修改登录密码</span>
@@ -56,6 +51,16 @@ export default function() {
         <Link to="/find-trade-pswd">
           <span>找回交易密码</span>
           <img className="icon" src={arrowIcon} alt=""/></Link>
+      </nav>
+      <nav>
+        <Link to="/developing">
+          <span>关于我们</span>
+          <img className="icon" src={arrowIcon} alt=""/>
+        </Link>
+        <Link to="/developing">
+          <span>联系我们</span>
+          <img className="icon" src={arrowIcon} alt=""/>
+        </Link>
       </nav>
     </Page>
   )

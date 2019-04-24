@@ -5,17 +5,9 @@ import Loadable from 'react-loadable'
 import './App.css'
 import util from './util'
 import ScrollToTop from './common/ScrollToTop'
+import LoadingComponent from './common/LoadingComponent'
 import Auth from './common/Auth'
 import history from './history'
-
-function LoadingComponent({ isLoading, error }) {
-  if (isLoading) {
-    return <div style={{textAlign: 'center', paddingTop: 30}}>loading...</div>
-  }else if (error) {
-    return <div>Sorry, there was a problem loading the page.</div>
-  }
-  return null
-}
 
 const AsyncLogin = Loadable({
   loader: () => import('./pages/Login').then(({view}) => view),
@@ -167,6 +159,10 @@ const AsyncProfile = Loadable({
   loader: () => import('./pages/Profile').then(({view}) => view), 
   loading: LoadingComponent
 })
+const AsyncIntegral = Loadable({ 
+  loader: () => import('./pages/Integral').then(({view}) => view), 
+  loading: LoadingComponent
+})
 
 
 export default class extends Component {
@@ -183,10 +179,8 @@ export default class extends Component {
             <Route path="/" exact component={AsyncHome} />
             <Route path="/login" component={AsyncLogin} />
             <Auth path="/me" component={AsyncMe} />
-
             <Auth path="/bankcard-list" component={AsyncBankcardList} />
             <Auth path="/bankcard-add" component={AsyncAddBankcard} />
-
             <Auth path="/redeem" component={AsyncRedeem} />
             <Auth path="/redeem-record" component={AsyncRedeemRecord} />
             <Auth path="/credit-card" component={AsyncCreditCard} />
@@ -217,6 +211,8 @@ export default class extends Component {
             <Auth path="/wait-receiv-goods" exact component={AsyncWaitReceivGoods} />
             <Auth path="/wait-receiv-goods/:id" component={AsyncGoodsTrack} />
             <Auth path="/profile" component={AsyncProfile} />
+            <Auth path="/integral" component={AsyncIntegral} />
+
             <Route path="/developing" component={AsyncDeveloping} />
             <Route render={()=> <AsyncNotFound />}/>
           </Switch>

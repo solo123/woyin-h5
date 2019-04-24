@@ -3,9 +3,13 @@ import {Link} from "react-router-dom"
 
 import EmptyArrayPlaceholder from '@/common/EmptyArrayPlaceholder'
 
-function Item({name, src, price}) {
+function Item({id, name, src, price, data}) {
+  const to = {
+    pathname: `/store-detail/${id}`,
+    state: {detail: data}
+  }
   return (
-    <Link to="" className="product">
+    <Link to={to} className="product">
       <div className="product__aside">
         <div className="product__thumb">
           <img src={src} alt=""/>
@@ -36,8 +40,9 @@ function List({items}) {
             key={product.skuId}
             id={product.skuId}
             name={product.name}
-            src={`https://img13.360buyimg.com/n1/${product.imagePath}`}
+            src={`https://img13.360buyimg.com/n2/${product.imagePath}`}
             price={product.price}
+            data={product}
           />
         )
       })}

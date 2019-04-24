@@ -8,6 +8,7 @@ const Page = styled.div`
     left: 0;
     bottom: 0;
     right: 0;
+    z-index: 100;
     &__bg{
       position: fixed;
       bottom: 0;

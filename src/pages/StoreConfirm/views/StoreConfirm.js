@@ -7,7 +7,7 @@ import locationIcon from '@/asset/images/location.svg'
 
 import util from '@/util'
 import FullLayer from '@/common/FullLayer'
-import {getJDAddrList, deleteAddrById, placeOrder, getJDFreight} from '@/api'
+import {getUserInfo, getJDAddrList, deleteAddrById, placeOrder, getJDFreight} from '@/api'
 import Backhome from '@/common/Backhome'
 import {replace} from '@/services/redirect'
 import AddrList from './AddrList'
@@ -70,12 +70,27 @@ class StoreConfirm extends Component {
       showAddrList: false,
       showAddAddr: false,
 
-      availableIntegral: 10000
+      availableIntegral: 0
     }
   }
 
   componentDidMount() {
     this.loadAddrs()
+    this.loadUserInfo()
+  }
+
+  async loadUserInfo() {
+    try {
+      const {data} = await getUserInfo()
+      if(data.status === 200) {
+        if(data.data.length) {
+          this.setState({
+            availableIntegral: data.data[0].balance
+          })
+        }
+      }
+    }finally {
+    }
   }
 
   async loadAddrs() {
@@ -264,7 +279,7 @@ class StoreConfirm extends Component {
   handleSubmit() {
     const {freight} = this.state
     const {count, jdPrice} = this.props.location.state
-    const totalIntegral = ((count * jdPrice) * 100) + (freight * 100)
+    const totalIntegral = (count * Math.round(jdPrice * 100)) + (freight * 100)
     util.paymentConfirm({
       title: '兑换',
       amount: totalIntegral,
@@ -279,7 +294,7 @@ class StoreConfirm extends Component {
   render() {
     const {name, count} = this.props.location.state
     const freight = this.state.freight * 100
-    const jdPrice = this.props.location.state.jdPrice * 100
+    const jdPrice = Math.round(this.props.location.state.jdPrice * 100)
     return (
       <Page>
         <Helmet defaultTitle="沃银企服" title="购买确认" />

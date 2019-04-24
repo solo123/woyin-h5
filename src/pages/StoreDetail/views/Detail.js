@@ -22,14 +22,14 @@ class Detail extends Component {
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleToggle = this.handleToggle.bind(this)
 
+    const integral = Math.round(this.props.location.state.detail.jdPrice * 100)
     this.state = {
       show: false,
-
       count: 1,
-
-      integral: this.props.location.state.detail.jdPrice * 100,
+      integral: integral,
       balance: 0     
     }
+    console.log()
   }
 
   componentDidMount() {
