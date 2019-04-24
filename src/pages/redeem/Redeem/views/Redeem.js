@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
 import weui from 'weui.js'
-import {Link} from 'react-router-dom'
 import {Helmet} from "react-helmet"
 
 import config from '@/config'

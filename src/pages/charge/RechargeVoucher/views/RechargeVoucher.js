@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import styled from 'styled-components'
 import classnames from 'classnames'
 import weui from 'weui.js'
@@ -49,7 +49,6 @@ const StyledPageContainer = styled.div`
 `
 const StyledPage = styled.div`
   background: #fff;
-
   dt{
     font-size: 14px;
     margin-bottom: 10px;
@@ -103,7 +102,6 @@ const StyledTextRight = styled.div`
   color: #b5b5b5;
   text-align: right;
 `
-
 const StyledItems = styled.div`
   display: flex;
   flex-wrap: wrap;

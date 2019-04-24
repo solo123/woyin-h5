@@ -27,7 +27,6 @@ import car3Icon from '@/asset/images/icon/car3.png'
 import cardIcon from '@/asset/images/icon/card.png'
 import card2Icon from '@/asset/images/icon/card2.png'
 import recordIcon from '@/asset/images/icon/record.png'
-import settingIcon from '@/asset/images/icon/setting.png'
 
 const CancelToken = axios.CancelToken
 

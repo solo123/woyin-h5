@@ -26,35 +26,35 @@ const AsyncAddBankcard = Loadable({
   loading: LoadingComponent
 })
 const AsyncRechargePhone = Loadable({
-  loader: () => import('./pages/RechargePhone').then(({view}) => view),
+  loader: () => import('./pages/charge/RechargePhone').then(({view}) => view),
   loading: LoadingComponent
 })
 const AsyncRechargeTraffic = Loadable({
-  loader: () => import('./pages/RechargeTraffic').then(({view}) => view),
+  loader: () => import('./pages/charge/RechargeTraffic').then(({view}) => view),
   loading: LoadingComponent
 })
 const AsyncRechargeOil = Loadable({
-  loader: () => import('./pages/RechargeOil').then(({view}) => view),
+  loader: () => import('./pages/charge/RechargeOil').then(({view}) => view),
   loading: LoadingComponent
 })
 const AsyncRechargeQB = Loadable({
-  loader: () => import('./pages/RechargeQB').then(({view}) => view),
+  loader: () => import('./pages/charge/RechargeQB').then(({view}) => view),
   loading: LoadingComponent
 })
 const AsyncRechargeVideo = Loadable({
-  loader: () => import('./pages/RechargeVideo').then(({view}) => view),
-  loading: LoadingComponent
-})
-const AsyncVoucher = Loadable({
-  loader: () => import('./pages/Voucher').then(({view}) => view),
+  loader: () => import('./pages/charge/RechargeVideo').then(({view}) => view),
   loading: LoadingComponent
 })
 const AsyncRechargeVoucher = Loadable({
-  loader: () => import('./pages/RechargeVoucher').then(({view}) => view),
+  loader: () => import('./pages/charge/RechargeVoucher').then(({view}) => view),
+  loading: LoadingComponent
+})
+const AsyncVoucher = Loadable({
+  loader: () => import('./pages/voucher/Voucher').then(({view}) => view),
   loading: LoadingComponent
 })
 const AsyncVoucherRecord = Loadable({
-  loader: () => import('./pages/VoucherRecord').then(({view}) => view),
+  loader: () => import('./pages/voucher/VoucherRecord').then(({view}) => view),
   loading: LoadingComponent
 })
 const AsyncOrder = Loadable({
@@ -66,27 +66,27 @@ const AsyncNotFound = Loadable({
   loading: LoadingComponent
 })
 const AsyncRedeem = Loadable({
-  loader: () => import('./pages/Redeem').then(({view}) => view),
+  loader: () => import('./pages/redeem/Redeem').then(({view}) => view),
   loading: LoadingComponent
 })
 const AsyncRedeemRecord = Loadable({
-  loader: () => import('./pages/RedeemRecord').then(({view}) => view),
+  loader: () => import('./pages/redeem/RedeemRecord').then(({view}) => view),
   loading: LoadingComponent
 })
 const AsyncCreditCard = Loadable({
-  loader: () => import('./pages/CreditCard').then(({view}) => view),
+  loader: () => import('./pages/creditCard/CreditCard').then(({view}) => view),
   loading: LoadingComponent
 })
 const AsyncCreditRecord = Loadable({
-  loader: () => import('./pages/CreditRecord').then(({view}) => view),
+  loader: () => import('./pages/creditCard/CreditRecord').then(({view}) => view),
   loading: LoadingComponent
 })
 const AsyncTransfer = Loadable({
-  loader: () => import('./pages/Transfer').then(({view}) => view),
+  loader: () => import('./pages/transfer/Transfer').then(({view}) => view),
   loading: LoadingComponent
 })
 const AsyncTransferRecord = Loadable({
-  loader: () => import('./pages/TransferRecord').then(({view}) => view),
+  loader: () => import('./pages/transfer/TransferRecord').then(({view}) => view),
   loading: LoadingComponent
 })
 const AsyncHome = Loadable({ 
@@ -126,18 +126,20 @@ const AsyncJDHome = Loadable({
   loader: () => import('./pages/jd/Home').then(({view}) => view), 
   loading: LoadingComponent
 })
+
 const AsyncStoreDetail = Loadable({ 
-  loader: () => import('./pages/StoreDetail').then(({view}) => view), 
+  loader: () => import('./pages/store/StoreDetail').then(({view}) => view), 
   loading: LoadingComponent
 })
 const AsyncStoreConfirm = Loadable({ 
-  loader: () => import('./pages/StoreConfirm').then(({view}) => view), 
+  loader: () => import('./pages/store/StoreConfirm').then(({view}) => view), 
   loading: LoadingComponent
 })
 const AsyncStoreSort = Loadable({ 
-  loader: () => import('./pages/StoreSort').then(({view}) => view), 
+  loader: () => import('./pages/store/StoreSort').then(({view}) => view), 
   loading: LoadingComponent
 })
+
 const AsyncResult = Loadable({ 
   loader: () => import('./pages/Result').then(({view}) => view), 
   loading: LoadingComponent

@@ -3,11 +3,11 @@ import axios from 'axios'
 import {Helmet} from "react-helmet"
 import weui from 'weui.js'
 
-import {getVoucherRecord} from '../../../api'
-import SkeletonPlaceholder from '../../../common/SkeletonPlaceholder'
+import {getVoucherRecord} from '@/api'
+import SkeletonPlaceholder from '@/common/SkeletonPlaceholder'
 
 import Page from './styled'
-import Backhome from '../../../common/Backhome'
+import Backhome from '@/common/Backhome'
 import SimpleScroll from '@/components/SimpleScroll'
 import List from './List'
 

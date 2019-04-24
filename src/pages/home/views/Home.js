@@ -78,8 +78,7 @@ class Home extends Component {
       if(data.status === 200) {
         if(data.data.length) {
           this.setState({
-            availableIntegral: data.data[0].balance,
-            merchantName: data.data[0].merchantName
+            availableIntegral: Number(data.data[0].balance)
           })
         }
       }

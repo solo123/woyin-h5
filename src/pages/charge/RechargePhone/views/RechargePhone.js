@@ -174,7 +174,7 @@ export default class extends Component {
   }
 
   render() {
-    const {selectId, type, items, operators, skeletonLoading, pass} = this.state
+    const {selectId, type, items, operators, skeletonLoading} = this.state
 
     return (
       <Page>
