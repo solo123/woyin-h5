@@ -93,7 +93,6 @@ const AsyncHome = Loadable({
   loader: () => import('./pages/Home').then(({view}) => view), 
   loading: LoadingComponent
 });
-
 const AsyncFindLoginPswd = Loadable({ 
   loader: () => import('./pages/pswd/FindLoginPswd').then(({view}) => view), 
   loading: LoadingComponent
