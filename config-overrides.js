@@ -12,8 +12,6 @@ module.exports = function override(config, env) {
       'react-dom': 'ReactDOM'
     }
   }
-  config.devtool = 'source-map'
-
   // do stuff with the webpack config...
   return config
 };
