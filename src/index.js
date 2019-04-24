@@ -4,6 +4,7 @@ import { Provider } from 'react-redux';
 import 'weui'
 import "@babel/polyfill"
 import {getItem} from './services/storage'
+import VConsole from 'vconsole'
 
 import './index.css';
 import App from './App';
@@ -22,6 +23,7 @@ if(token) {
   })
 }
 
+new VConsole()
 // if(module.hot){
 //   module.hot.accept();
 // }
