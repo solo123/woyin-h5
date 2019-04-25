@@ -57,8 +57,16 @@ const AsyncVoucherRecord = Loadable({
   loader: () => import('./pages/voucher/VoucherRecord').then(({view}) => view),
   loading: LoadingComponent
 })
-const AsyncOrder = Loadable({
-  loader: () => import('./pages/Order').then(({view}) => view),
+const AsyncOrderEntry = Loadable({
+  loader: () => import('./pages/order/OrderEntry').then(({view}) => view),
+  loading: LoadingComponent
+})
+const AsyncOrderList = Loadable({
+  loader: () => import('./pages/order/OrderList').then(({view}) => view),
+  loading: LoadingComponent
+})
+const AsyncOrderDetail = Loadable({
+  loader: () => import('./pages/order/OrderDetail').then(({view}) => view),
   loading: LoadingComponent
 })
 const AsyncNotFound = Loadable({
@@ -165,7 +173,6 @@ const AsyncIntegral = Loadable({
   loading: LoadingComponent
 })
 
-
 export default class extends Component {
   
   componentDidMount() {
@@ -186,7 +193,9 @@ export default class extends Component {
             <Auth path="/redeem-record" component={AsyncRedeemRecord} />
             <Auth path="/credit-card" component={AsyncCreditCard} />
             <Auth path="/credit-record" component={AsyncCreditRecord} />
-            <Auth path="/order" component={AsyncOrder} />
+            <Auth path="/order-entry" exact component={AsyncOrderEntry} />
+            <Auth path="/order" exact component={AsyncOrderList} />
+            <Auth path="/order/:id" component={AsyncOrderDetail} />
             <Auth path="/recharge-phone" component={AsyncRechargePhone} />
             <Auth path="/recharge-traffic" component={AsyncRechargeTraffic} />
             <Auth path="/recharge-oil" component={AsyncRechargeOil} />
@@ -213,7 +222,6 @@ export default class extends Component {
             <Auth path="/wait-receiv-goods/:id" component={AsyncGoodsTrack} />
             <Auth path="/profile" component={AsyncProfile} />
             <Auth path="/integral" component={AsyncIntegral} />
-
             <Route path="/developing" component={AsyncDeveloping} />
             <Route render={()=> <AsyncNotFound />}/>
           </Switch>

@@ -5,7 +5,7 @@ import EmptyArrayPlaceholder from '@/components/EmptyArrayPlaceholder'
 
 function Item({id, name, phone, goodsName, externalOrder, totalScore, addr}) {
   return (
-    <Link to="/wait-receiv-goods/123" className="item">
+    <div className="item">
       <dl>
         <dt>收件人</dt>
         <dd>{name}</dd>
@@ -30,7 +30,10 @@ function Item({id, name, phone, goodsName, externalOrder, totalScore, addr}) {
         <dt>外部单号</dt>
         <dd>{externalOrder}</dd>
       </dl>
-    </Link>
+      <div className="u_pt_xx">
+        <Link className="btn btn-secondary" to={`/wait-receiv-goods/${id}`}>查看物流</Link>
+      </div>
+    </div>
   )
 }
 
