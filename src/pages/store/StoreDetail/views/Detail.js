@@ -96,7 +96,7 @@ class Detail extends Component {
 
         <header>
           <div className="swiper">
-            <img src={`http://img13.360buyimg.com/n0/${imagePath}`} alt=""/>
+            <img src={`https://img13.360buyimg.com/n0/${imagePath}`} alt=""/>
           </div>
           <div className="info">
             <div className="head">

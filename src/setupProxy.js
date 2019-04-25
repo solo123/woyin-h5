@@ -28,4 +28,18 @@ module.exports = function(app) {
       changeOrigin: true
     })
   )
+
+  app.use(
+    proxy("/goodsClassLists", {
+      target: "http://192.168.0.70:9002",
+      changeOrigin: true
+    })
+  )  
+
+  app.use(
+    proxy("/goodsLists", {
+      target: "http://192.168.0.70:9002",
+      changeOrigin: true
+    })
+  )  
 }

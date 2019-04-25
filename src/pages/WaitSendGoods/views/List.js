@@ -10,7 +10,7 @@ function Item({id, name, phone, goodsName, externalOrder, totalScore, addr}) {
         <dd>{name}</dd>
       </dl>
       <dl>
-        <dt>收入电话</dt>
+        <dt>收件人电话</dt>
         <dd>{phone}</dd>
       </dl>
       <dl>

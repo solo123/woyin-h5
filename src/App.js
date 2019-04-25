@@ -69,6 +69,14 @@ const AsyncOrderDetail = Loadable({
   loader: () => import('./pages/order/OrderDetail').then(({view}) => view),
   loading: LoadingComponent
 })
+const AsyncStoreList = Loadable({
+  loader: () => import('./pages/order/StoreList').then(({view}) => view),
+  loading: LoadingComponent
+})
+const AsyncOrderStore = Loadable({
+  loader: () => import('./pages/order/OrderStore').then(({view}) => view),
+  loading: LoadingComponent
+})
 const AsyncNotFound = Loadable({
   loader: () => import('./pages/NotFound').then(({view}) => view),
   loading: LoadingComponent
@@ -196,6 +204,8 @@ export default class extends Component {
             <Auth path="/order-entry" exact component={AsyncOrderEntry} />
             <Auth path="/order" exact component={AsyncOrderList} />
             <Auth path="/order/:id" component={AsyncOrderDetail} />
+            <Auth path="/order-store" exact component={AsyncStoreList} />
+            <Auth path="/order-store/:id" component={AsyncOrderStore} />
             <Auth path="/recharge-phone" component={AsyncRechargePhone} />
             <Auth path="/recharge-traffic" component={AsyncRechargeTraffic} />
             <Auth path="/recharge-oil" component={AsyncRechargeOil} />

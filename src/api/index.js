@@ -11,6 +11,8 @@ if(process.env.NODE_ENV === 'development') {
   BASE = '/client/'
 }
 
+const timestamp = new Date().getTime() + ''
+
 export default {
   login(data) {
     if(data.loginType === 1) {
@@ -310,11 +312,17 @@ export const getRedeemRecord = (data = {}, config = {}) => {
 
 // 话费充值
 export function rechargePhone(data) {
+  const pswd = md5('000000')
+
   data = {
-    ...data,
-    tranPwd: md5(data.tranPwd),
-    chargeType: 1
+    chargeAddr: data.chargeAddr,
+    chargeType: "1",
+    productId: "1",
+    tranPwd: pswd,
+    sign: md5(`key=&afdY%d2^uy3&timestamp=${timestamp}&chargeAddr=${data.chargeAddr}&chargeType=${data.chargeType}&productId=${data.productId}&tranPwd=${pswd}`),
+    timestamp: timestamp
   }
+
   return post(`${BASE}api/charge/moreCredit`, qs.stringify(data))
 }
 
@@ -340,69 +348,14 @@ export function rechargeTraffic(data) {
 export function rechargeOil(data) {
   data = {
     ...data,
-    tranPwd: md5(data.tranPwd)
+    tranPwd: md5(data.tranPwd),
+    sign: md5(`key=&afdY%d2^uy3&timestamp=${timestamp}&phone=${data.phone}&range=${data.range}&productId=${data.productId}&tranPwd=123456`),
+    timestamp: timestamp        
   }
   return post(`${BASE}api/oilCard/charge`, qs.stringify(data))
 }
 
-// 获取层级地址
-export function getAddr(data = {}, config = {}) {
-  return get(`${BASE}mail/address`, data, config)
-}
 
-// 添加地址
-export function addJDAddr(data) {
-  data = {
-    ...data,
-    addType: 1
-  }
-  return post(`${BASE}mail/address`, qs.stringify(data))
-}
-
-export function getJDAddrList(data = {}, config = {}) {
-  data = {
-    ...data,
-    addType: 1
-  }
-  return get(`${BASE}mail/userAddressList`, data, config)
-}
-
-// 删除用户地址
-export function deleteAddrById(id, config) {
-  return del(`${BASE}mail/address/${id}`, null, config)
-}
-
-// 获取京东商品类别列表
-export function getJDGoodsSort(data = {}, config) {
-  data = {
-    ...data,
-    typeId: 1
-  }
-  return get(`/jdapi/goodsClassLists`, data, config)
-}
-
-// 获取京东商品列表
-export function getJDGoodsList(data = {}, config) {
-  data = {
-    ...data,
-    limit: G_config.store.PAGE_LIMIT
-  }
-  return get(`/jdapi/goodsLists`, data, config)
-}
-
-// 京东商品下单
-export function placeOrder(data) {
-  data = {
-    ...data,
-    tranPwd: md5(data.tranPwd)
-  }
-  return post(`${BASE}mail/placeOrder`, qs.stringify(data))
-}
-
-// 获取京东运费
-export function getJDFreight(data = {}, config) {
-  return get(`${BASE}mail/JDFreight`, data, config)
-}
 
 // 修改登录密码
 export function changeLoginPswd(data = {}, config) {
@@ -456,15 +409,7 @@ export const resetAllPswd = (data) => {
   return put(`${BASE}api/resetAllPwd`, qs.stringify(data))
 }
 
-// 获取京东订单列表
-export function getJDOrders(data = {}, config) {
-  return get(`${BASE}mail/JDOrders`, data, config)
-}
 
-// 获取京东商品物流信息
-export function getJDTrack(id, config) {
-  return get(`${BASE}mail/JDTrack/${id}`, null, config)
-}
 
 // 删除银行卡
 export function delBankCard(id, config) {
@@ -474,4 +419,132 @@ export function delBankCard(id, config) {
 // 获取积分派发记录
 export function getIntegralList(id, config) {
   return get(`${BASE}api/integralList`, null, config)
+}
+
+
+// 京东相关
+
+
+// 获取京东商品类别列表
+export function getJDGoodsSort(data = {}, config) {
+  data = {
+    ...data,
+    typeId: 1
+  }
+  if(process.env.NODE_ENV === 'development') {
+    BASE = '/'
+  }else if(process.env.NODE_ENV === 'production') {
+    BASE = '/jdapi/'
+  }    
+  return get(`${BASE}goodsClassLists`, data, config)
+}
+
+// 获取京东商品列表
+export function getJDGoodsList(data = {}, config) {
+  data = {
+    ...data,
+    limit: G_config.store.PAGE_LIMIT
+  }
+  if(process.env.NODE_ENV === 'development') {
+    BASE = '/'
+  }else if(process.env.NODE_ENV === 'production') {
+    BASE = '/jdapi/'
+  }  
+  return get(`${BASE}goodsLists`, data, config)
+}
+
+// 获取层级地址
+export function getAddr(data = {}, config = {}) {
+  if(process.env.NODE_ENV === 'development') {
+    BASE = '/'
+  }else if(process.env.NODE_ENV === 'production') {
+    BASE = '/jdapi/'
+  }    
+  return get(`${BASE}mail/address`, data, config)
+}
+
+// 添加地址
+export function addJDAddr(data) {
+  data = {
+    ...data,
+    addType: 1
+  }
+  if(process.env.NODE_ENV === 'development') {
+    BASE = '/'
+  }else if(process.env.NODE_ENV === 'production') {
+    BASE = '/jdapi/'
+  }    
+  return post(`${BASE}mail/address`, qs.stringify(data))
+}
+
+export function getJDAddrList(data = {}, config = {}) {
+  data = {
+    ...data,
+    addType: 1
+  }
+  if(process.env.NODE_ENV === 'development') {
+    BASE = '/'
+  }else if(process.env.NODE_ENV === 'production') {
+    BASE = '/jdapi/'
+  }    
+  return get(`${BASE}mail/userAddressList`, data, config)
+}
+
+// 删除用户地址
+export function deleteAddrById(id, config) {
+  if(process.env.NODE_ENV === 'development') {
+    BASE = '/'
+  }else if(process.env.NODE_ENV === 'production') {
+    BASE = '/jdapi/'
+  }    
+  return del(`${BASE}mail/address/${id}`, null, config)
+}
+
+// 京东商品下单
+export function placeOrder(data) {
+  data = {
+    ...data,
+    tranPwd: md5(data.tranPwd)
+  }
+  if(process.env.NODE_ENV === 'development') {
+    BASE = '/'
+  }else if(process.env.NODE_ENV === 'production') {
+    BASE = '/jdapi/'
+  }    
+  return post(`${BASE}mail/placeOrder`, qs.stringify(data))
+}
+
+// 获取京东运费
+export function getJDFreight(data = {}, config) {
+  if(process.env.NODE_ENV === 'development') {
+    BASE = '/'
+  }else if(process.env.NODE_ENV === 'production') {
+    BASE = '/jdapi/'
+  }    
+  return get(`${BASE}mail/JDFreight`, data, config)
+}
+
+// 获取京东订单列表
+export function getJDOrders(data = {}, config) {
+  if(process.env.NODE_ENV === 'development') {
+    BASE = '/'
+  }else if(process.env.NODE_ENV === 'production') {
+    BASE = '/jdapi/'
+  }    
+
+  data = {
+    ...data,
+    limit: G_config.store.PAGE_LIMIT
+  }
+  return get(`${BASE}mail/JDOrders`, data, config)
+}
+
+// 获取京东商品物流信息
+export function getJDTrack(id, config) {
+  if(process.env.NODE_ENV === 'development') {
+    BASE = '/'
+  }else if(process.env.NODE_ENV === 'production') {
+    BASE = '/jdapi/'
+  }    
+  return get(`${BASE}mail/JDTrack/${id}`, null, config)
 }

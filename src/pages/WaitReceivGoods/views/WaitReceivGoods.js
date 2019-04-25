@@ -5,9 +5,7 @@ import {getJDOrders} from '@/api'
 
 import Backhome from '@/components/Backhome'
 import SkeletonPlaceholder from '@/components/SkeletonPlaceholder'
-
 import List from './List'
-
 import Page from './styled'
 
 export default class extends Component {
