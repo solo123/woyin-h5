@@ -10,7 +10,6 @@ class SimpleScroll {
 
   handleScroll() {
     if(this.isLoading) {return}
-
     const scrollTop = this.container.scrollTop
     const winHeight = this.container.offsetHeight
     const docHeight = this.scroller.offsetHeight   

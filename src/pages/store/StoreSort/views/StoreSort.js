@@ -6,15 +6,21 @@ import classNames from 'classnames'
 import {getJDGoodsSort, getJDGoodsList} from '@/api'
 
 import Backhome from '@/components/Backhome'
+import SimpleScroll from '@/components/SimpleScroll'
 import Page from './styled'
 import List from './List'
+
+let currentPage = 0
 
 class StoreSort extends Component {
   constructor(props) {
     super(props)
 
+    this.loadData = this.loadData.bind(this)
+    this.handleClick = this.handleClick.bind(this)
+
     this.state = {
-      currentId: '',
+      id: '',
       menus: [],
       items: []
     }
@@ -22,8 +28,17 @@ class StoreSort extends Component {
 
   componentDidMount() {
     this.getGoodsSort(id => {
-      this.getGoodsList(id)
+      this.setState({id: id}, () => {
+        const params = {goodsClassId: this.state.id, page: currentPage++}    
+        this.loadNextPage(params)
+      })
     })
+
+    this.scroll = new SimpleScroll(this.scrollContainer, this.loadData)
+  }
+
+  componentWillUnmount() {
+    this.scroll.destroy()
   }
 
   async getGoodsSort(cb) {
@@ -37,25 +52,45 @@ class StoreSort extends Component {
     }
   }
 
-  async getGoodsList(id) {
-    this.setState({currentId: id})
+  async loadNextPage(params) {
     const loading = weui.loading('加载中')
-    const params = {
-      goodsClassId: id,
-      page: 0
-    }
     try {
       const {data} = await getJDGoodsList(params)
       if(data.status === 200) {
-        this.setState({items: data.data.data})
+        this.setState({items: [...this.state.items, ...data.data.data]}, () => {
+          if(data.data.data.length) {
+            this.scroll.finish()
+          }
+        })
       }      
     }finally {
       loading.hide()
     }
   }
 
+  loadData() {
+    const params = {goodsClassId: this.state.id, page: currentPage++}   
+    this.loading = weui.loading('加载中')
+    this.loadNextPage(params)
+  }
+
+  reset() {
+    currentPage = 0
+    this.scroll.closeScroll()
+    this.setState({items: []})
+  }
+
+  handleClick(id) {
+    if(this.state.id === id) {return}
+    this.reset()
+    this.setState({id: id}, () => {          
+      const params = {goodsClassId: this.state.id, page: currentPage++} 
+      this.loadNextPage(params)
+    })
+  }
+
   render() {
-    const {currentId} = this.state
+    const {id} = this.state
     return (
       <Page>
         <Helmet title="商品分类"/>
@@ -67,8 +102,8 @@ class StoreSort extends Component {
                 return (
                   <li 
                     key={item.id} 
-                    className={classNames({active: currentId === item.id})}  
-                    onClick={() => this.getGoodsList(item.id)}
+                    className={classNames({active: id === item.id})}  
+                    onClick={() => this.handleClick(item.id)}
                   >
                     {item.category}
                   </li>
@@ -76,8 +111,10 @@ class StoreSort extends Component {
               })}
             </ul>
           </div>
-          <div className="layout__main">
-            <List items={this.state.items} />
+          <div className="layout__main" ref={node => this.scrollContainer = node}>
+            <main>
+              <List items={this.state.items} />
+            </main>
           </div>
         </div>
         
