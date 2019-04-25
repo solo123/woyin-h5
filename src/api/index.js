@@ -378,7 +378,7 @@ export function getJDGoodsSort(data = {}, config) {
     ...data,
     typeId: 1
   }
-  return get(`${BASE}goodsClassLists`, data, config)
+  return get(`/jdapi/goodsClassLists`, data, config)
 }
 
 // 获取京东商品列表
@@ -387,7 +387,7 @@ export function getJDGoodsList(data = {}, config) {
     ...data,
     limit: G_config.store.PAGE_LIMIT
   }
-  return get(`${BASE}goodsLists`, data, config)
+  return get(`/jdapi/goodsLists`, data, config)
 }
 
 // 京东商品下单
