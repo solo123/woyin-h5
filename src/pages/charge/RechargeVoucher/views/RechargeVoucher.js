@@ -8,8 +8,8 @@ import {Helmet} from "react-helmet"
 import config from '@/config'
 import {getUserInfo, getSubProducts, rechargeVoucher} from '@/api'
 import util from '@/util'
-import Backhome from '@/common/Backhome'
-import Opeator from '@/common/Operator'
+import Backhome from '@/components/Backhome'
+import Opeator from '@/components/Operator'
 
 import appleIcon from '@/asset/images/ecard/apple.png'
 import bgyIcon from '@/asset/images/ecard/bgy.png'

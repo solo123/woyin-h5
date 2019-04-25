@@ -5,9 +5,9 @@ import {Helmet} from "react-helmet"
 import weui from 'weui.js'
 
 import {transferRecord} from '@/api'
-import SkeletonPlaceholder from '@/common/SkeletonPlaceholder'
+import SkeletonPlaceholder from '@/components/SkeletonPlaceholder'
 
-import Backhome from '@/common/Backhome'
+import Backhome from '@/components/Backhome'
 import Page from './styled'
 import List from './List'
 import SimpleScroll from '@/components/SimpleScroll'

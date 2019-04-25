@@ -2,8 +2,8 @@ import React, {Component} from 'react'
 import {Helmet} from "react-helmet"
 
 import {getJDTrack} from '@/api'
-import Backhome from '@/common/Backhome'
-import SkeletonPlaceholder from '@/common/SkeletonPlaceholder'
+import Backhome from '@/components/Backhome'
+import SkeletonPlaceholder from '@/components/SkeletonPlaceholder'
 
 import List from './List'
 import Page from './styled'

@@ -2,11 +2,8 @@ class SimpleScroll {
   constructor(container, callback) {
     this.container = container
     this.callback = callback
-
     this.isLoading = false
-
     this.handleScroll = this.handleScroll.bind(this)
-
     this.scroller = this.container.children[0]
     this.container.addEventListener('scroll', this.handleScroll)
   }

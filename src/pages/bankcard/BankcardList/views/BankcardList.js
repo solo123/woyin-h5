@@ -5,9 +5,9 @@ import weui from 'weui.js'
 
 import {getBankcardList, delBankCard} from '@/api'
 
-import Backhome from '@/common/Backhome'
-import SkeletonPlaceholder from '@/common/SkeletonPlaceholder'
-import EmptyArrayPlaceholder from '@/common/EmptyArrayPlaceholder'
+import Backhome from '@/components/Backhome'
+import SkeletonPlaceholder from '@/components/SkeletonPlaceholder'
+import EmptyArrayPlaceholder from '@/components/EmptyArrayPlaceholder'
 import List from './List'
 import Page from './styled'
 

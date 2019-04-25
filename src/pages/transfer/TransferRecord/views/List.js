@@ -1,7 +1,7 @@
 import React from 'react'
 import dayjs from 'dayjs'
 
-import EmptyArrayPlaceholder from '@/common/EmptyArrayPlaceholder'
+import EmptyArrayPlaceholder from '@/components/EmptyArrayPlaceholder'
 
 const ItemToOther= ({toAccount, poundage, amount, num, createTime}) => {
   return (

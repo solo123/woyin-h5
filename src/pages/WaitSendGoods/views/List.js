@@ -1,6 +1,6 @@
 import React from 'react'
 
-import EmptyArrayPlaceholder from '@/common/EmptyArrayPlaceholder'
+import EmptyArrayPlaceholder from '@/components/EmptyArrayPlaceholder'
 
 function Item({id, name, phone, goodsName, externalOrder, totalScore, addr}) {
   return (

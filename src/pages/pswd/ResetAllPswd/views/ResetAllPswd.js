@@ -9,7 +9,7 @@ import {resetAllPswd} from '@/api'
 import {replace} from '@/services/redirect'
 
 import Page from './styled'
-import Backhome from '@/common/Backhome'
+import Backhome from '@/components/Backhome'
 import LoginPswd from './LoginPswd'
 import TradePswd from './TradePswd'
 

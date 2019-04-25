@@ -4,7 +4,7 @@ import weui from 'weui.js'
 import {Helmet} from "react-helmet"
 
 import {integralTransfer} from '@/api'
-import Backhome from '@/common/Backhome'
+import Backhome from '@/components/Backhome'
 
 import closeIcon from '@/asset/images/icon/close.png'
 import showIcon from '@/asset/images/icon/show.png'

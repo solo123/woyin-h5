@@ -4,9 +4,9 @@ import Loadable from 'react-loadable'
 
 import './App.css'
 import util from './util'
-import ScrollToTop from './common/ScrollToTop'
-import LoadingComponent from './common/LoadingComponent'
-import Auth from './common/Auth'
+import ScrollToTop from './components/ScrollToTop'
+import LoadingComponent from './components/LoadingComponent'
+import Auth from './components/Auth'
 import history from './history'
 
 const AsyncLogin = Loadable({

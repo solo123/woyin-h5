@@ -8,8 +8,8 @@ import {Helmet} from "react-helmet"
 import {getUserInfo} from '@/api'
 import {replace} from '@/services/redirect'
 
-import FullLayer from '@/common/FullLayer'
-import Menu from '@/common/Menu'
+import FullLayer from '@/components/FullLayer'
+import Menu from '@/components/Menu'
 import Page from './styled'
 
 import message from '@/asset/images/me/message.png'

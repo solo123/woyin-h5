@@ -5,7 +5,7 @@ import {Helmet} from "react-helmet"
 
 import api, {getProducts, getSubProducts, rechargeVideo} from '@/api'
 import util from '@/util'
-import Backhome from '@/common/Backhome'
+import Backhome from '@/components/Backhome'
 import ProviderList from './ProviderList'
 import ProductList from './ProductList'
 import Page from './styled'

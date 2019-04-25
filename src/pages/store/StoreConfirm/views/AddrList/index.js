@@ -1,7 +1,7 @@
 import React from 'react'
 
 import Page from './styled'
-import EmptyArrayPlaceholder from '@/common/EmptyArrayPlaceholder'
+import EmptyArrayPlaceholder from '@/components/EmptyArrayPlaceholder'
 import locationIcon from '@/asset/images/location.svg'
 
 function Item({use, name, phone, province, city, county, town, addr, defaultAddress, handleDelete, handleSelect}) {

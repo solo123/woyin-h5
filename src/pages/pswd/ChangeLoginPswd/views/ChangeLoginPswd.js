@@ -11,7 +11,7 @@ import showIcon from '@/asset/images/icon/show.png'
 import hideIcon from '@/asset/images/icon/hide.png'
 
 import Page from './styled'
-import Backhome from '@/common/Backhome'
+import Backhome from '@/components/Backhome'
 
 const ICON_SCHEMA = {
   text: showIcon,

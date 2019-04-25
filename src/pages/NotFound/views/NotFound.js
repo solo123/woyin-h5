@@ -4,7 +4,7 @@ import {Helmet} from "react-helmet"
 
 import {replace} from '@/services/redirect'
 
-import Backhome from '@/common/Backhome'
+import Backhome from '@/components/Backhome'
 import notFound from '@/asset/images/404.svg'
 
 const StyledPage = styled.div`

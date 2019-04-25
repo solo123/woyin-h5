@@ -6,7 +6,7 @@ import md5 from 'md5'
 import {addBankcard} from '@/api'
 import {push} from '@/services/redirect'
 
-import Backhome from '@/common/Backhome'
+import Backhome from '@/components/Backhome'
 import Page from './styled'
 
 import closeIcon from '@/asset/images/icon/close.png'

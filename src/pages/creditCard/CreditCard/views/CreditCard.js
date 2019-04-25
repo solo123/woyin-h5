@@ -8,7 +8,7 @@ import {Helmet} from "react-helmet"
 import config from '@/config'
 import {getUserInfo, getBankcardList, paymentToCard, getWithdrawFee, getCodeForWithdraw} from '@/api'
 import util from '@/util'
-import Backhome from '@/common/Backhome'
+import Backhome from '@/components/Backhome'
 import Page from './styled'
 
 import banner from '@/asset/images/creditCard/banner.jpg'

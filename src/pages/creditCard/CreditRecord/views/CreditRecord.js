@@ -5,9 +5,9 @@ import weui from 'weui.js'
 import {Helmet} from "react-helmet"
 
 import {getCreditRecord} from '@/api'
-import SkeletonPlaceholder from '@/common/SkeletonPlaceholder'
+import SkeletonPlaceholder from '@/components/SkeletonPlaceholder'
 import arrowDownIcon from '@/asset/images/icon/arrow_down.svg'
-import Backhome from '@/common/Backhome'
+import Backhome from '@/components/Backhome'
 import Page from './styled'
 import Select from './Select'
 import List from './List'

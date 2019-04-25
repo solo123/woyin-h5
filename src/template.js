@@ -2,9 +2,9 @@ import React, {Component} from 'react'
 import {Helmet} from "react-helmet"
 
 import {getJDOrders} from '@/api'
-import Backhome from '@/common/Backhome'
-import SkeletonPlaceholder from '@/common/SkeletonPlaceholder'
-import EmptyArrayPlaceholder from '@/common/EmptyArrayPlaceholder'
+import Backhome from '@/components/Backhome'
+import SkeletonPlaceholder from '@/components/SkeletonPlaceholder'
+import EmptyArrayPlaceholder from '@/components/EmptyArrayPlaceholder'
 
 import Page from './styled'
 
@@ -34,8 +34,8 @@ export default styled.div`
 // List
 
 import React from 'react'
-import SkeletonPlaceholder from '@/common/SkeletonPlaceholder'
-import EmptyArrayPlaceholder from '@/common/EmptyArrayPlaceholder'
+import SkeletonPlaceholder from '@/components/SkeletonPlaceholder'
+import EmptyArrayPlaceholder from '@/components/EmptyArrayPlaceholder'
 
 function Item() {
   return (

@@ -3,8 +3,8 @@ import {Helmet} from "react-helmet"
 import {Link} from "react-router-dom"
 
 import {getIntegralList} from '@/api'
-import Backhome from '@/common/Backhome'
-import SkeletonPlaceholder from '@/common/SkeletonPlaceholder'
+import Backhome from '@/components/Backhome'
+import SkeletonPlaceholder from '@/components/SkeletonPlaceholder'
 import List from './List'
 import Page from './styled'
 

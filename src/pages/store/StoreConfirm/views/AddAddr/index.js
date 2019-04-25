@@ -4,7 +4,7 @@ import weui from 'weui.js'
 import {getAddr, addJDAddr} from '@/api'
 
 import Page from './styled'
-import Backhome from '@/common/Backhome'
+import Backhome from '@/components/Backhome'
 
 import AddrSelect from './AddrSelect'
 

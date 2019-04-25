@@ -6,8 +6,8 @@ import config from '@/config'
 import {getUserInfo, getBankcardList, redeemIntegral, getRedeemFee, getCodeForWithdraw} from '@/api'
 import util from '@/util'
 
-import Backhome from '@/common/Backhome'
-import FullLayer from '@/common/FullLayer'
+import Backhome from '@/components/Backhome'
+import FullLayer from '@/components/FullLayer'
 import Page from './styled'
 
 import moreIcon from '@/asset/images/icon/more.png'

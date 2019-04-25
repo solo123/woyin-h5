@@ -4,7 +4,7 @@ import {Link, withRouter} from "react-router-dom"
 import {connect} from 'react-redux'
 
 import api, {getProducts} from '@/api'
-import Menu from '@/common/Menu'
+import Menu from '@/components/Menu'
 import Store from './Store'
 import Service from './Service'
 import Product from './Product'

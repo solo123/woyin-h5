@@ -1,6 +1,6 @@
 import React from 'react'
 import {Link} from "react-router-dom"
-import EmptyArrayPlaceholder from '@/common/EmptyArrayPlaceholder'
+import EmptyArrayPlaceholder from '@/components/EmptyArrayPlaceholder'
 
 function Product({id, title, src, price, data}) {
   const to = {

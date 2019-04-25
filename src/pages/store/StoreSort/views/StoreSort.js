@@ -5,7 +5,7 @@ import classNames from 'classnames'
 
 import {getJDGoodsSort, getJDGoodsList} from '@/api'
 
-import Backhome from '@/common/Backhome'
+import Backhome from '@/components/Backhome'
 import Page from './styled'
 import List from './List'
 

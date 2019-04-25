@@ -4,10 +4,10 @@ import {Helmet} from "react-helmet"
 import weui from 'weui.js'
 
 import {getVoucherRecord} from '@/api'
-import SkeletonPlaceholder from '@/common/SkeletonPlaceholder'
+import SkeletonPlaceholder from '@/components/SkeletonPlaceholder'
 
 import Page from './styled'
-import Backhome from '@/common/Backhome'
+import Backhome from '@/components/Backhome'
 import SimpleScroll from '@/components/SimpleScroll'
 import List from './List'
 

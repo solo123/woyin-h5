@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import {Helmet} from "react-helmet"
 
 import {getUserInfo} from '@/api'
-import Backhome from '@/common/Backhome'
+import Backhome from '@/components/Backhome'
 
 import Page from './styled'
 

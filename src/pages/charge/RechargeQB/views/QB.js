@@ -5,9 +5,9 @@ import {Helmet} from "react-helmet"
 
 import api, {getProducts, rechargeQB} from '@/api'
 import util from '@/util'
-import ProductSkeleton from '@/common/ProductSkeleton'
-import EmptyArrayPlaceholder from '@/common/EmptyArrayPlaceholder'
-import Backhome from '@/common/Backhome'
+import ProductSkeleton from '@/components/ProductSkeleton'
+import EmptyArrayPlaceholder from '@/components/EmptyArrayPlaceholder'
+import Backhome from '@/components/Backhome'
 import Nav from './Nav'
 import Page from './styled'
 import List from './List'

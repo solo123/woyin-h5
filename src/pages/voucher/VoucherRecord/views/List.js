@@ -1,6 +1,6 @@
 import React from 'react'
 import util from '@/util'
-import EmptyArrayPlaceholder from '@/common/EmptyArrayPlaceholder'
+import EmptyArrayPlaceholder from '@/components/EmptyArrayPlaceholder'
 
 function Item({amount, voucherId, voucherPwd, expireTime}) {
   return (

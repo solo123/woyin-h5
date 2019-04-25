@@ -1,5 +1,5 @@
 import React from 'react'
-import Operator from '@/common/Operator'
+import Operator from '@/components/Operator'
 
 function ConfirmInfo({count, totalIntegral, balance, handleClick, handleChange, handleSubmit}) {
   return (
