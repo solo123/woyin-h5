@@ -57,7 +57,9 @@ export default class extends Component {
       const {data} = await getCreditRecord(params, {cancelToken: this.source.token})
       if(data.status === 200) {
         this.setState({items: [...this.state.items, ...data.data.withdrawal]}, () => {
-          this.scroll.finish()
+          if(data.data.withdrawal.length) {
+            this.scroll.finish()
+          }
         })
       }
     }finally {
@@ -128,6 +130,7 @@ export default class extends Component {
           status={this.state.status}
           flag={selectFlag} 
           handleClick={this.handleClick}
+          handleClose={this.handleToggle}
         />
 
         <Backhome />

@@ -49,6 +49,15 @@ export default styled.div`
     left: 0;
     right: 0;
     top: 50px;
+    bottom: 0;
+    z-index: 1;
+    background: rgba(0, 0, 0, .5);
+  }
+  .content{
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 50px;
     z-index: 1;
     ul{
       display: flex;
@@ -69,7 +78,7 @@ export default styled.div`
         }
       }
     }
-  }
+  }  
   .card{
     background: #fff;
     border-radius: 3px;

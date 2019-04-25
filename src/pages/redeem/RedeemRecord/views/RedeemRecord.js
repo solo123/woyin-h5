@@ -56,9 +56,10 @@ export default class extends Component {
       const {data} = await getRedeemRecord(params, {cancelToken: this.source.token})
       if(data.status === 200) {
         this.setState({items: [...this.state.items, ...data.data.withdrawal]}, () => {
-          this.scroll.finish()
+          if(data.data.withdrawal.length) {
+            this.scroll.finish()
+          }
         })
-        
       }
     }finally {
       if(this.loading) {
@@ -122,6 +123,7 @@ export default class extends Component {
           status={this.state.status}
           flag={seletViewFlag} 
           handleClick={this.handleClick}
+          handleClose={this.handleToggle}
         />
 
         <Backhome />

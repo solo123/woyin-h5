@@ -1,16 +1,15 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import axios from 'axios'
 import classNames from 'classnames'
 import {Helmet} from "react-helmet"
 import weui from 'weui.js'
 
 import {transferRecord} from '@/api'
-import SkeletonPlaceholder from '@/components/SkeletonPlaceholder'
-
 import Backhome from '@/components/Backhome'
-import Page from './styled'
-import List from './List'
+import SkeletonPlaceholder from '@/components/SkeletonPlaceholder'
 import SimpleScroll from '@/components/SimpleScroll'
+import List from './List'
+import Page from './styled'
 
 const Content = ({placeholderLoading, type, items}) => {
   if(placeholderLoading) {
@@ -52,7 +51,9 @@ export default class extends Component {
       const {data} = await transferRecord(params, {cancelToken: this.source.token})
       if(data.status === 200) {
         this.setState({items: [...this.state.items, ...data.data]}, () => {
-          this.scroll.finish()
+          if(data.data.length) {
+            this.scroll.finish()
+          }
         })
       }
     }finally {
@@ -114,9 +115,6 @@ export default class extends Component {
             </div>
           </div>
         </div>
-
-
-          
 
         <Backhome />
       </Page>
