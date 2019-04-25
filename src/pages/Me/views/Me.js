@@ -81,7 +81,9 @@ class Me extends Component {
         <Helmet defaultTitle="沃银企服" title="我的"/>
         <header>
           <div className="top">
-            <img className="email" src={email} alt=""/>
+            <Link to="/developing">
+              <img className="email" src={email} alt=""/>
+            </Link>
           </div>
           <div className="card">
             <Link to="/profile">
