@@ -1,6 +1,13 @@
 import styled from 'styled-components'
 
 export default styled.div`
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
   .top{
     position: absolute;
     left: 10px;
@@ -11,9 +18,12 @@ export default styled.div`
     }
   }
   header{
+    height: 150px;
+  }
+  .logo{
     display: flex;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     height: 100px;
     background: #da251c;
     .slogan{
@@ -76,4 +86,9 @@ export default styled.div`
       background: #F63618;
     }
   }
+  .container{
+    flex-shrink: 1;
+    flex-grow: 1;
+    overflow-y: auto;
+  }  
 `

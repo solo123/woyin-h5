@@ -34,11 +34,11 @@ function List({items}) {
         return (
           <Product
             key={item.skuId}
-            data={item}
             id={item.skuId}
             title={item.name}
             src={`https://img13.360buyimg.com/n1/${item.imagePath}`}
             price={item.jdPrice}
+            data={item}
           />
         )
       })}    
