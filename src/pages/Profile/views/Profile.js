@@ -26,14 +26,14 @@ export default class extends Component {
   }
 
   render() {
-    const {contactMan, merchantName, userPhoneNo} = this.state
+    const {userName, merchantName, userPhoneNo} = this.state
     return (
       <Page>
         <Helmet title="个人资料" />
         <main>
           <dl>
             <dt>姓名</dt>
-            <dd>{contactMan}</dd>
+            <dd>{userName}</dd>
           </dl>
           <dl>
             <dt>所属商户</dt>

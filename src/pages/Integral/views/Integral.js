@@ -45,7 +45,12 @@ export default class extends Component {
           <img src={banner} alt=""/>
           <div className="content">
             <div className="integral">
-              可用积分：<strong>2500</strong>
+              <div>
+                可用积分：<strong>2500</strong>
+              </div>
+              <div>
+                <Link to="/distributing-record">积分派发记录</Link>
+              </div>
             </div>
             <Link to="/">添加积分券</Link>
           </div>

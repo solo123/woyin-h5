@@ -180,6 +180,10 @@ const AsyncIntegral = Loadable({
   loader: () => import('./pages/Integral').then(({view}) => view), 
   loading: LoadingComponent
 })
+const AsyncDistributingRecord = Loadable({ 
+  loader: () => import('./pages/DistributingRecord').then(({view}) => view), 
+  loading: LoadingComponent
+})
 
 export default class extends Component {
   
@@ -232,6 +236,7 @@ export default class extends Component {
             <Auth path="/wait-receiv-goods/:id" component={AsyncGoodsTrack} />
             <Auth path="/profile" component={AsyncProfile} />
             <Auth path="/integral" component={AsyncIntegral} />
+            <Auth path="/distributing-record" component={AsyncDistributingRecord} />
             <Route path="/developing" component={AsyncDeveloping} />
             <Route render={()=> <AsyncNotFound />}/>
           </Switch>

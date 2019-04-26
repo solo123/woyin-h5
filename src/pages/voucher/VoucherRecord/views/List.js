@@ -3,6 +3,10 @@ import util from '@/util'
 import EmptyArrayPlaceholder from '@/components/EmptyArrayPlaceholder'
 
 function Item({amount, voucherId, voucherPwd, expireTime}) {
+  let pswd = voucherPwd
+  if(pswd && pswd.indexOf('http') > -1) {
+    pswd = <a href={pswd}>{pswd}</a>
+  }
   return (
     <div className="card">
       <div className="head">
@@ -13,12 +17,12 @@ function Item({amount, voucherId, voucherPwd, expireTime}) {
         <dt>卡号：</dt><dd>{voucherId}</dd>
       </dl>
       <dl>
-        <dt>密码：</dt><dd>{voucherPwd}</dd>
+        <dt>密码：</dt><dd>{pswd}</dd>
       </dl>
       <dl>    
         <dt>面值：</dt><dd>{amount}元</dd>
       </dl>
-      <div className="date">有效期至：{expireTime}</div>
+      <div className="date">有效期至：{expireTime || '--'}</div>
     </div>
   )
 }

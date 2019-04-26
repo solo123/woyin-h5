@@ -287,6 +287,16 @@ class StoreConfirm extends Component {
     const {freight} = this.state
     const {count, jdPrice} = this.props.location.state
     const totalIntegral = (count * Math.round(jdPrice * 100)) + (freight * 100)
+
+    if(!this.state.addrId) {
+      weui.alert('收货地址未设置')
+      return
+    }
+    if(totalIntegral > this.state.availableIntegral) {
+      weui.alert('积分不足')
+      return
+    }    
+    
     util.paymentConfirm({
       title: '兑换',
       amount: totalIntegral,

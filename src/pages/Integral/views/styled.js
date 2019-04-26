@@ -7,11 +7,12 @@ export default styled.div`
     background: #fff;
     .content{
       position: absolute;
-      top: 15%;
+      top: 12%;
       left: 8%;
+      right: 8%;
       color: #e1e1e1;
       .integral{
-        margin-bottom: 8%;
+        margin-bottom: 3%;
       }
       strong{
         color: #fff;

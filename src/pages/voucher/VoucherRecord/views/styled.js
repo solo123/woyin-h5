@@ -63,7 +63,14 @@ export default styled.div`
     dl{
       display: flex;
       dt{
+        flex-shrink: 0;
         color: #888;
+      }
+      dd{
+        word-break: break-all;
+      }
+      a{
+        color: #1c92ff;
       }
     }
     .date{
