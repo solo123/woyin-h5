@@ -3,7 +3,7 @@ import weui from 'weui.js'
 import axios from 'axios'
 import {Helmet} from "react-helmet"
 
-import api, {getProducts, getSubProducts, rechargeVideo} from '@/api'
+import {getUserInfo, getProducts, getSubProducts, rechargeVideo} from '@/api'
 import util from '@/util'
 import Backhome from '@/components/Backhome'
 import ProviderList from './ProviderList'
@@ -64,7 +64,7 @@ class RechargeVideo extends Component {
   async loadUserInfo() {
     this.loadUserInfoSource = CancelToken.source()
     try {
-      const {data} = await api.getUserInfo(null, {cancelToken: this.loadUserInfoSource.token})
+      const {data} = await getUserInfo(null, {cancelToken: this.loadUserInfoSource.token})
       if(data.status === 200) {
         this.setState({availableIntegral: Number(data.data[0].balance)})
       }
@@ -103,8 +103,8 @@ class RechargeVideo extends Component {
     const loading = weui.loading('处理中')
     this.submitSource = CancelToken.source()
     const params = {
-      productId: this.state.selectId,
       chargeAddr: this.state.username,
+      productId: this.state.selectId,
       tranPwd: pswd
     }
     try {

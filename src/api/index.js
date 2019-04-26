@@ -13,152 +13,16 @@ if(process.env.NODE_ENV === 'development') {
 
 const timestamp = String(new Date().getTime())
 
-export default {
-  login(data) {
-    if(data.loginType === 1) {
-      data = {
-        ...data,
-        password: md5(data.password)
-      }
+// 登录
+export const login = (data) => {
+  if(data.loginType === 1) {
+    data = {
+      ...data,
+      password: md5(data.password)
     }
-    return post(`${BASE}user/login`, qs.stringify(data));
-  },
-  // 获取指定状态的订单列表
-  getOrderList(data, config = {}) {
-    return get(`${BASE}api/order/getOrderList`, data, config)
-  },
-  hotProducts() {
-    return get('hotProducts')
-  },
-  // 获取指定商城的分类列表
-  getProductCateList(type) {
-    return get('getProductCateList', { type: type })
-  },
-  // 根据分类获取产品列表
-  getProductByCate(type, cate) {
-    return get('getProductByCate', { type: type, cate: cate })
-  },
-  getProductById(id) {
-    return get('getProductById', { id })
-  },
-  // 热卖商品
-  getHotsell() {
-    return get('hotsell')
-  },
-  // 获取话费产品列表
-  getRechargePhoneProductsByType(id = '', config = {}) {
-    return get(`${BASE}api/product/subList`, {productClassifyId: id}, config)
-  },
-  // 获取流量产品列表
-  getRechargeFlowProductsByType(type) {
-    return get('getRechargeFlowProductsByType', {type})
-  },
-  // 获取油卡产品列表
-  getRechargeOilProductsByType(type) {
-    return get('getRechargeOilProductsByType', {type})
-  },  
-  // 获取QB产品列表
-  getRechargeQBProductsByType(type) {
-    return get('getRechargeQBProductsByType', {type})
-  },  
-  // 获取视频提供商列表
-  getVideoProviders() {
-    return get('getVideoProviders')
-  },  
-  // 获取视频产品列表
-  getVideoProducts() {
-    return get('getVideoProducts')
-  },  
-  confirmTransPswd(pswd) {
-    return post(`${BASE}api/trad/checkCode`, {pswd})
-  },
-  // 话费充值
-  rechargePhone(data) {
-    return post(`${BASE}api/charge/moreCredit`, qs.stringify(data))
-  },
-  // QB充值
-  rechargeQB(data) {
-    return post(`${BASE}api/charge/moreCredit`, qs.stringify(data))
-  },  
-  // 流量充值
-  rechargeTraffic(data) {
-    return post(`${BASE}api/traffic/charge`, qs.stringify(data))
-  },
-  // 加油卡充值
-  rechargeOil(data) {
-    return post(`${BASE}api/oilCard/charge`, qs.stringify(data))
-  },  
-  // 视频会员充值
-  rechargeVideo(data) {
-    return post(`${BASE}api/video/charge`, qs.stringify(data))
-  },
-  // 电子卡券充值
-  rechargeVoucher(data) {
-    return post(`${BASE}api/voucher/charge`, qs.stringify(data))
-  },
-  // 获取银行卡列表
-  getBankcardList() {
-    return get(`${BASE}api/bank/getBankCardList`)
-  },
-  // 添加银卡
-  addBankcard(data) {
-    return post(`${BASE}api/bank/addBankCard`, qs.stringify(data))
-  },
-  // 获取提现手续费
-  getRedeemFee(amount) {
-    return get(`${BASE}api/trad/poundageList`, {amount})
-  },
-  // 积分代卖流程短信验证码
-  sendMsgCode(phone) {
-    return get('sendMsgCode', {phone})
-  },
-  redeemIntegral(data) {
-    return post(`${BASE}api/trad/withdrawal`, qs.stringify(data))
-  },
-  getRedeemRecordByStatus(data, config = {}) {
-    return get(`${BASE}api/trad/getWithList`, data, config)
-  },
-  // 登录流程短信验证码
-  getCode(data) {
-    return post(`${BASE}user/getCode`, qs.stringify(data))
-  },
-  // 获取信用卡列表
-  getCreditCardList() {
-    return get('getCreditCardList')
-  },
-  // 信用卡还款
-  creditCardRepayment(data) {
-    return post('creditCardRepayment', data)
-  },
-  // 积分转赠
-  transfer(data) {
-    return post('transfer', data)
-  },
-  // 获取电子卡券列表
-  getECardList() {
-    return get('getECardList')
-  },
-  // 获取电子卡券详情
-  getECardDetailByType() {
-    return get('getECardDetailByType')
-  },
-  // 添加车辆
-  addVehicle(data) {
-    return post('addVehicle', data)
-  },
-  // 获取车辆列表
-  getVehicleList() {
-    return get('getVehicleList')
-  },
-  // 获取违章记录
-  getViolationList() {
-    return get('getViolationList')
-  },
-  // 获取用户可用积分
-  getUserInfo() {
-    return get(`${BASE}api/user/getUserInfo`)
   }
-};
+  return post(`${BASE}user/login`, qs.stringify(data))
+}
 
 // 获取用户信息
 export const getUserInfo = (data = {}, config = {}) => {
@@ -188,10 +52,35 @@ export const getCodeForWithdraw = (phone) => {
   return post(`${BASE}user/getCode`, qs.stringify(params))
 }
 
-export const redeemIntegral = (data) => {
+// 找回交易密码验证码
+export const getCodeForFindTradePswd = (phone) => {
+  const params = {userPhoneNo: phone, codeType: 4}
+  return post(`${BASE}user/getCode`, qs.stringify(params))
+}
+
+export const redeemIntegral = (data = {}) => {
+  const tradPwd = md5(data.tradPwd)
+  const payment = '1'
   data = {
     ...data,
-    tradPwd: md5(data.tradPwd)
+    tradPwd: tradPwd,
+    payment: payment,
+    sign: md5(`key=&afdY%d2^uy3&timestamp=${timestamp}&amount=${data.amount}&bankCode=${data.bankCode}&bankName=${data.bankName}&cardHoldName=${data.cardHoldName}&cardPhoneNo=${data.cardPhoneNo}&tradPwd=${tradPwd}&code=${data.code}&bankCard=${data.bankCard}&payment=${payment}`),
+    timestamp: timestamp    
+  }
+  return post(`${BASE}api/trad/withdrawal`, qs.stringify(data))
+}
+
+// 代卖或信用卡还款
+export const paymentToCard = (data = {}) => {
+  const tradPwd = md5(data.tradPwd)
+  const payment = '2'  
+  data = {
+    ...data,
+    tradPwd: tradPwd,
+    payment: payment,
+    sign: md5(`key=&afdY%d2^uy3&timestamp=${timestamp}&amount=${data.amount}&bankCode=${data.bankCode}&bankName=${data.bankName}&cardHoldName=${data.cardHoldName}&cardPhoneNo=${data.cardPhoneNo}&tradPwd=${tradPwd}&code=${data.code}&bankCard=${data.bankCard}&payment=${payment}`),
+    timestamp: timestamp     
   }
   return post(`${BASE}api/trad/withdrawal`, qs.stringify(data))
 }
@@ -206,17 +95,15 @@ export const getWithdrawFee = (amount) => {
   return get(`${BASE}api/trad/poundageList`, {amount})
 }
 
-
-
+// 获取商品分类
 export const getProducts = (productClassifyId = '', config = {}) => {
   return get(`${BASE}product/list`, {productClassifyId}, config)
 }
 
+// 获取商品列表
 export const getSubProducts = (id = '', config = {}) => {
   return get(`${BASE}api/product/subList`, {productClassifyId: id}, config)
 }
-
-
 
 // 电子卡券记录
 export const getVoucherRecord = (data, config = {}) => {
@@ -229,9 +116,12 @@ export const getVoucherRecord = (data, config = {}) => {
 
 // 积分转赠
 export const integralTransfer = (data) => {
+  const tranPwd = md5(data.tranPwd)
   data = {
     ...data,
-    tranPwd: md5(data.tranPwd)
+    tranPwd: tranPwd,
+    sign: md5(`key=&afdY%d2^uy3&timestamp=${timestamp}&to=${data.to}&num=${data.num}&tranPwd=${tranPwd}`),
+    timestamp: timestamp    
   }  
   return post(`${BASE}api/transferred/commit`, qs.stringify(data))
 }
@@ -253,15 +143,6 @@ export const addBankcard = (data = {}) => {
 // 获取银行卡/信用卡列表
 export const getBankcardList = () => {
   return get(`${BASE}api/bank/getBankCardList`)
-}
-
-// 代卖或信用卡还款
-export const paymentToCard = (data) => {
-  data = {
-    ...data,
-    tradPwd: md5(data.tradPwd)
-  }
-  return post(`${BASE}api/trad/withdrawal`, qs.stringify(data))
 }
 
 // 获取订单列表
@@ -294,21 +175,21 @@ export const getRedeemRecord = (data = {}, config = {}) => {
 }
 
 // 话费充值
-export function rechargePhone(data) {
-  const tradPwd = md5(data.tranPwd)
+export function rechargePhone(data = {}) {
+  const tranPwd = md5(data.tranPwd)
   const chargeType = '1'
   data = {
     ...data,
-    tranPwd: tradPwd,
+    tranPwd: tranPwd,
     chargeType: chargeType,
-    sign: md5(`key=&afdY%d2^uy3&timestamp=${timestamp}&chargeAddr=${data.chargeAddr}&chargeType=${chargeType}&productId=${data.productId}&tranPwd=${tradPwd}`),
+    sign: md5(`key=&afdY%d2^uy3&timestamp=${timestamp}&chargeAddr=${data.chargeAddr}&chargeType=${chargeType}&productId=${data.productId}&tranPwd=${tranPwd}`),
     timestamp: timestamp
   }
   return post(`${BASE}api/charge/moreCredit`, qs.stringify(data))
 }
 
 // QB充值
-export function rechargeQB(data) {
+export function rechargeQB(data = {}) {
   const tradPwd = md5(data.tranPwd)
   data = {
     ...data,
@@ -320,7 +201,7 @@ export function rechargeQB(data) {
 }
 
 // 流量充值
-export function rechargeTraffic(data) {
+export function rechargeTraffic(data = {}) {
   const tradPwd = md5(data.tranPwd)  
   data = {
     ...data,
@@ -332,29 +213,29 @@ export function rechargeTraffic(data) {
 }
 
 // 加油卡充值
-export function rechargeOil(data) {
-  const tradPwd = md5(data.tranPwd)  
+export function rechargeOil(data = {}) {
+  const tranPwd = md5(data.tranPwd)  
   data = {
     ...data,
-    tranPwd: tradPwd,
-    sign: md5(`key=&afdY%d2^uy3&timestamp=${timestamp}&cardNumber=${data.cardNumber}&cardType=${data.cardType}&productId=${data.productId}&tranPwd=${tradPwd}`),
+    tranPwd: tranPwd,
+    sign: md5(`key=&afdY%d2^uy3&timestamp=${timestamp}&cardNumber=${data.cardNumber}&cardType=${data.cardType}&productId=${data.productId}&tranPwd=${tranPwd}`),
     timestamp: timestamp
   }
   return post(`${BASE}api/oilCard/charge`, qs.stringify(data))
 }
 
 // 视频充值 直充
-export const rechargeVideo = (data = {}, config = {}) => {
-  const tradPwd = md5(data.tranPwd)
+export const rechargeVideo = (data = {}) => {
+  const tranPwd = md5(data.tranPwd)
   const chargeType = '1'
   data = {
     ...data,
-    tranPwd: tradPwd,
+    tranPwd: tranPwd,
     chargeType: chargeType,
-    sign: md5(`key=&afdY%d2^uy3&timestamp=${timestamp}&chargeAddr=${data.chargeAddr}&chargeType=${chargeType}&productId=${data.productId}&tranPwd=${tradPwd}`),
+    sign: md5(`key=&afdY%d2^uy3&timestamp=${timestamp}&chargeAddr=${data.chargeAddr}&chargeType=${chargeType}&tranPwd=${tranPwd}&productId=${data.productId}`),
     timestamp: timestamp    
   }
-  return post(`${BASE}api/video/charge`, qs.stringify(data), config)
+  return post(`${BASE}api/video/charge`, qs.stringify(data))
 }
 
 // 电子卡券充值
@@ -421,8 +302,6 @@ export const resetAllPswd = (data) => {
   return put(`${BASE}api/resetAllPwd`, qs.stringify(data))
 }
 
-
-
 // 删除银行卡
 export function delBankCard(id, config) {
   return del(`${BASE}api/bankCard/${id}`, null, config)
@@ -433,9 +312,7 @@ export function getIntegralList(id, config) {
   return get(`${BASE}api/integralList`, null, config)
 }
 
-
 // 京东相关
-
 
 // 获取京东商品类别列表
 export function getJDGoodsSort(data = {}, config) {

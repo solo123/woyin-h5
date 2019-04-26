@@ -3,7 +3,7 @@ import {Helmet} from "react-helmet"
 import {Link, withRouter} from "react-router-dom"
 import {connect} from 'react-redux'
 
-import api, {getProducts} from '@/api'
+import {getUserInfo, getProducts} from '@/api'
 import Menu from '@/components/Menu'
 import Store from './Store'
 import Service from './Service'
@@ -74,7 +74,7 @@ class Home extends Component {
 
   async loadUserinfo() {
     try {
-      const {data} = await api.getUserInfo()
+      const {data} = await getUserInfo()
       if(data.status === 200) {
         if(data.data.length) {
           this.setState({

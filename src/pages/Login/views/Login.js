@@ -10,7 +10,7 @@ import hideIcon from '@/asset/images/icon/hide.png'
 import checkedIcon from '@/asset/images/icon/checked.png'
 import uncheckedIcon from '@/asset/images/icon/unchecked.png'
 
-import api, {getCode} from '@/api'
+import {login, getCode} from '@/api'
 import util from '@/util'
 import config from '@/config'
 import {setItem, removeItem, getItem} from '@/services/storage'
@@ -171,7 +171,7 @@ class Login extends Component {
       }
     }
     try {
-      const {data} = await api.login(params)
+      const {data} = await login(params)
       if(data.status === 200) {
         this.props.login({token: data.data.sessionId, reset: data.data.isModify})
       }else if(data.status === 1010){

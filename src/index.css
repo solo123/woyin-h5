@@ -88,6 +88,7 @@ body {
   -webkit-text-size-adjust: 100% !important;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  -webkit-overflow-scrolling: touch;  
 }
 
 * {

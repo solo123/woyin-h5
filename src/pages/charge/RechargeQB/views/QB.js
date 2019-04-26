@@ -3,7 +3,7 @@ import axios from 'axios'
 import weui from 'weui.js'
 import {Helmet} from "react-helmet"
 
-import api, {getProducts, rechargeQB} from '@/api'
+import {getUserInfo, getProducts, getSubProducts, rechargeQB} from '@/api'
 import util from '@/util'
 import ProductSkeleton from '@/components/ProductSkeleton'
 import EmptyArrayPlaceholder from '@/components/EmptyArrayPlaceholder'
@@ -69,7 +69,7 @@ export default class extends Component {
   async loadUserInfo() {
     this.loadUserInfoSource = CancelToken.source()
     try {
-      const {data} = await api.getUserInfo(null, {cancelToken: this.loadUserInfoSource.token})
+      const {data} = await getUserInfo(null, {cancelToken: this.loadUserInfoSource.token})
       if(data.status === 200) {
         this.setState({availableIntegral: Number(data.data[0].balance)})
       }
@@ -92,7 +92,7 @@ export default class extends Component {
     this.setState({skeletonLoading: true})
     this.loadProdcutsSource = CancelToken.source()
     try {
-      const {data} = await api.getRechargePhoneProductsByType(type, {cancelToken: this.loadProdcutsSource.token})
+      const {data} = await getSubProducts(type, {cancelToken: this.loadProdcutsSource.token})
       if(data.status === 200) {
         this.setState({items: data.data})
       }

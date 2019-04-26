@@ -3,7 +3,7 @@ import weui from 'weui.js'
 import {Helmet} from "react-helmet"
 
 import config from '@/config'
-import api, {findPswd} from '@/api'
+import {getCodeForFindPswd, findPswd} from '@/api'
 import {push} from '@/services/redirect'
 
 import Backhome from '@/components/Backhome'
@@ -90,12 +90,8 @@ export default class extends Component {
 
   async getCode() {
     const loading = weui.loading('发送中')
-    const params = {
-      userPhoneNo: this.state.phone,
-      codeType: 2
-    }
     try {
-      const {data} = await api.getCode(params)
+      const {data} = await getCodeForFindPswd(this.state.phone)
       if(data.status === 200) {
         this.setState({getCodeFlag: false}, this.countDown)
       }

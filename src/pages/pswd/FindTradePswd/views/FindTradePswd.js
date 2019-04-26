@@ -4,7 +4,7 @@ import {Helmet} from "react-helmet"
 import {connect} from 'react-redux'
 
 import config from '@/config'
-import api, {findTradePswd} from '@/api'
+import {getCodeForFindTradePswd, findTradePswd} from '@/api'
 import {push} from '@/services/redirect'
 
 import Backhome from '@/components/Backhome'
@@ -87,12 +87,8 @@ class FindTradePswd extends Component {
 
   async getCode() {
     const loading = weui.loading('发送中')
-    const params = {
-      userPhoneNo: this.props.phone,
-      codeType: 4
-    }
     try {
-      const {data} = await api.getCode(params)
+      const {data} = await getCodeForFindTradePswd(this.props.phone)
       if(data.status === 200) {
         this.setState({getCodeFlag: false}, this.countDown)
       }

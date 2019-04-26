@@ -152,7 +152,7 @@ class CreditCard extends Component {
     try {
       const {data} = await getBankcardList()
       if(data.status === 200) {
-        const cardList = util.filterBankCardByStatusAndType(data.data, 2, 1)
+        const cardList = util.filterBankCardByStatusAndType(data.data, 2, 0)
         this.setState({cardList: cardList}, () => {
           const card = cardList[0]
           if(card) {
@@ -175,8 +175,7 @@ class CreditCard extends Component {
       cardPhoneNo: this.state.userPhoneNo,
       tradPwd: pswd,
       code: this.state.smsCode,
-      bankCard: this.state.bankCard,
-      payment: 2
+      bankCard: this.state.bankCard
     }
     try {
       const {data} = await paymentToCard(params)
@@ -297,9 +296,6 @@ class CreditCard extends Component {
   }
 
   handleGetCode() {
-    if(!this.verify()) {
-      return
-    }    
     this.getCode()
   }
 

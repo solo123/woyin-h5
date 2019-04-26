@@ -159,7 +159,7 @@ class Redeem extends Component {
     try {
       const {data} = await getBankcardList()
       if(data.status === 200) {
-        const cardList = util.filterBankCardByStatusAndType(data.data, '1', '1')
+        const cardList = util.filterBankCardByStatusAndType(data.data, 1, 1)
         this.setState({bankcardList: cardList}, () => {
           const card = cardList[0]
           if(card) {
@@ -207,8 +207,7 @@ class Redeem extends Component {
       cardPhoneNo: this.state.userPhoneNo,
       bankCard: this.state.bankCard,
       code: this.state.code,
-      tradPwd: pswd,
-      payment: 1
+      tradPwd: pswd
     }
     try {
       const {data} = await redeemIntegral(params)
@@ -300,9 +299,6 @@ class Redeem extends Component {
   }
   
   handleGetCode() {
-    if(!this.verify()) {
-      return
-    }    
     this.getCode()
   }
 
