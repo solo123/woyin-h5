@@ -7,7 +7,7 @@ import Page from './styled'
 import money from '@/asset/images/icon/money.svg'
 
 export default function(props) {
-  const {title = '', name = '', integral = 0, date = new Date().getTime()} = props
+  const {title = '', name = '', integral = 0, date = new Date().getTime()} = props.location.state
 
   return (
     <Page>
@@ -19,15 +19,15 @@ export default function(props) {
       <div className="u_m_xxx">
         <ul>
           <li>
-            <span>商品名称</span>
+            <span className="label">商品名称</span>
             <span>{name}</span>
           </li>
           <li>
-            <span>扣除积分</span>
+            <span className="label">扣除积分</span>
             <span>{integral}</span>
           </li>
           <li>
-            <span>创建时间</span>
+            <span className="label">创建时间</span>
             <span>{util.formatTimestamp2(date)}</span>
           </li>
         </ul>

@@ -11,7 +11,7 @@ if(process.env.NODE_ENV === 'development') {
   BASE = '/client/'
 }
 
-const timestamp = new Date().getTime() + ''
+const timestamp = String(new Date().getTime())
 
 export default {
   login(data) {
@@ -216,24 +216,7 @@ export const getSubProducts = (id = '', config = {}) => {
   return get(`${BASE}api/product/subList`, {productClassifyId: id}, config)
 }
 
-// 视频充值 直充
-export const rechargeVideo = (data = {}, config = {}) => {
-  const params = {
-    ...data,
-    tranPwd: md5(data.tranPwd),
-    chargeType: 1
-  }
-  return post(`${BASE}api/video/charge`, qs.stringify(params), config)
-}
 
-// 电子卡券充值
-export const rechargeVoucher = (data) => {
-  data = {
-    ...data,
-    tranPwd: md5(data.tranPwd)
-  }  
-  return post(`${BASE}api/voucher/charge`, qs.stringify(data))
-}
 
 // 电子卡券记录
 export const getVoucherRecord = (data, config = {}) => {
@@ -312,50 +295,79 @@ export const getRedeemRecord = (data = {}, config = {}) => {
 
 // 话费充值
 export function rechargePhone(data) {
-  const pswd = md5('000000')
-
+  const tradPwd = md5(data.tranPwd)
+  const chargeType = '1'
   data = {
-    chargeAddr: data.chargeAddr,
-    chargeType: "1",
-    productId: "1",
-    tranPwd: pswd,
-    sign: md5(`key=&afdY%d2^uy3&timestamp=${timestamp}&chargeAddr=${data.chargeAddr}&chargeType=${data.chargeType}&productId=${data.productId}&tranPwd=${pswd}`),
+    ...data,
+    tranPwd: tradPwd,
+    chargeType: chargeType,
+    sign: md5(`key=&afdY%d2^uy3&timestamp=${timestamp}&chargeAddr=${data.chargeAddr}&chargeType=${chargeType}&productId=${data.productId}&tranPwd=${tradPwd}`),
     timestamp: timestamp
   }
-
   return post(`${BASE}api/charge/moreCredit`, qs.stringify(data))
 }
 
 // QB充值
 export function rechargeQB(data) {
+  const tradPwd = md5(data.tranPwd)
   data = {
     ...data,
-    tranPwd: md5(data.tranPwd)
+    tranPwd: tradPwd,
+    sign: md5(`key=&afdY%d2^uy3&timestamp=${timestamp}&chargeAddr=${data.chargeAddr}&chargeType=${data.chargeType}&productId=${data.productId}&tranPwd=${tradPwd}`),
+    timestamp: timestamp
   }  
   return post(`${BASE}api/charge/moreCredit`, qs.stringify(data))
 }
 
 // 流量充值
 export function rechargeTraffic(data) {
+  const tradPwd = md5(data.tranPwd)  
   data = {
     ...data,
-    tranPwd: md5(data.tranPwd)
+    tranPwd: tradPwd,
+    sign: md5(`key=&afdY%d2^uy3&timestamp=${timestamp}&phone=${data.phone}&range=${data.range}&productId=${data.productId}&tranPwd=${tradPwd}`),
+    timestamp: timestamp
   }
   return post(`${BASE}api/traffic/charge`, qs.stringify(data))
 }
 
 // 加油卡充值
 export function rechargeOil(data) {
+  const tradPwd = md5(data.tranPwd)  
   data = {
     ...data,
-    tranPwd: md5(data.tranPwd),
-    sign: md5(`key=&afdY%d2^uy3&timestamp=${timestamp}&phone=${data.phone}&range=${data.range}&productId=${data.productId}&tranPwd=123456`),
-    timestamp: timestamp        
+    tranPwd: tradPwd,
+    sign: md5(`key=&afdY%d2^uy3&timestamp=${timestamp}&cardNumber=${data.cardNumber}&cardType=${data.cardType}&productId=${data.productId}&tranPwd=${tradPwd}`),
+    timestamp: timestamp
   }
   return post(`${BASE}api/oilCard/charge`, qs.stringify(data))
 }
 
+// 视频充值 直充
+export const rechargeVideo = (data = {}, config = {}) => {
+  const tradPwd = md5(data.tranPwd)
+  const chargeType = '1'
+  data = {
+    ...data,
+    tranPwd: tradPwd,
+    chargeType: chargeType,
+    sign: md5(`key=&afdY%d2^uy3&timestamp=${timestamp}&chargeAddr=${data.chargeAddr}&chargeType=${chargeType}&productId=${data.productId}&tranPwd=${tradPwd}`),
+    timestamp: timestamp    
+  }
+  return post(`${BASE}api/video/charge`, qs.stringify(data), config)
+}
 
+// 电子卡券充值
+export const rechargeVoucher = (data) => {
+  const tranPwd = md5(data.tranPwd)
+  data = {
+    ...data,
+    tranPwd: tranPwd,
+    sign: md5(`key=&afdY%d2^uy3&timestamp=${timestamp}&amount=${data.amount}&tranPwd=${tranPwd}&productId=${data.productId}`),
+    timestamp: timestamp        
+  }  
+  return post(`${BASE}api/voucher/charge`, qs.stringify(data))
+}
 
 // 修改登录密码
 export function changeLoginPswd(data = {}, config) {
@@ -502,10 +514,14 @@ export function deleteAddrById(id, config) {
 
 // 京东商品下单
 export function placeOrder(data) {
+  const tradPwd = md5(data.tranPwd)  
   data = {
     ...data,
-    tranPwd: md5(data.tranPwd)
+    tranPwd: tradPwd,
+    sign: md5(`key=&afdY%d2^uy3&timestamp=${timestamp}&skuId=${data.skuId}&count=${data.count}&addressId=${data.addressId}&tranPwd=${tradPwd}`),
+    timestamp: timestamp       
   }
+
   if(process.env.NODE_ENV === 'development') {
     BASE = '/'
   }else if(process.env.NODE_ENV === 'production') {

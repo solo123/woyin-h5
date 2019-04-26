@@ -257,8 +257,15 @@ class StoreConfirm extends Component {
     try {
       const {data} = await placeOrder(params)
       if(data.status === 200) {
+        const {freight} = this.state
+        const {count, jdPrice} = this.props.location.state
+        const totalIntegral = (count * Math.round(jdPrice * 100)) + (freight * 100)        
         setTimeout(() => {
-          replace('/result')
+          replace('/result', {
+            title: '商品兑换',
+            name: this.props.location.state.name,
+            integral: totalIntegral
+          })
         }, 300)
       }else if(data.status === 1017) {
         util.confirmRetry('密码错误', () => {

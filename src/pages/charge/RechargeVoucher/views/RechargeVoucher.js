@@ -256,7 +256,7 @@ export default class extends Component {
     this.submitSource = CancelToken.source()
     const params = {
       productId: this.state.selectId,
-      amount: this.state.count,
+      amount: this.state.count + '',
       tranPwd: pswd
     }
     try {

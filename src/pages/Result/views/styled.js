@@ -33,6 +33,10 @@ export default styled.div`
       &:last-child:after{
         content: none;
       }
+      .label{
+        flex-shrink: 0;
+        margin-right: 10px;
+      }
     }
   }
 `
