@@ -439,6 +439,7 @@ export function getIntegralList(id, config) {
 
 // 获取京东商品类别列表
 export function getJDGoodsSort(data = {}, config) {
+  let BASE = ''
   data = {
     ...data,
     typeId: 1
@@ -453,6 +454,7 @@ export function getJDGoodsSort(data = {}, config) {
 
 // 获取京东商品列表
 export function getJDGoodsList(data = {}, config) {
+  let BASE = ''
   data = {
     ...data,
     limit: G_config.store.PAGE_LIMIT
@@ -467,6 +469,7 @@ export function getJDGoodsList(data = {}, config) {
 
 // 获取层级地址
 export function getAddr(data = {}, config = {}) {
+  let BASE = ''
   if(process.env.NODE_ENV === 'development') {
     BASE = '/'
   }else if(process.env.NODE_ENV === 'production') {
@@ -477,6 +480,7 @@ export function getAddr(data = {}, config = {}) {
 
 // 添加地址
 export function addJDAddr(data) {
+  let BASE = ''
   data = {
     ...data,
     addType: 1
@@ -490,6 +494,7 @@ export function addJDAddr(data) {
 }
 
 export function getJDAddrList(data = {}, config = {}) {
+  let BASE = ''
   data = {
     ...data,
     addType: 1
@@ -504,6 +509,7 @@ export function getJDAddrList(data = {}, config = {}) {
 
 // 删除用户地址
 export function deleteAddrById(id, config) {
+  let BASE = ''
   if(process.env.NODE_ENV === 'development') {
     BASE = '/'
   }else if(process.env.NODE_ENV === 'production') {
@@ -514,6 +520,7 @@ export function deleteAddrById(id, config) {
 
 // 京东商品下单
 export function placeOrder(data) {
+  let BASE = ''
   const tradPwd = md5(data.tranPwd)  
   data = {
     ...data,
@@ -532,6 +539,7 @@ export function placeOrder(data) {
 
 // 获取京东运费
 export function getJDFreight(data = {}, config) {
+  let BASE = ''
   if(process.env.NODE_ENV === 'development') {
     BASE = '/'
   }else if(process.env.NODE_ENV === 'production') {
@@ -542,6 +550,7 @@ export function getJDFreight(data = {}, config) {
 
 // 获取京东订单列表
 export function getJDOrders(data = {}, config) {
+  let BASE = ''
   if(process.env.NODE_ENV === 'development') {
     BASE = '/'
   }else if(process.env.NODE_ENV === 'production') {
@@ -557,6 +566,7 @@ export function getJDOrders(data = {}, config) {
 
 // 获取京东商品物流信息
 export function getJDTrack(id, config) {
+  let BASE = ''
   if(process.env.NODE_ENV === 'development') {
     BASE = '/'
   }else if(process.env.NODE_ENV === 'production') {
