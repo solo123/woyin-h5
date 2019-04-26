@@ -1,7 +1,8 @@
-import React from 'react'
+import React, {Component} from 'react'
 import styled from 'styled-components'
 import {Link} from "react-router-dom"
 
+import util from '@/util'
 import homeIcon from '@/asset/images/icon/home.svg'
 
 const LayoutFixedRight = styled.div`
@@ -20,14 +21,22 @@ const StyledHomeIcon = styled.img`
   height: 35px;
 `
 
-export default function () {
-  return (
-    <LayoutFixedRight>
-      <Link to="/">
-        <StyledBackhome>
-          <StyledHomeIcon src={homeIcon} alt="回到首页" />
-        </StyledBackhome>
-      </Link>
-    </LayoutFixedRight>
-  )
+class Backhome extends Component {
+  componentDidMount() {
+    util.Mover(document.getElementById('mover'))
+  }
+  render() {
+    return (
+      <LayoutFixedRight id="mover">
+        <Link to="/">
+          <StyledBackhome>
+            <StyledHomeIcon src={homeIcon} alt="回到首页" />
+          </StyledBackhome>
+        </Link>
+      </LayoutFixedRight>
+    )
+  }
 }
+
+
+export default Backhome

@@ -11,7 +11,6 @@ const STATUS_SCHEMA = {
 }
 
 function OrderStore(props) {
-  console.log(props.location.state.detail)
   const {status, orderId, externalOrder, goodsName, totalScore, createTime} = props.location.state.detail
   return (
     <Page>

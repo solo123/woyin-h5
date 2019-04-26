@@ -280,7 +280,65 @@ function debounce(func, delay) {
 // const superTest = debounce(test, 100)
 // superTest()
 
+
+
+// 按下移动元素
+var Mover = function (elem) {
+  if(!elem) {
+    return
+  }
+
+  var start = {
+    x: 0,
+    y: 0
+  }
+  var curr = {
+    x: 0,
+    y: 100
+  }
+  var delta = {
+    x: 0,
+    y: 0
+  }
+
+  var translate = function (x, y) {
+    if (x < 5) {
+      x = 0
+    }
+    elem.style.bottom = y + 'px'
+    elem.style.right = x + 'px'
+    curr = {
+      y: y,
+      x: x
+    }
+  }
+
+  elem.addEventListener('touchstart', function (e) {
+    var touch = e.targetTouches[0]
+    start = {
+      x: touch.pageX,
+      y: touch.pageY
+    }
+  })
+
+  elem.addEventListener('touchmove', function (e) {
+    var touch = e.targetTouches[0]
+
+    delta = {
+      x: touch.pageX - start.x,
+      y: touch.pageY - start.y
+    }
+    start.y = touch.pageY
+    start.x = touch.pageX
+    var newY = curr.y - delta.y
+    var newX = curr.x - delta.x
+    translate(newX, newY)
+    return false
+  })
+}
+
 export default {
+  Mover,
   addClass,
   removeClass,
   fixIos12WeixinInputBug,

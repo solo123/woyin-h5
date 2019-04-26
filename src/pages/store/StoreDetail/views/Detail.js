@@ -29,7 +29,6 @@ class Detail extends Component {
       integral: integral,
       balance: 0     
     }
-    console.log()
   }
 
   componentDidMount() {
