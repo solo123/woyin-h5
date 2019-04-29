@@ -58,12 +58,12 @@ class AddAddr extends Component {
   }
 
   componentDidMount() {
-    this.getAddr(1, null, data => {
+    this.loadAddr(1, null, data => {
       this.setState({provinceData: data})
     })
   }
 
-  async getAddr(type = 1, addressId = '', cb = () => {}) {
+  async loadAddr(type = 1, addressId = '', cb = () => {}) {
     const params = {type, addressId}
     const loading = weui.loading('加载中')
     try {
@@ -116,7 +116,7 @@ class AddAddr extends Component {
       townText: '',
       townData: []   
     }, () => {
-      this.getAddr(2, value, data => {
+      this.loadAddr(2, value, data => {
         this.setState({cityData: data})
       })
     })
@@ -136,7 +136,7 @@ class AddAddr extends Component {
       townText: '',
       townData: []    
     }, () => {
-      this.getAddr(3, value, data => {
+      this.loadAddr(3, value, data => {
         this.setState({countyData: data})
       })      
     })    
@@ -153,7 +153,7 @@ class AddAddr extends Component {
       townText: '',
       townData: []   
     }, () => {
-      this.getAddr(4, value, data => {
+      this.loadAddr(4, value, data => {
         this.setState({townData: data})
       })      
     })    

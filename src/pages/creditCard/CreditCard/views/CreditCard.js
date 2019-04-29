@@ -123,7 +123,7 @@ class CreditCard extends Component {
       actualReceived: 0,
       deductIntegral: 0,
 
-      integral: '',
+      integral: 0,
       availableIntegral: 0
     }
   }
@@ -165,35 +165,7 @@ class CreditCard extends Component {
     }
   }
 
-  async doSubmit(pswd) {
-    const loading = weui.loading('处理中')
-    const params = {
-      amount: this.state.integral,
-      bankCode: this.state.bankCode,
-      bankName: this.state.bankName,
-      cardHoldName: this.state.cardHoldName,
-      cardPhoneNo: this.state.userPhoneNo,
-      tradPwd: pswd,
-      code: this.state.smsCode,
-      bankCard: this.state.bankCard
-    }
-    try {
-      const {data} = await paymentToCard(params)
-      if(data.status === 200) {
-        weui.alert(data.msg)
-      }else if(data.status === 1017){
-        util.confirmRetry('密码错误', () => {
-          this.retryTransPswd()
-        })
-      }else {
-        weui.alert(data.msg)
-      }
-    }finally {
-      loading.hide()
-    }
-  }
-
-  async getCode() {
+  async loadCode() {
     const loading = weui.loading('发送中')
     try {
       const {data} = await getCodeForWithdraw(this.props.phone)
@@ -208,10 +180,28 @@ class CreditCard extends Component {
     }
   }
 
-  async getWithdrawFee() {
+  async loadWithdrawFee() {
     const {data} = await getWithdrawFee(this.state.integral || 0)
     if(data.status === 200) {
       this.updateFee(data.data)
+    }
+  }
+
+  async doSubmit(params) {
+    const loading = weui.loading('处理中')
+    try {
+      const {data} = await paymentToCard(params)
+      if(data.status === 200) {
+        weui.alert(data.msg)
+      }else if(data.status === 1017){
+        util.confirmRetry('密码错误', () => {
+          this.retryTransPswd()
+        })
+      }else {
+        weui.alert(data.msg)
+      }
+    }finally {
+      loading.hide()
     }
   }
 
@@ -292,15 +282,17 @@ class CreditCard extends Component {
   }
 
   handleChange(e) {
-    this.setState({[e.target.name]: e.target.value})
+    const name = e.target.name
+    const value = name === 'integral' ? Number(e.target.value) : e.target.value
+    this.setState({[name]: value})
   }
 
   handleGetCode() {
-    this.getCode()
+    this.loadCode()
   }
 
   handleBlur(e) {
-    this.getWithdrawFee()
+    this.loadWithdrawFee()
   }
 
   handleSubmit() {
@@ -316,13 +308,25 @@ class CreditCard extends Component {
           alert('请输入密码')
           return false
         }
-        this.doSubmit(input.value)
+
+        const params = {
+          amount: this.state.integral,
+          bankCode: this.state.bankCode,
+          bankName: this.state.bankName,
+          cardHoldName: this.state.cardHoldName,
+          cardPhoneNo: this.state.userPhoneNo,
+          tradPwd: input.value,
+          code: this.state.smsCode,
+          bankCard: this.state.bankCard
+        }        
+        this.doSubmit(params)
       }
     })
   }
 
   render() {
     const {getCodeFlag} = this.state
+    const integral = this.state.integral || ''
     return (
       <Page>
         <Helmet defaultTitle="沃银企服" title="信用卡还款"/>
@@ -346,7 +350,7 @@ class CreditCard extends Component {
               <input 
                 name="integral" 
                 className="input input-primary"
-                value={this.state.integral} 
+                value={integral} 
                 onChange={this.handleChange} 
                 onBlur={this.handleBlur} 
                 placeholder={`最多可使用${this.state.availableIntegral}积分`}

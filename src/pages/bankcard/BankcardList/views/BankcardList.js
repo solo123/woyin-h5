@@ -3,7 +3,7 @@ import {Link} from "react-router-dom"
 import {Helmet} from "react-helmet"
 import weui from 'weui.js'
 
-import {getBankcardList, delBankCard} from '@/api'
+import {getBankcardList, deleteBankCard} from '@/api'
 
 import Backhome from '@/components/Backhome'
 import SkeletonPlaceholder from '@/components/SkeletonPlaceholder'
@@ -11,21 +11,23 @@ import EmptyArrayPlaceholder from '@/components/EmptyArrayPlaceholder'
 import List from './List'
 import Page from './styled'
 
-const Content = ({loading, items, handleDel}) => {
+const Content = ({loading, items, handleClick}) => {
   if(loading) {
     return <SkeletonPlaceholder count={3} />
   }
+
   if(!items.length) {
     return <EmptyArrayPlaceholder />
   }
-  return <List items={items} handleDel={handleDel} />
+
+  return <List items={items} handleClick={handleClick} />
 }
 
 class BankcardList extends Component {
   constructor(props) {
     super(props)
 
-    this.handleDel = this.handleDel.bind(this)
+    this.handleDelete = this.handleDelete.bind(this)
 
     this.state = {
       items: [],
@@ -48,10 +50,10 @@ class BankcardList extends Component {
     }
   }
 
-  async delBankCard(id) {
+  async deleteBankCard(id) {
     const loading = weui.loading('处理中')
     try {
-      const {data} = await delBankCard(id)
+      const {data} = await deleteBankCard(id)
       if(data.status === 200) {
         this.updateBankcard(id)
       }
@@ -62,15 +64,13 @@ class BankcardList extends Component {
   }
 
   updateBankcard(id) {
-    const items = this.state.items.filter(item => {
-      return item.id !== id
-    })
+    const items = this.state.items.filter(item => item.id !== id)
     this.setState({items})
   }
 
-  handleDel(id) {
+  handleDelete(id) {
     weui.confirm('确定删除吗？', () => {
-      this.delBankCard(id)
+      this.deleteBankCard(id)
     })
   }
 
@@ -78,9 +78,11 @@ class BankcardList extends Component {
     const {loading, items} = this.state
     return (
       <Page>
+
         <Helmet defaultTitle="沃银企服" title="银行卡/信用卡列表"/>
+
         <div className="main">
-          <Content loading={loading} items={items} handleDel={this.handleDel} />
+          <Content loading={loading} items={items} handleClick={this.handleDelete} />
         </div>
 
         <div className="fixed-bottom">

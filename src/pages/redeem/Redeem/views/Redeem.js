@@ -110,7 +110,7 @@ class Redeem extends Component {
     this.handleToggleAgreement = this.handleToggleAgreement.bind(this)
 
     this.state = {
-      integral: '',
+      integral: 0,
       availableIntegral: 0,
 
       loading: true,
@@ -172,7 +172,7 @@ class Redeem extends Component {
     }
   }
 
-  async getRedeemFee() {
+  async loadRedeemFee() {
     try {
       const {data} = await getRedeemFee(this.state.integral || 0)
       if(data.status === 200) {
@@ -182,7 +182,7 @@ class Redeem extends Component {
     }
   }
 
-  async getCode() {
+  async loadCode() {
     const loading = weui.loading('发送中')
     try {
       const {data} = await getCodeForWithdraw(this.state.phone)
@@ -197,18 +197,8 @@ class Redeem extends Component {
     }
   }
 
-  async doSubmit(pswd) {
+  async doSubmit(params) {
     const loading = weui.loading('处理中')
-    const params = {
-      amount: this.state.integral,
-      bankCode: this.state.bankCode,
-      bankName: this.state.bankName,
-      cardHoldName: this.state.cardHoldName,
-      cardPhoneNo: this.state.userPhoneNo,
-      bankCard: this.state.bankCard,
-      code: this.state.code,
-      tradPwd: pswd
-    }
     try {
       const {data} = await redeemIntegral(params)
       if(data.status === 200) {
@@ -295,11 +285,11 @@ class Redeem extends Component {
   }
 
   handleBlur(e) {
-    this.getRedeemFee()
+    this.loadRedeemFee()
   }
   
   handleGetCode() {
-    this.getCode()
+    this.loadCode()
   }
 
   handleClick(e) {
@@ -326,7 +316,9 @@ class Redeem extends Component {
   }
 
   handleChange(e) {
-    this.setState({[e.target.name]: e.target.value})
+    const name = e.target.name
+    const value = name === 'integral' ? Number(e.target.value) : e.target.value    
+    this.setState({[name]: value})
   }
 
   handleSubmit(e) {
@@ -339,6 +331,17 @@ class Redeem extends Component {
       useable: this.state.availableIntegral,
       callback: (e, inputElem) => {
         if(!inputElem.value) {return false}
+
+        const params = {
+          amount: this.state.integral,
+          bankCode: this.state.bankCode,
+          bankName: this.state.bankName,
+          cardHoldName: this.state.cardHoldName,
+          cardPhoneNo: this.state.userPhoneNo,
+          bankCard: this.state.bankCard,
+          code: this.state.code,
+          tradPwd: inputElem.value
+        }        
         this.doSubmit(inputElem.value)
       }
     })
@@ -354,7 +357,7 @@ class Redeem extends Component {
       bankcardLogo,
       getCodeFlag
     } = this.state
-
+    const integral = this.state.integral || ''
     const placeholder = `最多可代卖${this.state.availableIntegral}积分`
 
     return (
@@ -383,7 +386,7 @@ class Redeem extends Component {
               className="input" 
               type="number"
               name="integral"
-              value={this.state.integral} 
+              value={integral} 
               onChange={this.handleChange}
               onBlur={this.handleBlur}
               placeholder={placeholder}
@@ -427,7 +430,7 @@ class Redeem extends Component {
         
         <FullLayer show={this.state.showAgreement} handleClose={this.handleToggleAgreement} close>
           <div style={{padding: '15px 15px 70px 15px'}}>
-            <ol class="protocol">
+            <ol className="protocol">
               <li>
                 积分赎回到帐时间为：
                 <table>
@@ -446,7 +449,7 @@ class Redeem extends Component {
                     </tr>
                   </tbody>
                 </table>
-                <div class="sub-text">（节假及周六日顺延，具体到帐时间以银行到帐时间为准）</div>
+                <div className="sub-text">（节假及周六日顺延，具体到帐时间以银行到帐时间为准）</div>
               </li>
               <li>每人每次赎回最低积分：100积分</li>
               <li>每人每天赎回最高积分：5000000积分</li>

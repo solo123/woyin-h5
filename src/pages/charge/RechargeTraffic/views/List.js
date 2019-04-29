@@ -17,15 +17,14 @@ function List({id, items, handleSelect}) {
   return (
     <div className="items">
       {items.map(item => {
-        const disCount = (Number(item.disCount) / 10).toFixed(2)
         return (
           <Item
             key={item.productId}
             id={item.productId}
             selectId={id}
             money={item.salesPrice}
-            integral={item.productCostBalance * disCount}
-            handleSelect={() => handleSelect(item.productId, item.productCostBalance * disCount)}
+            integral={item.productCostBalance * item.disCount}
+            handleSelect={() => handleSelect(item.productId, item.productCostBalance * item.disCount)}
           />
         )
       })}

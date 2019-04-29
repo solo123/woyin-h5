@@ -1,7 +1,6 @@
 import React, {Component} from 'react'
 import {Helmet} from "react-helmet"
 import weui from 'weui.js'
-import md5 from 'md5'
 
 import {addBankcard} from '@/api'
 import {push} from '@/services/redirect'
@@ -24,10 +23,13 @@ class AddBankcard extends Component {
     this.state = {
       username: '',
       usernameCleanViewFlag: false,
+
       id: '',
       idCleanViewFlag: false,
+
       cardNo: '',
       cardNoCleanViewFlag: false,
+
       phone: '',
       phoneCleanViewFlag: false
     }
@@ -39,27 +41,14 @@ class AddBankcard extends Component {
   componentWillUnmount() {
   }
 
-  async doSubmit(phone, bankCard, username, id) {
+  async doSubmit(params) {
     const loading = weui.loading('处理中')
-    const timestamp = new Date().getTime()
-    const params = {
-      cardPhoneNo: phone,
-      bankCard: bankCard,
-      cardHoldName: username,
-      idNo: id,
-      sign: md5(`key=&afdY%d2^uy3&timestamp=${timestamp}&cardPhoneNo=${phone}&bankCard=${bankCard}&cardHoldName=${username}&idNo=${id}`),
-      timestamp: timestamp
-    }
     try {
       const {data} = await addBankcard(params)
       if(data.status === 200) {
         weui.alert(data.msg, () => {
-          const {from} = this.props.location.state || {from: false}
-          if(from) {
-            push(from)
-          }else {
-            push('/bankcard-list')
-          }
+          const {from} = this.props.location.state || {from: '/bankcard-list'}
+          push(from)
         })
       }else {
         weui.alert(data.msg)
@@ -69,39 +58,20 @@ class AddBankcard extends Component {
     }
   }
 
-  check() {
-    let flag = true
-    const {username, id, cardNo, phone} = this.state
-
-    if(!username) {
-      flag = false
-    }
-    if(!id) {
-      flag = false
-    }
-    if(!cardNo) {
-      flag = false
-    }
-    if(!phone) {
-      flag = false
-    }
-    return flag
-  }
-
-  verify(phone, cardNo, username, id) {
-    if(!username) {
+  verify() {
+    if(!this.state.username) {
       weui.alert('请输入姓名')
       return false
     }
-    if(!id) {
+    if(!this.state.id) {
       weui.alert('请输入身份证号')
       return false
     }
-    if(!cardNo) {
+    if(!this.state.cardNo) {
       weui.alert('请输入卡号')
       return false
     }
-    if(!phone) {
+    if(!this.state.phone) {
       weui.alert('请输入手机号')
       return false
     }    
@@ -128,19 +98,24 @@ class AddBankcard extends Component {
   }
 
   handleSubmit() {
-    const {phone, cardNo, username, id} = this.state
-    if(!this.verify(phone, cardNo, username, id)) {
+    if(!this.verify()) {
       return
     }
-    this.doSubmit(phone, cardNo, username, id)
+    const params = {
+      cardPhoneNo: this.state.phone,
+      bankCard: this.state.cardNo,
+      cardHoldName: this.state.username,
+      idNo: this.state.id
+    }    
+    this.doSubmit(params)
   }
 
   render() {
     const {
-      usernameCleanViewFlag,
-      idCleanViewFlag,
-      cardNoCleanViewFlag,
-      phoneCleanViewFlag
+      username, usernameCleanViewFlag,
+      id, idCleanViewFlag,
+      cardNo, cardNoCleanViewFlag,
+      phone, phoneCleanViewFlag
     } = this.state
 
     return (
@@ -155,7 +130,7 @@ class AddBankcard extends Component {
                   className="input" 
                   type="text" 
                   name="username" 
-                  value={this.state.username} 
+                  value={username} 
                   onChange={this.handleChange} 
                   onFocus={this.handleFocus}
                   onBlur={this.handleBlur}
@@ -178,7 +153,7 @@ class AddBankcard extends Component {
                   className="input" 
                   type="text" 
                   name="id" 
-                  value={this.state.id} 
+                  value={id} 
                   onChange={this.handleChange} 
                   onFocus={this.handleFocus}
                   onBlur={this.handleBlur}
@@ -201,7 +176,7 @@ class AddBankcard extends Component {
                   className="input" 
                   type="text" 
                   name="cardNo" 
-                  value={this.state.cardNo} 
+                  value={cardNo} 
                   onChange={this.handleChange} 
                   onFocus={this.handleFocus}
                   onBlur={this.handleBlur}
@@ -224,7 +199,7 @@ class AddBankcard extends Component {
                 className="input" 
                 type="text" 
                 name="phone" 
-                value={this.state.phone} 
+                value={phone} 
                 onChange={this.handleChange} 
                 onFocus={this.handleFocus}
                 onBlur={this.handleBlur}

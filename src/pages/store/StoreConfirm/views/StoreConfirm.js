@@ -48,9 +48,14 @@ class StoreConfirm extends Component {
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleToggle = this.handleToggle.bind(this)
     this.handleSelect = this.handleSelect.bind(this)
-    this.handleToggleAddAddr = this.handleToggleAddAddr.bind(this)
     this.handleAddAddr = this.handleAddAddr.bind(this)
     this.handleDelete = this.handleDelete.bind(this)
+    this.handleToggleAddAddr = this.handleToggleAddAddr.bind(this)
+
+    const {jdPrice, count} = this.props.location.state
+    this.integral = Number(jdPrice) * 100
+    this.count = Number(count)
+    this.totalIntegral = Math.round(this.integral * this.count)
 
     this.state = {
       addrs: [],
@@ -117,11 +122,11 @@ class StoreConfirm extends Component {
     }
   }
 
-  async getFreight(params) {
+  async loadFreight(params) {
     try {
       const {data} = await getJDFreight(params)
       if(data.status === 200) {
-        this.setState({freight: data.data.freight})
+        this.setState({freight: data.data.freight * 100})
       }
     }finally {
     }
@@ -156,7 +161,7 @@ class StoreConfirm extends Component {
         count: this.props.location.state.count,
         addressId: addr.id
       }
-      this.getFreight(params)
+      this.loadFreight(params)
     })    
   }
 
@@ -244,16 +249,8 @@ class StoreConfirm extends Component {
     }
   }
 
-  async doSubmit(pswd) {
+  async doSubmit(params) {
     const loading = weui.loading('处理中')
-    const {skuId, count} = this.props.location.state
-    const {addrId} = this.state
-    const params = {
-      skuId: skuId,
-      count: count,
-      addressId: addrId,
-      tranPwd: pswd
-    }
     try {
       const {data} = await placeOrder(params)
       if(data.status === 200) {
@@ -279,39 +276,52 @@ class StoreConfirm extends Component {
     }
   }
 
+  verify() {
+    if(!this.state.addrId) {
+      weui.alert('收货地址未设置')
+      return
+    }
+    if(this.totalIntegral > this.state.availableIntegral) {
+      weui.alert('积分不足')
+      return
+    }   
+    return true
+  }
+
   retryTransPswd() {
     this.handleSubmit()
   }
 
   handleSubmit() {
-    const {freight} = this.state
-    const {count, jdPrice} = this.props.location.state
-    const totalIntegral = (count * Math.round(jdPrice * 100)) + (freight * 100)
-
-    if(!this.state.addrId) {
-      weui.alert('收货地址未设置')
+    if(!this.verify()) {
       return
     }
-    if(totalIntegral > this.state.availableIntegral) {
-      weui.alert('积分不足')
-      return
-    }    
-    
+
     util.paymentConfirm({
       title: '兑换',
-      amount: totalIntegral,
+      amount: this.totalIntegral,
       useable: this.state.availableIntegral,
       callback: (e, inputElem) => {
         if(!inputElem.value) {return false}
-        this.doSubmit(inputElem.value)
+
+        const {skuId, count} = this.props.location.state
+        const {addrId} = this.state
+        const params = {
+          skuId: skuId,
+          count: count,
+          addressId: addrId,
+          tranPwd: inputElem.value
+        }        
+        this.doSubmit(params)
       }
     })
   }
 
   render() {
-    const {name, count} = this.props.location.state
-    const freight = this.state.freight * 100
-    const jdPrice = Math.round(this.props.location.state.jdPrice * 100)
+    const {name} = this.props.location.state
+    const {freight} = this.state
+    const amount = this.totalIntegral + freight
+
     return (
       <Page>
         <Helmet defaultTitle="沃银企服" title="购买确认" />
@@ -329,11 +339,11 @@ class StoreConfirm extends Component {
             <ul>
               <li>
                 <span>单价</span>
-                <span>{jdPrice} 积分</span>
+                <span>{this.integral} 积分</span>
               </li>
               <li>
                 <span>数量</span>
-                <span>x {count}</span>
+                <span>x {this.count}</span>
               </li>
               <li>
                 <span>运费</span>
@@ -343,7 +353,7 @@ class StoreConfirm extends Component {
           </section>
           <div className="total">
             <span>订单总额</span>
-            <span>{count * jdPrice + freight} 积分</span>
+            <span>{amount} 积分</span>
           </div>
         </main>
 

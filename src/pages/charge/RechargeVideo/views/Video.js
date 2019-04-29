@@ -99,14 +99,9 @@ class RechargeVideo extends Component {
     }
   }
 
-  async doSubmit(pswd) {
+  async doSubmit(params) {
     const loading = weui.loading('处理中')
     this.submitSource = CancelToken.source()
-    const params = {
-      chargeAddr: this.state.username,
-      productId: this.state.selectId,
-      tranPwd: pswd
-    }
     try {
       const {data} = await rechargeVideo(params, {cancelToken: this.submitSource.token})
       if(data.status === 200) {
@@ -138,8 +133,24 @@ class RechargeVideo extends Component {
     }
   }
 
-  selectProduct(id, integral) {
-    this.setState({selectId: id, integral: integral})
+  selectProduct(selectId, integral) {
+    this.setState({selectId: selectId, integral: Number(integral)})
+  }
+
+  verify() {
+    if(!this.state.username) {
+      weui.alert('请输入用户名')
+      return
+    }
+    if(!this.state.selectId) {
+      weui.alert('请选择产品')
+      return
+    }    
+    if(this.state.integral > this.state.availableIntegral) {
+      weui.alert('积分不足')
+      return
+    }
+    return true
   }
 
   retryTransPswd() {
@@ -147,17 +158,27 @@ class RechargeVideo extends Component {
   }
 
   handleChange(e) {
-    this.setState({username: e.target.value})
+    this.setState({[e.target.name]: e.target.value})
   }
 
   handleSubmit() {
+    if(!this.verify()) {
+      return
+    }
+
     util.paymentConfirm({
       title: '充值',
       amount: this.state.integral,
       useable: this.state.availableIntegral,
       callback: (e, inputElem) => {
         if(!inputElem.value) {return false}
-        this.doSubmit(inputElem.value)
+
+        const params = {
+          chargeAddr: this.state.username,
+          productId: this.state.selectId,
+          tranPwd: inputElem.value
+        }        
+        this.doSubmit(params)
       }
     })
   }
@@ -181,6 +202,7 @@ class RechargeVideo extends Component {
             <div className="input-box">
               <input
                 type="text" 
+                name="username"
                 className="input input-primary"
                 value={this.state.username}
                 onChange={this.handleChange} 

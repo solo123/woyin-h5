@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import axios from 'axios'
 import {Helmet} from "react-helmet"
 import weui from 'weui.js'

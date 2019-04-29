@@ -11,6 +11,7 @@ import ConfirmInfo from './ConfirmInfo'
 import {push} from '@/services/redirect'
 import Page from './styled'
 
+const prefix = 'https://img13.360buyimg.com/n0/'
 const CancelToken = axios.CancelToken
 
 class Detail extends Component {
@@ -32,14 +33,14 @@ class Detail extends Component {
   }
 
   componentDidMount() {
-    this.getUserInfo()
+    this.loadUserInfo()
   }
 
   componentWillUnmount() {
     this.source && this.source.cancel('Operation canceled by the user.')
   }
 
-  async getUserInfo() {
+  async loadUserInfo() {
     this.source = CancelToken.source()
     try {
       const {data} = await getUserInfo()
@@ -60,8 +61,9 @@ class Detail extends Component {
   }
 
   handleClick(count) {
+    count = Number(count)
     if(config.store.MAX_COUNT >= count && count >= config.ecard.MIN_COUNT) {
-      this.setState({count})
+      this.setState({count: count})
     }    
   }
 
@@ -91,11 +93,11 @@ class Detail extends Component {
     const {name, jdPrice, imagePath, param} = this.props.location.state.detail
     return (
       <Page>
-        <Helmet defaultTitle="沃银企服" title="商品详情"  />
+        <Helmet title="商品详情"  />
 
         <header>
           <div className="swiper">
-            <img src={`https://img13.360buyimg.com/n0/${imagePath}`} alt=""/>
+            <img src={`${prefix}${imagePath}`} alt=""/>
           </div>
           <div className="info">
             <div className="head">

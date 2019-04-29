@@ -24,10 +24,10 @@ export default class extends Component {
       page: 0,
       orderType: 2
     }
-    this.getJDOrders(params)
+    this.loadJDOrders(params)
   }
 
-  async getJDOrders(params) {
+  async loadJDOrders(params) {
     try {
       const {data} = await getJDOrders(params)
       if(data.status === 200) {

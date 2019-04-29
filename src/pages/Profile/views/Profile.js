@@ -22,7 +22,8 @@ export default class extends Component {
       if(data.status === 200) {
         this.setState({...data.data[0]})
       }
-    }finally {}
+    }finally {
+    }
   }
 
   render() {

@@ -27,7 +27,7 @@ class StoreSort extends Component {
   }
 
   componentDidMount() {
-    this.getGoodsSort(id => {
+    this.loadGoodsSort(id => {
       this.setState({id: id}, () => {
         const params = {goodsClassId: this.state.id, page: currentPage++}    
         this.loadNextPage(params)
@@ -41,12 +41,14 @@ class StoreSort extends Component {
     this.scroll.destroy()
   }
 
-  async getGoodsSort(cb) {
+  async loadGoodsSort(cb) {
     try {
       const {data} = await getJDGoodsSort()
       if(data.status === 200) {
         this.setState({menus: data.data})
-        cb && cb(data.data[0].id)
+        if(data.data[0] && data.data[0].id) {
+          cb && cb(data.data[0].id)
+        }
       }
     }finally {
     }

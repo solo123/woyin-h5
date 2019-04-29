@@ -19,10 +19,10 @@ export default class extends Component {
   }
 
   componentDidMount() {
-    this.getJDTrack()
+    this.loadJDTrack()
   }
 
-  async getJDTrack() {
+  async loadJDTrack() {
     try {
       const {data} = await getJDTrack()
       if(data.status === 200) {

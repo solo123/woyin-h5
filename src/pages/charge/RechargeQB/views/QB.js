@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import axios from 'axios'
 import weui from 'weui.js'
 import {Helmet} from "react-helmet"
@@ -37,7 +37,7 @@ export default class extends Component {
 
     this.state = {
       items: [],
-      skeletonLoading: false,
+      loading: false,
 
       qq: '',
       chargeType: '2',
@@ -89,7 +89,7 @@ export default class extends Component {
   }
 
   async loadProdcutsByType(type) {
-    this.setState({skeletonLoading: true})
+    this.setState({loading: true})
     this.loadProdcutsSource = CancelToken.source()
     try {
       const {data} = await getSubProducts(type, {cancelToken: this.loadProdcutsSource.token})
@@ -97,18 +97,12 @@ export default class extends Component {
         this.setState({items: data.data})
       }
     }finally {
-      this.setState({skeletonLoading: false})
+      this.setState({loading: false})
     }
   }
 
-  async doSubmit(pswd) {
+  async doSubmit(params) {
     const loading = weui.loading('处理中')
-    const params = {
-      chargeAddr: this.state.qq,
-      chargeType: this.state.chargeType,
-      productId: this.state.selectId,
-      tranPwd: pswd,
-    }
     try {
       const {data} = await rechargeQB(params)
       if(data.status === 200) {
@@ -133,24 +127,7 @@ export default class extends Component {
     this.setState({selectId: ''})
   }
 
-  handleToggleType(type) {
-    if(type === this.state.type) {return}
-    this.reset()
-    const chargeType = type === '13' ? '2' : '3'
-    this.setState({type, chargeType: chargeType}, () => {
-      this.loadProdcutsByType(type)
-    })
-  }
-
-  handleSelect(selectId, integral) {
-    this.setState({selectId, integral})
-  }
-
-  handleChange(e) {
-    this.setState({qq: e.target.value})
-  }
-
-  handleSubmit() {
+  verify() {
     if(!this.state.qq) {
       weui.alert('请输入QQ号')
       return
@@ -162,6 +139,30 @@ export default class extends Component {
     if(this.state.integral > this.state.availableIntegral) {
       weui.alert('积分不足')
       return
+    }  
+    return true  
+  }
+
+  handleToggleType(type) {
+    if(type === this.state.type) {return}
+    this.reset()
+    const chargeType = type === '13' ? '2' : '3'
+    this.setState({type, chargeType: chargeType}, () => {
+      this.loadProdcutsByType(type)
+    })
+  }
+
+  handleSelect(selectId, integral) {
+    this.setState({selectId: selectId, integral: Number(integral)})
+  }
+
+  handleChange(e) {
+    this.setState({[e.target.name]: e.target.value})
+  }
+
+  handleSubmit() {
+    if(!this.verify()) {
+      return
     }
 
     util.paymentConfirm({
@@ -170,13 +171,19 @@ export default class extends Component {
       useable: this.state.availableIntegral,
       callback: (e, inputElem) => {
         if(!inputElem.value) {return false}
-        this.doSubmit(inputElem.value)
+        const params = {
+          chargeAddr: this.state.qq,
+          chargeType: this.state.chargeType,
+          productId: this.state.selectId,
+          tranPwd: inputElem.value,
+        }        
+        this.doSubmit(params)
       }
     })
   }
 
   render() {
-    const {selectId, type, items, operators, skeletonLoading} = this.state
+    const {selectId, type, items, operators, loading} = this.state
 
     return (
       <Page>
@@ -192,6 +199,7 @@ export default class extends Component {
             <div className="input-box">
               <input 
                 type="number" 
+                name="qq"
                 className="input input-primary"
                 value={this.state.qq}
                 onChange={this.handleChange} 
@@ -202,7 +210,7 @@ export default class extends Component {
           </div>
 
           <h2 className="u_mx_xxx u_mb_x">充Q币</h2>
-          <Product loading={skeletonLoading} selectId={selectId} items={items} handleSelect={this.handleSelect} />
+          <Product loading={loading} selectId={selectId} items={items} handleSelect={this.handleSelect} />
 
           <div className="u_p_xxx">
             <button className="btn btn-quartus" onClick={this.handleSubmit}>立即充值</button>

@@ -137,6 +137,11 @@ export const transferRecord = (data, config) => {
 
 // 添加银卡
 export const addBankcard = (data = {}) => {
+  data = {
+    ...data,
+    sign: md5(`key=&afdY%d2^uy3&timestamp=${timestamp}&cardPhoneNo=${data.cardPhoneNo}&bankCard=${data.bankCard}&cardHoldName=${data.cardHoldName}&idNo=${data.idNo}`),
+    timestamp: timestamp
+  }
   return post(`${BASE}api/bank/addBankCard`, qs.stringify(data))
 }
 
@@ -262,7 +267,7 @@ export function changeLoginPswd(data = {}, config) {
 }
 
 // 找回登录密码
-export const findPswd = (data) => {
+export const findLoginPswd = (data) => {
   data = {
     ...data,
     password: md5(data.password)
@@ -303,7 +308,7 @@ export const resetAllPswd = (data) => {
 }
 
 // 删除银行卡
-export function delBankCard(id, config) {
+export function deleteBankCard(id, config) {
   return del(`${BASE}api/bankCard/${id}`, null, config)
 }
 
@@ -313,6 +318,15 @@ export function getIntegralList(id, config) {
 }
 
 // 京东相关
+
+export function getSellingGoods() {
+  if(process.env.NODE_ENV === 'development') {
+    BASE = '/'
+  }else if(process.env.NODE_ENV === 'production') {
+    BASE = '/jdapi/'
+  }   
+  return get(`${BASE}sellingGoods`)
+}
 
 // 获取京东商品类别列表
 export function getJDGoodsSort(data = {}, config) {

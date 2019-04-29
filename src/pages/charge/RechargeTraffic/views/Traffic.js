@@ -39,7 +39,7 @@ export default class extends Component {
 
     this.state = {
       items: [],
-      skeletonLoading: false,
+      loading: false,
 
       phone: '',
       selectId: '',
@@ -88,7 +88,7 @@ export default class extends Component {
   }
 
   async loadProdcutsByType(type) {
-    this.setState({skeletonLoading: true})
+    this.setState({loading: true})
     this.loadProdcutsSource = CancelToken.source()
     try {
       const {data} = await getSubProducts(type, {cancelToken: this.loadProdcutsSource.token})
@@ -96,18 +96,12 @@ export default class extends Component {
         this.setState({items: data.data})
       }
     }finally {
-      this.setState({skeletonLoading: false})
+      this.setState({loading: false})
     }
   }
 
-  async doSubmit(pswd) {
+  async doSubmit(params) {
     const loading = weui.loading('处理中')
-    const params = {
-      phone: this.state.phone,
-      productId: this.state.selectId,
-      tranPwd: pswd,
-      range: '0'
-    }
     try {
       const {data} = await rechargeTraffic(params)
       if(data.status === 200) {
@@ -132,23 +126,7 @@ export default class extends Component {
     this.setState({selectId: ''})
   }
 
-  handleToggleType(type) {
-    if(type === this.state.type) {return}
-    this.reset()
-    this.setState({type}, () => {
-      this.loadProdcutsByType(type)
-    })
-  }
-
-  handleSelect(selectId, integral) {
-    this.setState({selectId, integral})
-  }
-
-  handleChange(e) {
-    this.setState({phone: e.target.value})
-  }
-
-  handleSubmit() {
+  verify() {
     if(!this.state.phone) {
       weui.alert('请输入手机号')
       return
@@ -160,6 +138,29 @@ export default class extends Component {
     if(this.state.integral > this.state.availableIntegral) {
       weui.alert('积分不足')
       return
+    }   
+    return true
+  }
+
+  handleToggleType(type) {
+    if(type === this.state.type) {return}
+    this.reset()
+    this.setState({type}, () => {
+      this.loadProdcutsByType(type)
+    })
+  }
+
+  handleSelect(selectId, integral) {
+    this.setState({selectId: selectId, integral: Number(integral)})
+  }
+
+  handleChange(e) {
+    this.setState({[e.target.name]: e.target.value})
+  }
+
+  handleSubmit() {
+    if(!this.verify()) {
+      return
     }
 
     util.paymentConfirm({
@@ -168,13 +169,20 @@ export default class extends Component {
       useable: this.state.availableIntegral,
       callback: (e, inputElem) => {
         if(!inputElem.value) {return false}
-        this.doSubmit(inputElem.value)
+
+        const params = {
+          phone: this.state.phone,
+          productId: this.state.selectId,
+          tranPwd: inputElem.value,
+          range: '0'
+        }        
+        this.doSubmit(params)
       }
     })
   }
 
   render() {
-    const {selectId, type, items, operators, skeletonLoading} = this.state
+    const {selectId, type, items, operators, loading} = this.state
 
     return (
       <Page>
@@ -194,6 +202,7 @@ export default class extends Component {
               <input
                 className="input input-primary" 
                 type="number" 
+                name="phone"
                 value={this.state.phone}
                 onChange={this.handleChange} 
                 placeholder="请输入手机号" 
@@ -203,7 +212,7 @@ export default class extends Component {
           </div>
 
           <h2 className="u_mx_xxx u_mb_x">请选择面值</h2>
-          <Product loading={skeletonLoading} id={selectId} items={items} handleSelect={this.handleSelect} />
+          <Product loading={loading} id={selectId} items={items} handleSelect={this.handleSelect} />
 
           <div className="u_p_xxx">
             <button className="btn btn-secondary" onClick={this.handleSubmit}>立即充值</button>

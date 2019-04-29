@@ -1,20 +1,20 @@
-import React, { Component } from 'react'
-import { Redirect, withRouter, Link } from "react-router-dom"
-import { connect } from 'react-redux'
+import React, {Component} from 'react'
+import {Redirect, withRouter, Link} from "react-router-dom"
+import {createGlobalStyle} from 'styled-components'
+import {connect} from 'react-redux'
 import weui from 'weui.js'
 import {Helmet} from "react-helmet"
-import closeIcon from '@/asset/images/icon/close.png'
 
+import config from '@/config'
+import {login, getCode} from '@/api'
+import {setItem, removeItem, getItem} from '@/services/storage'
+import Page from './styled'
+
+import closeIcon from '@/asset/images/icon/close.png'
 import showIcon from '@/asset/images/icon/show.png'
 import hideIcon from '@/asset/images/icon/hide.png'
 import checkedIcon from '@/asset/images/icon/checked.png'
 import uncheckedIcon from '@/asset/images/icon/unchecked.png'
-
-import {login, getCode} from '@/api'
-import util from '@/util'
-import config from '@/config'
-import {setItem, removeItem, getItem} from '@/services/storage'
-import Page from './styled'
 
 const ICON_SCHEMA = {
   text: showIcon,
@@ -36,13 +36,6 @@ function SendMessageBtn({flag, interval, handleClick}) {
     return <button className="btn btn-mini" onClick={handleClick}>获取验证码</button>
   }
   return <button className="btn btn-mini-disable">{interval}秒后重发</button>
-}
-
-function SubmitButton({pass, handleSubmit}) {
-  if(pass) {
-    return <button className="btn btn-primary" onClick={handleSubmit}>登录</button>
-  }
-  return <button className="btn btn-primary disable">登录</button>
 }
 
 function PswdInput({passwordType, password, passwordCleanView, handleChange, handleFocus, handleBlur, passwordClean, handleTogglePswdVisibleOrHidden}) {
@@ -79,6 +72,7 @@ function PswdInput({passwordType, password, passwordCleanView, handleChange, han
     </div>
   )
 }
+
 function MessageInput({messageCode, interval, getCodeFlag, messageCodeCleanView, messageClean, handleChange, handleFocus, handleBlur, handleGetCode}) {
   return (
     <div className="group">
@@ -108,6 +102,12 @@ function MessageInput({messageCode, interval, getCodeFlag, messageCodeCleanView,
   )
 }
 
+const GlobalStyle = createGlobalStyle`
+  body {
+    background: #fff;
+  }
+`
+
 class Login extends Component {
   constructor(props) {
     super(props)
@@ -126,8 +126,6 @@ class Login extends Component {
     this.handleGetCode = this.handleGetCode.bind(this)
 
     this.state = {
-      pass: false,
-
       username: '',
       usernameCleanView: false,
       password: '',
@@ -146,30 +144,14 @@ class Login extends Component {
   }
 
   componentDidMount() {
-    util.addClass(document.body, 'white')
     this.readUsernameFromStore()
   }
 
   componentWillUnmount() {
-    util.removeClass(document.body, 'white')
   }
 
-  async doSubmit() {
+  async doSubmit(params) {
     const loading = weui.loading('处理中')
-    let params = {}
-    if(LOGINTYPE_SCHEMA[this.state.loginType] === 1) {
-      params = {
-        userPhoneNo: this.state.username,
-        password: this.state.password,
-        loginType: LOGINTYPE_SCHEMA[this.state.loginType]
-      }
-    }else if(LOGINTYPE_SCHEMA[this.state.loginType] === 2) {
-      params = {
-        userPhoneNo: this.state.username,
-        code: this.state.messageCode,
-        loginType: LOGINTYPE_SCHEMA[this.state.loginType]
-      }
-    }
     try {
       const {data} = await login(params)
       if(data.status === 200) {
@@ -184,7 +166,7 @@ class Login extends Component {
     }
   }
 
-  async getCode() {
+  async loadCode() {
     const loading = weui.loading('发送中')
     const params = {
       userPhoneNo: this.state.username,
@@ -201,36 +183,35 @@ class Login extends Component {
     }
   }
 
-  updateBtnStatus() {
-    let flag = true
-    const {username, password, messageCode, loginType} = this.state
-
-    this.toggleSaveOrRemoveUsername()
-
-    if(!username) {
-      flag = false
+  verify() {
+    if(!this.state.username) {
+      weui.alert('请输入手机号')
+      return
     }
-    if(loginType === LOGINTYPE_PASSWORD) {
-      if(!password) {
-        flag = false
+
+    if(this.state.loginType === LOGINTYPE_PASSWORD) {
+      if(!this.state.password) {
+        weui.alert('请输入密码')
+        return
       }
-    }else if(loginType === LOGINTYPE_MESSAGE) {
-      if(!messageCode) {
-        flag = false
-      }
-    }
-    this.setState({pass: flag})
+    }else if(this.state.loginType === LOGINTYPE_MESSAGE) {
+      if(!this.state.messageCode) {
+        weui.alert('请输入短信码')
+        return
+      }      
+    }    
+    return true
   }
 
   readUsernameFromStore() {
     const username = getItem('username')
     if(username) {
       this.setState({username: username, rememberStatus: 'checked'}, () => {
-        this.updateBtnStatus()
+        this.toggleSaveOrRemoveUsername()
       })
     }else {
       this.setState({rememberStatus: 'unchecked'}, () => {
-        this.updateBtnStatus()
+        this.toggleSaveOrRemoveUsername()
       })   
     }
   }
@@ -239,7 +220,7 @@ class Login extends Component {
     e.preventDefault()
     if(type !== this.state.loginType) {
       this.setState({loginType: type}, () => {
-        this.updateBtnStatus()
+        this.toggleSaveOrRemoveUsername()
       })
     }
   }
@@ -257,7 +238,7 @@ class Login extends Component {
     const key =`${e.target.name}CleanView`
     setTimeout(() => {
       this.setState({[key]: false}, () => {
-        this.updateBtnStatus()
+        this.toggleSaveOrRemoveUsername()
       })
     }, 100)    
   }
@@ -268,7 +249,7 @@ class Login extends Component {
 
   handleChange(e) {
     this.setState({[e.target.name]: e.target.value}, () => {
-      this.updateBtnStatus()
+      this.toggleSaveOrRemoveUsername()
     })
   }
 
@@ -277,11 +258,28 @@ class Login extends Component {
       weui.alert('请输入手机号')
       return
     }
-    this.getCode()
+    this.loadCode()
   }
 
   handleSubmit() {
-    this.doSubmit()
+    if(!this.verify()) {
+      return
+    }
+    let params = {}
+    if(LOGINTYPE_SCHEMA[this.state.loginType] === 1) {
+      params = {
+        userPhoneNo: this.state.username,
+        password: this.state.password,
+        loginType: LOGINTYPE_SCHEMA[this.state.loginType]
+      }
+    }else if(LOGINTYPE_SCHEMA[this.state.loginType] === 2) {
+      params = {
+        userPhoneNo: this.state.username,
+        code: this.state.messageCode,
+        loginType: LOGINTYPE_SCHEMA[this.state.loginType]
+      }
+    }
+    this.doSubmit(params)
   }
 
   handleRememberUsername() {
@@ -318,12 +316,13 @@ class Login extends Component {
   render() {
     const {isAuthenticated} = this.props;
     const {from} = this.props.location.state || {from: {pathname: "/"}}
-    const {pass, usernameCleanView} = this.state
+    const {usernameCleanView} = this.state
     
     if(isAuthenticated){return <Redirect to={from} />}
 
     return (
       <Page>
+        <GlobalStyle />
         <Helmet defaultTitle="沃银企服" title="登录"/>
         <header>
           <h1>登录</h1>
@@ -387,7 +386,7 @@ class Login extends Component {
             </div>
           </div>
           
-          <SubmitButton pass={pass} handleSubmit={this.handleSubmit} />
+          <button className="btn btn-primary" onClick={this.handleSubmit}>登录</button>
         </main>
         
       </Page>

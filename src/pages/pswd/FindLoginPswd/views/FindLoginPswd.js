@@ -1,9 +1,9 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import weui from 'weui.js'
 import {Helmet} from "react-helmet"
 
 import config from '@/config'
-import {getCodeForFindPswd, findPswd} from '@/api'
+import {getCodeForFindPswd, findLoginPswd} from '@/api'
 import {push} from '@/services/redirect'
 
 import Backhome from '@/components/Backhome'
@@ -67,15 +67,10 @@ export default class extends Component {
   componentWillUnmount() {
   }
 
-  async findPswd(phone, newPswd, code) {
+  async doSubmit(params) {
     const loading = weui.loading('处理中')
-    const params = {
-      userPhoneNo: phone,
-      password: newPswd,
-      code: code
-    }
     try {
-      const {data} = await findPswd(params)
+      const {data} = await findLoginPswd(params)
       if(data.status === 200) {
         weui.alert(data.msg, () => {
           push('/login')
@@ -88,7 +83,7 @@ export default class extends Component {
     }
   }
 
-  async getCode() {
+  async loadCode() {
     const loading = weui.loading('发送中')
     try {
       const {data} = await getCodeForFindPswd(this.state.phone)
@@ -106,7 +101,7 @@ export default class extends Component {
       weui.alert('请输入手机号')
       return
     }
-    this.getCode()
+    this.loadCode()
   }
 
   resetGetCode() {
@@ -183,7 +178,13 @@ export default class extends Component {
     if(!this.verify()) {
       return
     }
-    this.findPswd(this.state.phone, this.state.newPswd, this.state.code)
+
+    const params = {
+      userPhoneNo: this.state.phone,
+      password: this.state.newPswd,
+      code: this.state.code
+    }    
+    this.doSubmit(params)
   }
 
   render() {

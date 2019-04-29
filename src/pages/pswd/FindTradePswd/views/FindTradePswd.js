@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import weui from 'weui.js'
 import {Helmet} from "react-helmet"
 import {connect} from 'react-redux'
@@ -64,12 +64,8 @@ class FindTradePswd extends Component {
   componentWillUnmount() {
   }
 
-  async findPswd(newPswd, code) {
+  async doSubmit(params) {
     const loading = weui.loading('处理中')
-    const params = {
-      password: newPswd,
-      code: code
-    }
     try {
       const {data} = await findTradePswd(params)
       if(data.status === 200) {
@@ -176,7 +172,12 @@ class FindTradePswd extends Component {
     if(!this.verify()) {
       return
     }
-    this.findPswd(this.state.newPswd, this.state.code)
+
+    const params = {
+      password: this.state.newPswd,
+      code: this.state.code
+    }    
+    this.doSubmit(params)
   }
 
   render() {

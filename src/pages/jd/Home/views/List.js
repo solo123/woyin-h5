@@ -2,6 +2,8 @@ import React from 'react'
 import {Link} from "react-router-dom"
 import EmptyArrayPlaceholder from '@/components/EmptyArrayPlaceholder'
 
+const prefix = 'https://img13.360buyimg.com/n1/'
+
 function Product({id, title, src, price, data}) {
   const to = {
     pathname: `/store-detail/${id}`,
@@ -36,7 +38,7 @@ function List({items}) {
             key={item.skuId}
             id={item.skuId}
             title={item.name}
-            src={`https://img13.360buyimg.com/n1/${item.imagePath}`}
+            src={`${prefix}${item.imagePath}`}
             price={item.jdPrice}
             data={item}
           />

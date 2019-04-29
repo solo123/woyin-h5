@@ -1,11 +1,11 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import { connect } from 'react-redux'
 import weui from 'weui.js'
 import {Helmet} from "react-helmet"
 
 import config from '@/config'
 import {changeLoginPswd} from '@/api'
-import { replace } from '@/services/redirect'
+import {replace} from '@/services/redirect'
 import closeIcon from '@/asset/images/icon/close.png'
 import showIcon from '@/asset/images/icon/show.png'
 import hideIcon from '@/asset/images/icon/hide.png'
@@ -49,12 +49,8 @@ class ChangeLoginPswd extends Component {
     }
   }
 
-  async changePswd(oldPswd, newPswd) {
+  async changePswd(params) {
     const loading = weui.loading('处理中')
-    const params = {
-      oldPwd: oldPswd,
-      newPwdOne: newPswd
-    }
     try {
       const {data} = await changeLoginPswd(params)
       if(data.status === 200) {
@@ -124,7 +120,12 @@ class ChangeLoginPswd extends Component {
     if(!this.verify()) {
       return
     }
-    this.changePswd(this.state.oldPswd, this.state.newPswd)
+
+    const params = {
+      oldPwd: this.state.oldPswd,
+      newPwdOne: this.state.newPswd
+    }    
+    this.changePswd(params)
   }
 
   render() {

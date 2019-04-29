@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route, Redirect, withRouter } from "react-router-dom"
+import {Route, Redirect, withRouter} from "react-router-dom"
 import { connect } from 'react-redux'
 
 const Auth = ({component: Part, isAuthenticated, reset, ...rest}) => {

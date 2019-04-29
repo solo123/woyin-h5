@@ -1,10 +1,10 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import axios from 'axios'
 import weui from 'weui.js'
 import {Helmet} from "react-helmet"
 
-import {getUserInfo, getSubProducts, getProducts, rechargeOil} from '@/api'
 import util from '@/util'
+import {getUserInfo, getSubProducts, getProducts, rechargeOil} from '@/api'
 import ProductSkeleton from '@/components/ProductSkeleton'
 import EmptyArrayPlaceholder from '@/components/EmptyArrayPlaceholder'
 import Backhome from '@/components/Backhome'
@@ -18,12 +18,12 @@ const CancelToken = axios.CancelToken
 
 const Product = ({loading, selectId, items, handleSelect}) => {
   if(loading) {
-    return <ProductSkeleton />
+    return <ProductSkeleton/>
   }
   if(items.length) {
-    return <List selectId={selectId} items={items} handleSelect={handleSelect} />
+    return <List selectId={selectId} items={items} handleSelect={handleSelect}/>
   }
-  return <EmptyArrayPlaceholder />
+  return <EmptyArrayPlaceholder/>
 }
 
 const INIT_TYPE = '10'
@@ -32,7 +32,6 @@ export default class extends Component {
   constructor(props) {
     super(props)
 
-    this.verify = this.verify.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleSelect = this.handleSelect.bind(this)
@@ -40,7 +39,7 @@ export default class extends Component {
 
     this.state = {
       items: [],
-      skeletonLoading: false,
+      loading: false,
 
       cardNumber: '',
       selectId: '',
@@ -90,7 +89,7 @@ export default class extends Component {
   }
 
   async loadProdcutsByType(type) {
-    this.setState({skeletonLoading: true})
+    this.setState({loading: true})
     this.loadProdcutsSource = CancelToken.source()
     try {
       const {data} = await getSubProducts(type, {cancelToken: this.loadProdcutsSource.token})
@@ -98,18 +97,12 @@ export default class extends Component {
         this.setState({items: data.data})
       }
     }finally {
-      this.setState({skeletonLoading: false})
+      this.setState({loading: false})
     }
   }
 
-  async doSubmit(pswd) {
+  async doSubmit(params) {
     const loading = weui.loading('处理中')
-    const params = {
-      cardNumber: this.state.cardNumber,
-      productId: this.state.selectId,
-      tranPwd: pswd,
-      cardType: this.state.cardType
-    }
     try {
       const {data} = await rechargeOil(params)
       if(data.status === 200) {
@@ -146,7 +139,7 @@ export default class extends Component {
   }
 
   handleSelect(selectId, integral) {
-    this.setState({selectId, integral})
+    this.setState({selectId: selectId, integral: Number(integral)})
   }
 
   handleChange(e) {
@@ -166,22 +159,34 @@ export default class extends Component {
       weui.alert('积分不足')
       return
     }
+    return true
   }
 
   handleSubmit() {
+    if(!this.verify()) {
+      return
+    }
+    
     util.paymentConfirm({
       title: '充值',
       amount: this.state.integral,
       useable: this.state.availableIntegral,
       callback: (e, inputElem) => {
         if(!inputElem.value) {return false}
-        this.doSubmit(inputElem.value)
+
+        const params = {
+          cardNumber: this.state.cardNumber,
+          productId: this.state.selectId,
+          tranPwd: inputElem.value,
+          cardType: this.state.cardType
+        }        
+        this.doSubmit(params)
       }
     })
   }
 
   render() {
-    const {selectId, type, items, operators, skeletonLoading} = this.state
+    const {selectId, type, items, operators, loading} = this.state
 
     return (
       <Page>
@@ -210,7 +215,7 @@ export default class extends Component {
           </div>
 
           <h2 className="u_mx_xxx u_mb_x">请选择面值</h2>
-          <Product loading={skeletonLoading} selectId={selectId} items={items} handleSelect={this.handleSelect} />
+          <Product loading={loading} selectId={selectId} items={items} handleSelect={this.handleSelect} />
 
           <div className="u_p_xxx">
             <button className="btn btn-secondary" onClick={this.handleSubmit}>立即充值</button>

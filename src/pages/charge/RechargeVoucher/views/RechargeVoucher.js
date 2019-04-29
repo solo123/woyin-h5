@@ -111,13 +111,11 @@ const StyledItems = styled.div`
   margin-right: 10px;
 `
 const StyledItem = styled.div`
-  width: 90px;
   padding: 5px;
 `
 const StyledItemInner = styled.div`
   padding: 10px;
   text-align: center;
-  font-family: industry;
   border: 1px solid #eaeaea;
   &.active{
     color: #fff;
@@ -251,14 +249,9 @@ export default class extends Component {
     }
   }
 
-  async doSubmit(pswd) {
+  async doSubmit(params) {
     const loading = weui.loading('处理中')
     this.submitSource = CancelToken.source()
-    const params = {
-      productId: this.state.selectId,
-      amount: this.state.count + '',
-      tranPwd: pswd
-    }
     try {
       const {data} = await rechargeVoucher(params, {cancelToken: this.submitSource.token})
       if(data.status === 200) {
@@ -275,8 +268,20 @@ export default class extends Component {
     }    
   }
 
-  handleSelect(id, integral) {
-    this.setState({selectId: id, integral: integral}, () => {
+  verify() {
+    if(!this.state.selectId) {
+      weui.alert('请选择产品')
+      return
+    }    
+    if(this.state.integral > this.state.availableIntegral) {
+      weui.alert('积分不足')
+      return
+    }
+    return true
+  }
+
+  handleSelect(selectId, integral) {
+    this.setState({selectId: selectId, integral: Number(integral)}, () => {
       this.updateBtnStatus()
     })
   }
@@ -301,6 +306,10 @@ export default class extends Component {
   }
 
   handleSubmit() {
+    if(!this.verify()) {
+      return
+    }
+
     const sum = this.state.count * this.state.integral
     util.paymentConfirm({
       title: '兑换卡券',
@@ -311,7 +320,13 @@ export default class extends Component {
           alert('请输入交易密码')
           return false
         }
-        this.doSubmit(input.value)
+
+        const params = {
+          productId: this.state.selectId,
+          amount: this.state.count + '',
+          tranPwd: input.value
+        }        
+        this.doSubmit(params)
       }
     })
   }
@@ -352,14 +367,13 @@ export default class extends Component {
               <div>
                 <StyledItems>
                   {items.map(item => {
-                    const disCount = (Number(item.disCount) / 10).toFixed(2)
                     return (
                       <Item 
                         key={item.productId} 
                         id={item.productId}
                         price={item.salesPrice} 
                         selectId={selectId}
-                        integral={item.productCostBalance * disCount}
+                        integral={item.productCostBalance * item.disCount}
                         handleSelect={this.handleSelect}
                       />
                     )

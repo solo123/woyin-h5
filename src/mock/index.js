@@ -3,12 +3,12 @@ import uuid from 'uuid'
 
 // import './recharge'
 
-// const Mock = require('mockjs');
-// const Random = Mock.Random;
+const Mock = require('mockjs');
+const Random = Mock.Random;
 
-// Mock.setup({
-//   timeout: 500
-// });
+Mock.setup({
+  timeout: 500
+});
 
 // // 返回商品分类
 // Mock.mock(/getProductCateList/, 'get', function(options){
@@ -221,32 +221,14 @@ import uuid from 'uuid'
 
 // 登录
 // Mock.mock(/login/, 'post', function(options){
-//   const data = JSON.parse(options.body)
-//   console.log(`login ${data.username} ${data.password}`)
-//   switch(data.type) {
-//     case 'password':
-//       if(data.username === '15014095291' && data.password === '000000') {
-//         return {
-//           code: '1',
-//           token: 'sdgsgdggadsgfsfasfasfasfasfd',
-//           msg: '登录成功'
-//         }
-//       }else {
-//         return {
-//           code: '0',
-//           msg: '账号或密码错误'
-//         }
-//       }
-//     case 'message':
-//       return {
-//         code: '0',
-//         msg: '验证码错误'
-//       }
-//     default:
-//       return {
-//         code: '3',
-//         msg: '参数错误'
-//       }
+//   console.log('login')
+//   return {
+//     status: 200,
+//     data: {
+//       sessionId: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1NTYzMzM1NzksIm5iZiI6MTU1NjMzMzU3OSwidXNlclBob25lTm8iOiIxMzUxMDE0NTUwMCJ9._wyPOy0w225aLfR9JUwFu-BP1XI9EayHrWuln_3ER4s',
+//       isModify: 1,
+//     },
+//     msg: '登录成功'
 //   }
 // })
 

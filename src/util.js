@@ -322,6 +322,7 @@ var Mover = function (elem) {
   })
 
   elem.addEventListener('touchmove', function (e) {
+    e.preventDefault()
     var touch = e.targetTouches[0]
 
     delta = {

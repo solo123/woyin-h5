@@ -37,6 +37,13 @@ module.exports = function(app) {
   )  
 
   app.use(
+    proxy("/sellingGoods", {
+      target: "http://192.168.0.70:9002",
+      changeOrigin: true
+    })
+  )  
+  
+  app.use(
     proxy("/goodsLists", {
       target: "http://192.168.0.70:9002",
       changeOrigin: true

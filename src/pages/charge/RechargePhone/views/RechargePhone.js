@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import axios from 'axios'
 import weui from 'weui.js'
 import {Helmet} from "react-helmet"
@@ -101,13 +101,8 @@ export default class extends Component {
     }
   }
 
-  async doSubmit(pswd) {
+  async doSubmit(params) {
     const loading = weui.loading('处理中')
-    const params = {
-      chargeAddr: this.state.phone,
-      productId: this.state.selectId,
-      tranPwd: pswd
-    }
     try {
       const {data} = await rechargePhone(params)
       if(data.status === 200) {
@@ -132,23 +127,7 @@ export default class extends Component {
     this.setState({selectId: ''})
   }
 
-  handleToggleType(type) {
-    if(type === this.state.type) {return}
-    this.reset()
-    this.setState({type}, () => {
-      this.loadProductsByType(type)
-    })
-  }
-
-  handleSelect(selectId, integral) {
-    this.setState({selectId, integral})
-  }
-
-  handleChange(e) {
-    this.setState({phone: e.target.value})
-  }
-
-  handleSubmit() {
+  verify() {
     if(!this.state.phone) {
       weui.alert('请输入手机号')
       return
@@ -161,6 +140,29 @@ export default class extends Component {
       weui.alert('积分不足')
       return
     }
+    return true
+  }
+
+  handleToggleType(type) {
+    if(type === this.state.type) {return}
+    this.reset()
+    this.setState({type}, () => {
+      this.loadProductsByType(type)
+    })
+  }
+
+  handleSelect(selectId, integral) {
+    this.setState({selectId: selectId, integral: Number(integral)})
+  }
+
+  handleChange(e) {
+    this.setState({[e.target.name]: e.target.value})
+  }
+
+  handleSubmit() {
+    if(!this.verify()) {
+      return
+    }
 
     util.paymentConfirm({
       title: '充值',
@@ -168,7 +170,12 @@ export default class extends Component {
       useable: this.state.availableIntegral,
       callback: (e, inputElem) => {
         if(!inputElem.value) {return false}
-        this.doSubmit(inputElem.value)
+        const params = {
+          chargeAddr: this.state.phone,
+          productId: this.state.selectId,
+          tranPwd: inputElem.value
+        }        
+        this.doSubmit(params)
       }
     })
   }
@@ -194,6 +201,7 @@ export default class extends Component {
               <input
                 className="input input-primary" 
                 type="number" 
+                name="phone"
                 value={this.state.phone}
                 onChange={this.handleChange} 
                 placeholder="请输入手机号" 

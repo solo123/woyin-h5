@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Link } from "react-router-dom"
+import {Link} from "react-router-dom"
 
 import phoneIcon from '@/asset/images/icon/phone.png'
 import flowIcon from '@/asset/images/icon/flow.png'

@@ -66,14 +66,8 @@ class ResetAllPswd extends Component {
     }
   }
 
-  async changePswd(oldLoginPswd, newLoginPswd, oldTradePswd, newTradePswd) {
+  async doSubmit(params) {
     const loading = weui.loading('处理中')
-    const params = {
-      oldLoginPwd: oldLoginPswd,
-      newLoginPwdOne: newLoginPswd,
-      oldTranPwd: oldTradePswd,
-      newTranPwdOne: newTradePswd
-    }
     try {
       const {data} = await resetAllPswd(params)
       if(data.status === 200) {
@@ -166,8 +160,14 @@ class ResetAllPswd extends Component {
     if(!this.verify()) {
       return
     }
-    const {oldLoginPswd, newLoginPswd, oldTradePswd, newTradePswd} = this.state
-    this.changePswd(oldLoginPswd, newLoginPswd, oldTradePswd, newTradePswd)
+
+    const params = {
+      oldLoginPwd: this.state.oldLoginPswd,
+      newLoginPwdOne: this.state.newLoginPswd,
+      oldTranPwd: this.state.oldTradePswd,
+      newTranPwdOne: this.state.newTradePswd
+    }    
+    this.doSubmit(params)
   }
 
   render() {

@@ -17,8 +17,7 @@ function List({selectId, items, selectProduct}) {
   return (
     <div className="product-list">
       {items.map(item => {
-        const disCount = (Number(item.disCount) / 10).toFixed(2)
-        const price = item.productCostBalance * disCount
+        const price = item.productCostBalance * item.disCount
         return (
           <Item
             className="item" 

@@ -1,9 +1,10 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import styled from 'styled-components'
 import weui from 'weui.js'
 import {Helmet} from "react-helmet"
+import axios from 'axios'
 
-import {integralTransfer} from '@/api'
+import {getUserInfo, integralTransfer} from '@/api'
 import Backhome from '@/components/Backhome'
 
 import closeIcon from '@/asset/images/icon/close.png'
@@ -82,6 +83,8 @@ const Page = styled.div`
 
 `
 
+const CancelToken = axios.CancelToken
+
 class Transfer extends Component {
   constructor(props) {
     super(props)
@@ -96,9 +99,7 @@ class Transfer extends Component {
     this.passwordClean = this.handleClean.bind(this, 'password')
 
     this.state = {
-      pass: false,
-
-      integral: '',
+      integral: 0,
       integralCleanView: false,
 
       account: '',
@@ -108,17 +109,29 @@ class Transfer extends Component {
       passwordCleanView: false,
 
       passwordType: 'password',
-      passwordIcon: iconSchema['password']
+      passwordIcon: iconSchema['password'],
+
+      availableIntegral: 0
     }
   }
 
-  async doSubmit() {
-    const loading = weui.loading('处理中')
-    const params = {
-      to: this.state.account,
-      num: this.state.integral,
-      tranPwd: this.state.password
+  componentWillUnmount() {
+    this.loadUserInfoSource && this.loadUserInfoSource.cancel('Operation canceled by the user.')
+  }
+
+  async loadUserInfo() {
+    this.loadUserInfoSource = CancelToken.source()
+    try {
+      const {data} = await getUserInfo(null, {cancelToken: this.loadUserInfoSource.token})
+      if(data.status === 200) {
+        this.setState({availableIntegral: Number(data.data[0].balance)})
+      }
+    }finally {
     }
+  }
+
+  async doSubmit(params) {
+    const loading = weui.loading('处理中')
     try {
       const {data} = await integralTransfer(params)
       if(data.status === 200) {
@@ -131,8 +144,37 @@ class Transfer extends Component {
     }
   }
 
+  verify() {
+    if(!this.state.integral) {
+      weui.alert('请输入转赠的积分')
+      return
+    }
+    if(!this.state.account) {
+      weui.alert('请输入对方登录账号')
+      return
+    }
+    if(!this.state.password) {
+      weui.alert('请输入交易密码')
+      return
+    }
+    if(this.state.integral > this.state.availableIntegral) {
+      weui.alert('可用积分不足')
+      return
+    }
+    return true    
+  }
+
   handleSubmit(e) {
-    this.doSubmit()
+    if(!this.verify()){
+      return
+    }
+
+    const params = {
+      to: this.state.account,
+      num: this.state.integral,
+      tranPwd: this.state.password
+    }    
+    this.doSubmit(params)
   }
 
   handleClean(key) {
@@ -140,9 +182,9 @@ class Transfer extends Component {
   }
 
   handleChange(e) {
-    this.setState({[e.target.name]: e.target.value}, () => {
-      this.updateButtonStatus()
-    })
+    const name = e.target.name
+    const value = name === 'integral' ? Number(e.target.value) : e.target.value    
+    this.setState({[name]: value})
   }
 
   handleFocus(e) {
@@ -152,9 +194,7 @@ class Transfer extends Component {
   handleBlur(e) {
     const key =`${e.target.name}CleanView`
     setTimeout(() => {
-      this.setState({[key]: false}, () => {
-        this.updateButtonStatus()
-      })
+      this.setState({[key]: false})
     }, 100)
   }
 
@@ -163,23 +203,9 @@ class Transfer extends Component {
     this.setState({passwordType: type, passwordIcon: iconSchema[type]})
   }
 
-  updateButtonStatus() {
-    let flag = true
-    const {integral, account, password} = this.state
-    if(!integral) {
-      flag = false
-    }
-    if(!account) {
-      flag = false
-    }
-    if(!password) {
-      flag = false
-    }
-    this.setState({pass: flag})
-  }
-
   render() {
     const {integralCleanView, accountCleanView, passwordCleanView} = this.state
+    const integral = this.state.integral || ''
     return (
       <Page>
         <Helmet defaultTitle="沃银企服" title="积分转赠"/>
@@ -190,7 +216,7 @@ class Transfer extends Component {
                 <PrimaryInput 
                   type="text" 
                   name="integral" 
-                  value={this.state.integral} 
+                  value={integral} 
                   onChange={this.handleChange} 
                   onFocus={this.handleFocus}
                   onBlur={this.handleBlur}
@@ -237,9 +263,7 @@ class Transfer extends Component {
           </StyledBg>
         </LayoutBox>
         <LayoutBox>
-          {this.state.pass
-            ? <button className="btn btn-secondary" onClick={this.handleSubmit}>转赠</button>
-            : <button className="btn btn-secondary disable">转赠</button>}
+          <button className="btn btn-secondary" onClick={this.handleSubmit}>转赠</button>
         </LayoutBox>
 
         <Backhome />

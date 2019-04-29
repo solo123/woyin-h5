@@ -45,7 +45,7 @@ const STATUS_SCHEMA = [
   '冻结'
 ]
 
-const Item = ({id, status, bankcardNo, bankcardName, bankcardIcon, handleDel}) => {
+const Item = ({status, bankcardNo, bankcardName, bankcardIcon, handleClick}) => {
   return (
     <div className="card">
       <div className="card__aside">
@@ -54,7 +54,7 @@ const Item = ({id, status, bankcardNo, bankcardName, bankcardIcon, handleDel}) =
       <div className="card__main">
         <div className="card__group">
           <h2 className="card__title">{bankcardName}</h2>
-          <span onClick={handleDel}>删除</span>
+          <span onClick={handleClick}>删除</span>
         </div>
         <label className="card__label">{status}</label>
         <div className="card__no">{bankcardNo}</div>
@@ -63,17 +63,16 @@ const Item = ({id, status, bankcardNo, bankcardName, bankcardIcon, handleDel}) =
   )
 }
 
-const List = ({items, handleDel}) => (
+const List = ({items, handleClick}) => (
   <div>
     {items.map(item => (
       <Item 
         key={item.bankCard}
-        id={item.bankCard}
         status={STATUS_SCHEMA[item.status]}
         bankcardNo={item.bankCard}
         bankcardName={item.bankName}
         bankcardIcon={BANKCARD_SCHEMA[item.bankCode] || defaultIcon}
-        handleDel={() => handleDel(item.id)}
+        handleClick={() => handleClick(item.id)}
       />
     ))}
   </div>

@@ -13,18 +13,19 @@ import Page from './styled'
 import banner from '@/asset/images/banner.jpg'
 import arrowRightWhiteIcon from '@/asset/images/icon/arrow_right_white.svg'
 
-const Auth = ({isAuthenticated, availableIntegral}) => {
+const Auth = ({isAuthenticated, userName, userPhoneNo, merchantName}) => {
   if(isAuthenticated) {
     return (
       <div className="content">
-         <div>我的积分：{availableIntegral}</div>
+        <div>{userName} {userPhoneNo}</div>
+        <small>所属商户：{merchantName}</small>
       </div>
     )
   }
   return (
     <div className="content">
       <Link className="link" to="/login">
-        <span>我的积分：登录查看</span><img src={arrowRightWhiteIcon} alt=""/>
+        <span>登录查看</span><img src={arrowRightWhiteIcon} alt=""/>
       </Link>
     </div>
   )
@@ -38,20 +39,38 @@ class Home extends Component {
       menus: [],
       items: [],
       loading: true,
-      integral: '',
-      availableIntegral: 0
+
+      userName: '',
+      userPhoneNo: '',
+      merchantName: ''
     }
   }
 
   componentDidMount() {
-    this.loadHotsell()
     this.loadProductList()
+
     if(this.props.isAuthenticated) {
-      this.loadUserinfo()
+      this.loadUserInfo()
     }
   }
 
   componentWillUnmount() {
+  }
+
+  async loadUserInfo() {
+    try {
+      const {data} = await getUserInfo()
+      if(data.status === 200) {
+        if(data.data.length) {
+          this.setState({
+            userName: data.data[0].userName,
+            userPhoneNo: data.data[0].userPhoneNo,
+            merchantName: data.data[0].merchantName
+          })
+        }
+      }
+    }finally {
+    }
   }
 
   async loadProductList() {
@@ -64,38 +83,18 @@ class Home extends Component {
     }
   }
 
-  async loadHotsell() {
-    try {
-      this.setState({items: []})
-    }finally {
-      this.setState({loading: false})
-    }
-  }
-
-  async loadUserinfo() {
-    try {
-      const {data} = await getUserInfo()
-      if(data.status === 200) {
-        if(data.data.length) {
-          this.setState({
-            availableIntegral: Number(data.data[0].balance)
-          })
-        }
-      }
-    }finally {
-    }
-  }
-
   render() {
-    const {loading, items, availableIntegral} = this.state
     const {isAuthenticated} = this.props
+    const {loading, items, userName, userPhoneNo, merchantName} = this.state
     return (
       <Page>
-        <Helmet defaultTitle="沃银企服" title="服务"  />
+        <Helmet title="服务"/>
         <header>
           <Auth
             isAuthenticated={isAuthenticated} 
-            availableIntegral={availableIntegral}
+            userName={userName}
+            userPhoneNo={userPhoneNo}
+            merchantName={merchantName}
           />
         </header>
 

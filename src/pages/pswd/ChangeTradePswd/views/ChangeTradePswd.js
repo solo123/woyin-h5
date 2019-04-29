@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import weui from 'weui.js'
 import {Helmet} from "react-helmet"
 
@@ -48,12 +48,8 @@ export default class extends Component {
     }
   }
 
-  async changePswd(oldPswd, newPswd) {
+  async changePswd(params) {
     const loading = weui.loading('处理中')
-    const params = {
-      oldPwd: oldPswd,
-      newPwdOne: newPswd
-    }
     try {
       const {data} = await changeTradePswd(params)
       if(data.status === 200) {
@@ -122,7 +118,11 @@ export default class extends Component {
     if(!this.verify()) {
       return
     }
-    this.changePswd(this.state.oldPswd, this.state.newPswd)
+    const params = {
+      oldPwd: this.state.oldPswd,
+      newPwdOne: this.state.newPswd
+    }    
+    this.changePswd(params)
   }
 
   render() {
