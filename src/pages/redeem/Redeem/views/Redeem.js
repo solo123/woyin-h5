@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import {connect} from 'react-redux'
 import weui from 'weui.js'
 import {Helmet} from "react-helmet"
 
@@ -13,41 +14,10 @@ import Page from './styled'
 import moreIcon from '@/asset/images/icon/more.png'
 import checkedIcon from '@/asset/images/icon/checked.png'
 import uncheckedIcon from '@/asset/images/icon/unchecked.svg'
-import fzIcon from '@/asset/images/bank/fz.svg'
-import gdIcon from '@/asset/images/bank/gd.svg'
-import gsIcon from '@/asset/images/bank/gs.svg'
-import hxIcon from '@/asset/images/bank/hx.svg'
-import jsIcon from '@/asset/images/bank/js.svg'
-import jtIcon from '@/asset/images/bank/jt.svg'
-import msIcon from '@/asset/images/bank/ms.svg'
-import nyIcon from '@/asset/images/bank/ny.svg'
-import paIcon from '@/asset/images/bank/pa.svg'
-import shIcon from '@/asset/images/bank/sh.svg'
-import shfzIcon from '@/asset/images/bank/shfz.svg'
-import xyIcon from '@/asset/images/bank/xy.svg'
-import yzIcon from '@/asset/images/bank/yz.svg'
-import zgIcon from '@/asset/images/bank/zg.svg'
-import zsIcon from '@/asset/images/bank/zs.svg'
-import zxIcon from '@/asset/images/bank/zx.svg'
-import defaultIcon from '@/asset/images/bank/default.svg'
 
-const BANKCARD_SCHEMA = {
-  'GDB' : fzIcon,
-  'CEB' : gdIcon,
-  'ICBC' : gsIcon,
-  'HXB' : hxIcon,
-  'CCB' : jsIcon,
-  'COMM' : jtIcon,
-  'CMBC' : msIcon,
-  'ABC' : nyIcon,
-  'SZPAB' : paIcon,
-  'BOS' : shIcon,
-  'SPDB' : shfzIcon,
-  'CIB' : xyIcon,
-  'PSBC' : yzIcon,
-  'BOC' : zgIcon,
-  'CMB' : zsIcon,
-  'CITIC' : zxIcon
+function filterBankCard(items, id) {
+  const result = items.filter((item) => item.id === id)
+  return result && result.length && result[0]
 }
 
 const BankcardLoading = () => {
@@ -69,26 +39,26 @@ const SendMessageBtn = ({flag, interval, handleClick}) => {
   return <button className="btn btn-secondary btn-mini disable">{interval}秒后重发</button>
 }
 
-const Bankcard = ({logo, bankcardNo, bankName}) => {
+const Bankcard = ({data}) => {
   return (
     <div className="bankcard">
       <div className="aside">
-        <img className="icon" src={logo} alt=""/>
+        <img className="icon" src={util.getBankCardLogo(data.bankCode)} alt=""/>
       </div>
       <div className="main" style={{marginLeft: 15}}>
-        <p className="name">{bankName}(尾号<span className="card">{util.getBankcardLastNum(bankcardNo)}</span>)</p>
+        <p className="name">{data.bankName}(尾号<span className="card">{util.getBankcardLastNum(data.bankCard)}</span>)</p>
         <p className="text">预计下一工作日到账，实际以银行到账日为准</p>
       </div>
     </div>
   )
 }
 
-const BankcardBox = ({loading, hasBankcard, bankcardLogo, bankcard, bankName}) => {
+const BankcardBox = ({loading, hasCard, data}) => {
   if(loading) {
-    return <BankcardLoading />
+    return <BankcardLoading/>
   }
-  if(hasBankcard) {
-    return <Bankcard logo={bankcardLogo} bankcardNo={bankcard} bankName={bankName} />
+  if(hasCard) {
+    return <Bankcard data={data}/>
   }
   return <div className="empty">暂无可用银行卡</div>
 }
@@ -110,27 +80,25 @@ class Redeem extends Component {
     this.handleToggleAgreement = this.handleToggleAgreement.bind(this)
 
     this.state = {
-      integral: 0,
-      availableIntegral: 0,
+      id: '',
+
+      agreementFlag: true,
+      showAgreement: false,
 
       loading: true,
-      hasBankcard: false,
-      agreementFlag: true,
-      bankcardList: [],
-      bankCard: '',
-      bankName: '',
-      bankcardLogo: '',
+      hasCard: false,
+      cardList: [],
 
       code: '',
-      interval: config.redeem.INTERVAL,
       getCodeFlag: true,
+      interval: config.redeem.INTERVAL,
 
-      phone: '',
       redeemFee: 0,
       actualReceived: 0,
       deductIntegral: 0,
 
-      showAgreement: false
+      integral: 0,
+      availableIntegral: 0,      
     }
   }
 
@@ -147,7 +115,6 @@ class Redeem extends Component {
       const {data} = await getUserInfo()
       if(data.status === 200) {
         this.setState({
-          phone: data.data[0].userPhoneNo,
           availableIntegral: Number(data.data[0].balance)
         })
       }
@@ -159,12 +126,13 @@ class Redeem extends Component {
     try {
       const {data} = await getBankcardList()
       if(data.status === 200) {
-        const cardList = util.filterBankCardByStatusAndType(data.data, 1, 1)
-        this.setState({bankcardList: cardList}, () => {
+        const cardList = util.filterDepositCardList(data.data)
+        this.setState({cardList}, () => {
           const card = cardList[0]
-          if(card) {
-            this.setCard(card)
-          }
+          if(!card) {return}
+          this.setState({id: card.id}, () => {
+            this.setState({hasCard: true})
+          })
         })
       }
     }finally {
@@ -183,9 +151,9 @@ class Redeem extends Component {
   }
 
   async loadCode() {
-    const loading = weui.loading('发送中')
+    const loading = weui.loading('处理中')
     try {
-      const {data} = await getCodeForWithdraw(this.state.phone)
+      const {data} = await getCodeForWithdraw(this.props.phone)
       if(data.status === 200) {
         this.setState({getCodeFlag: false}, () => {
           this.countDown()
@@ -243,6 +211,44 @@ class Redeem extends Component {
     })
   }
 
+  handleBlur(e) {
+    this.loadRedeemFee()
+  }
+  
+  handleGetCode() {
+    this.loadCode()
+  }
+
+  handleClick(e) {
+    if(!this.state.cardList.length) {
+      weui.alert('暂无可用')
+      return false
+    }
+    weui.picker(util.parseBankcardList(this.state.cardList), {
+      defaultValue: [0],
+      onConfirm: result => {
+        if(result && result[0]){
+          this.setState({id: result[0].id})          
+        }
+      }
+    })
+  }
+
+  handleToggle() {
+    this.setState({agreementFlag: !this.state.agreementFlag})
+  }
+
+  handleToggleAgreement(e) {
+    e.stopPropagation()
+    this.setState({showAgreement: !this.state.showAgreement})
+  }
+
+  handleChange(e) {
+    const name = e.target.name
+    const value = name === 'integral' ? Number(e.target.value) : e.target.value    
+    this.setState({[name]: value})
+  }
+
   verify() {
     if(this.state.integral < config.redeem.MIN_INTEGRAL) {
       weui.alert(`最少输入${config.redeem.MIN_INTEGRAL}积分`)
@@ -256,7 +262,7 @@ class Redeem extends Component {
       weui.alert(`可用积分不足`)
       return
     }
-    if(!this.state.bankCard) {
+    if(!this.state.hasCard) {
       weui.alert('暂无可用银行卡')
       return
     }
@@ -271,56 +277,6 @@ class Redeem extends Component {
     return true
   }
 
-  setCard(card) {
-    this.setState({
-        bankName: card.bankName,
-        bankCode: card.bankCode,
-        bankCard: card.bankCard,
-        cardHoldName: card.cardHoldName,
-        userPhoneNo: card.userPhoneNo,
-        bankcardLogo: BANKCARD_SCHEMA[card.bankCode] || defaultIcon
-      }, () => {
-        this.setState({hasBankcard: true})
-    })
-  }
-
-  handleBlur(e) {
-    this.loadRedeemFee()
-  }
-  
-  handleGetCode() {
-    this.loadCode()
-  }
-
-  handleClick(e) {
-    if(!this.state.bankcardList.length) {
-      weui.alert('暂无可用')
-      return false
-    }
-    weui.picker(util.parseBankcardList(this.state.bankcardList), {
-      defaultValue: [0],
-      onConfirm: result => {
-        if(result && result[0]){
-          this.setCard(result[0])
-        }
-      }
-    })
-  }
-
-  handleToggle = e => {
-    this.setState({agreementFlag: !this.state.agreementFlag})
-  }
-
-  handleToggleAgreement() {
-    this.setState({showAgreement: !this.state.showAgreement})
-  }
-
-  handleChange(e) {
-    const name = e.target.name
-    const value = name === 'integral' ? Number(e.target.value) : e.target.value    
-    this.setState({[name]: value})
-  }
-
   handleSubmit(e) {
     if(!this.verify()) {
       return
@@ -332,29 +288,29 @@ class Redeem extends Component {
       callback: (e, inputElem) => {
         if(!inputElem.value) {return false}
 
+        const card = filterBankCard(this.state.cardList, this.state.id)
         const params = {
+          bankCode: card.bankCode,
+          bankName: card.bankName,
+          cardHoldName: card.cardHoldName,
+          cardPhoneNo: card.userPhoneNo,
+          bankCard: card.bankCard,
+
           amount: this.state.integral,
-          bankCode: this.state.bankCode,
-          bankName: this.state.bankName,
-          cardHoldName: this.state.cardHoldName,
-          cardPhoneNo: this.state.userPhoneNo,
-          bankCard: this.state.bankCard,
           code: this.state.code,
           tradPwd: inputElem.value
         }        
-        this.doSubmit(inputElem.value)
+        this.doSubmit(params)
       }
     })
   }
 
   render() {
     const {
+      id,
       loading, 
       agreementFlag, 
-      hasBankcard, 
-      bankCard, 
-      bankName, 
-      bankcardLogo,
+      hasCard, 
       getCodeFlag
     } = this.state
     const integral = this.state.integral || ''
@@ -373,10 +329,8 @@ class Redeem extends Component {
         <div className="u_mb_xxx">
           <BankcardBox 
             loading={loading} 
-            hasBankcard={hasBankcard} 
-            bankcardLogo={bankcardLogo} 
-            bankName={bankName}
-            bankcard={bankCard} 
+            hasCard={hasCard} 
+            data={filterBankCard(this.state.cardList, id)}
           />
         </div>
 
@@ -469,4 +423,14 @@ class Redeem extends Component {
   }
 }
 
-export default Redeem
+const mapStateToProps = (state) => {
+  return {
+    phone: state.auth.phone
+  }
+}
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Redeem)

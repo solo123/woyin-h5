@@ -1,6 +1,48 @@
 import weui from 'weui.js'
 import dayjs from 'dayjs'
 
+import fzIcon from '@/asset/images/bank/fz.svg'
+import gdIcon from '@/asset/images/bank/gd.svg'
+import gsIcon from '@/asset/images/bank/gs.svg'
+import hxIcon from '@/asset/images/bank/hx.svg'
+import jsIcon from '@/asset/images/bank/js.svg'
+import jtIcon from '@/asset/images/bank/jt.svg'
+import msIcon from '@/asset/images/bank/ms.svg'
+import nyIcon from '@/asset/images/bank/ny.svg'
+import paIcon from '@/asset/images/bank/pa.svg'
+import shIcon from '@/asset/images/bank/sh.svg'
+import shfzIcon from '@/asset/images/bank/shfz.svg'
+import xyIcon from '@/asset/images/bank/xy.svg'
+import yzIcon from '@/asset/images/bank/yz.svg'
+import zgIcon from '@/asset/images/bank/zg.svg'
+import zsIcon from '@/asset/images/bank/zs.svg'
+import zxIcon from '@/asset/images/bank/zx.svg'
+import defaultIcon from '@/asset/images/bank/default.svg'
+
+const BANKCARD_SCHEMA = {
+  'GDB' : fzIcon,
+  'CEB' : gdIcon,
+  'ICBC' : gsIcon,
+  'HXB' : hxIcon,
+  'CCB' : jsIcon,
+  'COMM' : jtIcon,
+  'CMBC' : msIcon,
+  'ABC' : nyIcon,
+  'SZPAB' : paIcon,
+  'BOS' : shIcon,
+  'SPDB' : shfzIcon,
+  'CIB' : xyIcon,
+  'PSBC' : yzIcon,
+  'BOC' : zgIcon,
+  'CMB' : zsIcon,
+  'CITIC' : zxIcon
+}
+
+// 根据银行code获取银行logo
+function getBankCardLogo(code) {
+  return BANKCARD_SCHEMA[code] || defaultIcon
+}
+
 const refreshTokenIsValid = (refreshToken) => {
   return true;
 }
@@ -169,6 +211,7 @@ const getLastNum = function (bankcardNo) {
 const parseBankcardList = function (arr) {
   return arr.map(item => {
     return {
+      id: item.id,
       bankCard: item.bankCard,
       bankName: item.bankName,
       bankCode: item.bankCode,
@@ -230,6 +273,14 @@ const filterBankCardByStatusAndType = function (cardList, type, status) {
   return cardList.filter(item => {
     return ((item.bankCardType === type) && (item.status === status))
   })
+}
+
+const filterDepositCardList = function(cardList, status = 1) {
+  return filterBankCardByStatusAndType(cardList, 1, status)
+}
+
+const filterCreditCardList = function(cardList, status = 1) {
+  return filterBankCardByStatusAndType(cardList, 2, status)
 }
 
 const formatTimestamp = function (timestamp) {
@@ -355,8 +406,11 @@ export default {
   getBankcardLastNum: getLastNum,
   confirmRetry: confirmRetry,
   filterBankCardByStatusAndType,
+  filterDepositCardList,
+  filterCreditCardList,
   formatTimestamp,
   formatTimestamp2,
   throttle,
-  debounce
+  debounce,
+  getBankCardLogo
 };

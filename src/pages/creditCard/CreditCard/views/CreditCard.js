@@ -1,96 +1,29 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {Link} from "react-router-dom"
 import weui from 'weui.js'
 import axios from 'axios'
 import {Helmet} from "react-helmet"
 
 import config from '@/config'
-import {getUserInfo, getBankcardList, paymentToCard, getWithdrawFee, getCodeForWithdraw} from '@/api'
 import util from '@/util'
+import {getUserInfo, getBankcardList, paymentToCard, getWithdrawFee, getCodeForWithdraw} from '@/api'
+
 import Backhome from '@/components/Backhome'
+import Card from './Card'
 import Page from './styled'
 
 import banner from '@/asset/images/creditCard/banner.jpg'
-import plus from '@/asset/images/creditCard/plus.png'
-import arrow from '@/asset/images/icon/arrow_right.svg'
-import fzIcon from '@/asset/images/bank/fz.svg'
-import gdIcon from '@/asset/images/bank/gd.svg'
-import gsIcon from '@/asset/images/bank/gs.svg'
-import hxIcon from '@/asset/images/bank/hx.svg'
-import jsIcon from '@/asset/images/bank/js.svg'
-import jtIcon from '@/asset/images/bank/jt.svg'
-import msIcon from '@/asset/images/bank/ms.svg'
-import nyIcon from '@/asset/images/bank/ny.svg'
-import paIcon from '@/asset/images/bank/pa.svg'
-import shIcon from '@/asset/images/bank/sh.svg'
-import shfzIcon from '@/asset/images/bank/shfz.svg'
-import xyIcon from '@/asset/images/bank/xy.svg'
-import yzIcon from '@/asset/images/bank/yz.svg'
-import zgIcon from '@/asset/images/bank/zg.svg'
-import zsIcon from '@/asset/images/bank/zs.svg'
-import zxIcon from '@/asset/images/bank/zx.svg'
-import defaultIcon from '@/asset/images/bank/default.svg'
 
-const BANKCARD_SCHEMA = {
-  'GDB' : fzIcon,
-  'CEB' : gdIcon,
-  'ICBC' : gsIcon,
-  'HXB' : hxIcon,
-  'CCB' : jsIcon,
-  'COMM' : jtIcon,
-  'CMBC' : msIcon,
-  'ABC' : nyIcon,
-  'SZPAB' : paIcon,
-  'BOS' : shIcon,
-  'SPDB' : shfzIcon,
-  'CIB' : xyIcon,
-  'PSBC' : yzIcon,
-  'BOC' : zgIcon,
-  'CMB' : zsIcon,
-  'CITIC' : zxIcon
+function filterBankCard(items, id) {
+  const result = items.filter((item) => item.id === id)
+  return result && result.length && result[0]
 }
 
 function SendMsgBtn ({flag, interval, handleClick}) {
   if(flag) {
-    return <button className="btn btn-primary btn-mini" onClick={handleClick}>获取验证码</button>
+    return <button className="btn btn-primary btn-mini" onClick={handleClick}>获取短信码</button>
   }
   return <button className="btn btn-mini disable">{interval}秒后重发</button>
-}
-
-function Card({logo, bankName, bankCard, hasCard, handleOpenPicker}) {
-  if(hasCard) {
-    return (
-      <div className="u_p_xxx u_mb_xx u_bg_white">
-        <div className="card">
-          <div className="aside">
-            <img className="icon" src={logo} alt=""/>
-          </div>
-          <div className="main">
-            <p className="title">{bankName} (尾号<span>{util.getBankcardLastNum(bankCard)}</span>)</p>
-            <p className="text">预计下一工作日到账，实际以银行到账日为准</p>
-          </div>
-          <div className="foot">
-            <img className="arrow" onClick={handleOpenPicker} src={arrow} alt=""/>
-          </div>
-        </div>          
-      </div>      
-    )
-  }
-  return (
-    <div className="empty">
-      <Link to={{
-        pathname: "bankcard-add",
-        state: {from: '/credit-card'}
-      }}>
-        <div className="wrap">
-          <img className="icon" src={plus} alt=""/>
-          <p>请添加信用卡</p>
-        </div>
-      </Link>
-      <p className="text">暂无可用</p>
-    </div>
-  )
 }
 
 const CancelToken = axios.CancelToken
@@ -102,27 +35,26 @@ class CreditCard extends Component {
     this.handleGetCode = this.handleGetCode.bind(this)
     this.handleOpenPicker = this.handleOpenPicker.bind(this)
     this.handleChange = this.handleChange.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
     this.handleBlur = this.handleBlur.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
 
     this.state = {
-      interval: config.creditCard.INTERVAL,
+      // 短信码
+      code: '',
       getCodeFlag: true,
-      smsCode: '',
+      interval: config.creditCard.INTERVAL,
 
-      loading: true,
+      // 信用卡
+      id: '',
       hasCard: false,
-      bankCard: '',
-      bankCode: '',
-      bankName: '',
-      cardHoldName: '',
-      userPhoneNo: '',
       cardList: [],
 
+      // 手续费
       redeemFee: 0,
       actualReceived: 0,
       deductIntegral: 0,
 
+      // 积分
       integral: 0,
       availableIntegral: 0
     }
@@ -152,16 +84,17 @@ class CreditCard extends Component {
     try {
       const {data} = await getBankcardList()
       if(data.status === 200) {
-        const cardList = util.filterBankCardByStatusAndType(data.data, 2, 0)
+        const cardList = util.filterCreditCardList(data.data)
         this.setState({cardList: cardList}, () => {
           const card = cardList[0]
           if(card) {
-            this.setCard(card)
+            this.setState({id: card.id}, () => {
+              this.setState({hasCard: true})
+            })
           }
         })        
       }
     }finally {
-      this.setState({loading: false})
     }
   }
 
@@ -205,37 +138,8 @@ class CreditCard extends Component {
     }
   }
 
-  verify() {
-    if(!this.state.hasCard) {
-      weui.alert('暂无可用的信用卡')
-      return
-    }
-    if(!this.state.integral) {
-      weui.alert('请输入积分')
-      return
-    }
-    if(!this.state.smsCode) {
-      weui.alert('请输入短信码')
-      return
-    }
-    if(this.state.integral > this.state.availableIntegral) {
-      weui.alert('积分不足')
-      return
-    }
-    return true
-  }
-
-  setCard(card) {
-    this.setState({
-        bankName: card.bankName,
-        bankCode: card.bankCode,
-        bankCard: card.bankCard,
-        cardHoldName: card.cardHoldName,
-        userPhoneNo: card.userPhoneNo,
-        bankcardLogo: BANKCARD_SCHEMA[card.bankCode] || defaultIcon
-      }, () => {
-        this.setState({hasCard: true})
-    })
+  retryTransPswd() {
+    this.handleSubmit()
   }
 
   countDown() {
@@ -262,10 +166,6 @@ class CreditCard extends Component {
     })
   }
 
-  retryTransPswd() {
-    this.handleSubmit()
-  }
-
   handleOpenPicker() {
     if(!this.state.cardList.length) {
       weui.alert('暂无可用信用卡')
@@ -275,7 +175,7 @@ class CreditCard extends Component {
       defaultValue: [0],
       onConfirm: result => {
         if(result && result[0]){
-          this.setCard(result[0])
+          this.setState({id: result[0].id})          
         }
       }
     })
@@ -295,12 +195,33 @@ class CreditCard extends Component {
     this.loadWithdrawFee()
   }
 
+  verify() {
+    if(!this.state.hasCard) {
+      weui.alert('暂无可用的信用卡')
+      return
+    }
+    if(!this.state.integral) {
+      weui.alert('请输入积分')
+      return
+    }
+    if(!this.state.code) {
+      weui.alert('请输入短信码')
+      return
+    }
+    if(this.state.integral > this.state.availableIntegral) {
+      weui.alert('积分不足')
+      return
+    }
+    return true
+  }
+  
   handleSubmit() {
     if(!this.verify()) {
       return
     }
+
     util.paymentConfirm({
-      title: '还款',
+      title: '信用卡还款',
       amount: this.state.integral,
       useable: this.state.availableIntegral,      
       callback: (e, input) => {
@@ -309,15 +230,17 @@ class CreditCard extends Component {
           return false
         }
 
+        const card = filterBankCard(this.state.cardList, this.state.id)
         const params = {
-          amount: this.state.integral,
-          bankCode: this.state.bankCode,
-          bankName: this.state.bankName,
-          cardHoldName: this.state.cardHoldName,
-          cardPhoneNo: this.state.userPhoneNo,
+          bankCard: card.bankCard,
+          bankCode: card.bankCode,
+          bankName: card.bankName,
+          cardHoldName: card.cardHoldName,
+          cardPhoneNo: card.userPhoneNo,
+
           tradPwd: input.value,
-          code: this.state.smsCode,
-          bankCard: this.state.bankCard
+          code: this.state.code,
+          amount: this.state.integral
         }        
         this.doSubmit(params)
       }
@@ -325,8 +248,9 @@ class CreditCard extends Component {
   }
 
   render() {
-    const {getCodeFlag} = this.state
+    const {id, getCodeFlag} = this.state
     const integral = this.state.integral || ''
+
     return (
       <Page>
         <Helmet defaultTitle="沃银企服" title="信用卡还款"/>
@@ -337,23 +261,22 @@ class CreditCard extends Component {
 
         <Card 
           hasCard={this.state.hasCard} 
-          logo={BANKCARD_SCHEMA[this.state.bankCode]}
-          bankName={this.state.bankName}
-          bankCard={this.state.bankCard}
           handleOpenPicker={this.handleOpenPicker}
+          data={filterBankCard(this.state.cardList, id)}
         />
 
         <div className="u_bg_white">
           <div className="u_p_xxx">
-            <h2>还款金额</h2>
+            <h2>还款</h2>
             <div className="input-box">
               <input 
+                text="number"
                 name="integral" 
-                className="input input-primary"
                 value={integral} 
+                className="input input-primary"
                 onChange={this.handleChange} 
                 onBlur={this.handleBlur} 
-                placeholder={`最多可使用${this.state.availableIntegral}积分`}
+                placeholder={`最多可使用 ${this.state.availableIntegral} 积分`}
               />
               <div className="tip">可用积分：{this.state.availableIntegral}</div>
             </div>
@@ -361,8 +284,8 @@ class CreditCard extends Component {
         
           <div className="u_px_xxx u_pb_xxx">
             <div className="info">
-              <p>扣除{this.state.deductIntegral}积分，还款{this.state.deductIntegral / 100}元</p>
-              <p>手续费{this.state.redeemFee}积分，100积分等于1元</p>
+              <p>扣除 {this.state.deductIntegral} 积分，还款 {this.state.deductIntegral / 100} 元</p>
+              <p>手续费 {this.state.redeemFee} 积分，100 积分等于 1 元</p>
             </div>
           </div>
 
@@ -370,12 +293,12 @@ class CreditCard extends Component {
             <div className="group">
               <div className="group__body">
                 <input 
-                  type="text"
+                  text="number"
+                  name="code"
+                  value={this.state.code} 
                   className="input input-primary"
-                  name="smsCode"
-                  value={this.state.smsCode} 
                   onChange={this.handleChange} 
-                  placeholder="请输入短信验证码"
+                  placeholder="请输入短信码"
                 />
               </div>
               <div className="group__foot">
