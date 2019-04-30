@@ -23,17 +23,17 @@ const ICON_SCHEMA = {
   '22': ykIcon
 }
 
-function Item({id, selectId, name, icon, selectProvider}) {
-  const itemClass = classnames('item', {'active': id === selectId})
+function Item({id, operatorId, name, icon, selectOperator}) {
+  const itemClass = classnames('item', {'active': id === operatorId})
   return (
-    <div className={itemClass} onClick={() => selectProvider(id)}>
+    <div className={itemClass} onClick={selectOperator}>
       <img className="icon" src={icon} alt="" />
       <p>{name}</p>
     </div>
   )
 }
 
-function List({selectId, items, selectProvider}) {
+function List({operatorId, items, selectOperator}) {
   return (
     <div className="provider-list">
     {items.map(item => {
@@ -41,10 +41,10 @@ function List({selectId, items, selectProvider}) {
         <Item 
           key={item.productClassifyId} 
           id={item.productClassifyId}
-          selectId={selectId}
+          operatorId={operatorId}
           name={item.productClassifyName}
           icon={ICON_SCHEMA[item.productClassifyId] || ykIcon} 
-          selectProvider={selectProvider}
+          selectOperator={() => selectOperator(item.productClassifyId)}
         />
       )
     })}

@@ -109,10 +109,6 @@ body.white{
   background: #fff;
 }
 
-body.qq{
-  background: #614338;
-}
-
 .slide-enter{
   transform: translateX(-100%);
 }

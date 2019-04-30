@@ -5,6 +5,7 @@ import {Helmet} from "react-helmet"
 
 import {getUserInfo, getProducts, getSubProducts, rechargeTraffic} from '@/api'
 import util from '@/util'
+
 import ProductSkeleton from '@/components/ProductSkeleton'
 import EmptyArrayPlaceholder from '@/components/EmptyArrayPlaceholder'
 import Backhome from '@/components/Backhome'
@@ -16,17 +17,15 @@ import banner from '@/asset/images/recharge/banner.png'
 
 const CancelToken = axios.CancelToken
 
-function Product({loading, id, items, handleSelect}) {
+function Product({loading, productId, items, handleSelect}) {
   if(loading) {
-    return <ProductSkeleton />
+    return <ProductSkeleton/>
   }
   if(items.length) {
-    return <List id={id} items={items} handleSelect={handleSelect}/>
+    return <List productId={productId} items={items} handleSelect={handleSelect}/>
   }
   return <EmptyArrayPlaceholder />
 }
-
-const CMCC = '6'
 
 export default class extends Component {
   constructor(props) {
@@ -38,14 +37,13 @@ export default class extends Component {
     this.handleSelect = this.handleSelect.bind(this)
 
     this.state = {
+      currId: '',
       items: [],
-      loading: false,
+      operators: [],
+      skeletonLoading: false,
 
       phone: '',
-      selectId: '',
-
-      type: CMCC,
-      operators: [],
+      productId: '',
 
       integral: 0,
       availableIntegral: 0
@@ -56,7 +54,15 @@ export default class extends Component {
     const {id} = this.props.history.location.state
     this.loadUserInfo()
     this.loadOperatorById(id)
-    this.loadProdcutsByType(this.state.type)
+      .then(() => {
+        const {productClassifyId} = this.state.operators[0]
+        if(!productClassifyId){return}
+        this.setState({
+          currId: productClassifyId
+        }, () => {
+          this.loadProdcutsByType(productClassifyId)
+        })
+      })
   }
 
   componentWillUnmount() {
@@ -87,16 +93,16 @@ export default class extends Component {
     }
   }
 
-  async loadProdcutsByType(type) {
-    this.setState({loading: true})
+  async loadProdcutsByType(id) {
+    this.setState({skeletonLoading: true})
     this.loadProdcutsSource = CancelToken.source()
     try {
-      const {data} = await getSubProducts(type, {cancelToken: this.loadProdcutsSource.token})
+      const {data} = await getSubProducts(id, {cancelToken: this.loadProdcutsSource.token})
       if(data.status === 200) {
         this.setState({items: data.data})
       }
     }finally {
-      this.setState({loading: false})
+      this.setState({skeletonLoading: false})
     }
   }
 
@@ -123,7 +129,23 @@ export default class extends Component {
   }
 
   reset() {
-    this.setState({selectId: ''})
+    this.setState({productId: ''})
+  }
+
+  handleToggleType(id) {
+    if(id === this.state.currId) {return}
+    this.reset()
+    this.setState({currId: id}, () => {
+      this.loadProdcutsByType(id)
+    })
+  }
+
+  handleSelect(productId, integral) {
+    this.setState({productId, integral})
+  }
+
+  handleChange(e) {
+    this.setState({[e.target.name]: e.target.value})
   }
 
   verify() {
@@ -131,7 +153,7 @@ export default class extends Component {
       weui.alert('请输入手机号')
       return
     }
-    if(!this.state.selectId) {
+    if(!this.state.productId) {
       weui.alert('请选择产品')
       return
     }
@@ -140,22 +162,6 @@ export default class extends Component {
       return
     }   
     return true
-  }
-
-  handleToggleType(type) {
-    if(type === this.state.type) {return}
-    this.reset()
-    this.setState({type}, () => {
-      this.loadProdcutsByType(type)
-    })
-  }
-
-  handleSelect(selectId, integral) {
-    this.setState({selectId: selectId, integral: Number(integral)})
-  }
-
-  handleChange(e) {
-    this.setState({[e.target.name]: e.target.value})
   }
 
   handleSubmit() {
@@ -172,9 +178,8 @@ export default class extends Component {
 
         const params = {
           phone: this.state.phone,
-          productId: this.state.selectId,
-          tranPwd: inputElem.value,
-          range: '0'
+          productId: this.state.productId,
+          tranPwd: inputElem.value
         }        
         this.doSubmit(params)
       }
@@ -182,16 +187,16 @@ export default class extends Component {
   }
 
   render() {
-    const {selectId, type, items, operators, loading} = this.state
+    const {productId, currId, items, operators, skeletonLoading} = this.state
 
     return (
       <Page>
-        <Helmet defaultTitle="沃银企服" title="登录"/>
+        <Helmet title="流量充值"/>
 
         <header>
           <img src={banner} alt=""/>
           <div className="nav-box">
-            <Nav type={type} items={operators} handleToggleType={this.handleToggleType} />
+            <Nav currId={currId} items={operators} handleToggleType={this.handleToggleType} />
           </div>
         </header>
 
@@ -212,7 +217,7 @@ export default class extends Component {
           </div>
 
           <h2 className="u_mx_xxx u_mb_x">请选择面值</h2>
-          <Product loading={loading} id={selectId} items={items} handleSelect={this.handleSelect} />
+          <Product loading={skeletonLoading} productId={productId} items={items} handleSelect={this.handleSelect} />
 
           <div className="u_p_xxx">
             <button className="btn btn-secondary" onClick={this.handleSubmit}>立即充值</button>

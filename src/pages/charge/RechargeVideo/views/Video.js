@@ -5,43 +5,31 @@ import {Helmet} from "react-helmet"
 
 import {getUserInfo, getProducts, getSubProducts, rechargeVideo} from '@/api'
 import util from '@/util'
+
 import Backhome from '@/components/Backhome'
-import ProviderList from './ProviderList'
+import OperatorList from './OperatorList'
 import ProductList from './ProductList'
 import Page from './styled'
 
 const CancelToken = axios.CancelToken
 
-function getProviderById(arr, id) {
-  const result = arr.filter(item => {
-    return item.productClassifyId === id
-  })
-  if(result.length) {
-    return result[0]
-  }
-  return null
-}
-
 class RechargeVideo extends Component {
   constructor(props) {
     super(props)
     
-    this.selectProvider = this.selectProvider.bind(this)
+    this.selectOperator = this.selectOperator.bind(this)
     this.selectProduct = this.selectProduct.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
 
     this.state = {
-      subProducts: [],
-      products: [],
-      selectId: '',
-      loadSubProdcutLoading: false,
-      loadProductLoading: false,
-      username: '',
-      pickerViewFlag: false,
+      operatorId: '',
+      operators: [],
 
-      providerName: '',
-      providerId: '',
+      productId: '',
+      products: [],
+
+      username: '',
 
       integral: 0,
       availableIntegral: 0
@@ -51,13 +39,22 @@ class RechargeVideo extends Component {
   componentDidMount() {
     const {id} = this.props.history.location.state
     this.loadUserInfo()
-    this.loadProducts(id)
+    this.loadOperators(id)
+      .then(() => {
+        const {productClassifyId} = this.state.operators[0]
+        if(!productClassifyId){return}
+        this.setState({
+          operatorId: productClassifyId
+        }, () => {
+          this.loadProducts(productClassifyId)
+        })
+      })
   }
 
   componentWillUnmount() {
     this.loadUserInfoSource && this.loadUserInfoSource.cancel('Operation canceled by the user.')
+    this.loadOperatorsSource && this.loadOperatorsSource.cancel('Operation canceled by the user.')
     this.loadProductsSource && this.loadProductsSource.cancel('Operation canceled by the user.')
-    this.loadSubProductsSource && this.loadSubProductsSource.cancel('Operation canceled by the user.')
     this.submitSource && this.submitSource.cancel('Operation canceled by the user.')
   }
 
@@ -72,28 +69,23 @@ class RechargeVideo extends Component {
     }
   }
 
-  async loadProducts(id) {
-    this.loadProductsSource = CancelToken.source()
+  async loadOperators(id) {
+    this.loadOperatorsSource = CancelToken.source()
     try {
-      const {data} = await getProducts(id, {cancelToken: this.loadProductsSource.token})
+      const {data} = await getProducts(id, {cancelToken: this.loadOperatorsSource.token})
       if(data.status === 200) {
-        this.setState({products: data.data}, () => {
-          if(data.data.length) {
-            this.setProduct(data.data[0])
-            this.loadSubProducts(data.data[0].productClassifyId)
-          }
-        })
+        this.setState({operators: data.data})
       }      
     }finally {
     }
   }
 
-  async loadSubProducts(id) {
-    this.loadSubProductsSource = CancelToken.source()
+  async loadProducts(id) {
+    this.loadProductsSource = CancelToken.source()
     try {
-      const {data} = await getSubProducts(id, {cancelToken: this.loadSubProductsSource.token})
+      const {data} = await getSubProducts(id, {cancelToken: this.loadProductsSource.token})
       if(data.status === 200) {
-        this.setState({subProducts: data.data})
+        this.setState({products: data.data})
       }      
     }finally {
     }
@@ -118,39 +110,14 @@ class RechargeVideo extends Component {
     }
   }
 
-  setProduct(provider) {
-    this.setState({
-      providerName: provider.productClassifyName,
-      providerId: provider.productClassifyId
+  selectOperator(id) {
+    this.setState({operatorId: id}, () => {
+      this.loadProducts(id)
     })
   }
 
-  selectProvider(id) {
-    const provider = getProviderById(this.state.products, id)
-    if(provider) {
-      this.loadSubProducts(id)
-      this.setProduct(provider)
-    }
-  }
-
-  selectProduct(selectId, integral) {
-    this.setState({selectId: selectId, integral: Number(integral)})
-  }
-
-  verify() {
-    if(!this.state.username) {
-      weui.alert('请输入用户名')
-      return
-    }
-    if(!this.state.selectId) {
-      weui.alert('请选择产品')
-      return
-    }    
-    if(this.state.integral > this.state.availableIntegral) {
-      weui.alert('积分不足')
-      return
-    }
-    return true
+  selectProduct(productId, integral) {
+    this.setState({productId, integral})
   }
 
   retryTransPswd() {
@@ -159,6 +126,22 @@ class RechargeVideo extends Component {
 
   handleChange(e) {
     this.setState({[e.target.name]: e.target.value})
+  }
+
+  verify() {
+    if(!this.state.username) {
+      weui.alert('请输入用户名')
+      return
+    }
+    if(!this.state.productId) {
+      weui.alert('请选择产品')
+      return
+    }    
+    if(this.state.integral > this.state.availableIntegral) {
+      weui.alert('积分不足')
+      return
+    }
+    return true
   }
 
   handleSubmit() {
@@ -175,7 +158,7 @@ class RechargeVideo extends Component {
 
         const params = {
           chargeAddr: this.state.username,
-          productId: this.state.selectId,
+          productId: this.state.productId,
           tranPwd: inputElem.value
         }        
         this.doSubmit(params)
@@ -184,14 +167,14 @@ class RechargeVideo extends Component {
   }
 
   render() {
-    const {providerId, products, selectId, subProducts} = this.state
+    const {operatorId, operators, productId, products} = this.state
 
     return (
       <Page>
         <Helmet defaultTitle="沃银企服" title="视频VIP"/>
 
         <header>
-          <ProviderList selectId={providerId} items={products} selectProvider={this.selectProvider} />
+          <OperatorList operatorId={operatorId} items={operators} selectOperator={this.selectOperator} />
         </header>
 
         <section className="u_mb_xxx">
@@ -219,7 +202,7 @@ class RechargeVideo extends Component {
           </div>
 
           <div className="u_mx_xx">
-            <ProductList selectId={selectId} items={subProducts} selectProduct={this.selectProduct} />
+            <ProductList productId={productId} items={products} selectProduct={this.selectProduct} />
           </div>
 
           <div className="u_mx_xxx u_pb_xxx u_pt_x">

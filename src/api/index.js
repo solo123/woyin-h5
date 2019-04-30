@@ -207,11 +207,13 @@ export function rechargeQB(data = {}) {
 
 // 流量充值
 export function rechargeTraffic(data = {}) {
-  const tradPwd = md5(data.tranPwd)  
+  const tradPwd = md5(data.tranPwd)
+  const range = '0'
   data = {
     ...data,
+    range: range,
     tranPwd: tradPwd,
-    sign: md5(`key=&afdY%d2^uy3&timestamp=${timestamp}&phone=${data.phone}&range=${data.range}&productId=${data.productId}&tranPwd=${tradPwd}`),
+    sign: md5(`key=&afdY%d2^uy3&timestamp=${timestamp}&phone=${data.phone}&range=${range}&productId=${data.productId}&tranPwd=${tradPwd}`),
     timestamp: timestamp
   }
   return post(`${BASE}api/traffic/charge`, qs.stringify(data))

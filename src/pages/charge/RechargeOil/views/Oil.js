@@ -5,6 +5,7 @@ import {Helmet} from "react-helmet"
 
 import util from '@/util'
 import {getUserInfo, getSubProducts, getProducts, rechargeOil} from '@/api'
+
 import ProductSkeleton from '@/components/ProductSkeleton'
 import EmptyArrayPlaceholder from '@/components/EmptyArrayPlaceholder'
 import Backhome from '@/components/Backhome'
@@ -16,19 +17,22 @@ import banner from '@/asset/images/recharge/banner.png'
 
 const CancelToken = axios.CancelToken
 
-const Product = ({loading, selectId, items, handleSelect}) => {
+const Product = ({loading, productId, items, handleSelect}) => {
   if(loading) {
     return <ProductSkeleton/>
   }
   if(items.length) {
-    return <List selectId={selectId} items={items} handleSelect={handleSelect}/>
+    return <List productId={productId} items={items} handleSelect={handleSelect}/>
   }
   return <EmptyArrayPlaceholder/>
 }
 
-const INIT_TYPE = '10'
+const CARD_TYPE_SCHEAM = {
+  '10': '1',
+  '11': '2'
+}
 
-export default class extends Component {
+class Oil extends Component {
   constructor(props) {
     super(props)
 
@@ -38,16 +42,14 @@ export default class extends Component {
     this.handleToggleType = this.handleToggleType.bind(this)
 
     this.state = {
+      currId: '',
       items: [],
-      loading: false,
+      operators: [],
+      skeletonLoading: false,
 
       cardNumber: '',
-      selectId: '',
+      productId: '',
       
-      type: INIT_TYPE,
-      operators: [],
-      cardType: '1',
-
       integral: 0,
       availableIntegral: 0
     }
@@ -57,7 +59,15 @@ export default class extends Component {
     const {id} = this.props.history.location.state
     this.loadUserInfo()
     this.loadOperatorById(id)
-    this.loadProdcutsByType(this.state.type)
+      .then(() => {
+        const {productClassifyId} = this.state.operators[0]
+        if(!productClassifyId){return}
+        this.setState({
+          currId: productClassifyId
+        }, () => {
+          this.loadProdcutsById(productClassifyId)
+        })
+      })
   }
 
   componentWillUnmount() {
@@ -88,16 +98,16 @@ export default class extends Component {
     }
   }
 
-  async loadProdcutsByType(type) {
-    this.setState({loading: true})
+  async loadProdcutsById(id) {
+    this.setState({skeletonLoading: true})
     this.loadProdcutsSource = CancelToken.source()
     try {
-      const {data} = await getSubProducts(type, {cancelToken: this.loadProdcutsSource.token})
+      const {data} = await getSubProducts(id, {cancelToken: this.loadProdcutsSource.token})
       if(data.status === 200) {
         this.setState({items: data.data})
       }
     }finally {
-      this.setState({loading: false})
+      this.setState({skeletonLoading: false})
     }
   }
 
@@ -124,22 +134,19 @@ export default class extends Component {
   }
 
   reset() {
-    this.setState({selectId: ''})
+    this.setState({productId: ''})
   }
 
-  handleToggleType(type) {
-    if(type === this.state.type) {return}
+  handleToggleType(id) {
+    if(id === this.state.currId) {return}
     this.reset()
-
-    const cardType = type === '10' ? '1' : '2'
-
-    this.setState({type, cardType: cardType}, () => {
-      this.loadProdcutsByType(type)
+    this.setState({currId: id}, () => {
+      this.loadProdcutsById(id)
     })
   }
 
-  handleSelect(selectId, integral) {
-    this.setState({selectId: selectId, integral: Number(integral)})
+  handleSelect(productId, integral) {
+    this.setState({productId, integral})
   }
 
   handleChange(e) {
@@ -151,7 +158,7 @@ export default class extends Component {
       weui.alert('请输入加油卡卡号')
       return
     }
-    if(!this.state.selectId) {
+    if(!this.state.productId) {
       weui.alert('请选择产品')
       return
     }
@@ -166,7 +173,7 @@ export default class extends Component {
     if(!this.verify()) {
       return
     }
-    
+
     util.paymentConfirm({
       title: '充值',
       amount: this.state.integral,
@@ -176,17 +183,17 @@ export default class extends Component {
 
         const params = {
           cardNumber: this.state.cardNumber,
-          productId: this.state.selectId,
+          productId: this.state.productId,
           tranPwd: inputElem.value,
-          cardType: this.state.cardType
-        }        
+          cardType: CARD_TYPE_SCHEAM[this.state.currId]
+        }      
         this.doSubmit(params)
       }
     })
   }
 
   render() {
-    const {selectId, type, items, operators, loading} = this.state
+    const {productId, currId, items, operators, skeletonLoading} = this.state
 
     return (
       <Page>
@@ -195,7 +202,7 @@ export default class extends Component {
         <header>
           <img src={banner} alt=""/>
           <div className="nav-box">
-            <Nav type={type} items={operators} handleToggleType={this.handleToggleType} />
+            <Nav currId={currId} items={operators} handleToggleType={this.handleToggleType} />
           </div>
         </header>
 
@@ -215,7 +222,7 @@ export default class extends Component {
           </div>
 
           <h2 className="u_mx_xxx u_mb_x">请选择面值</h2>
-          <Product loading={loading} selectId={selectId} items={items} handleSelect={this.handleSelect} />
+          <Product loading={skeletonLoading} productId={productId} items={items} handleSelect={this.handleSelect} />
 
           <div className="u_p_xxx">
             <button className="btn btn-secondary" onClick={this.handleSubmit}>立即充值</button>
@@ -227,3 +234,5 @@ export default class extends Component {
     )
   }
 }
+
+export default Oil

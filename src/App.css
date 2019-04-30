@@ -335,3 +335,25 @@
   color: #444;
   font-size: 14px;  
 }
+
+/* layout */
+
+.fixed-bottom{
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+}
+
+.flex-wrap{
+  display: flex;
+  flex-wrap: wrap;      
+}
+.flex-space-between{
+  display: flex;
+  justify-content: space-between;
+}
+.flex-space-between-center{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

@@ -1,32 +1,32 @@
 import React from 'react'
 import classnames from 'classnames'
 
-function Item({id, name, buyPrice, selectId, selectProduct}) {
-  const itemInnerClass = classnames('item__inner', {'active': id === selectId})
+function Item({id, name, integral, productId, selectProduct}) {
+  const itemInnerClass = classnames('item__inner', {'active': id === productId})
   return (
     <div className="item">
       <div className={itemInnerClass} onClick={selectProduct}>
         <div>{name}</div>
-        <div className="item__integral">{buyPrice}积分</div>
+        <div className="item__integral">{integral}积分</div>
       </div>
     </div>
   )
 }
 
-function List({selectId, items, selectProduct}) {
+function List({productId, items, selectProduct}) {
   return (
     <div className="product-list">
       {items.map(item => {
-        const price = item.productCostBalance * item.disCount
+        const integral = Number(item.productCostBalance) * Number(item.disCount)
         return (
           <Item
             className="item" 
             id={item.productId}
             key={item.productId} 
-            selectId={selectId}
-            buyPrice={price}
+            productId={productId}
+            integral={integral}
             name={item.productName}
-            selectProduct={() => selectProduct(item.productId, price)}
+            selectProduct={() => selectProduct(item.productId, integral)}
           />
         )
       })}

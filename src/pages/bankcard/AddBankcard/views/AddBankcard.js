@@ -58,26 +58,6 @@ class AddBankcard extends Component {
     }
   }
 
-  verify() {
-    if(!this.state.username) {
-      weui.alert('请输入姓名')
-      return false
-    }
-    if(!this.state.id) {
-      weui.alert('请输入身份证号')
-      return false
-    }
-    if(!this.state.cardNo) {
-      weui.alert('请输入卡号')
-      return false
-    }
-    if(!this.state.phone) {
-      weui.alert('请输入手机号')
-      return false
-    }    
-    return true
-  }
-
   handleClick(name) {
     this.setState({[name]: ''})
   }
@@ -97,6 +77,26 @@ class AddBankcard extends Component {
     }, 100)
   }
 
+  verify() {
+    if(!this.state.username) {
+      weui.alert('请输入姓名')
+      return false
+    }
+    if(!this.state.id) {
+      weui.alert('请输入身份证号')
+      return false
+    }
+    if(!this.state.cardNo) {
+      weui.alert('请输入卡号')
+      return false
+    }
+    if(!this.state.phone) {
+      weui.alert('请输入手机号')
+      return false
+    }    
+    return true
+  }
+  
   handleSubmit() {
     if(!this.verify()) {
       return

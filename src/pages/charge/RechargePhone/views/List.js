@@ -1,8 +1,8 @@
 import React from 'react'
 import classnames from 'classnames'
 
-function Item({id, selectId, money, integral, handleClick}) {
-  const itemInnerClass = classnames('item__inner', {'active': id === selectId})
+function Item({id, productId, money, integral, handleClick}) {
+  const itemInnerClass = classnames('item__inner', {'active': id === productId})
   return (
     <div className="item">
       <div className={itemInnerClass} onClick={handleClick}>
@@ -13,18 +13,19 @@ function Item({id, selectId, money, integral, handleClick}) {
   )
 }
 
-function List({selectId, items, handleSelect}) {
+function List({productId, items, handleSelect}) {
   return (
     <div className="items">
       {items.map(item => {
+        const integral = Number(item.productCostBalance) * Number(item.disCount)
         return (
           <Item
             key={item.productId}
             id={item.productId}
-            selectId={selectId}
+            productId={productId}
             money={item.salesPrice}
-            integral={item.productCostBalance * item.disCount}
-            handleClick={() => handleSelect(item.productId, item.productCostBalance * item.disCount)}
+            integral={integral}
+            handleClick={() => handleSelect(item.productId, integral)}
           />
         )
       })}

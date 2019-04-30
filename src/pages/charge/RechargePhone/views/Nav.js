@@ -11,8 +11,8 @@ const ICON_SCHEMA = {
   '4': ctcc
 }
 
-function Item({id, type, name, handleToggleType}) {
-  const itemClass = classnames({'active': id === type})
+function Item({id, currId, name, handleToggleType}) {
+  const itemClass = classnames({'active': id === currId})
   return (
     <li 
       className={itemClass} 
@@ -24,14 +24,14 @@ function Item({id, type, name, handleToggleType}) {
   )
 }
 
-function Nav({items, type, handleToggleType}) {
+function Nav({items, currId, handleToggleType}) {
   return (
     <ul className="nav">
       {items.map(item => (
         <Item
           key={item.productClassifyId} 
-          type={type}
           id={item.productClassifyId}
+          currId={currId}
           name={item.productClassifyName}
           handleToggleType={handleToggleType}
         />

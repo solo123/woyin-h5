@@ -1,14 +1,14 @@
-import util from '../util';
-import uuid from 'uuid'
+// import util from '../util';
+// import uuid from 'uuid'
 
-// import './recharge'
+// // import './recharge'
 
-const Mock = require('mockjs');
-const Random = Mock.Random;
+// const Mock = require('mockjs');
+// const Random = Mock.Random;
 
-Mock.setup({
-  timeout: 500
-});
+// Mock.setup({
+//   timeout: 500
+// });
 
 // // 返回商品分类
 // Mock.mock(/getProductCateList/, 'get', function(options){
