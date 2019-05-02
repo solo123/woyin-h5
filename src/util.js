@@ -19,6 +19,21 @@ import zsIcon from '@/asset/images/bank/zs.svg'
 import zxIcon from '@/asset/images/bank/zx.svg'
 import defaultIcon from '@/asset/images/bank/default.svg'
 
+import appleIcon from '@/asset/images/ecard/apple.png'
+import bgyIcon from '@/asset/images/ecard/bgy.png'
+import bskIcon from '@/asset/images/ecard/bsk.png'
+import dqIcon from '@/asset/images/ecard/dq.png'
+import hgdsIcon from '@/asset/images/ecard/hgds.png'
+import jdIcon from '@/asset/images/ecard/jd.png'
+import kdjIcon from '@/asset/images/ecard/kdj.png'
+import qcsIcon from '@/asset/images/ecard/qcs.png'
+import snIcon from '@/asset/images/ecard/sn.png'
+import tmIcon from '@/asset/images/ecard/tm.png'
+import wnIcon from '@/asset/images/ecard/wn.png'
+import xbkIcon from '@/asset/images/ecard/xbk.png'
+import xcIcon from '@/asset/images/ecard/xc.png'
+import ymxIcon from '@/asset/images/ecard/ymx.png'
+
 const BANKCARD_SCHEMA = {
   'GDB' : fzIcon,
   'CEB' : gdIcon,
@@ -38,9 +53,31 @@ const BANKCARD_SCHEMA = {
   'CITIC' : zxIcon
 }
 
+const LOGO_SCHEAM = {
+  '19': jdIcon,
+  '20': tmIcon,
+  '2': snIcon,
+  '3': ymxIcon,
+  '5': xcIcon,
+  '6': xcIcon,
+  '7': hgdsIcon,
+  '8': kdjIcon,
+  '9': bskIcon,
+  '10': xbkIcon,
+  '11': dqIcon,
+  '12': bgyIcon,
+  '13': appleIcon,
+  '14': wnIcon,
+  '15': qcsIcon
+}
+
 // 根据银行code获取银行logo
 function getBankCardLogo(code) {
   return BANKCARD_SCHEMA[code] || defaultIcon
+}
+
+function getVoucherLogo(id) {
+ return LOGO_SCHEAM[id]
 }
 
 const refreshTokenIsValid = (refreshToken) => {
@@ -412,5 +449,6 @@ export default {
   formatTimestamp2,
   throttle,
   debounce,
-  getBankCardLogo
+  getBankCardLogo,
+  getVoucherLogo
 };

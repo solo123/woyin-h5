@@ -4,6 +4,7 @@ import headerBg from '@/asset/images/me/bg.jpg'
 
 export default styled.div`
   padding-bottom: 50px;
+
   header{
     color: #fff;
     padding: 0 15px 15px 15px;
@@ -25,7 +26,6 @@ export default styled.div`
       padding: 15px;
       color: #333;
       background: #fff;
-      font-family: industry;
       border-radius: 5px;
       .profile{
         width: 60px;
@@ -37,89 +37,65 @@ export default styled.div`
       }
     }
   }
-  .title{
-    font-size: 16px;
-  }
-  section{
+
+  .service{
+    display: flex;
+    padding: 15px 0;
     background: #fff;
-    .cell{
-      display: flex;
-      align-items: center;
-      .icon{
-        width: 25px;
-        margin-right: 5px;
+    &__title{
+      font-size: 16px;
+      font-weight: bold;
+    }
+    &__cell {
+      flex: 1;
+      a{
+        text-align: center;
+        display: block;
       }
     }
-  }
-  .item{
-    position: relative;
-    padding: 15px;
-    display: flex;
-    justify-content: space-between;    
-    &:after{
-      content: " ";
-      position: absolute;
-      left: 15px;
-      bottom: 0;
-      right: 0;
-      height: 1px;
-      border-bottom: 1px solid #e5e5e5;
-      transform: scaleY(0.5);
-    }
-    &:last-child:after{
-      content: none;
+    &__icon{
+      width: 25px;
+      display: block;
+      margin: 0 auto 5px auto;
     }
   }
-  .arrow{
-    width: 15px;
-    height: 15px;
-  }
-  .label{
-    color: #444;
-  }
-  .fixed-bottom{
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-  }
-  .service{
+
+  section{
     background: #fff;
-    &__head{
+    .item{
       position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;    
       padding: 15px;
       &:after{
         content: " ";
         position: absolute;
         left: 15px;
         bottom: 0;
-        right: 15px;
+        right: 0;
         height: 1px;
         border-bottom: 1px solid #e5e5e5;
         transform: scaleY(0.5);
       }
-    }
-    &__title{
-      font-size: 16px;
-      font-weight: bold;
-    }
-    &__body{
-      display: flex;
-      padding: 20px 0;
-    }
-    .cell {
-      flex: 1;
-      a{
-        text-align: center;
-        display: block;
+      &:last-child:after{
+        content: none;
       }
-      .icon{
+      &__icon{
         width: 25px;
-        display: block;
-        margin: 0 auto 5px auto;
+        margin-right: 5px;
       }
+      &__label{
+        flex-grow: 1;
+        color: #444;
+      } 
+      &__arrow{
+        width: 15px;
+        height: 15px;
+      }           
     }
   }
+
   .ruler{
     li{
       color: #666;

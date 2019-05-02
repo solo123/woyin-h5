@@ -2,6 +2,12 @@ import styled from 'styled-components'
 
 export default styled.div`
   padding-top: 15px;
+  header{
+    text-align: center;
+    img{
+      width: 100px;
+    }
+  }
   main{
     background: #fff;
     dl{

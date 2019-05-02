@@ -67,6 +67,7 @@ class CreditCard extends Component {
 
   componentWillUnmount() {
     this.loadUserInfoSource && this.loadUserInfoSource.cancel('Operation canceled by the user.')
+    this.loadCardListSource && this.loadCardListSource.cancel('Operation canceled by the user.')
   }
 
   async loadUserInfo() {
@@ -81,17 +82,17 @@ class CreditCard extends Component {
   }
 
   async loadBankCardList() {
+    this.loadCardListSource = CancelToken.source()
     try {
-      const {data} = await getBankcardList()
+      const {data} = await getBankcardList(null, {cancelToken: this.loadCardListSource.token})
       if(data.status === 200) {
         const cardList = util.filterCreditCardList(data.data)
         this.setState({cardList: cardList}, () => {
           const card = cardList[0]
-          if(card) {
-            this.setState({id: card.id}, () => {
-              this.setState({hasCard: true})
-            })
-          }
+          if(!card) {return}
+          this.setState({id: card.id}, () => {
+            this.setState({hasCard: true})
+          })
         })        
       }
     }finally {
@@ -181,18 +182,18 @@ class CreditCard extends Component {
     })
   }
 
-  handleChange(e) {
-    const name = e.target.name
-    const value = name === 'integral' ? Number(e.target.value) : e.target.value
-    this.setState({[name]: value})
-  }
-
   handleGetCode() {
     this.loadCode()
   }
 
   handleBlur(e) {
     this.loadWithdrawFee()
+  }
+
+  handleChange(e) {
+    const name = e.target.name
+    const value = name === 'integral' ? Number(e.target.value) : e.target.value
+    this.setState({[name]: value})
   }
 
   verify() {
@@ -204,14 +205,15 @@ class CreditCard extends Component {
       weui.alert('请输入积分')
       return
     }
+    if(this.state.integral > this.state.availableIntegral) {
+      weui.alert('积分不足')
+      return
+    }    
     if(!this.state.code) {
       weui.alert('请输入短信码')
       return
     }
-    if(this.state.integral > this.state.availableIntegral) {
-      weui.alert('积分不足')
-      return
-    }
+
     return true
   }
   
@@ -225,10 +227,7 @@ class CreditCard extends Component {
       amount: this.state.integral,
       useable: this.state.availableIntegral,      
       callback: (e, input) => {
-        if(!input.value.trim()) {
-          alert('请输入密码')
-          return false
-        }
+        if(!input.value.trim()) {return false}
 
         const card = filterBankCard(this.state.cardList, this.state.id)
         const params = {
@@ -238,8 +237,8 @@ class CreditCard extends Component {
           cardHoldName: card.cardHoldName,
           cardPhoneNo: card.userPhoneNo,
 
-          tradPwd: input.value,
           code: this.state.code,
+          tradPwd: input.value,
           amount: this.state.integral
         }        
         this.doSubmit(params)
@@ -248,21 +247,26 @@ class CreditCard extends Component {
   }
 
   render() {
-    const {id, getCodeFlag} = this.state
+    const {
+      id, 
+      hasCard, 
+      cardList, 
+      getCodeFlag
+    } = this.state
     const integral = this.state.integral || ''
 
     return (
       <Page>
-        <Helmet defaultTitle="沃银企服" title="信用卡还款"/>
+        <Helmet title="信用卡还款"/>
 
         <header>
           <img src={banner} alt=""/>
         </header>
 
         <Card 
-          hasCard={this.state.hasCard} 
+          hasCard={hasCard} 
           handleOpenPicker={this.handleOpenPicker}
-          data={filterBankCard(this.state.cardList, id)}
+          data={filterBankCard(cardList, id)}
         />
 
         <div className="u_bg_white">

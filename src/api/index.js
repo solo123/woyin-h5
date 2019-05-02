@@ -31,6 +31,10 @@ export const getUserInfo = (data = {}, config = {}) => {
 
 // 发送短信验证码
 export const getCode = (data) => {
+  data = {
+    ...data,
+    codeType: 1
+  }
   return post(`${BASE}user/getCode`, qs.stringify(data))
 }
 

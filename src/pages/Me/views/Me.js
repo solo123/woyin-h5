@@ -12,12 +12,12 @@ import FullLayer from '@/components/FullLayer'
 import Menu from '@/components/Menu'
 import Page from './styled'
 
-import message from '@/asset/images/me/message.png'
-import headphone from '@/asset/images/me/headphone.png'
-import setting from '@/asset/images/me/setting.png'
-import email from '@/asset/images/me/email.svg'
-import profile from '@/asset/images/me/profile.png'
-import rule from '@/asset/images/me/rule.png'
+import messageIcon from '@/asset/images/me/message.png'
+import headphoneIcon from '@/asset/images/me/headphone.png'
+import settingIcon from '@/asset/images/me/setting.png'
+import emailIcon from '@/asset/images/me/email.svg'
+import profileIcon from '@/asset/images/me/profile.png'
+import ruleIcon from '@/asset/images/me/rule.png'
 import arrowIcon from '@/asset/images/icon/arrow_right.svg'
 import integralIcon from '@/asset/images/me/integral.png'
 import couponIcon from '@/asset/images/me/coupon.png'
@@ -33,10 +33,10 @@ class Me extends Component {
     super(props)
 
     this.handleClick = this.handleClick.bind(this)
-    this.handleToggleRuler = this.handleToggleRuler.bind(this)
+    this.handleToggle = this.handleToggle.bind(this)
 
     this.state = {
-      showRuler: false,
+      show: false,
       balance: 0,
       integralCoupon: 0
     }    
@@ -47,13 +47,13 @@ class Me extends Component {
   }
 
   componentWillUnmount() {
-    this.source && this.source.cancel('Operation canceled by the user.')
+    this.loadUserInfoSource && this.loadUserInfoSource.cancel('Operation canceled by the user.')
   }
 
   async loadUserInfo() {
-    this.source = CancelToken.source()
+    this.loadUserInfoSource = CancelToken.source()
     try {
-      const {data} = await getUserInfo(null, {cancelToken: this.source.token})
+      const {data} = await getUserInfo(null, {cancelToken: this.loadUserInfoSource.token})
       if(data.status === 200) {
         if(!data.data.length) {return}
         this.setState({...data.data[0]})
@@ -62,8 +62,8 @@ class Me extends Component {
     }
   }
 
-  handleToggleRuler() {
-    this.setState({showRuler: !this.state.showRuler})
+  handleToggle() {
+    this.setState({show: !this.state.show})
   }
 
   handleClick(e) {
@@ -76,19 +76,20 @@ class Me extends Component {
   render() {
     return (
       <Page>
-        <Helmet defaultTitle="沃银企服" title="我的"/>
+        <Helmet title="我的"/>
+
         <header>
           <div className="top">
             <Link to="/developing">
-              <img className="email" src={email} alt=""/>
+              <img className="email" src={emailIcon} alt=""/>
             </Link>
           </div>
           <div className="card">
             <Link to="/profile">
-              <img className="profile" src={profile} alt=""/>
+              <img className="profile" src={profileIcon} alt=""/>
             </Link>
-            <div onClick={this.handleToggleRuler}>
-              <img className="icon" src={rule} alt=""/>
+            <div onClick={this.handleToggle}>
+              <img className="icon" src={ruleIcon} alt=""/>
               <img className="icon" src={arrowIcon} alt=""/>
             </div>
           </div>
@@ -96,91 +97,73 @@ class Me extends Component {
 
         <div className="u_mb_xx">
           <div className="service">
-            <div className="service__body">
-              <div className="cell">
-                <Link to="/integral">
-                  <img className="icon" src={integralIcon} alt=""/>
-                  {this.state.balance} 积分
-                </Link>
-              </div>
-              <div className="cell">
-                <Link to="/voucher-record">
-                  <img className="icon" src={couponIcon} alt=""/>
-                  我的卡券
-                </Link>
-              </div>
-              <div className="cell">
-                <Link to="/bankcard-list">
-                  <img className="icon" src={cardIcon} alt=""/>
-                  银行卡
-                </Link>
-              </div>
+            <div className="service__cell">
+              <Link to="/integral">
+                <img className="service__icon" src={integralIcon} alt=""/>
+                {this.state.balance} 积分
+              </Link>
+            </div>
+            <div className="service__cell">
+              <Link to="/voucher-record">
+                <img className="service__icon" src={couponIcon} alt=""/>
+                我的卡券
+              </Link>
+            </div>
+            <div className="service__cell">
+              <Link to="/bankcard-list">
+                <img className="service__icon" src={cardIcon} alt=""/>
+                银行卡
+              </Link>
             </div>
           </div>
         </div>
 
         <div className="u_mb_xx">
           <div className="service">
-            <div className="service__body">
-              <div className="cell">
-                <Link to="/wait-send-goods">
-                  <img className="icon" src={car2Icon} alt=""/>
-                  待发货
-                </Link>
-              </div>
-              <div className="cell">
-                <Link to="/wait-receiv-goods">
-                  <img className="icon" src={car3Icon} alt=""/>
-                  待收货
-                </Link>
-              </div>
-              <div className="cell">
-                <Link to="/order-entry">
-                  <img className="icon" src={orderIcon} alt=""/>
-                  全部订单
-                </Link>
-              </div>
+            <div className="service__cell">
+              <Link to="/wait-send-goods">
+                <img className="service__icon" src={car2Icon} alt=""/>
+                待发货
+              </Link>
+            </div>
+            <div className="service__cell">
+              <Link to="/wait-receiv-goods">
+                <img className="service__icon" src={car3Icon} alt=""/>
+                待收货
+              </Link>
+            </div>
+            <div className="service__cell">
+              <Link to="/order-entry">
+                <img className="service__icon" src={orderIcon} alt=""/>
+                全部订单
+              </Link>
             </div>
           </div>
         </div>
 
-        <div>
-          <section>
-            <Link className="item" to="/developing">
-              <div className="cell">
-                <img className="icon" src={headphone} alt=""/>
-                <label className="label">在线客服</label>
-              </div>
-              <div className="cell">
-                <img className="arrow" src={arrowIcon} alt="" />
-              </div>
-            </Link>
-            <Link className="item" to="/developing">
-              <div className="cell">
-                <img className="icon" src={message} alt=""/>
-                <label className="label">意见反馈</label>
-              </div>
-              <div className="cell">
-                <img className="arrow" src={arrowIcon} alt="" />
-              </div>
-            </Link>       
-            <Link className="item" to="/setting">
-              <div className="cell">
-                <img className="icon" src={setting} alt=""/>
-                <label className="label">设置</label>
-              </div>
-              <div className="cell">
-                <img className="arrow" src={arrowIcon} alt="" />
-              </div>
-            </Link>
-          </section>
-        </div>
+        <section>
+          <Link className="item" to="/developing">
+            <img className="item__icon" src={headphoneIcon} alt=""/>
+            <label className="item__label">在线客服</label>
+            <img className="item__arrow" src={arrowIcon} alt="" />
+          </Link>
+          <Link className="item" to="/developing">
+            <img className="item__icon" src={messageIcon} alt=""/>
+            <label className="item__label">意见反馈</label>
+            <img className="item__arrow" src={arrowIcon} alt="" />
+          </Link>       
+          <Link className="item" to="/setting">
+            <img className="item__icon" src={settingIcon} alt=""/>
+            <label className="item__label">设置</label>
+            <img className="item__arrow" src={arrowIcon} alt="" />
+          </Link>
+        </section>
 
         <div className="u_m_xxx">
           <button className="btn btn-secondary" onClick={this.handleClick}>退出</button>
         </div>
 
-        <FullLayer show={this.state.showRuler} handleClose={this.handleToggleRuler} close>
+        <FullLayer show={this.state.show} handleClose={this.handleToggle} close>
           <div style={{padding: '15px 15px 70px 15px'}}>
             <ol className="ruler">
               <li>
@@ -210,7 +193,7 @@ class Me extends Component {
           </div>
           <div className="fixed-bottom">
             <div className="u_m_xxx">
-              <button className="btn btn-secondary" onClick={this.handleToggleRuler}>关闭</button>
+              <button className="btn btn-secondary" onClick={this.handleToggle}>关闭</button>
             </div>
           </div>          
         </FullLayer>

@@ -13,14 +13,12 @@ import Page from './styled'
 
 const Content = ({loading, items, handleClick}) => {
   if(loading) {
-    return <SkeletonPlaceholder count={3} />
+    return <SkeletonPlaceholder count={3}/>
   }
-
   if(!items.length) {
-    return <EmptyArrayPlaceholder />
+    return <EmptyArrayPlaceholder/>
   }
-
-  return <List items={items} handleClick={handleClick} />
+  return <List items={items} handleClick={handleClick}/>
 }
 
 class BankcardList extends Component {
@@ -76,14 +74,14 @@ class BankcardList extends Component {
 
   render() {
     const {loading, items} = this.state
+
     return (
       <Page>
+        <Helmet title="银行卡/信用卡列表"/>
 
-        <Helmet defaultTitle="沃银企服" title="银行卡/信用卡列表"/>
-
-        <div className="main">
+        <main>
           <Content loading={loading} items={items} handleClick={this.handleDelete} />
-        </div>
+        </main>
 
         <div className="fixed-bottom">
           <div className="u_m_xxx">

@@ -1,14 +1,16 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import weui from 'weui.js'
+import axios from 'axios'
 import {Helmet} from "react-helmet"
 
 import config from '@/config'
-import {getUserInfo, getBankcardList, redeemIntegral, getRedeemFee, getCodeForWithdraw} from '@/api'
 import util from '@/util'
+import {getUserInfo, getBankcardList, redeemIntegral, getRedeemFee, getCodeForWithdraw} from '@/api'
 
 import Backhome from '@/components/Backhome'
 import FullLayer from '@/components/FullLayer'
+import BankCard from './BankCard'
 import Page from './styled'
 
 import moreIcon from '@/asset/images/icon/more.png'
@@ -20,18 +22,6 @@ function filterBankCard(items, id) {
   return result && result.length && result[0]
 }
 
-const BankcardLoading = () => {
-  return (
-    <div className="loading">
-      <div className="loading__head"></div>
-      <div className="loading__main">
-        <div className="loading__line" style={{width: '50%', marginBottom: 10}}></div>
-        <div className="loading__line"></div>
-      </div>
-    </div>
-  )
-}
-
 const SendMessageBtn = ({flag, interval, handleClick}) => {
   if(flag) {
     return <button className="btn btn-secondary btn-mini" onClick={handleClick}>获取验证码</button>
@@ -39,44 +29,22 @@ const SendMessageBtn = ({flag, interval, handleClick}) => {
   return <button className="btn btn-secondary btn-mini disable">{interval}秒后重发</button>
 }
 
-const Bankcard = ({data}) => {
-  return (
-    <div className="bankcard">
-      <div className="aside">
-        <img className="icon" src={util.getBankCardLogo(data.bankCode)} alt=""/>
-      </div>
-      <div className="main" style={{marginLeft: 15}}>
-        <p className="name">{data.bankName}(尾号<span className="card">{util.getBankcardLastNum(data.bankCard)}</span>)</p>
-        <p className="text">预计下一工作日到账，实际以银行到账日为准</p>
-      </div>
-    </div>
-  )
-}
-
-const BankcardBox = ({loading, hasCard, data}) => {
-  if(loading) {
-    return <BankcardLoading/>
-  }
-  if(hasCard) {
-    return <Bankcard data={data}/>
-  }
-  return <div className="empty">暂无可用银行卡</div>
-}
-
 const Agreement = ({agreementFlag}) => {
   return <img className="checkbox" src={agreementFlag ? checkedIcon : uncheckedIcon} alt="" />
 }
+
+const CancelToken = axios.CancelToken
 
 class Redeem extends Component {
   constructor(props) {
     super(props)
 
     this.handleGetCode = this.handleGetCode.bind(this)
-    this.handleClick = this.handleClick.bind(this)
-    this.handleToggle = this.handleToggle.bind(this)
+    this.handleOpenPicker = this.handleOpenPicker.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.handleBlur = this.handleBlur.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleToggle = this.handleToggle.bind(this)
     this.handleToggleAgreement = this.handleToggleAgreement.bind(this)
 
     this.state = {
@@ -108,11 +76,14 @@ class Redeem extends Component {
   }
 
   componentWillUnmount() {
+    this.loadUserInfoSource && this.loadUserInfoSource.cancel('Operation canceled by the user.')
+    this.loadCardListSource && this.loadCardListSource.cancel('Operation canceled by the user.')
   }
 
   async loadUserInfo() {
+    this.loadUserInfoSource = CancelToken.source()
     try {
-      const {data} = await getUserInfo()
+      const {data} = await getUserInfo(null, {cancelToken: this.loadUserInfoSource.token})
       if(data.status === 200) {
         this.setState({
           availableIntegral: Number(data.data[0].balance)
@@ -123,8 +94,9 @@ class Redeem extends Component {
   }
 
   async loadCardList() {
+    this.loadCardListSource = CancelToken.source()
     try {
-      const {data} = await getBankcardList()
+      const {data} = await getBankcardList(null, {cancelToken: this.loadCardListSource.token})
       if(data.status === 200) {
         const cardList = util.filterDepositCardList(data.data)
         this.setState({cardList}, () => {
@@ -211,15 +183,7 @@ class Redeem extends Component {
     })
   }
 
-  handleBlur(e) {
-    this.loadRedeemFee()
-  }
-  
-  handleGetCode() {
-    this.loadCode()
-  }
-
-  handleClick(e) {
+  handleOpenPicker(e) {
     if(!this.state.cardList.length) {
       weui.alert('暂无可用')
       return false
@@ -243,6 +207,14 @@ class Redeem extends Component {
     this.setState({showAgreement: !this.state.showAgreement})
   }
 
+  handleBlur(e) {
+    this.loadRedeemFee()
+  }
+  
+  handleGetCode() {
+    this.loadCode()
+  }
+
   handleChange(e) {
     const name = e.target.name
     const value = name === 'integral' ? Number(e.target.value) : e.target.value    
@@ -250,6 +222,14 @@ class Redeem extends Component {
   }
 
   verify() {
+    if(!this.state.hasCard) {
+      weui.alert('暂无可用银行卡')
+      return
+    }    
+    if(!this.state.integral) {
+      weui.alert('请输入积分')
+      return
+    }    
     if(this.state.integral < config.redeem.MIN_INTEGRAL) {
       weui.alert(`最少输入${config.redeem.MIN_INTEGRAL}积分`)
       return
@@ -262,16 +242,12 @@ class Redeem extends Component {
       weui.alert(`可用积分不足`)
       return
     }
-    if(!this.state.hasCard) {
-      weui.alert('暂无可用银行卡')
-      return
-    }
     if(!this.state.code) {
       weui.alert('请输入短信码')
       return
     }
     if(!this.state.agreementFlag) {
-      weui.alert('请勾选代卖协议')
+      weui.alert('请勾选积分代卖协议')
       return
     }
     return true
@@ -281,12 +257,13 @@ class Redeem extends Component {
     if(!this.verify()) {
       return
     }
+
     util.paymentConfirm({
-      title: '代卖',
+      title: '积分代卖',
       amount: this.state.integral,
       useable: this.state.availableIntegral,
-      callback: (e, inputElem) => {
-        if(!inputElem.value) {return false}
+      callback: (e, input) => {
+        if(!input.value.trim()) {return false}
 
         const card = filterBankCard(this.state.cardList, this.state.id)
         const params = {
@@ -296,9 +273,9 @@ class Redeem extends Component {
           cardPhoneNo: card.userPhoneNo,
           bankCard: card.bankCard,
 
-          amount: this.state.integral,
           code: this.state.code,
-          tradPwd: inputElem.value
+          tradPwd: input.value,
+          amount: this.state.integral
         }        
         this.doSubmit(params)
       }
@@ -309,6 +286,7 @@ class Redeem extends Component {
     const {
       id,
       loading, 
+      cardList,
       agreementFlag, 
       hasCard, 
       getCodeFlag
@@ -318,20 +296,17 @@ class Redeem extends Component {
 
     return (
       <Page>
-        <Helmet defaultTitle="沃银企服" title="积分代卖"/>
+        <Helmet title="积分代卖"/>
+
         <div className="u_mb_xxx">
           <div className="trigger-bar">
             <label>选择银行卡</label>
-            <img className="icon" onClick={this.handleClick} src={moreIcon} alt="箭头" />
+            <img className="icon" onClick={this.handleOpenPicker} src={moreIcon} alt="箭头" />
           </div>
         </div>
 
         <div className="u_mb_xxx">
-          <BankcardBox 
-            loading={loading} 
-            hasCard={hasCard} 
-            data={filterBankCard(this.state.cardList, id)}
-          />
+          <BankCard loading={loading} hasCard={hasCard} data={filterBankCard(cardList, id)}/>
         </div>
 
         <div className="u_mb_x">
@@ -364,7 +339,7 @@ class Redeem extends Component {
                 name="code"
                 value={this.state.code} 
                 onChange={this.handleChange} 
-                placeholder="请输入短信验证码"
+                placeholder="请输入短信码"
               />
             </div>
             <div className="group__foot">
@@ -376,7 +351,7 @@ class Redeem extends Component {
         <div className="u_mb_xxx">
           <div className="small-text flex-y-center" onClick={this.handleToggle}>
             <Agreement agreementFlag={agreementFlag} />
-            同意用户 <span onClick={this.handleToggleAgreement} style={{color: '#007AFF'}}>《代卖规则协议》</span>
+            同意用户 <span onClick={this.handleToggleAgreement} style={{color: '#007AFF'}}>《积分代卖规则协议》</span>
           </div>
         </div>
 

@@ -4,66 +4,15 @@ import axios from 'axios'
 import {Helmet} from "react-helmet"
 
 import config from '@/config'
-import {getUserInfo, getSubProducts, rechargeVoucher} from '@/api'
 import util from '@/util'
+import {getUserInfo, getSubProducts, rechargeVoucher} from '@/api'
 
 import Backhome from '@/components/Backhome'
 import Opeator from '@/components/Operator'
 import List from './List'
 import Page from './styled'
 
-import appleIcon from '@/asset/images/ecard/apple.png'
-import bgyIcon from '@/asset/images/ecard/bgy.png'
-import bskIcon from '@/asset/images/ecard/bsk.png'
-import dqIcon from '@/asset/images/ecard/dq.png'
-import hgdsIcon from '@/asset/images/ecard/hgds.png'
-import jdIcon from '@/asset/images/ecard/jd.png'
-import kdjIcon from '@/asset/images/ecard/kdj.png'
-import qcsIcon from '@/asset/images/ecard/qcs.png'
-import snIcon from '@/asset/images/ecard/sn.png'
-import tmIcon from '@/asset/images/ecard/tm.png'
-import wnIcon from '@/asset/images/ecard/wn.png'
-import xbkIcon from '@/asset/images/ecard/xbk.png'
-import xcIcon from '@/asset/images/ecard/xc.png'
-import ymxIcon from '@/asset/images/ecard/ymx.png'
-
-const ICON_SCHEAM = {
-  '20': tmIcon,
-  '2': snIcon,
-  '3': ymxIcon,
-  '19': jdIcon,
-  '5': xcIcon,
-  '6': xcIcon,
-  '7': hgdsIcon,
-  '8': kdjIcon,
-  '9': bskIcon,
-  '10': xbkIcon,
-  '11': dqIcon,
-  '12': bgyIcon,
-  '13': appleIcon,
-  '14': wnIcon,
-  '15': qcsIcon
-}
-
 const CancelToken = axios.CancelToken
-
-const TITLE_SCHEAM = {
-  '20': '天猫',
-  '2': '京东E卡',
-  '3': '京东E卡',
-  '19': '京东E卡',
-  '5': '京东E卡',
-  '6': '京东E卡',
-  '7': '京东E卡',
-  '8': '京东E卡',
-  '9': '京东E卡',
-  '10': '京东E卡',
-  '11': '京东E卡',
-  '12': '京东E卡',
-  '13': '京东E卡',
-  '14': '京东E卡',
-  '15': '京东E卡'
-}
 
 class RechargeVoucher extends Component {
   constructor(props) {
@@ -175,13 +124,13 @@ class RechargeVoucher extends Component {
       title: '兑换卡券',
       useable: this.state.availableIntegral,
       amount: this.getTotalIntegral(),
-      callback: (e, inputElem) => {
-        if(!inputElem.value) {return false}
+      callback: (e, input) => {
+        if(!input.value.trim()) {return false}
 
         const params = {
           productId: this.state.productId,
           amount: this.state.count,
-          tranPwd: inputElem.value
+          tranPwd: input.value
         }        
         this.doSubmit(params)
       }
@@ -197,8 +146,8 @@ class RechargeVoucher extends Component {
 
         <header>
           <div className="box">
-            <img className="logo" src={ICON_SCHEAM[this.props.match.params.id]} alt=""/>
-            <h1>{TITLE_SCHEAM[this.props.match.params.id]}</h1>
+            <img className="logo" src={util.getVoucherLogo(this.props.match.params.id)} alt=""/>
+            <h1>{this.props.location.state.name}</h1>
           </div>
           <div className="flex-space-between-center">
             <span>兑换数量(最多可购{config.ecard.MAX_COUNT}张)</span>

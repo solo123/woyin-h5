@@ -35,12 +35,6 @@ class AddBankcard extends Component {
     }
   }
 
-  componentDidMount() {
-  }
-
-  componentWillUnmount() {
-  }
-
   async doSubmit(params) {
     const loading = weui.loading('处理中')
     try {
@@ -101,6 +95,7 @@ class AddBankcard extends Component {
     if(!this.verify()) {
       return
     }
+    
     const params = {
       cardPhoneNo: this.state.phone,
       bankCard: this.state.cardNo,

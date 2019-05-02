@@ -150,7 +150,7 @@ Mock.mock(/getVideoProducts/, 'get', function (options) {
   const len = Random.natural(0, 10)
   const items = []
 
-  for(let i = 0; i < len; i++) {
+  for (let i = 0; i < len; i++) {
     items.push({
       productId: uuid(),
       buyPrice: Random.natural(1000, 100000),
@@ -160,5 +160,192 @@ Mock.mock(/getVideoProducts/, 'get', function (options) {
   return {
     code: '1',
     items: items
+  }
+})
+
+// 话费充值产品列表
+Mock.mock(/getRechargePhoneProductsByType/, 'get', function (options) {
+  // return {
+  //   code: '1',
+  //   items: []
+  // }
+  var result = util.parseUrl(options.url, 'type');
+  switch (result.type) {
+    case '1':
+      return {
+        code: '1',
+        items: [{
+            id: uuid(),
+            integral: 1060,
+            money: 10
+          },
+          {
+            id: uuid(),
+            integral: 2120,
+            money: 20
+          },
+          {
+            id: uuid(),
+            integral: 3180,
+            money: 30
+          },
+          {
+            id: uuid(),
+            integral: 5300,
+            money: 50
+          },
+          {
+            id: uuid(),
+            integral: 10600,
+            money: 100
+          },
+          {
+            id: uuid(),
+            integral: 21200,
+            money: 200
+          },
+          {
+            id: uuid(),
+            integral: 31800,
+            money: 300
+          },
+          {
+            id: uuid(),
+            integral: 53000,
+            money: 500
+          }
+        ]
+      }
+    case '2':
+      return {
+        code: '1',
+        items: [{
+            id: uuid(),
+            integral: 1060,
+            money: 10
+          },
+          {
+            id: uuid(),
+            integral: 2120,
+            money: 20
+          },
+          {
+            id: uuid(),
+            integral: 3180,
+            money: 30
+          },
+          {
+            id: uuid(),
+            integral: 5300,
+            money: 50
+          },
+          {
+            id: uuid(),
+            integral: 10600,
+            money: 100
+          }
+        ]
+      }
+    case '3':
+      return {
+        code: '1',
+        items: []
+      }
+    default:
+      return {
+        code: '1',
+        items: []
+      }
+  }
+});
+
+// 流量充值产品列表
+Mock.mock(/getRechargeFlowProductsByType/, 'get', function (options) {
+  var result = util.parseUrl(options.url, 'type');
+  switch (result.type) {
+    case '1':
+      return [{
+          id: uuid(),
+          integral: 318,
+          money: 10
+        },
+        {
+          id: uuid(),
+          integral: 1060,
+          money: 100
+        },
+        {
+          id: uuid(),
+          integral: 2120,
+          money: 300
+        },
+        {
+          id: uuid(),
+          integral: 3180,
+          money: 500
+        },
+        {
+          id: uuid(),
+          integral: 0,
+          money: 1024
+        },
+        {
+          id: uuid(),
+          integral: 5300,
+          money: 2048
+        },
+        {
+          id: uuid(),
+          integral: 7420,
+          money: 3072
+        }
+      ]
+    case '2':
+      return [{
+          id: uuid(),
+          integral: 318,
+          money: 10
+        },
+        {
+          id: uuid(),
+          integral: 1060,
+          money: 100
+        },
+        {
+          id: uuid(),
+          integral: 2120,
+          money: 300
+        },
+        {
+          id: uuid(),
+          integral: 3180,
+          money: 500
+        },
+        {
+          id: uuid(),
+          integral: 0,
+          money: 1024
+        }
+      ]
+    case '3':
+      return []
+    default:
+      return []
+  }
+});
+
+// 话费充值
+Mock.mock(/rechargePhone/, 'get', function (options) {
+  return {
+    code: '1',
+    msg: '充值成功'
+  }
+})
+
+// 流量充值
+Mock.mock(/rechargeFlow/, 'get', function (options) {
+  return {
+    code: '1',
+    msg: '充值成功'
   }
 })

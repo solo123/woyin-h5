@@ -3,6 +3,7 @@ import {Helmet} from "react-helmet"
 import {Link} from "react-router-dom"
 
 import {getIntegralList} from '@/api'
+
 import Backhome from '@/components/Backhome'
 import SkeletonPlaceholder from '@/components/SkeletonPlaceholder'
 import List from './List'
@@ -73,7 +74,7 @@ export default class extends Component {
           }
         </main>
 
-        <Backhome />
+        <Backhome/>
       </Page>
     )
   }

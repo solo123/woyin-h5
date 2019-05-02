@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 export default styled.div`
   margin-bottom: 70px;
-  .main{
+  main{
     padding: 15px 15px 0 15px;
   }
   .card{
@@ -44,10 +44,5 @@ export default styled.div`
       word-break: break-all;
       font-family: industry;
     }
-  }
-  .fixed-bottom{
-    position: fixed;
-    width: 100%;
-    bottom: 0;
   }
 `
