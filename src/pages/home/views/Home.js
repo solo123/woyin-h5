@@ -3,27 +3,35 @@ import {Helmet} from "react-helmet"
 import {Link, withRouter} from "react-router-dom"
 import {connect} from 'react-redux'
 
-import {getUserInfo, getProducts} from '@/api'
+import {getUserInfo, _getService} from '@/api'
+
 import Menu from '@/components/Menu'
-import Store from './Store'
 import Service from './Service'
 import Product from './Product'
 import Page from './styled'
 
 import banner from '@/asset/images/banner.jpg'
 import arrowRightWhiteIcon from '@/asset/images/icon/arrow_right_white.svg'
+import jd from '@/asset/images/home/jd.png'
+import yx from '@/asset/images/home/yx.png'
+import zy from '@/asset/images/home/zy.png'
 
 const Auth = ({isAuthenticated, userName, userPhoneNo, merchantName}) => {
   if(isAuthenticated) {
     return (
-      <div className="content">
-        <div>{userName} {userPhoneNo}</div>
-        <small>所属商户：{merchantName}</small>
-      </div>
+      <Link className="content link" to="/integral">
+        <div>
+          <p>{userName} {userPhoneNo}</p>
+          <small>所属商户：{merchantName}</small>
+        </div>
+        <div>
+          <img src={arrowRightWhiteIcon} alt=""/>
+        </div>
+      </Link>
     )
   }
   return (
-    <div className="content">
+    <div>
       <Link className="link" to="/login">
         <span>登录查看</span><img src={arrowRightWhiteIcon} alt=""/>
       </Link>
@@ -75,7 +83,7 @@ class Home extends Component {
 
   async loadProductList() {
     try {
-      const {data} = await getProducts()
+      const {data} = await _getService()
       if(data.status === 200) {
         this.setState({menus: data.data})
       }
@@ -123,9 +131,40 @@ class Home extends Component {
             <h2 className="title">商城专区</h2>
           </div>
           <div className="body">
-            <Store />
+            <div className="entry">
+              <div className="main" style={{marginBottom: 10}}>
+                <div className="cell">
+                  <Link to="/store-jd">
+                    <img src={jd} alt=""/>
+                    <div className="content">
+                      <h2>京东商城</h2>
+                      <p>售前售后无忧</p>
+                    </div>
+                  </Link>
+                </div>
+                <div className="cell">
+                  <Link to="/developing">
+                    <img src={yx} alt=""/>
+                    <div className="content">
+                      <h2>网易严选</h2>
+                      <p>开启品质生活</p>
+                    </div>
+                  </Link>
+                </div>
+              </div>
+              <div className="aside">
+                <Link to="/developing">
+                  <img src={zy} alt=""/>
+                  <div className="content">
+                    <h2>自营商城</h2>
+                    <p>产品丰富多样</p>
+                  </div>
+                </Link>
+              </div>
+            </div>
           </div>
         </div>
+        
         <div className="section">
           <div className="head">
             <h2 className="title">热卖商品</h2>

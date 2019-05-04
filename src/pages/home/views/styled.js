@@ -2,31 +2,75 @@ import styled from 'styled-components'
 
 export default styled.div`
   padding-bottom: 50px;
+
   header{
     display: flex;
     align-items: center;
     color: #fff;
-    padding: 0 20px;
-    height: 88px;
+    padding: 20px;
     background: linear-gradient(to right, #ff5c4e, #f22d3a);
     font-size: 16px;
+    .content{
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
     small{
       font-size: 12px;
     }
+    img{
+      width: 25px;
+      height: 25px;
+    } 
+  
     .link{
       display: flex;
       align-items: center;
       color: #fff;
-      img{
-        width: 20px;
-        height: 20px;
-      }
-    }
+    }       
   }
+  
   .banner-box{
     padding: 0 10px 10px 10px;
     background: #fff;
+  }  
+
+  .entry{
+    margin: 0 10px;
+    h2{
+      font-size: 16px;
+      font-weight: bold;
+    }
+    .aside{
+      position: relative;
+      .content{
+        position: absolute;
+        top: 20%;
+        left: 0;
+        right: 0;
+        color: #fff;
+        text-align: center;
+      }
+    }
+    .main{
+      display: flex;
+    }
+    .cell{
+      position: relative;
+      flex: 1;
+      & + .cell{
+        margin-left: 10px;
+      }
+      .content{
+        position: absolute;
+        top: 15%;
+        left: 10%;
+        color: #fff;
+      }
+    }
   }
+
   .section{
     margin-bottom: 10px;
     .head{
@@ -40,12 +84,7 @@ export default styled.div`
       padding-bottom: 10px;
     }
   }
-  .fixed-bottom{
-    position: fixed;
-    left: 0;
-    right: 0;
-    bottom: 0;
-  }
+
   .box{
     .item{
       text-align: center;
@@ -71,6 +110,7 @@ export default styled.div`
       }
     }      
   }
+
   .box__head{
     display: flex;
     justify-content: center;

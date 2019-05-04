@@ -104,6 +104,19 @@ export const getProducts = (productClassifyId = '', config = {}) => {
   return get(`${BASE}product/list`, {productClassifyId}, config)
 }
 
+// 获取服务列表
+export const _getService = (config = {}) => {
+  return get(`${BASE}product/list`, {}, config)
+}
+
+export const _getOperators = (productClassifyId = '', config = {}) => {
+  return get(`${BASE}product/list`, {productClassifyId}, config)  
+}
+
+export const _getProducts = (productClassifyId = '', config = {}) => {
+  return get(`${BASE}api/product/subList`, {productClassifyId}, config)  
+}
+
 // 获取商品列表
 export const getSubProducts = (id = '', config = {}) => {
   return get(`${BASE}api/product/subList`, {productClassifyId: id}, config)

@@ -70,7 +70,7 @@ class Product extends Component {
   }
 
   componentDidMount() {
-    this.loadHotSell()
+    // this.loadHotSell()
   }
 
   async loadHotSell() {

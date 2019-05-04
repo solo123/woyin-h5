@@ -11,6 +11,43 @@ Mock.setup({
   timeout: 500
 });
 
+// 获取服务列表
+Mock.mock(/product\/list/, 'get', function (options) {
+  return {
+    "status": 200,
+    "data": [{
+        "productClassifyName": "话费充值",
+        "productClassifyId": "1"
+      },
+      {
+        "productClassifyName": "流量充值",
+        "productClassifyId": "5"
+      },
+      {
+        "productClassifyName": "油卡充值",
+        "productClassifyId": "9"
+      },
+      {
+        "productClassifyName": "Q币充值",
+        "productClassifyId": "12"
+      },
+      {
+        "productClassifyName": "视频VIP",
+        "productClassifyId": "15"
+      },
+      {
+        "productClassifyName": "电子卡券",
+        "productClassifyId": "18"
+      },
+      {
+        "productClassifyName": "信用卡还款",
+        "productClassifyId": "22"
+      }
+    ],
+    "msg": "SUCCESS"
+  }
+})
+
 // 返回商品分类
 Mock.mock(/getProductCateList/, 'get', function (options) {
   return [{
@@ -919,33 +956,34 @@ Mock.mock(/getBankCardList/, 'get', function (options) {
   return {
     status: 200,
     data: [{
-      "id": 1,
-      "userPhoneNo": "15999685974",
-      "roleType": 2,
-      "bankCode": "SZPAB",
-      "bankCard": "6226090216710646",
-      "bankName": "中国银行信用卡",
-      "bankCardType": 2,
-      "status": 1,
-      "cardHoldName": "蒋磊",
-      "idNo": "431122191111111111",
-      "updateTime": 1553247261,
-      "createTime": 1553247261
-    },
-    {
-      "id": 2,
-      "userPhoneNo": "15014095291",
-      "roleType": 2,
-      "bankCode": "CCB",
-      "bankCard": "6227007200230197008",
-      "bankName": "建设银行",
-      "bankCardType": 1,
-      "status": 1,
-      "cardHoldName": "高强",
-      "idNo": "421381199007231333",
-      "updateTime": 1553247261,
-      "createTime": 1553247261
-    }]
+        "id": 1,
+        "userPhoneNo": "15999685974",
+        "roleType": 2,
+        "bankCode": "SZPAB",
+        "bankCard": "6226090216710646",
+        "bankName": "中国银行信用卡",
+        "bankCardType": 2,
+        "status": 1,
+        "cardHoldName": "蒋磊",
+        "idNo": "431122191111111111",
+        "updateTime": 1553247261,
+        "createTime": 1553247261
+      },
+      {
+        "id": 2,
+        "userPhoneNo": "15014095291",
+        "roleType": 2,
+        "bankCode": "CCB",
+        "bankCard": "6227007200230197008",
+        "bankName": "建设银行",
+        "bankCardType": 1,
+        "status": 1,
+        "cardHoldName": "高强",
+        "idNo": "421381199007231333",
+        "updateTime": 1553247261,
+        "createTime": 1553247261
+      }
+    ]
   }
 })
 Mock.mock(/bankCard/, 'delete', function (options) {
