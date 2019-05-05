@@ -338,7 +338,7 @@ export function getIntegralList(id, config) {
 
 // 京东相关
 
-export function getSellingGoods() {
+export function getHotSell() {
   if(process.env.NODE_ENV === 'development') {
     BASE = '/'
   }else if(process.env.NODE_ENV === 'production') {

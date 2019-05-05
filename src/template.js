@@ -58,3 +58,10 @@ function List({items}) {
 }
 
 export default List
+
+
+// 操作结果
+
+import {replace} from '@/services/redirect'
+
+replace('/result', {type: 'success', title: data.msg})

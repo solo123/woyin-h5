@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {Link} from "react-router-dom"
 
-import {getSellingGoods} from '@/api'
+import {getHotSell} from '@/api'
 import SkeletonPlaceholder from '@/components/SkeletonPlaceholder'
 
 import dz from '@/asset/images/home/dz.png'
@@ -70,12 +70,12 @@ class Product extends Component {
   }
 
   componentDidMount() {
-    // this.loadHotSell()
+    this.loadHotSell()
   }
 
   async loadHotSell() {
     try {
-      const {data} = await getSellingGoods()
+      const {data} = await getHotSell()
       if(data.status === 200) {
         this.setState({
           items: data.data.host

@@ -3,8 +3,9 @@ import axios from 'axios'
 import weui from 'weui.js'
 import {Helmet} from "react-helmet"
 
-import {getUserInfo, getSubProducts, getProducts, rechargePhone} from '@/api'
 import util from '@/util'
+import {replace} from '@/services/redirect'
+import {getUserInfo, getSubProducts, getProducts, rechargePhone} from '@/api'
 
 import ProductSkeleton from '@/components/ProductSkeleton'
 import EmptyArrayPlaceholder from '@/components/EmptyArrayPlaceholder'
@@ -111,7 +112,7 @@ export default class extends Component {
     try {
       const {data} = await rechargePhone(params)
       if(data.status === 200) {
-        weui.alert(data.msg)
+        replace('/result', {type: 'success', title: data.msg})
       }else if(data.status === 1017) {
         util.confirmRetry('密码错误', () => {
           this.retryTransPswd()
@@ -151,6 +152,10 @@ export default class extends Component {
   verify() {
     if(!this.state.phone) {
       weui.alert('请输入手机号')
+      return
+    }
+    if(this.state.phone.length !== 11) {
+      weui.alert('请输入合法的手机号')
       return
     }
     if(!this.state.productId) {

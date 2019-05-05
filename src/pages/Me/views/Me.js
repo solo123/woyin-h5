@@ -121,19 +121,19 @@ class Me extends Component {
         <div className="u_mb_xx">
           <div className="service">
             <div className="service__cell">
-              <Link to="/wait-send-goods">
+              <Link to={{pathname: '/order-goods', state: {type: 1}}}>
                 <img className="service__icon" src={car2Icon} alt=""/>
                 待发货
               </Link>
             </div>
             <div className="service__cell">
-              <Link to="/wait-receiv-goods">
+              <Link to={{pathname: '/order-goods', state: {type: 2}}}>
                 <img className="service__icon" src={car3Icon} alt=""/>
                 待收货
               </Link>
             </div>
             <div className="service__cell">
-              <Link to="/order-entry">
+              <Link to={{pathname: '/order-goods', state: {type: 0}}}>
                 <img className="service__icon" src={orderIcon} alt=""/>
                 全部订单
               </Link>
@@ -142,6 +142,11 @@ class Me extends Component {
         </div>
 
         <section>
+          <Link className="item" to="/order-charge">
+            <img className="item__icon" src={headphoneIcon} alt=""/>
+            <label className="item__label">服务订单</label>
+            <img className="item__arrow" src={arrowIcon} alt="" />
+          </Link>
           <Link className="item" to="/developing">
             <img className="item__icon" src={headphoneIcon} alt=""/>
             <label className="item__label">在线客服</label>

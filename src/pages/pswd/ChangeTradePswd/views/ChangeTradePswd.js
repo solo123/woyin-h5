@@ -3,8 +3,9 @@ import weui from 'weui.js'
 import {Helmet} from "react-helmet"
 
 import config from '@/config'
+import {replace} from '@/services/redirect'
 import {changeTradePswd} from '@/api'
-import { push } from '@/services/redirect'
+
 import closeIcon from '@/asset/images/icon/close.png'
 import showIcon from '@/asset/images/icon/show.png'
 import hideIcon from '@/asset/images/icon/hide.png'
@@ -53,9 +54,7 @@ export default class extends Component {
     try {
       const {data} = await changeTradePswd(params)
       if(data.status === 200) {
-        weui.alert(data.msg, () => {
-          push('/')
-        })
+        replace('/result', {type: 'success', title: data.msg})
       }else {
         weui.alert(data.msg)
       }

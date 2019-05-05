@@ -5,6 +5,7 @@ import {Helmet} from "react-helmet"
 
 import config from '@/config'
 import util from '@/util'
+import {replace} from '@/services/redirect'
 import {getUserInfo, getSubProducts, rechargeVoucher} from '@/api'
 
 import Backhome from '@/components/Backhome'
@@ -72,7 +73,7 @@ class RechargeVoucher extends Component {
     try {
       const {data} = await rechargeVoucher(params, {cancelToken: this.submitSource.token})
       if(data.status === 200) {
-        weui.alert(data.msg)
+        replace('/result', {type: 'success', title: data.msg})
       }else if(data.status === 1017) {
         util.confirmRetry('密码错误', () => {
           this.retryTransPswd()

@@ -4,7 +4,7 @@ import {Helmet} from "react-helmet"
 
 import config from '@/config'
 import {getCodeForFindPswd, findLoginPswd} from '@/api'
-import {push} from '@/services/redirect'
+import {replace} from '@/services/redirect'
 
 import Backhome from '@/components/Backhome'
 import Page from './styled'
@@ -73,7 +73,7 @@ export default class extends Component {
       const {data} = await findLoginPswd(params)
       if(data.status === 200) {
         weui.alert(data.msg, () => {
-          push('/login')
+          replace('/login')
         })
       }else {
         weui.alert(data.msg)
@@ -101,6 +101,10 @@ export default class extends Component {
       weui.alert('请输入手机号')
       return
     }
+    if(this.state.phone.length !== 11) {
+      weui.alert('请输入合法的手机号')
+      return
+    }    
     this.loadCode()
   }
 
@@ -125,6 +129,10 @@ export default class extends Component {
       weui.alert('请输入登录手机号')
       return false
     }
+    if(this.state.phone.length !== 11) {
+      weui.alert('请输入合法的手机号')
+      return
+    }    
     if(!this.state.newPswd) {
       weui.alert('请输入新密码')
       return false

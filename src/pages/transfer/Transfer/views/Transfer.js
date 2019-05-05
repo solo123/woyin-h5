@@ -4,7 +4,9 @@ import {Helmet} from "react-helmet"
 import axios from 'axios'
 
 import config from '@/config'
+import {replace} from '@/services/redirect'
 import {getUserInfo, integralTransfer} from '@/api'
+
 import Backhome from '@/components/Backhome'
 import Page from './styled'
 
@@ -70,7 +72,7 @@ class Transfer extends Component {
     try {
       const {data} = await integralTransfer(params)
       if(data.status === 200) {
-        weui.alert('转赠成功')
+        replace('/result', {type: 'success', title: data.msg})
       }else {
         weui.alert(data.msg)
       }

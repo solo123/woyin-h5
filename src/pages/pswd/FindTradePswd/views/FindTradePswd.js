@@ -4,8 +4,8 @@ import {Helmet} from "react-helmet"
 import {connect} from 'react-redux'
 
 import config from '@/config'
+import {replace} from '@/services/redirect'
 import {getCodeForFindTradePswd, findTradePswd} from '@/api'
-import {push} from '@/services/redirect'
 
 import Backhome from '@/components/Backhome'
 import Page from './styled'
@@ -69,10 +69,7 @@ class FindTradePswd extends Component {
     try {
       const {data} = await findTradePswd(params)
       if(data.status === 200) {
-        weui.alert(data.msg, () => {
-          // 新页面提示
-          push('/')
-        })
+        replace('/result', {type: 'success', title: data.msg})
       }else {
         weui.alert(data.msg)
       }

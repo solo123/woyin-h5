@@ -5,13 +5,13 @@ import weui from 'weui.js'
 import {Helmet} from "react-helmet"
 
 import config from '@/config'
-import {resetAllPswd} from '@/api'
 import {replace} from '@/services/redirect'
+import {resetAllPswd} from '@/api'
 
-import Page from './styled'
 import Backhome from '@/components/Backhome'
 import LoginPswd from './LoginPswd'
 import TradePswd from './TradePswd'
+import Page from './styled'
 
 class ResetAllPswd extends Component {
   constructor(props) {
@@ -50,8 +50,6 @@ class ResetAllPswd extends Component {
       confNewLoginPswdClean: false,
       confNewLoginPswdType: 'password',
 
-
-
       oldTradePswd: '',
       oldTradePswdClean: false,
       oldTradePswdType: 'password',
@@ -71,10 +69,8 @@ class ResetAllPswd extends Component {
     try {
       const {data} = await resetAllPswd(params)
       if(data.status === 200) {
-        weui.alert(data.msg, () => {
-          this.props.resetAllPswd()
-          replace('/')
-        })
+        this.props.resetAllPswd()
+        replace('/result', {type: 'success', title: data.msg})
       }else {
         weui.alert(data.msg)
       }

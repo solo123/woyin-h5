@@ -3,8 +3,9 @@ import weui from 'weui.js'
 import axios from 'axios'
 import {Helmet} from "react-helmet"
 
-import {getUserInfo, getProducts, getSubProducts, rechargeVideo} from '@/api'
 import util from '@/util'
+import {replace} from '@/services/redirect'
+import {getUserInfo, getProducts, getSubProducts, rechargeVideo} from '@/api'
 
 import Backhome from '@/components/Backhome'
 import OperatorList from './OperatorList'
@@ -97,7 +98,7 @@ class RechargeVideo extends Component {
     try {
       const {data} = await rechargeVideo(params, {cancelToken: this.submitSource.token})
       if(data.status === 200) {
-        weui.alert(data.msg)
+        replace('/result', {type: 'success', title: data.msg})
       }else if(data.status === 1017) {
         util.confirmRetry('密码错误', () => {
           this.retryTransPswd()

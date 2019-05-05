@@ -57,24 +57,24 @@ const AsyncVoucherRecord = Loadable({
   loader: () => import('./pages/voucher/VoucherRecord').then(({view}) => view),
   loading: LoadingComponent
 })
-const AsyncOrderEntry = Loadable({
-  loader: () => import('./pages/order/OrderEntry').then(({view}) => view),
+const AsyncOrderCharge = Loadable({
+  loader: () => import('./pages/order/OrderCharge').then(({view}) => view),
   loading: LoadingComponent
 })
-const AsyncOrderList = Loadable({
-  loader: () => import('./pages/order/OrderList').then(({view}) => view),
+const AsyncOrderChargeDetail = Loadable({
+  loader: () => import('./pages/order/OrderChargeDetail').then(({view}) => view),
   loading: LoadingComponent
 })
-const AsyncOrderDetail = Loadable({
-  loader: () => import('./pages/order/OrderDetail').then(({view}) => view),
+const AsyncOrderGoods = Loadable({ 
+  loader: () => import('./pages/order/OrderGoods').then(({view}) => view), 
   loading: LoadingComponent
 })
-const AsyncStoreList = Loadable({
-  loader: () => import('./pages/order/StoreList').then(({view}) => view),
+const AsyncOrderGoodsDetail = Loadable({
+  loader: () => import('./pages/order/OrderGoodsDetail').then(({view}) => view),
   loading: LoadingComponent
 })
-const AsyncOrderStore = Loadable({
-  loader: () => import('./pages/order/OrderStore').then(({view}) => view),
+const AsyncOrderGoodsTrack = Loadable({ 
+  loader: () => import('./pages/order/OrderGoodsTrack').then(({view}) => view), 
   loading: LoadingComponent
 })
 const AsyncNotFound = Loadable({
@@ -108,7 +108,7 @@ const AsyncTransferRecord = Loadable({
 const AsyncHome = Loadable({ 
   loader: () => import('./pages/Home').then(({view}) => view), 
   loading: LoadingComponent
-});
+})
 const AsyncFindLoginPswd = Loadable({ 
   loader: () => import('./pages/pswd/FindLoginPswd').then(({view}) => view), 
   loading: LoadingComponent
@@ -129,7 +129,6 @@ const AsyncResetAllPswd = Loadable({
   loader: () => import('./pages/pswd/ResetAllPswd').then(({view}) => view), 
   loading: LoadingComponent
 })
-
 const AsyncSetting = Loadable({ 
   loader: () => import('./pages/Setting').then(({view}) => view), 
   loading: LoadingComponent
@@ -142,7 +141,6 @@ const AsyncJDHome = Loadable({
   loader: () => import('./pages/jd/Home').then(({view}) => view), 
   loading: LoadingComponent
 })
-
 const AsyncStoreDetail = Loadable({ 
   loader: () => import('./pages/store/StoreDetail').then(({view}) => view), 
   loading: LoadingComponent
@@ -155,21 +153,8 @@ const AsyncStoreSort = Loadable({
   loader: () => import('./pages/store/StoreSort').then(({view}) => view), 
   loading: LoadingComponent
 })
-
 const AsyncResult = Loadable({ 
   loader: () => import('./pages/Result').then(({view}) => view), 
-  loading: LoadingComponent
-})
-const AsyncWaitSendGoods = Loadable({ 
-  loader: () => import('./pages/WaitSendGoods').then(({view}) => view), 
-  loading: LoadingComponent
-})
-const AsyncWaitReceivGoods = Loadable({ 
-  loader: () => import('./pages/WaitReceivGoods').then(({view}) => view), 
-  loading: LoadingComponent
-})
-const AsyncGoodsTrack = Loadable({ 
-  loader: () => import('./pages/GoodsTrack').then(({view}) => view), 
   loading: LoadingComponent
 })
 const AsyncProfile = Loadable({ 
@@ -205,11 +190,14 @@ export default class extends Component {
             <Auth path="/redeem-record" component={AsyncRedeemRecord} />
             <Auth path="/credit-card" component={AsyncCreditCard} />
             <Auth path="/credit-record" component={AsyncCreditRecord} />
-            <Auth path="/order-entry" exact component={AsyncOrderEntry} />
-            <Auth path="/order" exact component={AsyncOrderList} />
-            <Auth path="/order/:id" component={AsyncOrderDetail} />
-            <Auth path="/order-store" exact component={AsyncStoreList} />
-            <Auth path="/order-store/:id" component={AsyncOrderStore} />
+
+            <Auth path="/order-charge" exact component={AsyncOrderCharge} />
+            <Auth path="/order-charge/:id" component={AsyncOrderChargeDetail} />
+          
+            <Auth path="/order-goods" exact component={AsyncOrderGoods} />
+            <Auth path="/order-goods/:id" component={AsyncOrderGoodsDetail} />
+            <Auth path="/order-goods-track/:id" component={AsyncOrderGoodsTrack} />
+
             <Auth path="/recharge-phone" component={AsyncRechargePhone} />
             <Auth path="/recharge-traffic" component={AsyncRechargeTraffic} />
             <Auth path="/recharge-oil" component={AsyncRechargeOil} />
@@ -231,11 +219,8 @@ export default class extends Component {
             <Route path="/find-login-pswd" component={AsyncFindLoginPswd} />
             <Auth path="/find-trade-pswd" component={AsyncFindTradePswd} />
             <Auth path="/change-trade-pswd" component={AsyncChangeTradePswd} />
-            <Auth path="/wait-send-goods" component={AsyncWaitSendGoods} />
-            <Auth path="/wait-receiv-goods" exact component={AsyncWaitReceivGoods} />
-            <Auth path="/wait-receiv-goods/:id" component={AsyncGoodsTrack} />
-            <Auth path="/profile" component={AsyncProfile} />
             <Auth path="/integral" component={AsyncIntegral} />
+            <Auth path="/profile" component={AsyncProfile} />
             <Auth path="/distributing-record" component={AsyncDistributingRecord} />
             <Route path="/developing" component={AsyncDeveloping} />
             <Route render={()=> <AsyncNotFound />}/>

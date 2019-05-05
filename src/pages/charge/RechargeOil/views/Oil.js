@@ -4,6 +4,7 @@ import weui from 'weui.js'
 import {Helmet} from "react-helmet"
 
 import util from '@/util'
+import {replace} from '@/services/redirect'
 import {getUserInfo, getSubProducts, getProducts, rechargeOil} from '@/api'
 
 import ProductSkeleton from '@/components/ProductSkeleton'
@@ -116,7 +117,7 @@ class Oil extends Component {
     try {
       const {data} = await rechargeOil(params)
       if(data.status === 200) {
-        weui.alert(data.msg)
+        replace('/result', {type: 'success', title: data.msg})
       }else if(data.status === 1017) {
         util.confirmRetry('密码错误', () => {
           this.retryTransPswd()

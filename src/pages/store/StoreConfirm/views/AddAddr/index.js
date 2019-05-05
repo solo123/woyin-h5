@@ -176,9 +176,34 @@ class AddAddr extends Component {
       return false
     }
     if(!this.state.phone) {
-      weui.alert('请输入联系电话')
+      weui.alert('请输入手机号')
       return false
     }
+    if(this.state.phone.length !== 11) {
+      weui.alert('请输入合法的手机号')
+      return
+    }
+    if(!this.state.province) {
+      weui.alert('请选择省份')
+      return      
+    }
+    if(!this.state.city) {
+      weui.alert('请选择市级')
+      return      
+    }
+    if(!this.state.county) {
+      weui.alert('请选择地区')
+      return      
+    }
+
+    // 这里需要在所选地址有四级的情况下判断
+    if(this.state.townData.length) {
+      if(!this.state.town) {
+        weui.alert('请选择乡镇')
+        return      
+      }        
+    }
+
     if(!this.state.addr) {
       weui.alert('请输入详细地址')
       return false
@@ -226,7 +251,7 @@ class AddAddr extends Component {
           </div>
         </div>
         <div className="group">
-          <div className="group__head">联系电话</div>
+          <div className="group__head">手机号</div>
           <div className="group__body">
             <input
               type="text" 
@@ -234,7 +259,7 @@ class AddAddr extends Component {
               className="input" 
               value={this.state.phone}
               onChange={this.handleChange}
-              placeholder="请输入联系电话"
+              placeholder="请输入手机号"
             />
           </div>
         </div>

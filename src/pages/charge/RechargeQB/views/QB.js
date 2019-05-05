@@ -4,8 +4,9 @@ import weui from 'weui.js'
 import {createGlobalStyle} from 'styled-components'
 import {Helmet} from "react-helmet"
 
-import {getUserInfo, getProducts, getSubProducts, rechargeQB} from '@/api'
 import util from '@/util'
+import {replace} from '@/services/redirect'
+import {getUserInfo, getProducts, getSubProducts, rechargeQB} from '@/api'
 
 import ProductSkeleton from '@/components/ProductSkeleton'
 import EmptyArrayPlaceholder from '@/components/EmptyArrayPlaceholder'
@@ -121,7 +122,7 @@ export default class extends Component {
     try {
       const {data} = await rechargeQB(params)
       if(data.status === 200) {
-        weui.alert(data.msg)
+        replace('/result', {type: 'success', title: data.msg})
       }else if(data.status === 1017) {
         util.confirmRetry('密码错误', () => {
           this.retryTransPswd()
