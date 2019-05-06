@@ -7,11 +7,11 @@ import {getUserInfo, _getService} from '@/api'
 
 import Menu from '@/components/Menu'
 import Service from './Service'
-import Product from './Product'
 import Page from './styled'
 
 import banner from '@/asset/images/banner.jpg'
 import arrowRightWhiteIcon from '@/asset/images/icon/arrow_right_white.svg'
+import logo from '@/asset/images/home/logo.png'
 import jd from '@/asset/images/home/jd.png'
 import yx from '@/asset/images/home/yx.png'
 import zy from '@/asset/images/home/zy.png'
@@ -45,8 +45,6 @@ class Home extends Component {
 
     this.state = {
       menus: [],
-      items: [],
-      loading: true,
 
       userName: '',
       userPhoneNo: '',
@@ -93,7 +91,7 @@ class Home extends Component {
 
   render() {
     const {isAuthenticated} = this.props
-    const {loading, items, userName, userPhoneNo, merchantName} = this.state
+    const {userName, userPhoneNo, merchantName} = this.state
     return (
       <Page>
         <Helmet title="服务"/>
@@ -118,10 +116,16 @@ class Home extends Component {
             <h2 className="title">消费码</h2>
           </div>
           <div className="body">
-            <div style={{display: 'flex', justifyContent: 'space-around'}}>
-              <div style={{height: 50, width: 80, background: '#eaeaea'}}></div>
-              <div style={{height: 50, width: 80, background: '#eaeaea'}}></div>
-              <div style={{height: 50, width: 80, background: '#eaeaea'}}></div>
+            <div className="logos">
+              <Link to="/store-jd">
+                <img src={logo} alt=""/>
+              </Link>
+              <Link to="/store-jd">
+                <img src={logo} alt=""/>
+              </Link>
+              <Link to="/store-jd">
+                <img src={logo} alt=""/>
+              </Link>
             </div>
           </div>
         </div>
@@ -165,14 +169,6 @@ class Home extends Component {
           </div>
         </div>
         
-        <div className="section">
-          <div className="head">
-            <h2 className="title">热卖商品</h2>
-          </div>
-          <div className="body">
-            <Product loading={loading} items={items} />
-          </div>
-        </div>
         <div className="fixed-bottom">
           <Menu />
         </div>

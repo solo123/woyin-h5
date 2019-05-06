@@ -3,16 +3,18 @@ import styled from 'styled-components'
 export default styled.div`
   header{
     position: relative;
-    margin: 0 5px;
+    padding: 5px 10px;
     background: #fff;
     .content{
       position: absolute;
       top: 12%;
       left: 8%;
-      right: 8%;
       color: #e1e1e1;
       .integral{
         margin-bottom: 3%;
+        .info{
+          margin-bottom: 10px;
+        }
       }
       strong{
         color: #fff;
@@ -43,43 +45,12 @@ export default styled.div`
       }
     }
   }  
-  main{
-    h2{
-      font-size: 16px;
-      padding: 15px;
-      background: #fff;
-    }
-    .list{
-      .item{
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding: 15px;
-        background: #fff;
-        position: relative;
-        &:after{
-          content: " ";
-          position: absolute;
-          left: 0;
-          top: 0;
-          right: 0;
-          height: 1px;
-          border-bottom: 1px solid #e5e5e5;
-          transform: scaleY(0.5);
-        }   
-        h3{
-          font-size: 14px;
-          font-weight: bold;
-        }
-        .date{
-          color: #888;
-        } 
-        .integral{
-          color: #58a1ff;
-          font-size: 16px;
-          font-weight: bold;
-        }    
-      }
+  .link{
+    text-align: right;
+    margin-right: 15px;
+    a{
+      font-size: 12px;
+      color: #1c92ff;
     }
   }
 `

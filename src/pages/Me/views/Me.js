@@ -17,6 +17,7 @@ import headphoneIcon from '@/asset/images/me/headphone.png'
 import settingIcon from '@/asset/images/me/setting.png'
 import emailIcon from '@/asset/images/me/email.svg'
 import profileIcon from '@/asset/images/me/profile.png'
+import serviceIcon from '@/asset/images/me/service.png'
 import ruleIcon from '@/asset/images/me/rule.png'
 import arrowIcon from '@/asset/images/icon/arrow_right.svg'
 import integralIcon from '@/asset/images/me/integral.png'
@@ -143,7 +144,7 @@ class Me extends Component {
 
         <section>
           <Link className="item" to="/order-charge">
-            <img className="item__icon" src={headphoneIcon} alt=""/>
+            <img className="item__icon" src={serviceIcon} alt=""/>
             <label className="item__label">服务订单</label>
             <img className="item__arrow" src={arrowIcon} alt="" />
           </Link>

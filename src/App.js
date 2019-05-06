@@ -169,6 +169,15 @@ const AsyncDistributingRecord = Loadable({
   loader: () => import('./pages/DistributingRecord').then(({view}) => view), 
   loading: LoadingComponent
 })
+const AsyncChoice = Loadable({ 
+  loader: () => import('./pages/Choice').then(({view}) => view), 
+  loading: LoadingComponent
+})
+const AsyncRecordEntry = Loadable({ 
+  loader: () => import('./pages/RecordEntry').then(({view}) => view), 
+  loading: LoadingComponent
+})
+
 
 export default class extends Component {
   
@@ -220,8 +229,10 @@ export default class extends Component {
             <Auth path="/find-trade-pswd" component={AsyncFindTradePswd} />
             <Auth path="/change-trade-pswd" component={AsyncChangeTradePswd} />
             <Auth path="/integral" component={AsyncIntegral} />
+            <Auth path="/record-entry" component={AsyncRecordEntry} />
             <Auth path="/profile" component={AsyncProfile} />
             <Auth path="/distributing-record" component={AsyncDistributingRecord} />
+            <Auth path="/choice" component={AsyncChoice} />
             <Route path="/developing" component={AsyncDeveloping} />
             <Route render={()=> <AsyncNotFound />}/>
           </Switch>

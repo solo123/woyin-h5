@@ -5,8 +5,6 @@ import {Link} from "react-router-dom"
 import {getIntegralList} from '@/api'
 
 import Backhome from '@/components/Backhome'
-import SkeletonPlaceholder from '@/components/SkeletonPlaceholder'
-import List from './List'
 import Page from './styled'
 
 import banner from '@/asset/images/integral/banner.png'
@@ -46,14 +44,13 @@ export default class extends Component {
           <img src={banner} alt=""/>
           <div className="content">
             <div className="integral">
-              <div>
+              <div className="info">
                 可用积分：<strong>2500</strong>
               </div>
               <div>
                 <Link to="/distributing-record">积分派发记录</Link>
               </div>
             </div>
-            <Link to="/">添加积分券</Link>
           </div>
         </header>
         
@@ -66,13 +63,9 @@ export default class extends Component {
           </Link>
         </nav>
 
-        <main>
-          <h2>积分券记录</h2>
-          {this.state.loading
-            ? <div className="u_m_xxx"><SkeletonPlaceholder count={2}/></div>
-            : <List items={this.state.items} />
-          }
-        </main>
+        <div className="link">
+          <Link to="/record-entry">积分记录</Link>
+        </div>
 
         <Backhome/>
       </Page>

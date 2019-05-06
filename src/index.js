@@ -11,7 +11,7 @@ import * as serviceWorker from './serviceWorker';
 import store from './Store';
 
 if(process.env.NODE_ENV === 'development') {
-  require ('./mock/index.js');
+  // require ('./mock/index.js')
 }
 
 const token = getItem('token')

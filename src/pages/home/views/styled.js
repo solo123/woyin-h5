@@ -71,6 +71,15 @@ export default styled.div`
     }
   }
 
+  .logos{
+    display: flex;
+    justify-content: space-around;
+    img{
+      width: 50px;
+      height: 50px;
+    }
+  }
+
   .section{
     margin-bottom: 10px;
     .head{
