@@ -7,7 +7,7 @@ export default styled.div`
     display: flex;
     align-items: center;
     color: #fff;
-    padding: 20px;
+    padding: 0 20px;
     background: linear-gradient(to right, #ff5c4e, #f22d3a);
     font-size: 16px;
     .content{
@@ -82,6 +82,9 @@ export default styled.div`
 
   .section{
     margin-bottom: 10px;
+    &:last-child{
+      margin-bottom: 0;
+    }
     .head{
       padding: 10px 0;
       .title{
@@ -93,7 +96,6 @@ export default styled.div`
       padding-bottom: 10px;
     }
   }
-
   .box{
     .item{
       text-align: center;

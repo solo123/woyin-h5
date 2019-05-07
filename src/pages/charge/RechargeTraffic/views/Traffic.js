@@ -18,6 +18,15 @@ import banner from '@/asset/images/recharge/banner.png'
 
 const CancelToken = axios.CancelToken
 
+function filterData(data) {
+  return data.map(item => {
+    return {
+      ...item,
+      productClassifyName: item.productClassifyName.slice(0, 4)
+    }
+  })
+}
+
 function Product({loading, productId, items, handleSelect}) {
   if(loading) {
     return <ProductSkeleton/>
@@ -88,7 +97,8 @@ export default class extends Component {
     try {
       const {data} = await getProducts(id, {cancelToken: this.loadOperatorSource.token})
       if(data.status === 200) {
-        this.setState({operators: data.data})
+        const result = filterData(data.data)
+        this.setState({operators: result})
       }
     }finally {
     }
