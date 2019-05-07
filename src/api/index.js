@@ -5,10 +5,13 @@ import {get, del, put, post} from './setup'
 import G_config from '@/config'
 
 let BASE = ''
+let JDBASE = ''
 if(process.env.NODE_ENV === 'development') {
   BASE = '/'
+  JDBASE = '/'
 }else if(process.env.NODE_ENV === 'production') {
   BASE = '/client/'
+  JDBASE = '/jdapi/'
 }
 
 const timestamp = String(new Date().getTime())
@@ -339,98 +342,56 @@ export function getIntegralList(id, config) {
 // 京东相关
 
 export function getHotSell() {
-  if(process.env.NODE_ENV === 'development') {
-    BASE = '/'
-  }else if(process.env.NODE_ENV === 'production') {
-    BASE = '/jdapi/'
-  }   
-  return get(`${BASE}sellingGoods`)
+  return get(`${JDBASE}sellingGoods`)
 }
 
 // 获取京东商品类别列表
 export function getJDGoodsSort(data = {}, config) {
-  let BASE = ''
   data = {
     ...data,
     typeId: 1
   }
-  if(process.env.NODE_ENV === 'development') {
-    BASE = '/'
-  }else if(process.env.NODE_ENV === 'production') {
-    BASE = '/jdapi/'
-  }    
-  return get(`${BASE}goodsClassLists`, data, config)
+  return get(`${JDBASE}goodsClassLists`, data, config)
 }
 
 // 获取京东商品列表
 export function getJDGoodsList(data = {}, config) {
-  let BASE = ''
   data = {
     ...data,
     limit: G_config.store.PAGE_LIMIT
   }
-  if(process.env.NODE_ENV === 'development') {
-    BASE = '/'
-  }else if(process.env.NODE_ENV === 'production') {
-    BASE = '/jdapi/'
-  }  
-  return get(`${BASE}goodsLists`, data, config)
+  return get(`${JDBASE}goodsLists`, data, config)
 }
 
 // 获取层级地址
 export function getAddr(data = {}, config = {}) {
-  let BASE = ''
-  if(process.env.NODE_ENV === 'development') {
-    BASE = '/'
-  }else if(process.env.NODE_ENV === 'production') {
-    BASE = '/jdapi/'
-  }    
-  return get(`${BASE}mail/address`, data, config)
+  return get(`${JDBASE}mail/address`, data, config)
 }
 
 // 添加地址
 export function addJDAddr(data) {
-  let BASE = ''
   data = {
     ...data,
     addType: 1
   }
-  if(process.env.NODE_ENV === 'development') {
-    BASE = '/'
-  }else if(process.env.NODE_ENV === 'production') {
-    BASE = '/jdapi/'
-  }    
-  return post(`${BASE}mail/address`, qs.stringify(data))
+  return post(`${JDBASE}mail/address`, qs.stringify(data))
 }
 
 export function getJDAddrList(data = {}, config = {}) {
-  let BASE = ''
   data = {
     ...data,
     addType: 1
   }
-  if(process.env.NODE_ENV === 'development') {
-    BASE = '/'
-  }else if(process.env.NODE_ENV === 'production') {
-    BASE = '/jdapi/'
-  }    
-  return get(`${BASE}mail/userAddressList`, data, config)
+  return get(`${JDBASE}mail/userAddressList`, data, config)
 }
 
 // 删除用户地址
 export function deleteAddrById(id, config) {
-  let BASE = ''
-  if(process.env.NODE_ENV === 'development') {
-    BASE = '/'
-  }else if(process.env.NODE_ENV === 'production') {
-    BASE = '/jdapi/'
-  }    
-  return del(`${BASE}mail/address/${id}`, null, config)
+  return del(`${JDBASE}mail/address/${id}`, null, config)
 }
 
 // 京东商品下单
 export function placeOrder(data) {
-  let BASE = ''
   const tradPwd = md5(data.tranPwd)  
   data = {
     ...data,
@@ -439,48 +400,24 @@ export function placeOrder(data) {
     timestamp: timestamp       
   }
 
-  if(process.env.NODE_ENV === 'development') {
-    BASE = '/'
-  }else if(process.env.NODE_ENV === 'production') {
-    BASE = '/jdapi/'
-  }    
-  return post(`${BASE}mail/placeOrder`, qs.stringify(data))
+  return post(`${JDBASE}mail/placeOrder`, qs.stringify(data))
 }
 
 // 获取京东运费
 export function getJDFreight(data = {}, config) {
-  let BASE = ''
-  if(process.env.NODE_ENV === 'development') {
-    BASE = '/'
-  }else if(process.env.NODE_ENV === 'production') {
-    BASE = '/jdapi/'
-  }    
-  return get(`${BASE}mail/JDFreight`, data, config)
+  return get(`${JDBASE}mail/JDFreight`, data, config)
 }
 
 // 获取京东订单列表
 export function getJDOrders(data = {}, config) {
-  let BASE = ''
-  if(process.env.NODE_ENV === 'development') {
-    BASE = '/'
-  }else if(process.env.NODE_ENV === 'production') {
-    BASE = '/jdapi/'
-  }    
-
   data = {
     ...data,
     limit: G_config.store.PAGE_LIMIT
   }
-  return get(`${BASE}mail/JDOrders`, data, config)
+  return get(`${JDBASE}mail/JDOrders`, data, config)
 }
 
 // 获取京东商品物流信息
 export function getJDTrack(id, config) {
-  let BASE = ''
-  if(process.env.NODE_ENV === 'development') {
-    BASE = '/'
-  }else if(process.env.NODE_ENV === 'production') {
-    BASE = '/jdapi/'
-  }    
-  return get(`${BASE}mail/JDTrack/${id}`, null, config)
+  return get(`${JDBASE}mail/JDTrack/${id}`, null, config)
 }
