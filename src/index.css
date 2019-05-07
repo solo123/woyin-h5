@@ -226,7 +226,6 @@ body.white{
 }
 
 .modal__label {
-  flex-shrink: 0;
   color: #7E7E7E;
 }
 
