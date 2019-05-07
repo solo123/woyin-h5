@@ -12,7 +12,7 @@ module.exports = function override(config, env) {
       'react': 'React',
       'react-dom': 'ReactDOM'
     }
-    config.plugins.push(new BundleAnalyzerPlugin())
+    // config.plugins.push(new BundleAnalyzerPlugin())
   }
 
   // do stuff with the webpack config...
