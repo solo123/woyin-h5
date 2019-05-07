@@ -1,6 +1,9 @@
 import React, {Component} from 'react'
+import {withRouter} from "react-router-dom"
+import {connect} from 'react-redux'
 import weui from 'weui.js'
 import {Helmet} from "react-helmet"
+import classNames from 'classnames'
 
 import config from '@/config'
 import {getCodeForFindPswd, findLoginPswd} from '@/api'
@@ -25,7 +28,7 @@ const ICON_SCHEMA = {
   password: hideIcon
 }
 
-export default class extends Component {
+class FindLoginPswd extends Component {
   constructor(props) {
     super(props)
 
@@ -44,7 +47,9 @@ export default class extends Component {
     this.handleCodeClean = this.handleClean.bind(this, 'code')
 
     this.state = {
-      phone: '',
+      isReset: !!this.props.phone,
+
+      phone: this.props.phone,
       phoneClean: false,
 
       code: '',
@@ -207,7 +212,7 @@ export default class extends Component {
       <Page>
         <Helmet defaultTitle="沃银企服" title="找回密码"/>
         <div className="group-list">
-          <div className="group">
+          <div className={classNames('group', {'hide': this.state.isReset})}>
             <div className="group__body">
               <input
                 className="input"
@@ -324,3 +329,11 @@ export default class extends Component {
     )
   } 
 }
+
+const mapStateToProps = (state) => {
+  return {
+    phone: state.auth.phone
+  }
+}
+
+export default withRouter(connect(mapStateToProps, null)(FindLoginPswd))

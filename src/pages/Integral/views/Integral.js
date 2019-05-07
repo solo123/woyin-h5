@@ -1,8 +1,9 @@
 import React, {Component} from 'react'
 import {Helmet} from "react-helmet"
 import {Link} from "react-router-dom"
+import axios from 'axios'
 
-import {getIntegralList} from '@/api'
+import {getUserInfo} from '@/api'
 
 import Backhome from '@/components/Backhome'
 import Page from './styled'
@@ -11,27 +12,33 @@ import banner from '@/asset/images/integral/banner.png'
 import integral from '@/asset/images/integral/integral.png'
 import transfer from '@/asset/images/integral/transfer.png'
 
+const CancelToken = axios.CancelToken
+
 export default class extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      loading: true,
-      items: []
+      balance: 0
     }
   }
 
   componentDidMount() {
-    this.loadIntegralList()
+    this.loadUserInfo()
   }
 
-  async loadIntegralList() {
+  componentWillUnmount() {
+    this.loadUserInfoSource && this.loadUserInfoSource.cancel('Operation canceled by the user.')
+  }
+
+  async loadUserInfo() {
+    this.loadUserInfoSource = CancelToken.source()
     try {
-      const {data} = await getIntegralList()
+      const {data} = await getUserInfo(null, {cancelToken: this.loadUserInfoSource.token})
       if(data.status === 200) {
-        this.setState({items: data.data})
+        if(!data.data.length) {return}
+        this.setState({...data.data[0]})
       }
     }finally {
-      this.setState({loading: false})
     }
   }
 
@@ -45,7 +52,7 @@ export default class extends Component {
           <div className="content">
             <div className="integral">
               <div className="info">
-                可用积分：<strong>2500</strong>
+                可用积分：<strong>{this.state.balance}</strong>
               </div>
               <div>
                 <Link to="/distributing-record">积分派发记录</Link>

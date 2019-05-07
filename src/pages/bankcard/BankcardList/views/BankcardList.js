@@ -86,7 +86,7 @@ class BankcardList extends Component {
         <div className="fixed-bottom">
           <div className="u_m_xxx">
             <Link to="/bankcard-add">
-              <button className="btn btn-secondary">添加银行卡</button>
+              <button className="btn btn-secondary">添加银行/信用卡</button>
             </Link>
           </div>
         </div>

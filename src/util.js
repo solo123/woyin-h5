@@ -1,6 +1,8 @@
 import weui from 'weui.js'
 import dayjs from 'dayjs'
 
+import {push} from '@/services/redirect'
+
 import fzIcon from '@/asset/images/bank/fz.svg'
 import gdIcon from '@/asset/images/bank/gd.svg'
 import gsIcon from '@/asset/images/bank/gs.svg'
@@ -182,8 +184,8 @@ const paymentConfirm = function (options) {
                   <div class="modal__useable">${options.useable}</div>
                 </div>
                 <div class="modal__item">
-                  <div class="modal__label">交易密码</div>
-                  <div><input class="modal__input" type="password" autocomplete="off" placeholder="请输入交易密码"></div>
+                  <div class="modal__label"><input class="modal__input modal__input--left" type="password" autocomplete="off" placeholder="请输入交易密码"></div>
+                  <a id="findTradePswd" class="modal__link">忘记交易密码？</a>
                 </div>
               </div>
             </div>
@@ -205,6 +207,14 @@ const paymentConfirm = function (options) {
   var $submitBtn = document.querySelector('.modal__submit')
   var $input = document.querySelector('.modal__input')
 
+  var findTradePswd = document.getElementById('findTradePswd')
+
+  // 找回交易密码
+  findTradePswd.addEventListener('click', function() {
+    hide()
+    push('/find-trade-pswd')
+  })
+
   var hide = function (callback) {
     addClass($backdrop, 'weui-animate-fade-out')
     addClass($dialog, 'weui-animate-fade-slideUp')
@@ -215,6 +225,7 @@ const paymentConfirm = function (options) {
       modal.remove()
     })
   }
+
 
   $input.addEventListener('input', function (e) {
     if (e.target.value) {

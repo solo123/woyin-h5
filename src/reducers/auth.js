@@ -42,6 +42,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         token: '',
+        phone: '',
         isAuthenticated: false
       }
     case 'RESET_ALL_PSWD':

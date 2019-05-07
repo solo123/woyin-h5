@@ -115,7 +115,7 @@ class AddBankcard extends Component {
 
     return (
       <Page>
-        <Helmet defaultTitle="沃银企服" title="添加银行卡/信用卡"/>
+        <Helmet defaultTitle="沃银企服" title="添加银行/信用卡"/>
         <main>
           <h2 className="u_my_xxx u_fs_xxx">请填写本人信息</h2>
           <div className="form">
@@ -175,7 +175,7 @@ class AddBankcard extends Component {
                   onChange={this.handleChange} 
                   onFocus={this.handleFocus}
                   onBlur={this.handleBlur}
-                  placeholder="请输入银行卡/信用卡号"
+                  placeholder="请输入银行/信用卡号"
                 />
               </div>
               <div className="group__foot">

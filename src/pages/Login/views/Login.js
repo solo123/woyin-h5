@@ -33,9 +33,9 @@ const LOGINTYPE_SCHEMA = {
 
 function SendMessageBtn({flag, interval, handleClick}) {
   if(flag) {
-    return <button className="btn btn-mini" onClick={handleClick}>获取验证码</button>
+    return <button className="btn btn-primary btn-mini" onClick={handleClick}>获取验证码</button>
   }
-  return <button className="btn btn-mini-disable">{interval}秒后重发</button>
+  return <button className="btn btn-primary btn-mini-disable">{interval}秒后重发</button>
 }
 
 function PswdInput({passwordType, password, passwordCleanView, handleChange, handleFocus, handleBlur, passwordClean, handleTogglePswdVisibleOrHidden}) {

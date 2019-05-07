@@ -1,5 +1,5 @@
 import React, {Component} from 'react'
-import { connect } from 'react-redux'
+import {connect} from 'react-redux'
 import weui from 'weui.js'
 import {Helmet} from "react-helmet"
 
