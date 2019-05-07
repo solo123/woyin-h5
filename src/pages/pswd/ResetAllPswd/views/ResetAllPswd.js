@@ -48,8 +48,8 @@ class ResetAllPswd extends Component {
     try {
       const {data} = await resetAllPswd(params)
       if(data.status === 200) {
-        this.props.resetAllPswd()
-        replace('/result', {type: 'success', title: data.msg})
+        this.props.logout()
+        replace('/login')        
       }else {
         weui.alert(data.msg)
       }
@@ -150,9 +150,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    resetAllPswd: payload => {
-      dispatch({type: 'RESET_ALL_PSWD'})
-    }
+    resetAllPswd: () => dispatch({type: 'RESET_ALL_PSWD'}),
+    logout: () => dispatch({type: 'UNAUTH_USER'})
   }
 }
 

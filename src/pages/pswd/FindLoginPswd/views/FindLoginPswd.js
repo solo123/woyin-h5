@@ -78,6 +78,7 @@ class FindLoginPswd extends Component {
       const {data} = await findLoginPswd(params)
       if(data.status === 200) {
         weui.alert(data.msg, () => {
+          this.props.logout()
           replace('/login')
         })
       }else {
@@ -336,4 +337,11 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default withRouter(connect(mapStateToProps, null)(FindLoginPswd))
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    resetAllPswd: () => dispatch({type: 'RESET_ALL_PSWD'}),
+    logout: () => dispatch({type: 'UNAUTH_USER'})
+  }
+}
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(FindLoginPswd))
