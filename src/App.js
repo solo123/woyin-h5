@@ -77,10 +77,6 @@ const AsyncOrderGoodsTrack = Loadable({
   loader: () => import('./pages/order/OrderGoodsTrack').then(({view}) => view), 
   loading: LoadingComponent
 })
-const AsyncNotFound = Loadable({
-  loader: () => import('./pages/NotFound').then(({view}) => view),
-  loading: LoadingComponent
-})
 const AsyncRedeem = Loadable({
   loader: () => import('./pages/redeem/Redeem').then(({view}) => view),
   loading: LoadingComponent
@@ -177,7 +173,10 @@ const AsyncRecordEntry = Loadable({
   loader: () => import('./pages/RecordEntry').then(({view}) => view), 
   loading: LoadingComponent
 })
-
+const AsyncNotFound = Loadable({
+  loader: () => import('./pages/NotFound').then(({view}) => view),
+  loading: LoadingComponent
+})
 
 export default class extends Component {
   

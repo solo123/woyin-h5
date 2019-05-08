@@ -22,7 +22,8 @@ class StoreSort extends Component {
     this.state = {
       id: '',
       menus: [],
-      items: []
+      items: [],
+      completed: false
     }
   }
 
@@ -62,6 +63,8 @@ class StoreSort extends Component {
         this.setState({items: [...this.state.items, ...data.data.data]}, () => {
           if(data.data.data.length) {
             this.scroll.finish()
+          }else {
+            this.setState({completed: true})
           }
         })
       }      
@@ -79,7 +82,7 @@ class StoreSort extends Component {
   reset() {
     currentPage = 0
     this.scroll.closeScroll()
-    this.setState({items: []})
+    this.setState({items: [], completed: false})
   }
 
   handleClick(id) {
@@ -116,6 +119,7 @@ class StoreSort extends Component {
           <div className="layout__main" ref={node => this.scrollContainer = node}>
             <main>
               <List items={this.state.items} />
+              {(this.state.completed && !!this.state.items.length) && (<div style={{textAlign: 'center', padding: 10, color: '#aaa'}}>没有更多了</div>)}
             </main>
           </div>
         </div>

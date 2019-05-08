@@ -25,7 +25,8 @@ class Home extends Component {
 
     this.state = {
       id: 1,
-      items: []
+      items: [],
+      completed: false
     }
   }
 
@@ -48,8 +49,7 @@ class Home extends Component {
           if(data.data.data.length) {
             this.scroll.finish()
           }else {
-            // 加载已经穷尽
-            // 在底部插入提示
+            this.setState({completed: true})
           }
         })
       }
@@ -67,7 +67,7 @@ class Home extends Component {
   reset() {
     currentPage = 0
     this.scroll.closeScroll()
-    this.setState({items: []})
+    this.setState({items: [], completed: false})
   }
 
   handleClick(id) {
@@ -109,7 +109,8 @@ class Home extends Component {
 
         <div className="container" ref={node => this.scrollContainer = node}>
           <main>
-            <List items={this.state.items} />
+            <List items={this.state.items}/>
+            {(this.state.completed && !!this.state.items.length) && (<div style={{textAlign: 'center', paddingBottom: 10, color: '#aaa'}}>没有更多了</div>)}
           </main>
         </div>
 
