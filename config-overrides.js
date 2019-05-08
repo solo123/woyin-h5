@@ -10,8 +10,7 @@ module.exports = function override(config, env) {
   if(env === 'production') {
     config.externals = {
       'react': 'React',
-      'react-dom': 'ReactDOM',
-      'weui.js': 'weui.js'
+      'react-dom': 'ReactDOM'
     }
     // config.plugins.push(new BundleAnalyzerPlugin())
   }
