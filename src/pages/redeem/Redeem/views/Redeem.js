@@ -62,9 +62,9 @@ class Redeem extends Component {
       getCodeFlag: true,
       interval: config.redeem.INTERVAL,
 
-      redeemFee: 0,
-      actualReceived: 0,
-      deductIntegral: 0,
+      poundage: 0,
+      money: 0,
+      totalAmount: 0,
 
       integral: 0,
       availableIntegral: 0,      
@@ -113,9 +113,9 @@ class Redeem extends Component {
     }
   }
 
-  async loadRedeemFee() {
+  async loadRedeemFee(params) {
     try {
-      const {data} = await getRedeemFee(this.state.integral || 0)
+      const {data} = await getRedeemFee(params)
       if(data.status === 200) {
         this.updateFee(data.data)
       }
@@ -178,9 +178,9 @@ class Redeem extends Component {
 
   updateFee({poundage, money, totalAmount}) {
     this.setState({
-      redeemFee: poundage,
-      actualReceived: money,
-      deductIntegral: totalAmount
+      poundage: poundage,
+      money: money,
+      totalAmount: totalAmount
     })
   }
 
@@ -209,7 +209,18 @@ class Redeem extends Component {
   }
 
   handleBlur(e) {
-    this.loadRedeemFee()
+    if(this.state.integral >= config.redeem.MIN_INTEGRAL) {
+      const params = {
+        amount: this.state.integral || 0
+      }
+      this.loadRedeemFee(params)
+    }else {
+      this.setState({
+        poundage: 0,
+        money: 0,
+        totalAmount: 0
+      })
+    }
   }
   
   handleGetCode() {
@@ -232,9 +243,9 @@ class Redeem extends Component {
       return
     }    
     if(this.state.integral < config.redeem.MIN_INTEGRAL) {
-      weui.alert(`最少输入${config.redeem.MIN_INTEGRAL}积分`)
+      weui.alert(`代卖积分不能少于${config.redeem.MIN_INTEGRAL}`)
       return
-    }
+    }  
     if(this.state.integral > config.redeem.MAX_INTEGRAL) {
       weui.alert(`最多输入${config.redeem.MAX_INTEGRAL}积分`)
       return
@@ -293,7 +304,7 @@ class Redeem extends Component {
       getCodeFlag
     } = this.state
     const integral = this.state.integral || ''
-    const placeholder = `最多可代卖${this.state.availableIntegral}积分`
+    const placeholder = `最多可代卖${this.state.availableIntegral}积分（不得少于${config.redeem.MIN_INTEGRAL}）`
 
     return (
       <Page>
@@ -326,8 +337,8 @@ class Redeem extends Component {
 
         <div className="u_mb_xxx">
           <div className="small-text">
-            <p>扣除{this.state.deductIntegral}积分</p>
-            <p>实际到账{this.state.actualReceived}元(手续费{this.state.redeemFee}积分，100积分等于1元)</p>
+            <p>扣除{this.state.totalAmount}积分</p>
+            <p>实际到账{this.state.money}元(手续费{this.state.poundage}积分，100积分等于1元)</p>
           </div>
         </div>
 

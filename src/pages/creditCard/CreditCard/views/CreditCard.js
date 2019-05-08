@@ -50,9 +50,9 @@ class CreditCard extends Component {
       cardList: [],
 
       // 手续费
-      redeemFee: 0,
+      poundage: 0,
       actualReceived: 0,
-      deductIntegral: 0,
+      money: 0,
 
       // 积分
       integral: 0,
@@ -114,8 +114,8 @@ class CreditCard extends Component {
     }
   }
 
-  async loadWithdrawFee() {
-    const {data} = await getWithdrawFee(this.state.integral || 0)
+  async loadWithdrawFee(params) {
+    const {data} = await getWithdrawFee(params)
     if(data.status === 200) {
       this.updateFee(data.data)
     }
@@ -159,11 +159,11 @@ class CreditCard extends Component {
     this.setState({interval: config.creditCard.INTERVAL, getCodeFlag: true})
   }
 
-  updateFee({poundage, money, totalAmount}) {
+  updateFee({poundage, totalAmount, money}) {
     this.setState({
-      redeemFee: poundage,
-      actualReceived: money,
-      deductIntegral: totalAmount
+      poundage: poundage,
+      totalAmount: totalAmount,
+      money: money
     })
   }
 
@@ -187,7 +187,18 @@ class CreditCard extends Component {
   }
 
   handleBlur(e) {
-    this.loadWithdrawFee()
+    if(this.state.integral >= config.creditCard.MIN_INTEGRAL) {
+      const params = {
+        amount: this.state.integral
+      }
+      this.loadWithdrawFee(params)
+    }else {
+      this.setState({
+        poundage: 0,
+        totalAmount: 0,
+        money: 0
+      })
+    }
   }
 
   handleChange(e) {
@@ -205,6 +216,10 @@ class CreditCard extends Component {
       weui.alert('请输入积分')
       return
     }
+    if(this.state.integral < config.redeem.MIN_INTEGRAL) {
+      weui.alert(`使用积分不能少于${config.redeem.MIN_INTEGRAL}`)
+      return
+    }  
     if(this.state.integral > this.state.availableIntegral) {
       weui.alert('积分不足')
       return
@@ -288,8 +303,8 @@ class CreditCard extends Component {
         
           <div className="u_px_xxx u_pb_xxx">
             <div className="info">
-              <p>扣除 {this.state.deductIntegral} 积分，还款 {this.state.deductIntegral / 100} 元</p>
-              <p>手续费 {this.state.redeemFee} 积分，100 积分等于 1 元</p>
+              <p>扣除 {this.state.totalAmount} 积分，还款 {this.state.money} 元</p>
+              <p>手续费 {this.state.poundage} 积分，100 积分等于 1 元</p>
             </div>
           </div>
 

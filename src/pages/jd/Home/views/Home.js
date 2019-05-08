@@ -47,6 +47,9 @@ class Home extends Component {
         this.setState({items: [...this.state.items, ...data.data.data]}, () => {
           if(data.data.data.length) {
             this.scroll.finish()
+          }else {
+            // 加载已经穷尽
+            // 在底部插入提示
           }
         })
       }

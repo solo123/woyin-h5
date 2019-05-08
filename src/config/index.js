@@ -18,7 +18,8 @@ export default {
     MIN_COUNT: 1
   },
   creditCard: {
-    INTERVAL: 60
+    INTERVAL: 60,
+    MIN_INTEGRAL: 100
   },
   creditRecord: {
     PAGE_LIMIT: 20
@@ -49,7 +50,8 @@ export default {
   },
   // 转赠记录
   transfer: {
-    PAGE_LIMIT: 20
+    PAGE_LIMIT: 20,
+    MIN_INTEGRAL: 100
   },
   // 商品购买
   store: {

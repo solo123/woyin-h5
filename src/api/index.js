@@ -93,13 +93,30 @@ export const paymentToCard = (data = {}) => {
 }
 
 // 获取提现手续费
-export const getRedeemFee = (amount) => {
-  return get(`${BASE}api/trad/poundageList`, {amount})
+export const getRedeemFee = (data = {}) => {
+  data = {
+    ...data,
+    payment: 1
+  }
+  return get(`${BASE}api/trad/poundageList`, data)
 }
 
-// 获取提现手续费
-export const getWithdrawFee = (amount) => {
-  return get(`${BASE}api/trad/poundageList`, {amount})
+// 获取信用卡还款手续费
+export const getWithdrawFee = (data = {}) => {
+  data = {
+    ...data,
+    payment: 2
+  }
+  return get(`${BASE}api/trad/poundageList`, data)
+}
+
+// 获取提积分转赠续费
+export const getTransferFee = (data = {}) => {
+  data = {
+    ...data,
+    payment: 3
+  }
+  return get(`${BASE}api/trad/poundageList`, data)
 }
 
 // 获取商品分类

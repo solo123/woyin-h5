@@ -5,7 +5,7 @@ import axios from 'axios'
 
 import config from '@/config'
 import {replace} from '@/services/redirect'
-import {getUserInfo, integralTransfer} from '@/api'
+import {getUserInfo, integralTransfer, getTransferFee} from '@/api'
 
 import Backhome from '@/components/Backhome'
 import Page from './styled'
@@ -31,6 +31,8 @@ class Transfer extends Component {
     this.handleSubmit = this.handleSubmit.bind(this)
     this.passwordToggle = this.passwordToggle.bind(this)
 
+    this.handleFocusIntegral = this.handleFocus.bind(this, 'integral')
+
     this.state = {
       integral: 0,
       integralCleanView: false,
@@ -43,6 +45,11 @@ class Transfer extends Component {
 
       passwordType: 'password',
       passwordIcon: iconSchema['password'],
+
+      // 手续费
+      poundage: 0,
+      money: 0,
+      amount: 0,
 
       availableIntegral: 0
     }
@@ -67,6 +74,16 @@ class Transfer extends Component {
     }
   }
 
+  async loadTransferFee(params) {
+    try {
+      const {data} = await getTransferFee(params)
+      if(data.status === 200) {
+        this.updateFee(data.data)
+      }
+    }finally {
+    }
+  }
+
   async doSubmit(params) {
     const loading = weui.loading('处理中')
     try {
@@ -79,6 +96,14 @@ class Transfer extends Component {
     }finally {
       loading.hide()
     }
+  }
+
+  updateFee({poundage, money, amount}) {
+    this.setState({
+      poundage: poundage,
+      money: money,
+      amount: amount
+    })
   }
 
   handleClean(key) {
@@ -96,6 +121,23 @@ class Transfer extends Component {
   }
 
   handleBlur(e) {
+    const name = e.target.name
+
+    if(name === 'integral') {
+      if(this.state.integral >= 100) {
+        const params = {
+          amount: this.state.integral
+        }
+        this.loadTransferFee(params)
+      }else {
+        this.setState({
+          poundage: 0,
+          money: 0,
+          amount: 0
+        })
+      }
+    }
+
     const key =`${e.target.name}CleanView`
     setTimeout(() => {
       this.setState({[key]: false})
@@ -112,6 +154,10 @@ class Transfer extends Component {
       weui.alert('请输入转赠的积分')
       return
     }
+    if(this.state.integral < config.transfer.MIN_INTEGRAL) {
+      weui.alert(`转赠积分不能少于${config.transfer.MIN_INTEGRAL}`)
+      return
+    }    
     if(!this.state.account) {
       weui.alert('请输入对方登录账号')
       return
@@ -159,7 +205,7 @@ class Transfer extends Component {
                 onChange={this.handleChange} 
                 onFocus={this.handleFocus}
                 onBlur={this.handleBlur}
-                placeholder="请输入转赠的积分" 
+                placeholder={`请输入转赠的积分（不能少于${config.transfer.MIN_INTEGRAL}）`} 
               />
             </div>
             <div className="group__foot">
@@ -226,6 +272,10 @@ class Transfer extends Component {
             </div>
           </div>
         </main>
+
+        <div className="u_m_xxx" style={{textAlign: 'right'}}>
+          手续费 {this.state.poundage} 积分，实际到账 {this.state.amount} 积分
+        </div>
         
         <div className="u_m_xxx">
           <button className="btn btn-secondary" onClick={this.handleSubmit}>转赠</button>
