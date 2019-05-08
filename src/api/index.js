@@ -334,14 +334,11 @@ export const findTradePswd = (data) => {
   return put(`${BASE}api/resetTranPwd`, qs.stringify(data))
 }
 
-// 重置登录密码和交易密码
+// 初始重置登录密码
 export const resetAllPswd = (data) => {
   data = {
     ...data,
-    oldLoginPwd: md5(data.oldLoginPwd),
-    newLoginPwdOne: md5(data.newLoginPwdOne),
-    oldTranPwd: md5(data.oldTranPwd),
-    newTranPwdOne: md5(data.newTranPwdOne)
+    newLoginPwd: md5(data.newLoginPwd)
   }
   return put(`${BASE}api/resetAllPwd`, qs.stringify(data))
 }

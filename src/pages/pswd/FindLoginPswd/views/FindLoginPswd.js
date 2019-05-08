@@ -47,8 +47,6 @@ class FindLoginPswd extends Component {
     this.handleCodeClean = this.handleClean.bind(this, 'code')
 
     this.state = {
-      isReset: !!this.props.phone,
-
       phone: this.props.phone,
       phoneClean: false,
 
@@ -78,7 +76,6 @@ class FindLoginPswd extends Component {
       const {data} = await findLoginPswd(params)
       if(data.status === 200) {
         weui.alert(data.msg, () => {
-          this.props.logout()
           replace('/login')
         })
       }else {
@@ -211,9 +208,9 @@ class FindLoginPswd extends Component {
 
     return (
       <Page>
-        <Helmet defaultTitle="沃银企服" title="找回密码"/>
+        <Helmet title="找回登录密码"/>
         <div className="group-list">
-          <div className={classNames('group', {'hide': this.state.isReset})}>
+          <div className="group">
             <div className="group__body">
               <input
                 className="input"
@@ -331,17 +328,4 @@ class FindLoginPswd extends Component {
   } 
 }
 
-const mapStateToProps = (state) => {
-  return {
-    phone: state.auth.phone
-  }
-}
-
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    resetAllPswd: () => dispatch({type: 'RESET_ALL_PSWD'}),
-    logout: () => dispatch({type: 'UNAUTH_USER'})
-  }
-}
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(FindLoginPswd))
+export default FindLoginPswd

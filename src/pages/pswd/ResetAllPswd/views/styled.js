@@ -10,6 +10,9 @@ export default styled.div`
     padding: 15px;
     display: flex;
     align-items: center;
+    &.hide{
+      display: none;
+    }
     &:after{
       content: " ";
       position: absolute;

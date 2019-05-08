@@ -7,8 +7,8 @@ const Auth = ({component: Part, isAuthenticated, reset, ...rest}) => {
     <Route {...rest}
       render={ props => {
         if(isAuthenticated){
-          if(!reset && rest.path !== '/find-login-pswd' && rest.path !== '/me') {
-            const to = {pathname: "/find-login-pswd", state: {from: props.location}}
+          if(!reset && rest.path !== '/reset-all-pswd' && rest.path !== '/me') {
+            const to = {pathname: "/reset-all-pswd", state: {from: props.location}}
             return <Redirect to={to} />
           }else {
             return <Part {...props} />
