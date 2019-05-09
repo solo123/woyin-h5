@@ -82,7 +82,8 @@ class Oil extends Component {
     try {
       const {data} = await getUserInfo(null, {cancelToken: this.loadUserInfoSource.token})
       if(data.status === 200) {
-        this.setState({availableIntegral: Number(data.data[0].balance)})
+        const account = util.getAccountById(data.data)
+        this.setState({availableIntegral: Number(account.balance)})
       }
     }finally {
     }

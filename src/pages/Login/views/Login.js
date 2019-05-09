@@ -154,6 +154,7 @@ class Login extends Component {
     try {
       const {data} = await login(params)
       if(data.status === 200) {
+        localStorage.removeItem('currentMerchantId')
         this.props.login({token: data.data.sessionId, reset: data.data.isModify})
       }else {
         weui.alert(data.msg)

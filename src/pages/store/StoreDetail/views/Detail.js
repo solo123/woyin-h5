@@ -4,6 +4,7 @@ import weui from 'weui.js'
 import axios from 'axios'
 
 import config from '@/config'
+import util from '@/util'
 import {getUserInfo} from '@/api'
 import Backhome from '@/components/Backhome'
 import Layer from '@/components/Layer'
@@ -46,7 +47,8 @@ class Detail extends Component {
       const {data} = await getUserInfo()
       if(data.status === 200) {
         if(!data.data.length) {return}
-        this.setState({...data.data[0]})
+        const account = util.getAccountById(data.data)
+        this.setState({...account})
       }      
     }finally {
     }

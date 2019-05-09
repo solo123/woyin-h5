@@ -89,8 +89,9 @@ class StoreConfirm extends Component {
       const {data} = await getUserInfo()
       if(data.status === 200) {
         if(data.data.length) {
+          const account = util.getAccountById(data.data)
           this.setState({
-            availableIntegral: Number(data.data[0].balance)
+            availableIntegral: Number(account.balance)
           })
         }
       }

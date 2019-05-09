@@ -5,6 +5,7 @@ import weui from 'weui.js'
 import axios from 'axios'
 import {Helmet} from "react-helmet"
 
+import util from '@/util'
 import {getUserInfo} from '@/api'
 import {replace} from '@/services/redirect'
 
@@ -57,7 +58,8 @@ class Me extends Component {
       const {data} = await getUserInfo(null, {cancelToken: this.loadUserInfoSource.token})
       if(data.status === 200) {
         if(!data.data.length) {return}
-        this.setState({...data.data[0]})
+        const account = util.getAccountById(data.data)
+        this.setState({...account})
       }
     }finally {
     }

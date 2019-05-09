@@ -3,6 +3,7 @@ import {Helmet} from "react-helmet"
 import {Link} from "react-router-dom"
 import axios from 'axios'
 
+import util from '@/util'
 import {getUserInfo} from '@/api'
 
 import Backhome from '@/components/Backhome'
@@ -36,7 +37,8 @@ export default class extends Component {
       const {data} = await getUserInfo(null, {cancelToken: this.loadUserInfoSource.token})
       if(data.status === 200) {
         if(!data.data.length) {return}
-        this.setState({...data.data[0]})
+        const account = util.getAccountById(data.data)
+        this.setState({...account})
       }
     }finally {
     }

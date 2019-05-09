@@ -437,6 +437,17 @@ var Mover = function (elem) {
   })
 }
 
+function getAccountById(arr) {
+  const merchantId = localStorage.getItem('currentMerchantId')
+  if(merchantId) {
+    const data = arr.filter(item => {
+      return item.merchantId === merchantId
+    })
+    return data[0]
+  }
+  return arr[0]
+}
+
 export default {
   Mover,
   addClass,
@@ -461,5 +472,6 @@ export default {
   throttle,
   debounce,
   getBankCardLogo,
-  getVoucherLogo
+  getVoucherLogo,
+  getAccountById
 };

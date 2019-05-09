@@ -30,4 +30,8 @@ export default styled.div`
       }    
     }
   }
+  .icon{
+    width: 20px;
+    height: 20px;
+  }  
 `

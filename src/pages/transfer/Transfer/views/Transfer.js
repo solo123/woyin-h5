@@ -4,6 +4,7 @@ import {Helmet} from "react-helmet"
 import axios from 'axios'
 
 import config from '@/config'
+import util from '@/util'
 import {replace} from '@/services/redirect'
 import {getUserInfo, integralTransfer, getTransferFee} from '@/api'
 
@@ -68,7 +69,8 @@ class Transfer extends Component {
     try {
       const {data} = await getUserInfo(null, {cancelToken: this.loadUserInfoSource.token})
       if(data.status === 200) {
-        this.setState({availableIntegral: Number(data.data[0].balance)})
+        const account = util.getAccountById(data.data)
+        this.setState({availableIntegral: Number(account.balance)})
       }
     }finally {
     }

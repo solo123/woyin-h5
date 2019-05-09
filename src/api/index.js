@@ -32,6 +32,11 @@ export const getUserInfo = (data = {}, config = {}) => {
   return get(`${BASE}api/user/getUserInfo`, data, config)
 }
 
+// 切换账户
+export const switchAccount = (data = {}, config = {}) => {
+  return get(`${BASE}api/user/switchAccount`, data, config)
+}
+
 // 发送短信验证码
 export const getCode = (data) => {
   data = {

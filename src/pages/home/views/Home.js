@@ -15,6 +15,7 @@ import logo from '@/asset/images/home/logo.png'
 import jd from '@/asset/images/home/jd.png'
 import yx from '@/asset/images/home/yx.png'
 import zy from '@/asset/images/home/zy.png'
+import util from '@/util';
 
 function size(num) {
   const designWidth = 750
@@ -74,10 +75,11 @@ class Home extends Component {
       const {data} = await getUserInfo()
       if(data.status === 200) {
         if(data.data.length) {
+          const account = util.getAccountById(data.data)
           this.setState({
-            userName: data.data[0].userName,
-            userPhoneNo: data.data[0].userPhoneNo,
-            merchantName: data.data[0].merchantName
+            userName: account.userName,
+            userPhoneNo: account.userPhoneNo,
+            merchantName: account.merchantName
           })
         }
       }
@@ -155,23 +157,19 @@ class Home extends Component {
                     </Link>
                   </div>
                   <div className="cell">
-                    <Link to="/developing">
-                      <img src={yx} alt=""/>
-                      <div className="content">
-                        <h2>网易严选</h2>
-                        <p>开启品质生活</p>
-                      </div>
-                    </Link>
+                    <img src={yx} alt=""/>
+                    <div className="content">
+                      <h2>网易严选</h2>
+                      <p>开启品质生活</p>
+                    </div>
                   </div>
                 </div>
                 <div className="aside">
-                  <Link to="/developing">
-                    <img src={zy} alt=""/>
-                    <div className="content">
-                      <h2>自营商城</h2>
-                      <p>产品丰富多样</p>
-                    </div>
-                  </Link>
+                  <img src={zy} alt=""/>
+                  <div className="content">
+                    <h2>自营商城</h2>
+                    <p>产品丰富多样</p>
+                  </div>
                 </div>
               </div>
             </div>

@@ -44,6 +44,8 @@ export default styled.div`
     }
     .aside{
       position: relative;
+      filter: grayscale(100%);
+      filter: gray;      
       .content{
         position: absolute;
         top: 20%;
@@ -59,6 +61,10 @@ export default styled.div`
     .cell{
       position: relative;
       flex: 1;
+      &+.cell{
+        filter: grayscale(100%);
+        filter: gray;     
+      }
       & + .cell{
         margin-left: 10px;
       }

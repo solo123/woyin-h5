@@ -35,6 +35,11 @@ export default styled.div`
   section{
     background: #fff;
   }
+  ul{
+    li.active{
+      color: #935e1d;
+    }
+  }
   .input-box{
     padding: 12px;
     border: 1px solid #eaeaea;

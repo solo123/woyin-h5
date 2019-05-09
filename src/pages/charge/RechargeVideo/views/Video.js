@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import weui from 'weui.js'
 import axios from 'axios'
 import {Helmet} from "react-helmet"
+import classnames from 'classnames'
 
 import util from '@/util'
 import {replace} from '@/services/redirect'
@@ -30,6 +31,9 @@ class RechargeVideo extends Component {
       productId: '',
       products: [],
 
+      subProductId: '',
+      subProducts: [],
+
       username: '',
 
       integral: 0,
@@ -47,7 +51,15 @@ class RechargeVideo extends Component {
         this.setState({
           operatorId: productClassifyId
         }, () => {
-          this.loadProducts(productClassifyId)
+          // 如果用loadSubProducts能加载到数据 则用subProducts中的id 没有则用operators中的id
+          this.loadSubProducts(productClassifyId)
+            .then(() => {
+              if(this.state.subProducts.length) {
+                this.loadProducts(this.state.subProducts[0] && this.state.subProducts[0].productClassifyId)
+              }else {
+                this.loadProducts(productClassifyId)
+              }
+            })
         })
       })
   }
@@ -56,6 +68,7 @@ class RechargeVideo extends Component {
     this.loadUserInfoSource && this.loadUserInfoSource.cancel('Operation canceled by the user.')
     this.loadOperatorsSource && this.loadOperatorsSource.cancel('Operation canceled by the user.')
     this.loadProductsSource && this.loadProductsSource.cancel('Operation canceled by the user.')
+    this.loadSubProductsSource && this.loadSubProductsSource.cancel('Operation canceled by the user.')
     this.submitSource && this.submitSource.cancel('Operation canceled by the user.')
   }
 
@@ -64,7 +77,8 @@ class RechargeVideo extends Component {
     try {
       const {data} = await getUserInfo(null, {cancelToken: this.loadUserInfoSource.token})
       if(data.status === 200) {
-        this.setState({availableIntegral: Number(data.data[0].balance)})
+        const account = util.getAccountById(data.data)
+        this.setState({availableIntegral: Number(account.balance)})
       }
     }finally {
     }
@@ -76,6 +90,19 @@ class RechargeVideo extends Component {
       const {data} = await getProducts(id, {cancelToken: this.loadOperatorsSource.token})
       if(data.status === 200) {
         this.setState({operators: data.data})
+      }      
+    }finally {
+    }
+  }
+
+  async loadSubProducts(id) {
+    this.loadSubProductsSource = CancelToken.source()
+    try {
+      const {data} = await getProducts(id, {cancelToken: this.loadSubProductsSource.token})
+      if(data.status === 200) {
+        if(data.data.length) {
+          this.setState({subProducts: data.data, subProductId: data.data[0].productClassifyId})
+        }
       }      
     }finally {
     }
@@ -111,9 +138,23 @@ class RechargeVideo extends Component {
     }
   }
 
+  reset() {
+    this.setState({
+      subProducts: []
+    })
+  }
+
   selectOperator(id) {
+    this.reset()
     this.setState({operatorId: id}, () => {
-      this.loadProducts(id)
+      this.loadSubProducts(id)
+        .then(() => {
+          if(this.state.subProducts.length) {
+            this.loadProducts(this.state.subProducts[0] && this.state.subProducts[0].productClassifyId)
+          }else {
+            this.loadProducts(id)
+          }
+        })      
     })
   }
 
@@ -127,6 +168,15 @@ class RechargeVideo extends Component {
 
   handleChange(e) {
     this.setState({[e.target.name]: e.target.value})
+  }
+
+  handleClickLoadSubProducts(id) {
+    if(id === this.state.subProductId) {
+      return
+    }
+    this.setState({subProductId: id}, () => {
+      this.loadProducts(id)
+    })
   }
 
   verify() {
@@ -168,11 +218,11 @@ class RechargeVideo extends Component {
   }
 
   render() {
-    const {operatorId, operators, productId, products} = this.state
+    const {operatorId, operators, productId, products, subProductId, subProducts} = this.state
 
     return (
       <Page>
-        <Helmet defaultTitle="沃银企服" title="视频VIP"/>
+        <Helmet title="视频VIP"/>
 
         <header>
           <OperatorList operatorId={operatorId} items={operators} selectOperator={this.selectOperator} />
@@ -196,6 +246,28 @@ class RechargeVideo extends Component {
             </div>
           </div>
         </section>
+
+        {!!subProducts.length && (
+          <section className="u_mb_xxx">
+            <div className="u_p_xxx">
+              <h2>子类</h2>
+            </div>
+            <div className="u_px_xxx u_pb_xxx">
+              <ul className="product-list">
+              {this.state.subProducts.map(item => {
+                const itemClass = classnames('item', {'active': subProductId === item.productClassifyId})
+                return (
+                  <li 
+                    key={item.productClassifyId}
+                    onClick={() => this.handleClickLoadSubProducts(item.productClassifyId)}
+                    className={itemClass}
+                  >{item.productClassifyName}</li>
+                )
+              })}
+              </ul>
+            </div>
+          </section>
+        )}
 
         <section>
           <div className="u_p_xxx">

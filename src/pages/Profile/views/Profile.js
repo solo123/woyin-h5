@@ -1,20 +1,60 @@
 import React, {Component} from 'react'
 import axios from 'axios'
 import {Helmet} from "react-helmet"
+import weui from 'weui.js'
 
-import {getUserInfo} from '@/api'
+import util from '@/util'
+import {getUserInfo, switchAccount} from '@/api'
+import {replace} from '@/services/redirect'
 import Backhome from '@/components/Backhome'
 
 import Page from './styled'
 
 import profileIcon from '@/asset/images/me/profile.png'
+import arrowIcon from '@/asset/images/icon/arrow_right.svg'
+
+async function handleSwitchAccount(params) {
+  const loading = weui.loading('处理中')
+  try {
+    const {data} = await switchAccount(params)
+    if(data.status === 200) {
+      // 写入当前商户id
+      localStorage.setItem('currentMerchantId', params.merchantId)
+      replace('')
+    }else {
+      weui.alert(data.msg)
+    }
+  }finally {
+    loading.hide()
+  }
+}
+
+function createAccoutList(data) {
+  return data.map(item => {
+    return {
+      label: item.merchantName,
+      onClick: () => {
+        const params = {
+          merchantId: item.merchantId,
+          userId: item.userId
+        }
+        handleSwitchAccount(params)
+      }
+    }
+  })
+}
 
 const CancelToken = axios.CancelToken
 
 export default class extends Component {
   constructor(props) {
     super(props)
-    this.state = {}
+
+    this.handleClick = this.handleClick.bind(this)
+
+    this.state = {
+      accountList: []
+    }
   }
 
   componentDidMount() {
@@ -30,10 +70,27 @@ export default class extends Component {
     try {
       const {data} = await getUserInfo(null, {cancelToken: this.loadUserInfoSource.token})
       if(data.status === 200) {
-        this.setState({...data.data[0]})
+        const account = util.getAccountById(data.data)
+        this.setState({...account, accountList: data.data})
       }
     }finally {
     }
+  }
+
+  handleClick() {
+    const data = createAccoutList(this.state.accountList)
+    if(!data.length) {
+      return
+    }
+    weui.actionSheet(
+      data, 
+      [
+        {
+          label: '取消',
+          onClick: function () {
+          }
+        }
+      ])
   }
 
   render() {
@@ -58,6 +115,10 @@ export default class extends Component {
           <dl>
             <dt>手机号码</dt>
             <dd>{userPhoneNo}</dd>
+          </dl>
+          <dl onClick={this.handleClick}>
+            <dt>切换账户</dt>
+            <dd><img className="icon" src={arrowIcon} alt=""/></dd>
           </dl>
         </main>
         <Backhome />
