@@ -1,11 +1,11 @@
 import React from 'react'
 import classnames from 'classnames'
 
-function Item({id, name, integral, productId, selectProduct}) {
+function Item({id, name, integral, productId, handleClick}) {
   const itemInnerClass = classnames('item__inner', {'active': id === productId})
   return (
     <div className="item">
-      <div className={itemInnerClass} onClick={selectProduct}>
+      <div className={itemInnerClass} onClick={handleClick}>
         <div>{name}</div>
         <div className="item__integral">{integral}积分</div>
       </div>
@@ -13,7 +13,7 @@ function Item({id, name, integral, productId, selectProduct}) {
   )
 }
 
-function List({productId, items, selectProduct}) {
+function List({productId, items, handleClick}) {
   return (
     <div className="product-list">
       {items.map(item => {
@@ -26,7 +26,7 @@ function List({productId, items, selectProduct}) {
             productId={productId}
             integral={integral}
             name={item.productName}
-            selectProduct={() => selectProduct(item.productId, integral)}
+            handleClick={() => handleClick(item.productId, integral)}
           />
         )
       })}

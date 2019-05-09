@@ -53,6 +53,7 @@ export default styled.div`
       &__inner{
         position: relative;
         padding: 10px;
+        height: 100%;
         font-size: 12px;
         border-radius: 2px;
         border: 1px solid #eaeaea;

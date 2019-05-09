@@ -9,6 +9,7 @@ import {replace} from '@/services/redirect'
 import {getUserInfo, getProducts, getSubProducts, rechargeVideo} from '@/api'
 
 import Backhome from '@/components/Backhome'
+import EmptyArrayPlaceholder from '@/components/EmptyArrayPlaceholder'
 import OperatorList from './OperatorList'
 import ProductList from './ProductList'
 import Page from './styled'
@@ -20,11 +21,13 @@ class RechargeVideo extends Component {
     super(props)
     
     this.selectOperator = this.selectOperator.bind(this)
-    this.selectProduct = this.selectProduct.bind(this)
+    this.handleSelectProduct = this.handleSelectProduct.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
 
     this.state = {
+      username: '',
+
       operatorId: '',
       operators: [],
 
@@ -34,8 +37,6 @@ class RechargeVideo extends Component {
       subProductId: '',
       subProducts: [],
 
-      username: '',
-
       integral: 0,
       availableIntegral: 0
     }
@@ -44,23 +45,12 @@ class RechargeVideo extends Component {
   componentDidMount() {
     const {id} = this.props.history.location.state
     this.loadUserInfo()
+
     this.loadOperators(id)
       .then(() => {
         const {productClassifyId} = this.state.operators[0]
         if(!productClassifyId){return}
-        this.setState({
-          operatorId: productClassifyId
-        }, () => {
-          // 如果用loadSubProducts能加载到数据 则用subProducts中的id 没有则用operators中的id
-          this.loadSubProducts(productClassifyId)
-            .then(() => {
-              if(this.state.subProducts.length) {
-                this.loadProducts(this.state.subProducts[0] && this.state.subProducts[0].productClassifyId)
-              }else {
-                this.loadProducts(productClassifyId)
-              }
-            })
-        })
+        this.loadData(productClassifyId)
       })
   }
 
@@ -144,8 +134,11 @@ class RechargeVideo extends Component {
     })
   }
 
-  selectOperator(id) {
-    this.reset()
+  resetProducts() {
+    this.setState({productId: '', products: []})
+  }
+
+  loadData(id) {
     this.setState({operatorId: id}, () => {
       this.loadSubProducts(id)
         .then(() => {
@@ -158,7 +151,12 @@ class RechargeVideo extends Component {
     })
   }
 
-  selectProduct(productId, integral) {
+  selectOperator(id) {
+    this.reset()
+    this.loadData(id)
+  }
+
+  handleSelectProduct(productId, integral) {
     this.setState({productId, integral})
   }
 
@@ -174,6 +172,7 @@ class RechargeVideo extends Component {
     if(id === this.state.subProductId) {
       return
     }
+    this.resetProducts()
     this.setState({subProductId: id}, () => {
       this.loadProducts(id)
     })
@@ -275,7 +274,11 @@ class RechargeVideo extends Component {
           </div>
 
           <div className="u_mx_xx">
-            <ProductList productId={productId} items={products} selectProduct={this.selectProduct} />
+            {products.length
+              ? <ProductList productId={productId} items={products} handleClick={this.handleSelectProduct}/>
+              : <EmptyArrayPlaceholder/>
+            }
+            
           </div>
 
           <div className="u_mx_xxx u_pb_xxx u_pt_x">
