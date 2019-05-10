@@ -24,28 +24,7 @@ function size(num) {
   return parseInt(num * ratio)
 }
 
-const Auth = ({isAuthenticated, userName, userPhoneNo, merchantName}) => {
-  if(isAuthenticated) {
-    return (
-      <Link className="content link" to="/integral">
-        <div>
-          <p style={{fontSize: 14}}>{userName} {userPhoneNo}</p>
-          <small>所属商户：{merchantName}</small>
-        </div>
-        <div>
-          <img src={arrowRightWhiteIcon} alt=""/>
-        </div>
-      </Link>
-    )
-  }
-  return (
-    <div>
-      <Link className="link" to="/login">
-        <span>登录查看</span><img src={arrowRightWhiteIcon} alt=""/>
-      </Link>
-    </div>
-  )
-}
+
 
 const iconStyle = {
   width: size(55),
@@ -83,6 +62,27 @@ const innerStyle = {
 const labelStyle = {
   width: size(25),
   height: size(13)
+}
+
+const Auth = ({isAuthenticated, userName, userPhoneNo, merchantName}) => {
+  if(isAuthenticated) {
+    return (
+      <Link className="content link" to="/integral">
+        <div>
+          <p style={{fontSize: 14}}>{userName} {userPhoneNo}</p>
+          <small>所属商户：{merchantName}</small>
+        </div>
+        <img src={arrowRightWhiteIcon} alt=""/>
+      </Link>
+    )
+  }
+  return (
+    <div>
+      <Link className="link" to="/login">
+        登录查看<img src={arrowRightWhiteIcon} alt=""/>
+      </Link>
+    </div>
+  )
 }
 
 class Home extends Component {
@@ -172,23 +172,24 @@ class Home extends Component {
         </header>
 
         <main>
-          <div className="section">
+
+          <div className="section u_bg_white">
             <div className="service">
               <Service items={this.state.menus}/>
-            </div>
-            <div className="banner-box">
-              <img src={banner} alt=""/>
+              <div className="u_p_xxx">
+                <img src={banner} alt=""/>
+              </div>              
             </div>
           </div>
 
           <div className="section u_bg_white">
-            <div className="head">
+            <div className="section__head">
               <img src={label} style={labelStyle} alt=""/>
-              <h2 className="title">付款码</h2>
+              <h2 className="section__title">付款码</h2>
               <img src={label} style={labelStyle} alt=""/>
             </div>
-            <div className="body">
-              <div style={logosStyle} className="logos">
+            <div className="section__body">
+              <div style={logosStyle} className="payment">
                 <div className="item">
                   <div style={boxStyle} className="box">
                     <img style={iconStyle} src={util.getVoucherLogo(100005)} alt=""/>
@@ -232,13 +233,14 @@ class Home extends Component {
           <div>
             <img src={banner2} alt=""/>
           </div>
+          
           <div className="section u_bg_white">
-            <div className="head">
+            <div className="section__head">
               <img src={label} style={labelStyle} alt=""/>
-              <h2 className="title">商城专区</h2>
+              <h2 className="section__title">商城专区</h2>
               <img src={label} style={labelStyle} alt=""/>
             </div>
-            <div className="body">
+            <div className="section__body">
               <div className="entry">
                 <div className="main">
                   <div style={jdStyle} className="cell">
@@ -260,12 +262,12 @@ class Home extends Component {
           </div>
 
           <div className="section">
-            <div className="head">
+            <div className="section__head">
               <img src={label} style={labelStyle} alt=""/>
-              <h2 className="title">热门推荐</h2>
+              <h2 className="section__title">热门推荐</h2>
               <img src={label} style={labelStyle} alt=""/>
             </div>
-            <div className="body">
+            <div className="section__body">
               <div className="hot">
                 <div className="box">
                   {two.map((item, index) => {
@@ -279,7 +281,7 @@ class Home extends Component {
                           <div style={innerStyle} className="inner">
                             <h3 style={titleStyle}>热门商品</h3>
                             <p>{item.name}</p>
-                            <img src={`http://img13.360buyimg.com/n2/${item.imagePath}`} alt=""/>
+                            <img src={`https://img13.360buyimg.com/n2/${item.imagePath}`} alt=""/>
                           </div>
                         </Link>                      
                       )
@@ -299,7 +301,7 @@ class Home extends Component {
                           <div style={innerStyle} className="inner">
                             <h3 style={titleStyle}>热门商品</h3>
                             <p>{item.name}</p>
-                            <img src={`http://img13.360buyimg.com/n2/${item.imagePath}`} alt=""/>
+                            <img src={`https://img13.360buyimg.com/n2/${item.imagePath}`} alt=""/>
                           </div>
                         </Link>                      
                       )

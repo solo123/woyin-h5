@@ -6,6 +6,7 @@ import {Helmet} from "react-helmet"
 
 import config from '@/config'
 import util from '@/util'
+import {replace} from '@/services/redirect'
 import {getUserInfo, getBankcardList, paymentToCard, getWithdrawFee, getCodeForWithdraw} from '@/api'
 
 import Backhome from '@/components/Backhome'
@@ -127,7 +128,7 @@ class CreditCard extends Component {
     try {
       const {data} = await paymentToCard(params)
       if(data.status === 200) {
-        weui.alert(data.msg)
+        replace('/result', {type: 'success', title: data.msg})
       }else if(data.status === 1017){
         util.confirmRetry('密码错误', () => {
           this.retryTransPswd()

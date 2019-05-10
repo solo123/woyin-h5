@@ -14,7 +14,7 @@ import listIcon from '@/asset/images/icon/list.svg'
 const LayoutPage = styled.div`
   display: flex;
   flex-wrap: wrap;
-  padding: 2% 0;
+  padding-top: 2%;
   background: #fff;
   .item{
     position: relative;
@@ -90,7 +90,6 @@ const Item = ({to, id, icon, text}) => {
     </div>
   )
 }
-
 
 export default function({items}) {
   return (
