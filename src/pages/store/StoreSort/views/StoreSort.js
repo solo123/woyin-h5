@@ -20,7 +20,7 @@ class StoreSort extends Component {
     this.handleClick = this.handleClick.bind(this)
 
     this.state = {
-      id: '',
+      id: 0,
       menus: [],
       items: [],
       completed: false
@@ -28,9 +28,9 @@ class StoreSort extends Component {
   }
 
   componentDidMount() {
-    this.loadGoodsSort(id => {
-      this.setState({id: id}, () => {
-        const params = {goodsClassId: this.state.id, page: currentPage++}    
+    this.loadGoodsSort(() => {
+      this.setState({id: 0}, () => {
+        const params = {goodsClassId: 0, page: currentPage++}    
         this.loadNextPage(params)
       })
     })
@@ -47,8 +47,8 @@ class StoreSort extends Component {
       const {data} = await getJDGoodsSort()
       if(data.status === 200) {
         this.setState({menus: data.data})
-        if(data.data[0] && data.data[0].id) {
-          cb && cb(data.data[0].id)
+        if(data.data[0] && data.data[0].page_num) {
+          cb && cb(data.data[0].page_num)
         }
       }
     }finally {
@@ -96,6 +96,7 @@ class StoreSort extends Component {
 
   render() {
     const {id} = this.state
+    console.log(id)
     return (
       <Page>
         <Helmet title="商品分类"/>
@@ -103,14 +104,14 @@ class StoreSort extends Component {
         <div className="layout">
           <div className="layout__aside">
             <ul className="menu">
-              {this.state.menus.map(item => {
+              {this.state.menus.map((item, index) => {
                 return (
                   <li 
-                    key={item.id} 
-                    className={classNames({active: id === item.id})}  
-                    onClick={() => this.handleClick(item.id)}
+                    key={item.page_num} 
+                    className={classNames({active: id === index})}  
+                    onClick={() => this.handleClick(index)}
                   >
-                    {item.category}
+                    {item.name}
                   </li>
                 )
               })}

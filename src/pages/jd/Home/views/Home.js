@@ -4,7 +4,7 @@ import {Link} from "react-router-dom"
 import weui from 'weui.js'
 import classNames from 'classnames'
 
-import {getJDGoodsList} from '@/api'
+import {getJDGoodsList, getJDGoodsSort} from '@/api'
 
 import Backhome from '@/components/Backhome'
 import SimpleScroll from '@/components/SimpleScroll'
@@ -24,20 +24,38 @@ class Home extends Component {
     this.handleClick = this.handleClick.bind(this)
 
     this.state = {
-      id: 1,
+      id: 0,
+      menus: [],
       items: [],
       completed: false
     }
   }
 
   componentDidMount() {
-    const params = {goodsClassId: this.state.id, page: currentPage++}    
-    this.loadNextPage(params)
+    this.loadGoodsSort(() => {
+      this.setState({id: 0}, () => {
+        const params = {goodsClassId: 0, page: currentPage++}    
+        this.loadNextPage(params)
+      })
+    })
     this.scroll = new SimpleScroll(this.scrollContainer, this.loadData)
   }
 
   componentWillUnmount() {
     this.scroll.destroy()
+  }
+
+  async loadGoodsSort(cb) {
+    try {
+      const {data} = await getJDGoodsSort()
+      if(data.status === 200) {
+        this.setState({menus: data.data})
+        if(data.data[0] && data.data[0].page_num) {
+          cb && cb(data.data[0].page_num)
+        }
+      }
+    }finally {
+    }
   }
 
   async loadNextPage(params) {
@@ -80,7 +98,7 @@ class Home extends Component {
   }
 
   render() {
-    const {id} = this.state
+    const {id, menus} = this.state
     return (
       <Page>
         <Helmet defaultTitle="沃银企服" title="京东购物"  />
@@ -97,12 +115,15 @@ class Home extends Component {
           </div>
           <nav>
             <ul>
-              <li className={classNames({active: id === 1})} onClick={() => this.handleClick(1)}>手机配件</li>
-              <li className={classNames({active: id === 2})} onClick={() => this.handleClick(2)}>数码产品</li>
-              <li className={classNames({active: id === 3})} onClick={() => this.handleClick(3)}>家居日用</li>
-              <li className={classNames({active: id === 4})} onClick={() => this.handleClick(4)}>食品饮料</li>
-              <li className={classNames({active: id === 5})} onClick={() => this.handleClick(5)}>个人护理</li>
-              <li className={classNames({active: id === 10})} onClick={() => this.handleClick(10)}>中外名酒</li>
+              {menus.map((item, index) => {
+                return (
+                  <li 
+                    key={item.page_num}
+                    className={classNames({active: id === index})} 
+                    onClick={() => this.handleClick(index)}
+                  >{item.name}</li>
+                )
+              })}
             </ul>
           </nav>
         </header>

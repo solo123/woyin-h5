@@ -277,7 +277,7 @@ class Home extends Component {
                       return (
                         <Link to={to} key={item.skuId} className="item">
                           <div style={innerStyle} className="inner">
-                            <h3 style={titleStyle}>食品饮料</h3>
+                            <h3 style={titleStyle}>热门商品</h3>
                             <p>{item.name}</p>
                             <img src={`http://img13.360buyimg.com/n2/${item.imagePath}`} alt=""/>
                           </div>
@@ -297,7 +297,7 @@ class Home extends Component {
                       return (
                         <Link to={to} key={item.skuId} className="item item-three">
                           <div style={innerStyle} className="inner">
-                            <h3 style={titleStyle}>电子产品</h3>
+                            <h3 style={titleStyle}>热门商品</h3>
                             <p>{item.name}</p>
                             <img src={`http://img13.360buyimg.com/n2/${item.imagePath}`} alt=""/>
                           </div>
