@@ -84,5 +84,13 @@ export default styled.div`
         }
       }
     }
+
+    .explain{
+      font-size: 12px;      
+      color: #1c92fe;
+      strong{
+        font-size: 14px;
+      }
+    }
   }
 `

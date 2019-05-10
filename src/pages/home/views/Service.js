@@ -17,6 +17,7 @@ const LayoutPage = styled.div`
   padding: 2% 0;
   background: #fff;
   .item{
+    position: relative;
     width: 20%;
     margin: 10px 0;
     text-align: center;
@@ -30,17 +31,27 @@ const LayoutPage = styled.div`
     color: #444;
     font-size: 12px;
   }
+  .badge{
+    position: absolute;
+    top: -10px;
+    right: 0;
+    font-size: 12px;
+    color: #fff;
+    padding: 0 3px;
+    border-radius: 3px;
+    background: #1aad19;
+  }
 `
 
 function getIconByIdContainer() {
   const PRODUCT_ICON_SCHEMA = {
-    '1': phoneIcon,
-    '5': flowIcon,
-    '9': oilIcon,
-    '12': qqIcon,
-    '15': videoIcon,
-    '18': ecardIcon,
-    '22': creditCardIcon
+    '11111': phoneIcon,
+    '77777': flowIcon,
+    '100001': oilIcon,
+    '44444': qqIcon,
+    '100010': videoIcon,
+    '100004': ecardIcon,
+    '100017': creditCardIcon
   }
   return function(id) {
     return PRODUCT_ICON_SCHEMA[id] || listIcon
@@ -49,13 +60,13 @@ function getIconByIdContainer() {
 
 function getRouteByIdContainer() {
   const PRODUCT_ICON_SCHEMA = {
-    '1': 'recharge-phone',
-    '5': 'recharge-traffic',
-    '9': 'recharge-oil',
-    '12': 'recharge-QB',
-    '15': 'recharge-video',
-    '18': 'voucher',
-    '22': 'credit-card'
+    '11111': 'recharge-phone',
+    '77777': 'recharge-traffic',
+    '100001': 'recharge-oil',
+    '44444': 'recharge-QB',
+    '100010': 'recharge-video',
+    '100004': 'voucher',
+    '100017': 'credit-card'
   }
   return function(id) {
     return PRODUCT_ICON_SCHEMA[id] || listIcon
@@ -65,17 +76,21 @@ function getRouteByIdContainer() {
 const getIconById = getIconByIdContainer()
 const getRouteById = getRouteByIdContainer()
 
-const Item = ({to, id, icon, text}) => (
-  <div className="item">
-    <Link to={{
-      pathname: to,
-      state: {id: id}
-    }}>
-      <img className="icon" src={icon} alt=""/>
-      <div className="title">{text}</div>
-    </Link>
-  </div>
-)
+const Item = ({to, id, icon, text}) => {
+  return (
+    <div className="item">
+      {(id === '11111') && <div className="badge">优惠</div>}
+      <Link to={{
+        pathname: to,
+        state: {id: id}
+      }}>
+        <img className="icon" src={icon} alt=""/>
+        <div className="title">{text}</div>
+      </Link>
+    </div>
+  )
+}
+
 
 export default function({items}) {
   return (

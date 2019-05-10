@@ -1,14 +1,18 @@
 import React, {Component} from 'react'
 import {Helmet} from "react-helmet"
 import weui from 'weui.js'
+import axios from 'axios'
 
-import {addBankcard} from '@/api'
+import util from '@/util'
+import {addBankcard, getUserInfo} from '@/api'
 import {push} from '@/services/redirect'
 
 import Backhome from '@/components/Backhome'
 import Page from './styled'
 
 import closeIcon from '@/asset/images/icon/close.png'
+
+const CancelToken = axios.CancelToken
 
 class AddBankcard extends Component {
   constructor(props) {
@@ -21,6 +25,8 @@ class AddBankcard extends Component {
     this.handleSubmit = this.handleSubmit.bind(this)
 
     this.state = {
+      flag: false,
+
       username: '',
       usernameCleanViewFlag: false,
 
@@ -32,6 +38,27 @@ class AddBankcard extends Component {
 
       phone: '',
       phoneCleanViewFlag: false
+    }
+  }
+
+  componentDidMount() {
+    this.loadUserInfo()
+  }
+
+  async loadUserInfo() {
+    this.loadUserInfoSource = CancelToken.source()
+    try {
+      const {data} = await getUserInfo(null, {cancelToken: this.loadUserInfoSource.token})
+      if(data.status === 200) {
+        if(!data.data.length) {return}
+        const account = util.getAccountById(data.data)
+        const flag = account.userName.match(/\d{11}/)
+        if(!flag) {
+          this.setState({username: account.userName})
+        }
+        this.setState({flag: !!flag})
+      }
+    }finally {
     }
   }
 
@@ -107,12 +134,13 @@ class AddBankcard extends Component {
 
   render() {
     const {
+      flag,
       username, usernameCleanViewFlag,
       id, idCleanViewFlag,
       cardNo, cardNoCleanViewFlag,
       phone, phoneCleanViewFlag
     } = this.state
-
+  
     return (
       <Page>
         <Helmet defaultTitle="沃银企服" title="添加银行/信用卡"/>
@@ -128,18 +156,21 @@ class AddBankcard extends Component {
                   value={username} 
                   onChange={this.handleChange} 
                   onFocus={this.handleFocus}
+                  readOnly={!flag}
                   onBlur={this.handleBlur}
                   placeholder="请输入姓名"
                 />
               </div>
               <div className="group__foot">
-                <img
-                  className="close-btn" 
-                  style={{visibility: usernameCleanViewFlag ? 'visible' : 'hidden'}} 
-                  onClick={() => this.handleClick('username')}
-                  src={closeIcon} 
-                  alt="清空输入"
-                />
+                <span style={{opacity: flag ? '1' : 0}}>
+                  <img
+                    className="close-btn" 
+                    style={{visibility: usernameCleanViewFlag ? 'visible' : 'hidden'}} 
+                    onClick={() => this.handleClick('username')}
+                    src={closeIcon} 
+                    alt="清空输入"
+                  />
+                </span>
               </div>
             </div>
             <div className="group">

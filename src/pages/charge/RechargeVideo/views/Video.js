@@ -180,7 +180,7 @@ class RechargeVideo extends Component {
 
   verify() {
     if(!this.state.username) {
-      weui.alert('请输入用户名')
+      weui.alert('请输入会员卡号')
       return
     }
     if(!this.state.productId) {

@@ -5,8 +5,8 @@ import cnpc from '@/asset/images/recharge/cnpc.png'
 import sinopec from '@/asset/images/recharge/sinopec.png'
 
 const ICON_SCHEMA = {
-  '10': cnpc,
-  '11': sinopec
+  '100002': cnpc,
+  '100003': sinopec
 }
 
 function Item({id, currId, name, handleToggleType}) {

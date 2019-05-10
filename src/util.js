@@ -35,6 +35,9 @@ import wnIcon from '@/asset/images/ecard/wn.png'
 import xbkIcon from '@/asset/images/ecard/xbk.png'
 import xcIcon from '@/asset/images/ecard/xc.png'
 import ymxIcon from '@/asset/images/ecard/ymx.png'
+import wphIcon from '@/asset/images/ecard/wph.png'
+import couponIcon from '@/asset/images/ecard/coupon.svg'
+
 
 const BANKCARD_SCHEMA = {
   'GDB' : fzIcon,
@@ -56,21 +59,22 @@ const BANKCARD_SCHEMA = {
 }
 
 const LOGO_SCHEAM = {
-  '19': jdIcon,
-  '20': tmIcon,
-  '2': snIcon,
+  '100005': jdIcon,
+  '100006': tmIcon,
+  '100007': snIcon,
   '3': ymxIcon,
   '5': xcIcon,
   '6': xcIcon,
   '7': hgdsIcon,
   '8': kdjIcon,
   '9': bskIcon,
-  '10': xbkIcon,
+  '100009': xbkIcon,
   '11': dqIcon,
   '12': bgyIcon,
   '13': appleIcon,
   '14': wnIcon,
-  '15': qcsIcon
+  '15': qcsIcon,
+  '22': wphIcon
 }
 
 // 根据银行code获取银行logo
@@ -79,7 +83,7 @@ function getBankCardLogo(code) {
 }
 
 function getVoucherLogo(id) {
- return LOGO_SCHEAM[id]
+ return LOGO_SCHEAM[id] || couponIcon
 }
 
 const refreshTokenIsValid = (refreshToken) => {

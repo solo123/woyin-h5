@@ -32,7 +32,7 @@ export default styled.div`
   }
   
   .banner-box{
-    padding: 0 10px 10px 10px;
+    padding: 0 15px 15px 15px;
     background: #fff;
   }  
 
@@ -42,32 +42,11 @@ export default styled.div`
       font-size: 16px;
       font-weight: bold;
     }
-    .aside{
-      position: relative;
-      filter: grayscale(100%);
-      filter: gray;      
-      .content{
-        position: absolute;
-        top: 20%;
-        left: 0;
-        right: 0;
-        color: #fff;
-        text-align: center;
-      }
-    }
     .main{
       display: flex;
     }
     .cell{
       position: relative;
-      flex: 1;
-      &+.cell{
-        filter: grayscale(100%);
-        filter: gray;     
-      }
-      & + .cell{
-        margin-left: 10px;
-      }
       .content{
         position: absolute;
         top: 15%;
@@ -75,14 +54,26 @@ export default styled.div`
         color: #fff;
       }
     }
+    .gray{
+      filter: grayscale(100%);
+      filter: gray;     
+    }
   }
 
   .logos{
     display: flex;
+    flex-wrap: wrap;
+    background: #fff;
     justify-content: space-around;
-    img{
-      width: 50px;
-      height: 50px;
+    .box{
+      display: flex;
+      align-items: center;
+      border-radius: 5px;
+      border: 1px solid #eaeaea;
+    }
+    .item{
+      width: 33.33%;
+      font-size: 12px;
     }
   }
 
@@ -92,9 +83,14 @@ export default styled.div`
       margin-bottom: 0;
     }
     .head{
-      padding: 10px 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 15px 0;
       .title{
+        position: relative;
         font-size: 16px;
+        padding: 0 5px;
         text-align: center;
       }
     }
@@ -102,30 +98,61 @@ export default styled.div`
       padding-bottom: 10px;
     }
   }
-  .box{
-    .item{
-      text-align: center;
-      margin-right: 10px;
-      padding: 10px;
-      background: #fff;
-      width: 100px;
-      .img{
-      }
-      .title{
+
+  .service{
+    .box{
+      .item{
         text-align: center;
-        text-overflow: ellipsis;
-        overflow: hidden;
-        white-space: nowrap;
+        margin-right: 10px;
+        padding: 10px;
+        background: #fff;
+        width: 100px;
+        .title{
+          text-align: center;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;
+        }
+        .link{
+          color: #fff;
+          padding: 0 20px;
+          font-size: 12px;
+          border-radius: 10px;
+          background: #ef1a20;
+          display: inline-block;
+        }
+      }      
+    }
+  }
+
+  .hot{
+    .box{
+      display: flex;
+      flex-wrap: wrap;
+      padding: 0 5px;
+      .item{
+        width: 50%;
+        .inner{
+          margin: 5px;
+          background: #fff;
+        }
+        h3{
+          color: #f53b40;
+          font-size: 16px;
+        }
+        p{
+          color: #888;
+          font-size: 12px;
+          text-overflow: ellipsis;
+          overflow: hidden;
+          white-space: nowrap;     
+          margin-bottom: 10px;     
+        }
       }
-      .link{
-        color: #fff;
-        padding: 0 20px;
-        font-size: 12px;
-        border-radius: 10px;
-        background: #ef1a20;
-        display: inline-block;
+      .item-three{
+        width: 33.33%;
       }
-    }      
+    }
   }
 
   .box__head{

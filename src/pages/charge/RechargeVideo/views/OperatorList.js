@@ -12,7 +12,7 @@ import txspIcon from '@/asset/images/video/icon_txsp.png'
 
 const ICON_SCHEMA = {
   '16': txspIcon,
-  '17': iqyIcon,
+  '100012': iqyIcon,
   '3': txspIcon,
   '4': txspIcon,
   '5': mgtvIcon,
@@ -20,7 +20,7 @@ const ICON_SCHEMA = {
   '7': qqyyIcon,
   '8': kgIcon,
   '9': kwIcon,
-  '22': ykIcon
+  '100011': ykIcon
 }
 
 function Item({id, operatorId, name, icon, selectOperator}) {

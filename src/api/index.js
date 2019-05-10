@@ -235,6 +235,11 @@ export function rechargePhone(data = {}) {
   return post(`${BASE}api/charge/moreCredit`, qs.stringify(data))
 }
 
+// 获取京东商品物流信息
+export function getPhoneDistrict(phone, config) {
+  return get(`${JDBASE}mail/phoneType/${phone}`, null, config)
+}
+
 // QB充值
 export function rechargeQB(data = {}) {
   const tradPwd = md5(data.tranPwd)

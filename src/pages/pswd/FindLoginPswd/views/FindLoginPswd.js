@@ -1,9 +1,6 @@
 import React, {Component} from 'react'
-import {withRouter} from "react-router-dom"
-import {connect} from 'react-redux'
 import weui from 'weui.js'
 import {Helmet} from "react-helmet"
-import classNames from 'classnames'
 
 import config from '@/config'
 import {getCodeForFindPswd, findLoginPswd} from '@/api'

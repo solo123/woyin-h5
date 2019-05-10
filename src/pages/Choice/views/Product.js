@@ -100,7 +100,7 @@ class Product extends Component {
               <div className="content">
                 <div className="text">
                   <h2>电子产品</h2>
-                  <p>电子产品分类标语</p>
+                  <p>发烧爆款等你拿</p>
                   <span>查看详情</span>
                 </div>
                 <img className="img" src={dz} alt=""/>
@@ -114,7 +114,7 @@ class Product extends Component {
               <div className="content">
                 <div className="text">
                   <h2>食品饮料</h2>
-                  <p>零食类分类标语</p>
+                  <p>好物优惠天天有</p>
                   <span>查看详情</span>
                 </div>
                 <img className="img" src={ls} alt=""/>
@@ -128,7 +128,7 @@ class Product extends Component {
               <div className="content">
                 <div className="text">
                   <h2>护肤美容</h2>
-                  <p>护肤类分类标语</p>
+                  <p>大牌放心购</p>
                   <span>查看详情</span>
                 </div>
                 <img className="img" src={hf} alt=""/>

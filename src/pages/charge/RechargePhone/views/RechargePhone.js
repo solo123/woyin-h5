@@ -5,7 +5,7 @@ import {Helmet} from "react-helmet"
 
 import util from '@/util'
 import {replace} from '@/services/redirect'
-import {getUserInfo, getSubProducts, getProducts, rechargePhone} from '@/api'
+import {getUserInfo, getSubProducts, getProducts, rechargePhone, getPhoneDistrict} from '@/api'
 
 import ProductSkeleton from '@/components/ProductSkeleton'
 import EmptyArrayPlaceholder from '@/components/EmptyArrayPlaceholder'
@@ -17,6 +17,8 @@ import Page from './styled'
 import banner from '@/asset/images/recharge/banner.png'
 
 const CancelToken = axios.CancelToken
+const TYPE = '22222'
+const TYPE_TEXT = '广东移动'
 
 const Product = ({loading, productId, handleSelect, items}) => {
   if(loading) {
@@ -32,6 +34,7 @@ export default class extends Component {
   constructor(props) {
     super(props)
 
+    this.handleBlur = this.handleBlur.bind(this)
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
     this.handleSelect = this.handleSelect.bind(this)
@@ -45,6 +48,8 @@ export default class extends Component {
 
       phone: '',
       productId: '',
+
+      phoneDistrict: '',
 
       integral: 0,
       availableIntegral: 0
@@ -108,6 +113,16 @@ export default class extends Component {
     }
   }
 
+  async loadPhoneDistrict(phone) {
+    try {
+      const {data} = await getPhoneDistrict(phone)
+      if(data.status === 200) {
+        this.setState({phoneDistrict: data.data.province + data.data.phoneType})
+      }
+    }finally {
+    }
+  }
+
   async doSubmit(params) {
     const loading = weui.loading('处理中')
     try {
@@ -150,6 +165,16 @@ export default class extends Component {
     this.setState({[e.target.name]: e.target.value})
   }
 
+  handleBlur(e) {
+    // 1 长度达到11位 发起请求 否则置空
+    const {phone} = this.state
+    if(phone && (phone.length >= 7 && phone.length <= 11)) {
+      this.loadPhoneDistrict(phone)
+    }else {
+      this.setState({phoneDistrict: ''})
+    }
+  }
+
   verify() {
     if(!this.state.phone) {
       weui.alert('请输入手机号')
@@ -158,6 +183,12 @@ export default class extends Component {
     if(this.state.phone.length !== 11) {
       weui.alert('请输入合法的手机号')
       return
+    }
+    if(this.state.currId === TYPE) {
+      if(this.state.phoneDistrict !== TYPE_TEXT) {
+        weui.alert(`优惠充值仅支持${TYPE_TEXT}用户`)
+        return
+      }
     }
     if(!this.state.productId) {
       weui.alert('请选择产品')
@@ -216,17 +247,42 @@ export default class extends Component {
                 name="phone"
                 value={this.state.phone}
                 onChange={this.handleChange} 
+                onBlur={this.handleBlur}
                 placeholder="请输入手机号" 
                 autoComplete="off"
               />
             </div>
           </div>
 
-          <h2 className="u_mx_xxx u_mb_x">请选择面值</h2>
+          <h2 className="u_mx_xxx u_mb_x flex-space-between">请选择面值 <span>{this.state.phoneDistrict}</span></h2>
           <Product loading={skeletonLoading} productId={productId} items={items} handleSelect={this.handleSelect} />
 
           <div className="u_p_xxx">
             <button className="btn btn-secondary" onClick={this.handleSubmit}>立即充值</button>
+          </div>
+
+          <div className="u_p_xxx">
+            <div className="explain">
+              <h2>充值说明：</h2>
+              {currId === TYPE
+                ? (
+                  <ul>
+                    <li>【充值对象】仅限<strong>广东移动手机用户</strong>，其它省份用户无法充值；</li>
+                    <li>【充值次数】1个号码一个月只可以办理一次，额度有限先到先得；</li>
+                    <li>【到账时间】下单后，<strong>工作日内24-72小时到账</strong>，移动周末不办理，周未下的单顺延至周一才处理的！敬请注意；</li>
+                    <li>【使用范围】可抵扣移动套餐月租、语音、除梦网外的一切费用；</li>
+                    <li>【查询方式】1.本机编辑“ye”发送到10086；2.打电话，拨打移动客服电话1008611；</li>
+                    <li>【注意事项】欠费，停机，空号等状态异常的号码不可充值；</li>
+                    <li>【售后服务】72小时内，如充值失败，积分将返回到您的账户。</li>
+                  </ul>
+                )
+                : (
+                  <ul>
+                    <li>注意：广东联通10.20面值不支持充值，充值一般为实时到账，如有疑问请联系客服</li>
+                  </ul>
+                )
+              }
+            </div>          
           </div>
           
         </main>

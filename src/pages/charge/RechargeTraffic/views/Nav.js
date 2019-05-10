@@ -6,9 +6,9 @@ import cucc from '@/asset/images/recharge/cucc.png'
 import ctcc from '@/asset/images/recharge/ctcc.png'
 
 const ICON_SCHEMA = {
-  '6': cmcc,
-  '7': cucc,
-  '8': ctcc
+  '88888': cmcc,
+  '99999': cucc,
+  '100000': ctcc
 }
 
 function Item({id, currId, name, handleToggleType}) {

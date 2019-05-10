@@ -24,7 +24,7 @@ Mock.mock(/getUserInfo/, 'get', function (options) {
     "data": [{
         "sessionId": "",
         "userId": "234",
-        "userName": "邓伟正",
+        "userName": "15014095291",
         "userPhoneNo": "15999685974",
         "merchantId": "2019032115531571140214",
         "updateTime": 1553243744,
