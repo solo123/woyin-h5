@@ -34,8 +34,8 @@ const GlobalStyle = createGlobalStyle`
 `
 
 const CARD_TYPE_SCHEAM = {
-  '13': '2',
-  '14': '3'
+  '55555': '2',
+  '66666': '3'
 }
 
 export default class extends Component {

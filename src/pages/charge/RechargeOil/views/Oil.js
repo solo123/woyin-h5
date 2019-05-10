@@ -29,8 +29,8 @@ const Product = ({loading, productId, items, handleSelect}) => {
 }
 
 const CARD_TYPE_SCHEAM = {
-  '10': '1',
-  '11': '2'
+  '100002': '1',
+  '100003': '2'
 }
 
 class Oil extends Component {
