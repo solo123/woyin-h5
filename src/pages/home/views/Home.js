@@ -24,8 +24,6 @@ function size(num) {
   return parseInt(num * ratio)
 }
 
-
-
 const iconStyle = {
   width: size(55),
   height: size(55),
@@ -177,7 +175,7 @@ class Home extends Component {
             <div className="service">
               <Service items={this.state.menus}/>
               <div className="u_p_xxx">
-                <img src={banner} alt=""/>
+                <img src={banner} style={{width: size(707), height: size(221)}} alt=""/>
               </div>              
             </div>
           </div>
@@ -231,7 +229,7 @@ class Home extends Component {
           </div>
 
           <div>
-            <img src={banner2} alt=""/>
+            <img src={banner2} style={{width: size(750), height: size(203)}} alt=""/>
           </div>
           
           <div className="section u_bg_white">

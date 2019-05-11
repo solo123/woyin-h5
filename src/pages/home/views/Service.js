@@ -42,6 +42,11 @@ const LayoutPage = styled.div`
     background: #1aad19;
   }
 `
+function size(num) {
+  const designWidth = 750
+  const ratio = window.innerWidth / designWidth
+  return parseInt(num * ratio)
+}
 
 function getIconByIdContainer() {
   const PRODUCT_ICON_SCHEMA = {
@@ -84,7 +89,7 @@ const Item = ({to, id, icon, text}) => {
         pathname: to,
         state: {id: id}
       }}>
-        <img className="icon" src={icon} alt=""/>
+        <img className="icon" src={icon} style={{width: size(100), height: size(100)}} alt=""/>
         <div className="title">{text}</div>
       </Link>
     </div>

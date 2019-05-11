@@ -75,8 +75,6 @@ code {
 
 /* common */
 body {
-  min-width: 320px;
-  max-width: 540px;
   margin: 0 auto;
   line-height: 1.5;
   background: #f7f7f8;

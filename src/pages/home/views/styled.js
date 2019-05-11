@@ -8,7 +8,7 @@ export default styled.div`
     &:last-child{
       margin-bottom: 0;
     }
-    &:last-child .body{
+    &:last-child .section__body{
       padding-bottom: 5px;
     }
     &__head{

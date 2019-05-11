@@ -96,7 +96,6 @@ class StoreSort extends Component {
 
   render() {
     const {id} = this.state
-    console.log(id)
     return (
       <Page>
         <Helmet title="商品分类"/>
