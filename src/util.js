@@ -1,43 +1,42 @@
 import weui from 'weui.js'
 import dayjs from 'dayjs'
 
-import {push} from '@/services/redirect'
+import {push} from './services/redirect'
 
-import fzIcon from '@/asset/images/bank/fz.svg'
-import gdIcon from '@/asset/images/bank/gd.svg'
-import gsIcon from '@/asset/images/bank/gs.svg'
-import hxIcon from '@/asset/images/bank/hx.svg'
-import jsIcon from '@/asset/images/bank/js.svg'
-import jtIcon from '@/asset/images/bank/jt.svg'
-import msIcon from '@/asset/images/bank/ms.svg'
-import nyIcon from '@/asset/images/bank/ny.svg'
-import paIcon from '@/asset/images/bank/pa.svg'
-import shIcon from '@/asset/images/bank/sh.svg'
-import shfzIcon from '@/asset/images/bank/shfz.svg'
-import xyIcon from '@/asset/images/bank/xy.svg'
-import yzIcon from '@/asset/images/bank/yz.svg'
-import zgIcon from '@/asset/images/bank/zg.svg'
-import zsIcon from '@/asset/images/bank/zs.svg'
-import zxIcon from '@/asset/images/bank/zx.svg'
-import defaultIcon from '@/asset/images/bank/default.svg'
+import fzIcon from './asset/images/bank/fz.svg'
+import gdIcon from './asset/images/bank/gd.svg'
+import gsIcon from './asset/images/bank/gs.svg'
+import hxIcon from './asset/images/bank/hx.svg'
+import jsIcon from './asset/images/bank/js.svg'
+import jtIcon from './asset/images/bank/jt.svg'
+import msIcon from './asset/images/bank/ms.svg'
+import nyIcon from './asset/images/bank/ny.svg'
+import paIcon from './asset/images/bank/pa.svg'
+import shIcon from './asset/images/bank/sh.svg'
+import shfzIcon from './asset/images/bank/shfz.svg'
+import xyIcon from './asset/images/bank/xy.svg'
+import yzIcon from './asset/images/bank/yz.svg'
+import zgIcon from './asset/images/bank/zg.svg'
+import zsIcon from './asset/images/bank/zs.svg'
+import zxIcon from './asset/images/bank/zx.svg'
+import defaultIcon from './asset/images/bank/default.svg'
 
-import appleIcon from '@/asset/images/ecard/apple.png'
-import bgyIcon from '@/asset/images/ecard/bgy.png'
-import bskIcon from '@/asset/images/ecard/bsk.png'
-import dqIcon from '@/asset/images/ecard/dq.png'
-import hgdsIcon from '@/asset/images/ecard/hgds.png'
-import jdIcon from '@/asset/images/ecard/jd.png'
-import kdjIcon from '@/asset/images/ecard/kdj.png'
-import qcsIcon from '@/asset/images/ecard/qcs.png'
-import snIcon from '@/asset/images/ecard/sn.png'
-import tmIcon from '@/asset/images/ecard/tm.png'
-import wnIcon from '@/asset/images/ecard/wn.png'
-import xbkIcon from '@/asset/images/ecard/xbk.png'
-import xcIcon from '@/asset/images/ecard/xc.png'
-import ymxIcon from '@/asset/images/ecard/ymx.png'
-import wphIcon from '@/asset/images/ecard/wph.png'
-import couponIcon from '@/asset/images/ecard/coupon.svg'
-
+import appleIcon from './asset/images/ecard/apple.png'
+import bgyIcon from './asset/images/ecard/bgy.png'
+import bskIcon from './asset/images/ecard/bsk.png'
+import dqIcon from './asset/images/ecard/dq.png'
+import hgdsIcon from './asset/images/ecard/hgds.png'
+import jdIcon from './asset/images/ecard/jd.png'
+import kdjIcon from './asset/images/ecard/kdj.png'
+import qcsIcon from './asset/images/ecard/qcs.png'
+import snIcon from './asset/images/ecard/sn.png'
+import tmIcon from './asset/images/ecard/tm.png'
+import wnIcon from './asset/images/ecard/wn.png'
+import xbkIcon from './asset/images/ecard/xbk.png'
+import xcIcon from './asset/images/ecard/xc.png'
+import ymxIcon from './asset/images/ecard/ymx.png'
+import wphIcon from './asset/images/ecard/wph.png'
+import couponIcon from './asset/images/ecard/coupon.svg'
 
 const BANKCARD_SCHEMA = {
   'GDB' : fzIcon,
@@ -84,14 +83,6 @@ function getBankCardLogo(code) {
 
 function getVoucherLogo(id) {
  return LOGO_SCHEAM[id] || couponIcon
-}
-
-const refreshTokenIsValid = (refreshToken) => {
-  return true;
-}
-
-const accessTokenIsValid = (accessToken) => {
-  return true;
 }
 
 const creteNumSeriesString = (start, end) => {
@@ -348,6 +339,7 @@ const formatTimestamp2 = function (timestamp) {
   }
   return null
 }
+
 // 延迟执行
 // 在一个指定时间之内 再次调用会被忽略
 function throttle(func, delay) {
@@ -382,8 +374,6 @@ function debounce(func, delay) {
 
 // const superTest = debounce(test, 100)
 // superTest()
-
-
 
 // 按下移动元素
 var Mover = function (elem) {
@@ -457,8 +447,6 @@ export default {
   addClass,
   removeClass,
   fixIos12WeixinInputBug,
-  accessTokenIsValid,
-  refreshTokenIsValid,
   creteNumSeriesString,
   randomRangeNum,
   closest,

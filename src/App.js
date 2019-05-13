@@ -198,14 +198,11 @@ export default class extends Component {
             <Auth path="/redeem-record" component={AsyncRedeemRecord} />
             <Auth path="/credit-card" component={AsyncCreditCard} />
             <Auth path="/credit-record" component={AsyncCreditRecord} />
-
             <Auth path="/order-charge" exact component={AsyncOrderCharge} />
             <Auth path="/order-charge/:id" component={AsyncOrderChargeDetail} />
-          
             <Auth path="/order-goods" exact component={AsyncOrderGoods} />
             <Auth path="/order-goods/:id" component={AsyncOrderGoodsDetail} />
             <Auth path="/order-goods-track/:id" component={AsyncOrderGoodsTrack} />
-
             <Auth path="/recharge-phone" component={AsyncRechargePhone} />
             <Auth path="/recharge-traffic" component={AsyncRechargeTraffic} />
             <Auth path="/recharge-oil" component={AsyncRechargeOil} />

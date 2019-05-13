@@ -293,7 +293,7 @@ class StoreConfirm extends Component {
 
     util.paymentConfirm({
       title: '兑换',
-      amount: this.totalIntegral,
+      amount: this.totalIntegral + this.state.freight,
       useable: this.state.availableIntegral,
       callback: (e, inputElem) => {
         if(!inputElem.value) {return false}

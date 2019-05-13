@@ -1,5 +1,5 @@
 import jwtDecode from 'jwt-decode'
-import {setItem, removeItem} from '@/services/storage'
+import {setItem, removeItem} from '../services/storage'
 
 const initialState = {
   token: '',

@@ -5,16 +5,16 @@ import {connect} from 'react-redux'
 import weui from 'weui.js'
 import {Helmet} from "react-helmet"
 
-import config from '@/config'
-import {login, getCode} from '@/api'
-import {setItem, removeItem, getItem} from '@/services/storage'
+import config from '../../../config'
+import {login, getCode} from '../../../api'
+import {setItem, removeItem, getItem} from '../../../services/storage'
 import Page from './styled'
 
-import closeIcon from '@/asset/images/icon/close.png'
-import showIcon from '@/asset/images/icon/show.png'
-import hideIcon from '@/asset/images/icon/hide.png'
-import checkedIcon from '@/asset/images/icon/checked.png'
-import uncheckedIcon from '@/asset/images/icon/unchecked.png'
+import closeIcon from '../../../asset/images/icon/close.png'
+import showIcon from '../../../asset/images/icon/show.png'
+import hideIcon from '../../../asset/images/icon/hide.png'
+import checkedIcon from '../../../asset/images/icon/checked.png'
+import uncheckedIcon from '../../../asset/images/icon/unchecked.png'
 
 const ICON_SCHEMA = {
   text: showIcon,
@@ -320,7 +320,9 @@ class Login extends Component {
     return (
       <Page>
         <GlobalStyle />
-        <Helmet defaultTitle="沃银企服" title="登录"/>
+        <Helmet>
+          <title className="title">登录</title>
+        </Helmet>
         <header>
           <h1>登录</h1>
         </header>
