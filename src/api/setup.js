@@ -1,8 +1,8 @@
 import axios from 'axios';
 import weui from 'weui.js'
-import store from '../Store';
-import {getItem} from '../services/storage'
-import config from '../config';
+import store from '@/Store';
+import {getItem} from '@/services/storage'
+import config from '@/config';
 
 const instance = axios.create()
 instance.defaults.timeout = config.timeout

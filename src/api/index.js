@@ -2,7 +2,7 @@ import qs from'qs'
 import md5 from 'md5'
 import {get, del, put, post} from './setup'
 
-import G_config from '../config'
+import G_config from '@/config'
 
 let BASE = ''
 let JDBASE = ''

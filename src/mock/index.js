@@ -1,4 +1,4 @@
-import util from '../util';
+import util from '@/util';
 import uuid from 'uuid'
 
 import './user'

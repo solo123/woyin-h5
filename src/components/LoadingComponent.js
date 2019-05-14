@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
 
-import loading from '../asset/images/spinner_load.svg'
+import loading from '@/asset/images/spinner_load.svg'
 
 const Page = styled.div`
   text-align: center;
