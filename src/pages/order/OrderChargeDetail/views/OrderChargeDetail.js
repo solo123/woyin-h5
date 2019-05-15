@@ -15,7 +15,7 @@ const STATUS_SCHEMA = {
 
 class OrderChargeDetail extends Component {
   render() { 
-    const {status, byOrderDetail, productName, productValue, createTime} = this.props.location.state.detail
+    const {status, byOrderDetail, productName, totalAmt, createTime} = this.props.location.state.detail
     return (
       <Page>
         <Helmet title="订单详情" />
@@ -43,7 +43,7 @@ class OrderChargeDetail extends Component {
             </dl>
             <dl>
               <dt>交易积分：</dt>
-              <dd>{productValue}</dd>
+              <dd>{totalAmt}</dd>
             </dl>
           </main>
 

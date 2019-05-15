@@ -9,7 +9,7 @@ const STATUS_SCHEMA = {
   '13': '失败'
 }
 
-function Item({id, date, name, productValue, status, data}) {
+function Item({id, date, name, totalAmt, status, data}) {
   const to = {
     pathname: `/order-charge/${id}`,
     state: {detail: data}
@@ -25,7 +25,7 @@ function Item({id, date, name, productValue, status, data}) {
       </div>
       <div className="item__foot">
         <div>{date}</div>
-        <div>合计积分 <strong>{productValue}</strong></div>
+        <div>合计积分 <strong>{totalAmt}</strong></div>
       </div>
     </Link>
   )
@@ -42,7 +42,7 @@ function List({items}) {
           byOrderDetail={item.byOrderDetail}
           status={STATUS_SCHEMA[item.status]}
           date={util.formatTimestamp(item.createTime)} 
-          productValue={item.productValue}
+          totalAmt={item.totalAmt}
           data={item}
         />
       ))}

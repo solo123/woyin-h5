@@ -1,31 +1,21 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 
-import util from '@/util'
-
+@connect(state => ({name: 'tom'}))
 class FakeLogin extends Component {
+  constructor(props) {
+    super(props)
 
+    console.log(this.props)
+
+    this.state = {}
+  }
   render() {
     return (
       <div>
         <div className="title">FakeLogin</div>
       </div>
     )
-  }
-}
-
-const mapStateToProps = (state) => {
-  return { isAuthenticated: state.auth.isAuthenticated }
-}
-
-const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    login: payload => {
-      dispatch({
-        type: 'AUTH_USER',
-        payload: {token: payload.token, reset: payload.reset}
-      })
-    }
   }
 }
 

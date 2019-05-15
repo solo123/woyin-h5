@@ -1,13 +1,12 @@
 const path = require('path')
-const { injectBabelPlugin } = require('react-app-rewired')
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
-const { override, fixBabelImports, addDecoratorsLegacy } = require('customize-cra')
+const { override, addDecoratorsLegacy } = require('customize-cra')
 
 function resolve (dir) {
   return path.join(__dirname, dir)
 }
 
-const add = () => (config, env) => {
+const customize = () => (config, env) => {
   config.resolve.alias['@'] = resolve('src')
   if(env === 'production') {
     config.externals = {
@@ -21,4 +20,4 @@ const add = () => (config, env) => {
 };
 
 
-module.exports = override(addDecoratorsLegacy(), add())
+module.exports = override(addDecoratorsLegacy(), customize())
