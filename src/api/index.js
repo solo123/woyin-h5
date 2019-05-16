@@ -14,7 +14,11 @@ if(process.env.NODE_ENV === 'development') {
   JDBASE = '/jdapi/'
 }
 
-const timestamp = String(new Date().getTime())
+let timestamp = String(new Date().getTime())
+
+function refreshTimeStamp() {
+  timestamp = String(new Date().getTime())
+}
 
 // 登录
 export const login = (data) => {
@@ -71,6 +75,7 @@ export const getCodeForFindTradePswd = (phone) => {
 }
 
 export const redeemIntegral = (data = {}) => {
+  refreshTimeStamp()
   const tradPwd = md5(data.tradPwd)
   const payment = '1'
   data = {
@@ -85,6 +90,7 @@ export const redeemIntegral = (data = {}) => {
 
 // 代卖或信用卡还款
 export const paymentToCard = (data = {}) => {
+  refreshTimeStamp()
   const tradPwd = md5(data.tradPwd)
   const payment = '2'  
   data = {
@@ -158,6 +164,7 @@ export const getVoucherRecord = (data, config = {}) => {
 
 // 积分转赠
 export const integralTransfer = (data) => {
+  refreshTimeStamp()
   const tranPwd = md5(data.tranPwd)
   data = {
     ...data,
@@ -179,6 +186,7 @@ export const transferRecord = (data, config) => {
 
 // 添加银卡
 export const addBankcard = (data = {}) => {
+  refreshTimeStamp()
   data = {
     ...data,
     sign: md5(`key=&afdY%d2^uy3&timestamp=${timestamp}&cardPhoneNo=${data.cardPhoneNo}&bankCard=${data.bankCard}&cardHoldName=${data.cardHoldName}&idNo=${data.idNo}`),
@@ -223,6 +231,7 @@ export const getRedeemRecord = (data = {}, config = {}) => {
 
 // 话费充值
 export function rechargePhone(data = {}) {
+  refreshTimeStamp()
   const tranPwd = md5(data.tranPwd)
   const chargeType = '1'
   data = {
@@ -242,6 +251,7 @@ export function getPhoneDistrict(phone, config) {
 
 // QB充值
 export function rechargeQB(data = {}) {
+  refreshTimeStamp()
   const tradPwd = md5(data.tranPwd)
   data = {
     ...data,
@@ -254,6 +264,7 @@ export function rechargeQB(data = {}) {
 
 // 流量充值
 export function rechargeTraffic(data = {}) {
+  refreshTimeStamp()
   const tradPwd = md5(data.tranPwd)
   const range = '0'
   data = {
@@ -268,6 +279,7 @@ export function rechargeTraffic(data = {}) {
 
 // 加油卡充值
 export function rechargeOil(data = {}) {
+  refreshTimeStamp()
   const tranPwd = md5(data.tranPwd)  
   data = {
     ...data,
@@ -280,6 +292,7 @@ export function rechargeOil(data = {}) {
 
 // 视频充值 直充
 export const rechargeVideo = (data = {}) => {
+  refreshTimeStamp()
   const tranPwd = md5(data.tranPwd)
   const chargeType = '1'
   data = {
@@ -294,6 +307,7 @@ export const rechargeVideo = (data = {}) => {
 
 // 电子卡券充值
 export const rechargeVoucher = (data) => {
+  refreshTimeStamp()
   const tranPwd = md5(data.tranPwd)
   data = {
     ...data,
@@ -416,6 +430,7 @@ export function deleteAddrById(id, config) {
 
 // 京东商品下单
 export function placeOrder(data) {
+  refreshTimeStamp()
   const tradPwd = md5(data.tranPwd)  
   data = {
     ...data,
