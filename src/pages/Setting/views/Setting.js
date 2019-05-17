@@ -57,10 +57,10 @@ export default function() {
           <span>关于我们</span>
           <img className="icon" src={arrowIcon} alt=""/>
         </Link>
-        <Link to="/developing">
+        <a className="item" href="https://e-150645.chatnow.meiqia.com/dist/standalone.html">
           <span>联系我们</span>
           <img className="icon" src={arrowIcon} alt=""/>
-        </Link>
+        </a>
       </nav>
     </Page>
   )
