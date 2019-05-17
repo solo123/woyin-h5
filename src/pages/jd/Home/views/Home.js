@@ -14,14 +14,14 @@ import List from './List'
 import slogan from '@/asset/images/jd/slogan.png'
 import more from '@/asset/images/more.svg'
 
-let currentPage = 0
-
 class Home extends Component {
   constructor(props) {
     super(props)
 
     this.loadData = this.loadData.bind(this)
     this.handleClick = this.handleClick.bind(this)
+
+    this.currentPage = 0
 
     this.state = {
       id: 0,
@@ -34,7 +34,7 @@ class Home extends Component {
   componentDidMount() {
     this.loadGoodsSort(() => {
       this.setState({id: 0}, () => {
-        const params = {goodsClassId: 0, page: currentPage++}    
+        const params = {goodsClassId: 0, page: this.currentPage++}    
         this.loadNextPage(params)
       })
     })
@@ -77,13 +77,13 @@ class Home extends Component {
   }
 
   loadData() {
-    const params = {goodsClassId: this.state.id, page: currentPage++}   
+    const params = {goodsClassId: this.state.id, page: this.currentPage++}   
     this.loading = weui.loading('加载中')
     this.loadNextPage(params)
   }
 
   reset() {
-    currentPage = 0
+    this.currentPage = 0
     this.scroll.closeScroll()
     this.setState({items: [], completed: false})
   }
@@ -92,7 +92,7 @@ class Home extends Component {
     if(this.state.id === id) {return}
     this.reset()
     this.setState({id: id}, () => {          
-      const params = {goodsClassId: this.state.id, page: currentPage++} 
+      const params = {goodsClassId: this.state.id, page: this.currentPage++} 
       this.loadNextPage(params)
     })
   }

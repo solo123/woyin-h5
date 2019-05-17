@@ -1,6 +1,8 @@
 import React, {Component} from 'react'
 import {Helmet} from "react-helmet"
 
+import util from '@/util'
+
 import Backhome from '@/components/Backhome'
 import Page from './styled'
 
@@ -35,7 +37,7 @@ class OrderChargeDetail extends Component {
             </dl>
             <dl>
               <dt>创建时间：</dt>
-              <dd>{createTime}</dd>
+              <dd>{util.formatTimestamp(createTime)}</dd>
             </dl>
             <dl>
               <dt>产品名称：</dt>

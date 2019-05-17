@@ -22,7 +22,6 @@ const Content = ({placeholderLoading, items}) => {
 
 const CancelToken = axios.CancelToken
 
-let currentPage = 0
 export default class extends Component {
   constructor(props) {
     super(props)
@@ -30,6 +29,8 @@ export default class extends Component {
     this.handleToggle = this.handleToggle.bind(this)
     this.handleClick = this.handleClick.bind(this)
     this.loadData = this.loadData.bind(this)
+
+    this.currentPage = 0
 
     this.state = {
       status: '10',
@@ -42,7 +43,7 @@ export default class extends Component {
 
   componentDidMount() {
     this.scroll = new SimpleScroll(this.wrapper, this.loadData)
-    const params = {page: currentPage++, status: this.state.status}
+    const params = {page: this.currentPage++, status: this.state.status}
     this.loadNextPage(params)
   }
 
@@ -71,13 +72,13 @@ export default class extends Component {
   }
 
   reset() {
-    currentPage = 0
+    this.currentPage = 0
     this.scroll.closeScroll()
     this.setState({items: []})
   }
 
   loadData() {
-    const params = {page: currentPage++, status: this.state.status}
+    const params = {page: this.currentPage++, status: this.state.status}
     this.loading = weui.loading('加载中')
     this.loadNextPage(params)
   }
@@ -91,7 +92,7 @@ export default class extends Component {
     this.handleToggle()
     this.reset()
     this.setState({status, title, placeholderLoading: true}, () => {
-      const params = {page: currentPage++, status: this.state.status}
+      const params = {page: this.currentPage++, status: this.state.status}
       this.loadNextPage(params)
     })
   }

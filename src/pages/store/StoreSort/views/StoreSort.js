@@ -10,7 +10,6 @@ import SimpleScroll from '@/components/SimpleScroll'
 import Page from './styled'
 import List from './List'
 
-let currentPage = 0
 
 class StoreSort extends Component {
   constructor(props) {
@@ -18,6 +17,8 @@ class StoreSort extends Component {
 
     this.loadData = this.loadData.bind(this)
     this.handleClick = this.handleClick.bind(this)
+
+    this.currentPage = 0
 
     this.state = {
       id: 0,
@@ -30,7 +31,7 @@ class StoreSort extends Component {
   componentDidMount() {
     this.loadGoodsSort(() => {
       this.setState({id: 0}, () => {
-        const params = {goodsClassId: 0, page: currentPage++}    
+        const params = {goodsClassId: 0, page: this.currentPage++}    
         this.loadNextPage(params)
       })
     })
@@ -74,13 +75,13 @@ class StoreSort extends Component {
   }
 
   loadData() {
-    const params = {goodsClassId: this.state.id, page: currentPage++}   
+    const params = {goodsClassId: this.state.id, page: this.currentPage++}   
     this.loading = weui.loading('加载中')
     this.loadNextPage(params)
   }
 
   reset() {
-    currentPage = 0
+    this.currentPage = 0
     this.scroll.closeScroll()
     this.setState({items: [], completed: false})
   }
@@ -89,7 +90,7 @@ class StoreSort extends Component {
     if(this.state.id === id) {return}
     this.reset()
     this.setState({id: id}, () => {          
-      const params = {goodsClassId: this.state.id, page: currentPage++} 
+      const params = {goodsClassId: this.state.id, page: this.currentPage++} 
       this.loadNextPage(params)
     })
   }

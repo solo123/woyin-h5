@@ -19,11 +19,12 @@ const ItemToOther= ({toAccount, poundage, amount, num, createTime}) => {
   )
 }
 
-const ItemFromMe = ({from, num, createTime}) => {
+const ItemFromMe = ({from, num, remark, createTime}) => {
   return (
     <div className="card">
       <div className="card__head">
         <div className="card__title">获得积分</div>
+        <div className="card__status">{remark}</div>
       </div>
       <div className="card__body">
         <div>用户 <strong>{from}</strong> 向您转赠 <strong>{num}</strong> 积分</div>
@@ -53,6 +54,7 @@ const List = ({items, type}) => {
                 toAccount={item.toAccount}
                 num={item.num}
                 poundage={item.poundage}
+                remark={item.remark}
                 createTime={dayjs.unix(item.createTime).format('YYYY-MM-DD HH:mm:ss')}
               />
             )
@@ -72,6 +74,7 @@ const List = ({items, type}) => {
                 from={item.form}
                 num={item.num}
                 poundage={item.poundage}
+                remark={item.remark}
                 createTime={dayjs.unix(item.createTime).format('YYYY-MM-DD HH:mm:ss')}
               />
             )
