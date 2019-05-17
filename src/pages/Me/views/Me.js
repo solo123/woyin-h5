@@ -30,6 +30,8 @@ import cardIcon from '@/asset/images/icon/card.png'
 
 const CancelToken = axios.CancelToken
 
+  // _MEIQIA('showPanel');
+
 class Me extends Component {
   constructor(props) {
     super(props)
@@ -150,16 +152,16 @@ class Me extends Component {
             <label className="item__label">服务订单</label>
             <img className="item__arrow" src={arrowIcon} alt="" />
           </Link>
-          <Link className="item" to="/developing">
+          <a className="item" href="https://e-150645.chatnow.meiqia.com/dist/standalone.html">
             <img className="item__icon" src={headphoneIcon} alt=""/>
             <label className="item__label">在线客服</label>
             <img className="item__arrow" src={arrowIcon} alt="" />
-          </Link>
-          <Link className="item" to="/developing">
+          </a>
+          <a className="item" href="https://e-150645.chatnow.meiqia.com/dist/standalone.html">
             <img className="item__icon" src={messageIcon} alt=""/>
             <label className="item__label">意见反馈</label>
             <img className="item__arrow" src={arrowIcon} alt="" />
-          </Link>       
+          </a>     
           <Link className="item" to="/setting">
             <img className="item__icon" src={settingIcon} alt=""/>
             <label className="item__label">设置</label>
