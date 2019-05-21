@@ -48,38 +48,47 @@ function size(num) {
   return parseInt(num * ratio)
 }
 
-function getIconByIdContainer() {
-  const PRODUCT_ICON_SCHEMA = {
-    '11111': phoneIcon,
-    '77777': flowIcon,
-    '100001': oilIcon,
-    '44444': qqIcon,
-    '100010': videoIcon,
-    '100004': ecardIcon,
-    '100017': creditCardIcon
-  }
+function getDataByIdContainer() {
+    const SCHEMA = {
+      '11111': {
+        pathname: 'recharge-phone',
+        icon: phoneIcon
+      },
+      '77777': {
+        pathname: 'recharge-traffic',
+        icon: flowIcon
+      },
+      '100001': {
+        pathname: 'recharge-oil',
+        icon: oilIcon
+      },
+      '44444': {
+        pathname: 'recharge-QB',
+        icon: qqIcon
+      },
+      '100010': {
+        pathname: 'recharge-video',
+        icon: videoIcon
+      },
+      '100004': {
+        pathname: 'voucher',
+        icon: ecardIcon
+      },
+      '100017': {
+        pathname: 'credit-card',
+        icon: creditCardIcon
+      }
+    }
+  
   return function(id) {
-    return PRODUCT_ICON_SCHEMA[id] || listIcon
+    return SCHEMA[id] || {
+      pathname: 'developing',
+      icon: listIcon      
+    }
   }
 }
 
-function getRouteByIdContainer() {
-  const PRODUCT_ICON_SCHEMA = {
-    '11111': 'recharge-phone',
-    '77777': 'recharge-traffic',
-    '100001': 'recharge-oil',
-    '44444': 'recharge-QB',
-    '100010': 'recharge-video',
-    '100004': 'voucher',
-    '100017': 'credit-card'
-  }
-  return function(id) {
-    return PRODUCT_ICON_SCHEMA[id] || listIcon
-  }
-}
-
-const getIconById = getIconByIdContainer()
-const getRouteById = getRouteByIdContainer()
+const getData = getDataByIdContainer()
 
 const Item = ({to, id, icon, text}) => {
   return (
@@ -103,8 +112,8 @@ export default function({items}) {
         <Item
           key={product.productClassifyId}
           id={product.productClassifyId}
-          to={getRouteById(product.productClassifyId)}
-          icon={getIconById(product.productClassifyId)}
+          to={getData(product.productClassifyId).pathname}
+          icon={getData(product.productClassifyId).icon}
           text={product.productClassifyName}
         />
       ))}

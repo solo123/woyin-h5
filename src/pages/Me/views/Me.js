@@ -85,9 +85,9 @@ class Me extends Component {
 
         <header>
           <div className="top">
-            <Link to="/developing">
+            <a className="item" href="https://e-150645.chatnow.meiqia.com/dist/standalone.html">
               <img className="email" src={emailIcon} alt=""/>
-            </Link>
+            </a>
           </div>
           <div className="card">
             <Link to="/profile">
