@@ -10,10 +10,6 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import store from './Store';
 
-if(process.env.NODE_ENV === 'development') {
-  // require ('./mock/index.js')
-}
-
 const token = getItem('token')
 const reset = Number(getItem('reset'))
 if(token) {

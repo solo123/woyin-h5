@@ -139,7 +139,7 @@ class Home extends Component {
   async loadHot() {
     try {
       const {data} = await getHotSell()
-      if(data.status === 200) {
+      if(data.status === 200 && data.data.length) {
         this.setState({
           items: data.data.host
         })

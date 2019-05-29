@@ -50,8 +50,8 @@ class Home extends Component {
       const {data} = await getJDGoodsSort()
       if(data.status === 200) {
         this.setState({menus: data.data})
-        if(data.data[0] && data.data[0].page_num) {
-          cb && cb(data.data[0].page_num)
+        if(data.data[0] && data.data[0].id) {
+          cb && cb(data.data[0].id)
         }
       }
     }finally {
@@ -118,10 +118,10 @@ class Home extends Component {
               {menus.map((item, index) => {
                 return (
                   <li 
-                    key={item.page_num}
+                    key={item.id}
                     className={classNames({active: id === index})} 
                     onClick={() => this.handleClick(index)}
-                  >{item.name}</li>
+                  >{item.category}</li>
                 )
               })}
             </ul>

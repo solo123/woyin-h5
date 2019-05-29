@@ -28,7 +28,7 @@ export const login = (data) => {
       password: md5(data.password)
     }
   }
-  return post(`${BASE}user/login`, qs.stringify(data))
+  return post(`${BASE}api/user/login`, qs.stringify(data))
 }
 
 // 获取用户信息
@@ -47,31 +47,31 @@ export const getCode = (data) => {
     ...data,
     codeType: 1
   }
-  return post(`${BASE}user/getCode`, qs.stringify(data))
+  return post(`${BASE}api/user/getCode`, qs.stringify(data))
 }
 
 // 短信登录验证码
 export const getCodeForLogin = (phone) => {
   const params = {userPhoneNo: phone, codeType: 1}
-  return post(`${BASE}user/getCode`, qs.stringify(params))
+  return post(`${BASE}api/user/getCode`, qs.stringify(params))
 }
 
 // 找回登录密码验证码
 export const getCodeForFindPswd = (phone) => {
   const params = {userPhoneNo: phone, codeType: 2}
-  return post(`${BASE}user/getCode`, qs.stringify(params))
+  return post(`${BASE}api/user/getCode`, qs.stringify(params))
 }
 
 // 用户提现验证码
 export const getCodeForWithdraw = (phone) => {
   const params = {userPhoneNo: phone, codeType: 3}
-  return post(`${BASE}user/getCode`, qs.stringify(params))
+  return post(`${BASE}api/user/getCode`, qs.stringify(params))
 }
 
 // 找回交易密码验证码
 export const getCodeForFindTradePswd = (phone) => {
   const params = {userPhoneNo: phone, codeType: 4}
-  return post(`${BASE}user/getCode`, qs.stringify(params))
+  return post(`${BASE}api/user/getCode`, qs.stringify(params))
 }
 
 export const redeemIntegral = (data = {}) => {
@@ -105,43 +105,34 @@ export const paymentToCard = (data = {}) => {
 
 // 获取提现手续费
 export const getRedeemFee = (data = {}) => {
-  data = {
-    ...data,
-    payment: 1
-  }
+  data = {...data, payment: 1}
   return get(`${BASE}api/trad/poundageList`, data)
 }
 
 // 获取信用卡还款手续费
 export const getWithdrawFee = (data = {}) => {
-  data = {
-    ...data,
-    payment: 2
-  }
+  data = {...data, payment: 2}
   return get(`${BASE}api/trad/poundageList`, data)
 }
 
 // 获取提积分转赠续费
 export const getTransferFee = (data = {}) => {
-  data = {
-    ...data,
-    payment: 3
-  }
+  data = {...data, payment: 3}
   return get(`${BASE}api/trad/poundageList`, data)
 }
 
 // 获取商品分类
 export const getProducts = (productClassifyId = '', config = {}) => {
-  return get(`${BASE}product/list`, {productClassifyId}, config)
+  return get(`${BASE}api/product/list`, {productClassifyId}, config)
 }
 
 // 获取服务列表
 export const _getService = (config = {}) => {
-  return get(`${BASE}product/list`, {}, config)
+  return get(`${BASE}api/product/list`, {}, config)
 }
 
 export const _getOperators = (productClassifyId = '', config = {}) => {
-  return get(`${BASE}product/list`, {productClassifyId}, config)  
+  return get(`${BASE}api/product/list`, {productClassifyId}, config)  
 }
 
 export const _getProducts = (productClassifyId = '', config = {}) => {
@@ -369,7 +360,7 @@ export const resetAllPswd = (data) => {
 
 // 删除银行卡
 export function deleteBankCard(id, config) {
-  return del(`${BASE}api/bankCard/${id}`, null, config)
+  return del(`${BASE}api/bankCard/${id}`)
 }
 
 // 获取积分派发记录
@@ -380,25 +371,19 @@ export function getIntegralList(id, config) {
 // 京东相关
 
 export function getHotSell() {
-  return get(`${JDBASE}sellingGoods`)
+  return get(`${JDBASE}api/sellingGoods`)
 }
 
 // 获取京东商品类别列表
 export function getJDGoodsSort(data = {}, config) {
-  data = {
-    ...data,
-    typeId: 1
-  }
-  return get(`${JDBASE}goodsClassLists`, data, config)
+  data = {...data, typeId: 1}
+  return get(`${JDBASE}api/goodsClassLists`, data, config)
 }
 
 // 获取京东商品列表
 export function getJDGoodsList(data = {}, config) {
-  data = {
-    ...data,
-    limit: G_config.store.PAGE_LIMIT
-  }
-  return get(`${JDBASE}goodsLists`, data, config)
+  data = {...data, limit: G_config.store.PAGE_LIMIT}
+  return get(`${JDBASE}api/goodsLists`, data, config)
 }
 
 // 获取层级地址

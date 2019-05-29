@@ -98,7 +98,7 @@ const Item = ({to, id, icon, text}) => {
         pathname: to,
         state: {id: id}
       }}>
-        <img className="icon" src={icon} style={{width: size(100), height: size(100)}} alt=""/>
+        <img className="icon" src={icon} style={{width: size(110), height: size(110)}} alt=""/>
         <div className="title">{text}</div>
       </Link>
     </div>
