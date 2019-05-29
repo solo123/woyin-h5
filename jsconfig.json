@@ -1,6 +1,10 @@
 {
   // 关掉装饰器的错误提示
   "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["src/*"]
+    },
     "experimentalDecorators": true
   }
 }
