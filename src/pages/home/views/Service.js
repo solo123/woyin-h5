@@ -50,31 +50,31 @@ function size(num) {
 
 function getDataByIdContainer() {
     const SCHEMA = {
-      '11111': {
+      '1': {
         pathname: 'recharge-phone',
         icon: phoneIcon
       },
-      '77777': {
+      '2': {
         pathname: 'recharge-traffic',
         icon: flowIcon
       },
-      '100001': {
+      '3': {
         pathname: 'recharge-oil',
         icon: oilIcon
       },
-      '44444': {
+      '4': {
         pathname: 'recharge-QB',
         icon: qqIcon
       },
-      '100010': {
+      '5': {
         pathname: 'recharge-video',
         icon: videoIcon
       },
-      '100004': {
+      '6': {
         pathname: 'voucher',
         icon: ecardIcon
       },
-      '100017': {
+      '7': {
         pathname: 'credit-card',
         icon: creditCardIcon
       }

@@ -10,8 +10,8 @@ if(process.env.NODE_ENV === 'development') {
   BASE = '/'
   JDBASE = '/'
 }else if(process.env.NODE_ENV === 'production') {
-  BASE = '/client/'
-  JDBASE = '/jdapi/'
+  BASE = '/client'
+  JDBASE = '/jdapi'
 }
 
 let timestamp = String(new Date().getTime())
@@ -123,16 +123,16 @@ export const getTransferFee = (data = {}) => {
 
 // 获取商品分类
 export const getProducts = (productClassifyId = '', config = {}) => {
-  return get(`${BASE}api/product/list`, {productClassifyId}, config)
+  return get(`${BASE}product/list`, {productClassifyId}, config)
 }
 
 // 获取服务列表
 export const _getService = (config = {}) => {
-  return get(`${BASE}api/product/list`, {}, config)
+  return get(`${BASE}product/list`, {}, config)
 }
 
 export const _getOperators = (productClassifyId = '', config = {}) => {
-  return get(`${BASE}api/product/list`, {productClassifyId}, config)  
+  return get(`${BASE}product/list`, {productClassifyId}, config)  
 }
 
 export const _getProducts = (productClassifyId = '', config = {}) => {

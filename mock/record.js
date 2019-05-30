@@ -1,8 +1,11 @@
 import uuid from 'uuid'
+import {setup} from './util'
 
 export default {
   // 积分赎回 信用卡还款 记录
   'GET /api/trad/getWithList': (req, res) => {
+    setup(res)
+
     res.json({
       status: 200,
       data: {
@@ -41,6 +44,8 @@ export default {
 
   // 积分转赠记录
   'GET /api/transferred/list': (req, res) => {
+    setup(res)
+
     res.json({
       "status": 200,
       "data": [
@@ -78,6 +83,8 @@ export default {
 
   // 获取服务订单列表
   'GET /api/order/getOrderList': (req, res) => {
+    setup(res)
+
     res.json({
       status: 200,
       data: {
@@ -116,6 +123,8 @@ export default {
 
   // 获取已购电子卡券列表
   'GET /api/voucher/list': (req, res) => {
+    setup(res)
+
     res.json({
       status: 200,
       data: [{
@@ -180,6 +189,8 @@ export default {
 
   // 获取京东商品订单列表
   'GET /mail/JDOrders': (req, res) => {
+    setup(res)
+
     res.json({
       "status": 200,
       "data": [{
@@ -206,6 +217,8 @@ export default {
 
   // 获取京东商品物流信息
   'GET /mail/JDTrack/:id': (req, res) => {
+    setup(res)
+    
     res.json({
       "status": 200,
       "data": [{

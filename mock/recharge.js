@@ -1,6 +1,10 @@
+import {setup} from './util'
+
 export default {
   // 获取手机号段
   'GET /mail/phoneType/:id': (req, res) => {
+    setup(res)
+
     res.json({
       "status":200,
       "data":{
@@ -15,6 +19,8 @@ export default {
 
   // 话费 Q币 充值
   'POST /api/charge/moreCredit': (req, res) => {
+    setup(res)
+
     res.json({
       "status": 200,
       "data": "",
@@ -24,6 +30,8 @@ export default {
 
   // 流量充值
   'POST /api/traffic/charge': (req, res) => {
+    setup(res)
+
     res.json({
       "status": 200,
       "data": "",
@@ -33,6 +41,8 @@ export default {
 
   // 视频vip
   'POST /api/video/charge': (req, res) => {
+    setup(res)
+
     res.json({
       "status": 200,
       "data": "",
@@ -42,6 +52,8 @@ export default {
 
   // 电子卡券充值
   'POST /api/voucher/charge': (req, res) => {
+    setup(res)
+
     res.json({
       "status": 200,
       "data": "",
@@ -51,6 +63,8 @@ export default {
 
   // 油卡充值
   'POST /api/oilCard/charge': (req, res) => {
+    setup(res)
+    
     res.json({
       "status": 200,
       "data": "",

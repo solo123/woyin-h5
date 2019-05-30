@@ -7,6 +7,7 @@ function resolve (dir) {
 }
 
 const customize = () => (config, env) => {
+  // config.output.path = resolve('build')
   config.resolve.alias['@'] = resolve('src')
   if(env === 'production') {
     config.externals = {
@@ -18,6 +19,5 @@ const customize = () => (config, env) => {
 
   return config
 };
-
 
 module.exports = override(addDecoratorsLegacy(), customize())

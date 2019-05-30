@@ -1,7 +1,11 @@
+import {setup} from './util'
+
 export default {
   
   // 获取用户地址列表
   'GET /mail/userAddressList': (req, res) => {
+    setup(res)
+
     res.json({
       "status": 200,
       "data": [{
@@ -71,6 +75,8 @@ export default {
 
   // 获取京东四级地址数据
   'GET /mail/address': (req, res) => {
+    setup(res)
+
     let data = {}
     const province = {
       "湖北省": 6612,
@@ -109,6 +115,8 @@ export default {
 
   // 添加收货地址
   'POST /mail/address': (req, res) => {
+    setup(res)
+
     res.json({
       status: 200,
       data: {
@@ -119,6 +127,7 @@ export default {
 
   // 删除指定收货地址
   'DELETE /mail/address/:id': (req, res) => {
+    setup(res)
     res.json({
       status: 200,
       msg: "删除成功"

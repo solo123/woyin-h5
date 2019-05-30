@@ -1,7 +1,11 @@
-
+import {setup} from './util'
 
 export default {
-  'GET /api/product/list': (req, res) => {
+
+  // 获取服务菜单
+  'GET /product/list': (req, res) => {
+    setup(res)
+
     if(!req.query.productClassifyId) {
       res.json({
         "status": 200,
@@ -53,39 +57,48 @@ export default {
     })}
   },
 
-  'GET /api/product/subList': {
-    "status": 200,
-    "data": [
-      {
-        "productId": "1",
-        "productName": "移动话费充值1",
-        "productStatus": 1,
-        "productCostBalance": "100",
-        "buyingPrice": "1.00",
-        "salesPrice": "1.00",
-        "canRefund": 1,
-        "disCount": "9.112",
-        "createTime": 1554258756
-      },
-      {
-        "productId": "2",
-        "productName": "移动话费充值5",
-        "productStatus": 1,
-        "productCostBalance": "500",
-        "buyingPrice": "5.00",
-        "salesPrice": "5.00",
-        "canRefund": 1,
-        "disCount": "9",
-        "createTime": 1554258875
-      }
-    ],
-    "msg": "SUCCESS"
+  // 获取二级菜单
+  'GET /api/product/subList': (req, res) => {
+    setup(res)
+
+    res.json({
+      "status": 200,
+      "data": [
+        {
+          "productId": "1",
+          "productName": "移动话费充值1",
+          "productStatus": 1,
+          "productCostBalance": "100",
+          "buyingPrice": "1.00",
+          "salesPrice": "1.00",
+          "canRefund": 1,
+          "disCount": "9.112",
+          "createTime": 1554258756
+        },
+        {
+          "productId": "2",
+          "productName": "移动话费充值5",
+          "productStatus": 1,
+          "productCostBalance": "500",
+          "buyingPrice": "5.00",
+          "salesPrice": "5.00",
+          "canRefund": 1,
+          "disCount": "9",
+          "createTime": 1554258875
+        }
+      ],
+      "msg": "SUCCESS"
+    })
   },
 
   // 热销商品
-  'GET /api/sellingGoods': {
-    status: 200,
-    data: [],
-    msg: 'SUCCESS'
+  'GET /api/sellingGoods': (req, res) => {
+    setup(res)
+    
+    res.json({
+      status: 200,
+      data: [],
+      msg: 'SUCCESS'
+    })
   }
 }

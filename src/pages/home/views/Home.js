@@ -130,7 +130,37 @@ class Home extends Component {
     try {
       const {data} = await _getService()
       if(data.status === 200) {
-        this.setState({menus: data.data})
+        // this.setState({menus: data.data})
+        this.setState({menus: [
+          {
+            "productClassifyName":"话费充值",
+            "productClassifyId":"1"
+          },
+          {
+            "productClassifyName":"流量充值",
+            "productClassifyId":"2"
+          },
+          {
+            "productClassifyName":"油卡充值",
+            "productClassifyId":"3"
+          },
+          {
+            "productClassifyName":"Q币充值",
+            "productClassifyId":"4"
+          },
+          {
+            "productClassifyName":"视频VIP",
+            "productClassifyId":"5"
+          },
+          {
+            "productClassifyName":"电子卡券",
+            "productClassifyId":"6"
+          },
+          {
+            "productClassifyName":"信用卡还款",
+            "productClassifyId":"7"
+          }
+        ]})
       }
     }finally {
     }

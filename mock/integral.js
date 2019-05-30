@@ -1,6 +1,10 @@
+import {setup} from './util'
+
 export default {
   // 积分赎回 信用卡还款 请求提交
   'POST /api/trad/withdrawal': (req, res) => {
+    setup(res)
+
     res.json({
       "status": 200,
       "data": "",
@@ -10,6 +14,8 @@ export default {
 
   // 获取手续费 
   'GET /api/trad/poundageList': (req, res) => {
+    setup(res)
+
     res.json({
       "status": 200,
       "data": {
@@ -24,6 +30,8 @@ export default {
 
   // 积分转赠请求
   'POST /api/transferred/commit': (req, res) => {
+    setup(res)
+
     res.json({
       "status": 200,
       "data": "",
@@ -32,6 +40,8 @@ export default {
   },
 
   'GET /api/integralList': (req, res) => {
+    setup(res)
+    
     res.json({
       "status": 200,
       "data": [{
