@@ -10,8 +10,8 @@ if(process.env.NODE_ENV === 'development') {
   BASE = '/'
   JDBASE = '/'
 }else if(process.env.NODE_ENV === 'production') {
-  BASE = '/client/'
-  JDBASE = '/jdapi/'
+  // BASE = '/client/'
+  // JDBASE = '/jdapi/'
 }
 
 let timestamp = String(new Date().getTime())
