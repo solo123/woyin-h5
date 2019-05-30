@@ -7,13 +7,6 @@ module.exports = function(app) {
       changeOrigin: true
     })
   )
-
-  app.use(
-    proxy("/product/list", {
-      target: "http://localhost:3000",
-      changeOrigin: true
-    })
-  )
   
   app.use(
     proxy("/mail/**", {

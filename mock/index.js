@@ -3,7 +3,7 @@ import {setup} from './util'
 export default {
 
   // 获取服务菜单
-  'GET /product/list': (req, res) => {
+  'GET /api/product/list': (req, res) => {
     setup(res)
 
     if(!req.query.productClassifyId) {
