@@ -371,7 +371,7 @@ export function getIntegralList(id, config) {
 // 京东相关
 
 export function getHotSell() {
-  return get(`${JDBASE}api/sellingGoods`)
+  return get(`${JDBASE}/sellingGoods`)
 }
 
 // 获取京东商品类别列表
