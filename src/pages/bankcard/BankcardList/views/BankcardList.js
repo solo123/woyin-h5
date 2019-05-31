@@ -21,6 +21,13 @@ const Content = ({loading, items, handleClick}) => {
   return <List items={items} handleClick={handleClick}/>
 }
 
+// 测试点
+// 拉取银行卡
+  // 1 校验是否得到响应
+// 删除银行卡
+  // 1 点击删除id校验
+  // 2 请求完成后dom的更新校验
+
 class BankcardList extends Component {
   constructor(props) {
     super(props)
@@ -40,7 +47,7 @@ class BankcardList extends Component {
   async loadBankcardList() {
     try {
       const {data} = await getBankcardList()
-      if(data.status === 200) {
+      if(data.status === 200 && data.data.length) {
         this.setState({items: data.data})
       }
     }finally {
@@ -91,7 +98,7 @@ class BankcardList extends Component {
           </div>
         </div>
 
-        <Backhome />
+        <Backhome/>
       </Page>
     )
   }

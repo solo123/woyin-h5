@@ -3,7 +3,8 @@
   "jest": {
     "moduleNameMapper": {
       "^@/(.*)$": "<rootDir>/src/$1"
-    }
+    },
+    "setupTestFrameworkScriptFile": "<rootDir>/enzyme.config.js"
   },
   "version": "0.1.0",
   "private": true,

@@ -26,6 +26,7 @@ class AddBankcard extends Component {
 
     this.state = {
       flag: false,
+      msg: '',
 
       username: '',
       usernameCleanViewFlag: false,
@@ -100,21 +101,32 @@ class AddBankcard extends Component {
 
   verify() {
     if(!this.state.username) {
-      weui.alert('请输入姓名')
+      this.setState({msg: '请输入姓名'})
+      return false
+    }
+    // 姓名必须为全中文中文
+    if(!/^[\u4e00-\u9fa5]+$/g.test(this.state.username)) {
+      this.setState({msg: '姓名输入不合法'})
       return false
     }
     if(!this.state.id) {
-      weui.alert('请输入身份证号')
+      this.setState({msg: '请输入身份证号'})
+      return false
+    }
+    // 身份号合法性判断
+    if(this.state.id.length !== 18) {
+      this.setState({msg: '身份证号不合法'})
       return false
     }
     if(!this.state.cardNo) {
-      weui.alert('请输入卡号')
+      this.setState({msg: '请输入卡号'})
       return false
     }
     if(!this.state.phone) {
-      weui.alert('请输入手机号')
+      this.setState({msg: '请输入手机号'})
       return false
     }    
+    this.setState({msg: ''})
     return true
   }
   
@@ -246,6 +258,7 @@ class AddBankcard extends Component {
         </main>
 
         <div className="u_mt_xxx">
+          <div className="msg">{this.state.msg}</div>
           <button className="btn btn-secondary" onClick={this.handleSubmit}>添加</button>
         </div> 
 

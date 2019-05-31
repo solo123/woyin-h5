@@ -23,10 +23,7 @@ function refreshTimeStamp() {
 // 登录
 export const login = (data) => {
   if(data.loginType === 1) {
-    data = {
-      ...data,
-      password: md5(data.password)
-    }
+    data = {...data, password: md5(data.password)}
   }
   return post(`${BASE}api/user/login`, qs.stringify(data))
 }
@@ -43,10 +40,7 @@ export const switchAccount = (data = {}, config = {}) => {
 
 // 发送短信验证码
 export const getCode = (data) => {
-  data = {
-    ...data,
-    codeType: 1
-  }
+  data = {...data, codeType: 1}
   return post(`${BASE}api/user/getCode`, qs.stringify(data))
 }
 
